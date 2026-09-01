@@ -293,7 +293,7 @@ export const Hero: React.FC = () => {
 
           {slide.product && (
             <div
-              className="relative flex flex-col items-center justify-center translate-y-[25%]"
+              className="relative flex flex-col items-center justify-center translate-y-[10%] sm:translate-y-[25%]"
               style={{ perspective: '1600px', transformStyle: 'preserve-3d' }}
             >
               {/* 3D Platform Pedestal Base */}
