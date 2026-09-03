@@ -23,8 +23,13 @@ export const AboutSection: React.FC = () => {
             <div className="lg:col-span-6 relative flex flex-col justify-start">
 
               {/* Main Featured Facility & Container Image (Increased height) */}
-              <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 h-[440px] sm:h-[540px] lg:h-[580px] w-full">
-                <img
+              <div
+                id="about-model-target-1"
+                className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 h-[440px] sm:h-[540px] lg:h-[580px] w-full"
+              >
+                {/* TEMP: hidden while testing the 3D container landing here.
+                    The wrapping div must stay — ModelBanner measures it by id. */}
+                {/* <img
                   src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/ChatGPT%20Image%20Aug%2026,%202026,%2012_02_15%20PM.png?tr=w-800,q-78,f-webp"
                   alt="AcePack Precision Moulding Facility"
                   width={800}
@@ -32,13 +37,17 @@ export const AboutSection: React.FC = () => {
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover"
-                />
+                /> */}
               </div>
 
               {/* Overlapping Small Product Image Card (Increased width & height) */}
               <Reveal type="zoom-in" delay={0.2}>
-                <div className="absolute -bottom-8 -right-2 sm:right-4 w-44 sm:w-64 h-40 sm:h-52 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-slate-900 group">
-                  <img
+                <div
+                  id="about-model-target-2"
+                  className="absolute -bottom-8 -right-2 sm:right-4 w-44 sm:w-64 h-40 sm:h-52 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-slate-900 group"
+                >
+                  {/* TEMP: hidden while testing the 3D container landing here. */}
+                  {/* <img
                     src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/Flat%20Containers.png?tr=w-350,q-78,f-webp"
                     alt="AcePack Precision Container Series"
                     width={350}
@@ -46,7 +55,7 @@ export const AboutSection: React.FC = () => {
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+                  /> */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent p-4 flex flex-col justify-end">
                     <span className="text-[10px] font-extrabold text-[#b89858] uppercase tracking-wider block mb-0.5">
                       ISO 9001:2015 TESTED

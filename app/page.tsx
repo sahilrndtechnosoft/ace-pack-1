@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero/Hero";
+import { ModelBanner } from "@/components/sections/ModelBanner";
 import { CategoryShowcase } from "@/components/sections/CategoryShowcase";
 import { FeatureShowcase } from "@/components/sections/FeatureShowcase";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -17,7 +18,8 @@ import { ContactSection } from "@/components/sections/ContactSection";
 export default function Home() {
   return (
     <div className="flex flex-col gap-0">
-      <Hero />
+      {/* <Hero /> */}
+      <ModelBanner />
       <AboutSection />
       <FeatureShowcase />
       <CategoryShowcase />

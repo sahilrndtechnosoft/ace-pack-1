@@ -96,8 +96,13 @@ export const FeatureShowcase: React.FC = () => {
             <div className="lg:col-span-6 relative flex flex-col min-h-[480px]">
 
               {/* Main Featured Container Photo with Gold Border Glow */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#b89858]/60 hover:border-[#b89858] bg-[#050505] flex-1 w-full group">
-                <img
+              <div
+                id="feature-model-target"
+                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#b89858]/60 hover:border-[#b89858] bg-[#050505] flex-1 w-full group"
+              >
+                {/* TEMP: hidden while testing the 3D container landing here.
+                    The wrapping div must stay — ModelBanner measures it by id. */}
+                {/* <img
                   src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/ChatGPT%20Image%20Aug%2026,%202026,%2012_02_11%20PM.png?tr=w-800,q-78,f-webp"
                   alt="AcePack Precision Food Packaging Line"
                   width={800}
@@ -105,7 +110,7 @@ export const FeatureShowcase: React.FC = () => {
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover object-right group-hover:scale-105 transition-transform duration-700 filter brightness-95"
-                />
+                /> */}
 
                 {/* Dark Gradient Overlay with Title */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-8 flex flex-col justify-end text-left">
