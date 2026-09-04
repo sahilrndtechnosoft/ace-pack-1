@@ -13,7 +13,7 @@ export const BlogSection: React.FC = () => {
 
   return (
     <section className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 left-1/3 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full bg-[#b89858]/10 blur-[60px] sm:blur-[120px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 left-1/3 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
       <Container className="relative z-10">
 
         {/* Left-Aligned Header */}

@@ -114,11 +114,30 @@ export const ModelBanner: React.FC = () => {
     let driveFrame: ((dt: number) => void) | null = null;
     let cleanupLayoutWatch: (() => void) | null = null;
 
+    // The loop below is dirty-flag driven rather than unconditional: `needsApply`
+    // forces one transform/camera write after something outside the scroll
+    // changed (model loaded, layout re-measured), and `needsRender` says the
+    // frame actually differs from the one already on screen. With the page
+    // still, both stay false and the whole WebGL draw is skipped.
+    let needsRender = true;
+    let needsApply = true;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 100);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarsePointer ? 1.5 : 2));
+    // A 628px canvas at devicePixelRatio 2 is ~1.6M fragments every frame, on
+    // top of Lenis, ScrollTrigger and the reveal animations already competing
+    // for the same frame budget — the single biggest cost on this page. 1.5
+    // (1 on phones) roughly halves that with no visible difference at this
+    // size, and MSAA is only worth paying for when the buffer isn't already
+    // being supersampled.
+    const pixelRatio = Math.min(window.devicePixelRatio, isCoarsePointer ? 1 : 1.5);
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: pixelRatio < 1.5,
+      powerPreference: 'high-performance',
+    });
+    renderer.setPixelRatio(pixelRatio);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     container.appendChild(renderer.domElement);
@@ -186,6 +205,9 @@ export const ModelBanner: React.FC = () => {
         model.position.sub(center);
         scene.add(model);
 
+        needsApply = true;
+        needsRender = true;
+
         modelRadius = size.length() / 2;
         modelSizeY = size.y;
         const fitDistance = modelRadius / Math.sin((Math.PI * CAM_HERO.fov) / 360);
@@ -213,6 +235,7 @@ export const ModelBanner: React.FC = () => {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
+      needsRender = true;
     };
     resize();
     const resizeObserver = new ResizeObserver(resize);
@@ -240,10 +263,15 @@ export const ModelBanner: React.FC = () => {
       // Scroll read, transform write, then draw — once each, in that order.
       driveFrame?.(dt);
 
-      controls.update();
-      // Nothing to draw once it has faded out past the last stop — skips the
-      // GPU work for the rest of the page, which matters most on phones.
-      if (currentOpacity > 0.01) renderer.render(scene, camera);
+      // OrbitControls reports whether it actually moved the camera (a drag in
+      // progress, or damping still bleeding off), which is the other thing
+      // that can make this frame differ from the last one.
+      if (controls.update()) needsRender = true;
+      // Nothing to draw once it has faded out past the last stop, and nothing
+      // to draw when the frame is identical to the one already on screen —
+      // both skip the GPU work entirely.
+      if (needsRender && currentOpacity > 0.01) renderer.render(scene, camera);
+      needsRender = false;
     };
     gsap.ticker.add(tick);
 
@@ -360,6 +388,7 @@ export const ModelBanner: React.FC = () => {
         img2 = measure(target2);
         img3 = measure(target3);
         computeBoundaries();
+        needsApply = true;
       };
       remeasure();
 
@@ -503,6 +532,8 @@ export const ModelBanner: React.FC = () => {
           smoothedProgress = self.progress;
           readScroll();
           applyProgress(smoothedProgress);
+          needsApply = true;
+          needsRender = true;
         },
       });
 
@@ -559,20 +590,47 @@ export const ModelBanner: React.FC = () => {
 
       // Hand the frame loop everything it needs to drive the wrapper itself.
       driveFrame = (dt: number) => {
+        const prevScrollX = frameScrollX;
+        const prevScrollY = frameScrollY;
         readScroll();
+        // The wrapper is position:fixed but its stops are document-space, so a
+        // scroll always means a new transform even when the journey progress
+        // itself is clamped (before the first stop, after the last).
+        const scrollMoved = frameScrollX !== prevScrollX || frameScrollY !== prevScrollY;
+
+        // Faded out past the last stop: no transform worth writing and nothing
+        // to draw for the whole rest of the page.
+        if (currentOpacity <= 0.01 && targetOpacity <= 0.01) {
+          if (currentOpacity !== 0) {
+            currentOpacity = 0;
+            wrapper.style.opacity = '0';
+          }
+          return;
+        }
 
         // Frame-rate independent exponential damping — the same glide at 60,
         // 90 or 120Hz, where a fixed per-frame factor would be faster on
         // high-refresh screens.
         const k = 1 - Math.exp(-dt * PROGRESS_DAMPING);
+        const progressGap = Math.abs(targetProgress - smoothedProgress);
+        const opacityGap = Math.abs(targetOpacity - currentOpacity);
         smoothedProgress += (targetProgress - smoothedProgress) * k;
-        if (Math.abs(targetProgress - smoothedProgress) < 0.00002) {
-          smoothedProgress = targetProgress;
-        }
+        if (progressGap < 0.00002) smoothedProgress = targetProgress;
         currentOpacity += (targetOpacity - currentOpacity) * k;
+        if (opacityGap < 0.001) currentOpacity = targetOpacity;
+
+        // Nothing moved: the page is still, the box has caught up and the fade
+        // has settled. Skip the style writes and let the tick skip the draw,
+        // instead of re-rendering an identical frame 60+ times a second while
+        // the user reads the page.
+        if (!scrollMoved && !needsApply && progressGap < 0.00002 && opacityGap < 0.001) {
+          return;
+        }
+        needsApply = false;
 
         applyProgress(smoothedProgress);
         wrapper.style.opacity = String(currentOpacity);
+        needsRender = true;
       };
     });
 
@@ -601,8 +659,18 @@ export const ModelBanner: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[70vh] sm:h-[calc(100vh-85px)] sm:max-h-[920px] sm:min-h-[520px] bg-[#111518] border-b border-[#E6DBC6]/30"
+      className="relative h-[70vh] sm:h-[calc(100vh-85px)] sm:max-h-[920px] sm:min-h-[520px] bg-[#FDFCF9] border-b border-[#E6DBC6]"
     >
+      {/* Gold-wave backdrop. A plain background layer rather than an <img>:
+          nothing needs to read its intrinsic size, and the near-white centre
+          is what makes the dark container read clearly on top of it. The
+          cream base colour behind it covers any letterboxing on tall/narrow
+          viewports, where a 2.4:1 image cropped to cover can't reach. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/hero-gold-wave-bg.webp')" }}
+      />
       {/* Sized ~12% larger than before. No translate utilities here: the
           effect writes one complete transform string (offset + centring +
           scale), and a class-declared translate would be a second, competing
@@ -620,7 +688,7 @@ export const ModelBanner: React.FC = () => {
             it's a sibling inside the same moved/scaled wrapper. */}
         <div
           aria-hidden="true"
-          className="absolute left-1/2 bottom-[16%] -translate-x-1/2 w-[68%] h-[10%] rounded-full blur-md bg-black/40 pointer-events-none"
+          className="absolute left-1/2 bottom-[16%] -translate-x-1/2 w-[68%] h-[10%] rounded-full blur-md bg-[#1A1D20]/18 pointer-events-none"
         />
         <div ref={containerRef} className="w-full h-full" />
       </div>

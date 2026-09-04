@@ -44,7 +44,7 @@ const industries = [
 export const IndustriesServed: React.FC = () => {
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[280px] sm:w-[560px] h-[280px] sm:h-[560px] rounded-full bg-[#b89858]/[0.07] blur-[80px] sm:blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[280px] sm:w-[560px] h-[280px] sm:h-[560px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#1A1D2008_1px,transparent_1px),linear-gradient(to_bottom,#1A1D2008_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,black,transparent)]" />
 
       <Container className="relative z-10">

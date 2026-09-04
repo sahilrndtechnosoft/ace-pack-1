@@ -12,7 +12,7 @@ import { ArrowRight } from 'lucide-react';
 export const CategoryShowcase: React.FC = () => {
   return (
     <section className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-1/4 w-[220px] sm:w-[400px] h-[220px] sm:h-[400px] rounded-full bg-[#b89858]/10 blur-[60px] sm:blur-[120px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-1/4 w-[220px] sm:w-[400px] h-[220px] sm:h-[400px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
       <Container className="relative z-10">
 
         {/* Left-Aligned Header matching user instruction */}

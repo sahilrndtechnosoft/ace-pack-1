@@ -53,7 +53,7 @@ const MarqueeRow: React.FC<{ items: string[]; reverse?: boolean }> = ({ items, r
 export const ClientLogos: React.FC = () => {
   return (
     <section className="relative py-16 sm:py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] rounded-full bg-[#b89858]/[0.05] blur-[100px] sm:blur-[160px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.09)_0%,rgba(184,152,88,0)_70%)]" />
 
       <Container className="relative z-10">
         <Reveal type="fade-up">

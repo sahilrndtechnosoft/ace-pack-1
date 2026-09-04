@@ -28,8 +28,8 @@ export const FaqSection: React.FC = () => {
 
   return (
     <section className="relative py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/3 left-0 w-[200px] sm:w-[380px] h-[200px] sm:h-[380px] rounded-full bg-[#b89858]/[0.07] blur-[60px] sm:blur-[120px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full bg-[#b89858]/[0.07] blur-[70px] sm:blur-[130px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-1/3 left-0 w-[200px] sm:w-[380px] h-[200px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
       <Container className="relative z-10">
 
         {/* Merged Layout: Left Side FAQ, Right Side Contact Form */}

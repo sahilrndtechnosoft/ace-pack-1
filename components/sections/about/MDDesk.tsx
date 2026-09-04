@@ -14,7 +14,7 @@ const md = {
 export const MDDesk: React.FC = () => {
   return (
     <section className="py-16 md:py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden relative">
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-[#b89858]/[0.07] blur-[90px] sm:blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
       <div className="container-custom relative z-10">
         <Reveal type="fade-up">
           <div className="max-w-4xl mx-auto text-center">

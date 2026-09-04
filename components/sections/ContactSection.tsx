@@ -35,7 +35,7 @@ const contactCards = [
 export const ContactSection: React.FC = () => {
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute -top-24 right-0 w-[260px] sm:w-[460px] h-[260px] sm:h-[460px] rounded-full bg-[#b89858]/10 blur-[70px] sm:blur-[130px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-24 right-0 w-[260px] sm:w-[460px] h-[260px] sm:h-[460px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
 
       <Container className="relative z-10">
 

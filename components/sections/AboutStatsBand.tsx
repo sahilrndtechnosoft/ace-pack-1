@@ -14,8 +14,8 @@ const STATS = [
 export const AboutStatsBand: React.FC = () => {
   return (
     <section className="relative py-14 bg-[#111518] text-white overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 w-[220px] sm:w-[380px] h-[220px] sm:h-[380px] rounded-full bg-[#b89858]/[0.08] blur-[60px] sm:blur-[120px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[400px] h-[220px] sm:h-[400px] rounded-full bg-[#b89858]/[0.08] blur-[60px] sm:blur-[120px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 w-[220px] sm:w-[380px] h-[220px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.13)_0%,rgba(184,152,88,0)_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[400px] h-[220px] sm:h-[400px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.13)_0%,rgba(184,152,88,0)_70%)]" />
       <div className="container-custom relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         {STATS.map((stat, idx) => (
           <Reveal key={stat.label} type="fade-up" delay={idx * 0.1}>

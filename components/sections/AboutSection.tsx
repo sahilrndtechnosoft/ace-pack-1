@@ -11,8 +11,8 @@ import { ShieldCheck, Award, ArrowRight, Play, Factory, Package } from 'lucide-r
 export const AboutSection: React.FC = () => {
   return (
     <section className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute -top-20 -left-24 w-[220px] sm:w-[380px] h-[220px] sm:h-[380px] rounded-full bg-[#b89858]/10 blur-[60px] sm:blur-[110px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 -right-16 w-[240px] sm:w-[420px] h-[240px] sm:h-[420px] rounded-full bg-[#b89858]/10 blur-[70px] sm:blur-[120px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-20 -left-24 w-[220px] sm:w-[380px] h-[220px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 -right-16 w-[240px] sm:w-[420px] h-[240px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
       <Container className="relative z-10">
 
         {/* Equal Height Grid with items-stretch */}
@@ -25,7 +25,7 @@ export const AboutSection: React.FC = () => {
               {/* Main Featured Facility & Container Image (Increased height) */}
               <div
                 id="about-model-target-1"
-                className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 h-[440px] sm:h-[540px] lg:h-[580px] w-full"
+                className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-gradient-to-br from-[#FFFDF9] via-[#F5F0E6] to-[#E9E1D1] h-[440px] sm:h-[540px] lg:h-[580px] w-full"
               >
                 {/* TEMP: hidden while testing the 3D container landing here.
                     The wrapping div must stay — ModelBanner measures it by id. */}
@@ -44,7 +44,7 @@ export const AboutSection: React.FC = () => {
               <Reveal type="zoom-in" delay={0.2}>
                 <div
                   id="about-model-target-2"
-                  className="absolute -bottom-8 -right-2 sm:right-4 w-44 sm:w-64 h-40 sm:h-52 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-slate-900 group"
+                  className="absolute -bottom-8 -right-2 sm:right-4 w-44 sm:w-64 h-40 sm:h-52 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-gradient-to-br from-[#FFFDF9] via-[#F5F0E6] to-[#E9E1D1] group"
                 >
                   {/* TEMP: hidden while testing the 3D container landing here. */}
                   {/* <img
@@ -56,7 +56,7 @@ export const AboutSection: React.FC = () => {
                     decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   /> */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent p-4 flex flex-col justify-end">
+                  <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.82)_0%,rgba(26,29,32,0.45)_26%,rgba(26,29,32,0)_46%)] p-4 flex flex-col justify-end">
                     <span className="text-[10px] font-extrabold text-[#b89858] uppercase tracking-wider block mb-0.5">
                       ISO 9001:2015 TESTED
                     </span>

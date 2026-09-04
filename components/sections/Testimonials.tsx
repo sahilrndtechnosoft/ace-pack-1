@@ -59,8 +59,8 @@ const testimonials: Testimonial[] = [
 export const Testimonials: React.FC = () => {
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute -top-10 -right-16 w-[240px] sm:w-[440px] h-[240px] sm:h-[440px] rounded-full bg-[#b89858]/10 blur-[70px] sm:blur-[130px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 -left-10 w-[200px] sm:w-[360px] h-[200px] sm:h-[360px] rounded-full bg-[#b89858]/[0.08] blur-[60px] sm:blur-[110px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-10 -right-16 w-[240px] sm:w-[440px] h-[240px] sm:h-[440px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 -left-10 w-[200px] sm:w-[360px] h-[200px] sm:h-[360px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.13)_0%,rgba(184,152,88,0)_70%)]" />
 
       <Container className="relative z-10">
 

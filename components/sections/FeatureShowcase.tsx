@@ -33,8 +33,8 @@ export const FeatureShowcase: React.FC = () => {
 
   return (
     <section className="relative py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 w-[240px] sm:w-[460px] h-[240px] sm:h-[460px] rounded-full bg-[#b89858]/[0.08] blur-[70px] sm:blur-[130px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 w-[200px] sm:w-[360px] h-[200px] sm:h-[360px] rounded-full bg-[#b89858]/[0.06] blur-[60px] sm:blur-[110px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 w-[240px] sm:w-[460px] h-[240px] sm:h-[460px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.14)_0%,rgba(184,152,88,0)_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 w-[200px] sm:w-[360px] h-[200px] sm:h-[360px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.12)_0%,rgba(184,152,88,0)_70%)]" />
       <Container className="relative z-10">
 
         {/* Main Grid: Left Column 6 / Right Column 6 (10% Left Decrease, 10% Right Increase) */}
@@ -98,7 +98,7 @@ export const FeatureShowcase: React.FC = () => {
               {/* Main Featured Container Photo with Gold Border Glow */}
               <div
                 id="feature-model-target"
-                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#b89858]/60 hover:border-[#b89858] bg-[#050505] flex-1 w-full group"
+                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#b89858]/60 hover:border-[#b89858] bg-gradient-to-br from-[#FFFDF9] via-[#F5F0E6] to-[#E9E1D1] flex-1 w-full group"
               >
                 {/* TEMP: hidden while testing the 3D container landing here.
                     The wrapping div must stay — ModelBanner measures it by id. */}
@@ -113,7 +113,7 @@ export const FeatureShowcase: React.FC = () => {
                 /> */}
 
                 {/* Dark Gradient Overlay with Title */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-8 flex flex-col justify-end text-left">
+                <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.78)_0%,rgba(26,29,32,0.38)_18%,rgba(26,29,32,0)_34%)] p-8 flex flex-col justify-end text-left">
                   <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-1">
                     ROBOTIC INJECTION MOULDING
                   </span>
