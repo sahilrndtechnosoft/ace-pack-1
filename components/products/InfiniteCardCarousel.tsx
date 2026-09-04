@@ -151,14 +151,14 @@ export const InfiniteCardCarousel: React.FC<InfiniteCardCarouselProps> = ({ card
         <button
           onClick={() => go(-1)}
           aria-label="Previous category"
-          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-[#1A1D20] hover:bg-[#b89858] hover:text-white transition-colors"
+          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-white hover:bg-[#b89858] hover:text-[#1A1D20] transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={() => go(1)}
           aria-label="Next category"
-          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-[#1A1D20] hover:bg-[#b89858] hover:text-white transition-colors"
+          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-white hover:bg-[#b89858] hover:text-[#1A1D20] transition-colors"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
