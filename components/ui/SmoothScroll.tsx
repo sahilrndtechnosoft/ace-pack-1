@@ -21,10 +21,21 @@ declare global {
 // frame behind the smoothed scroll position and visibly judder.
 export const SmoothScroll: React.FC = () => {
   useEffect(() => {
+    // Someone who has asked the OS for less motion gets the browser's own
+    // scrolling, which is also the cheapest path on a slow machine.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      // `lerp` rather than `duration`: duration tweens every wheel gesture over
+      // a fixed 1.1s, so the page keeps coasting after the wheel has stopped —
+      // which is exactly what reads as "laggy" even at a solid 60fps. A lerp
+      // chases the real scroll position each frame instead, so it stays smooth
+      // but arrives with the gesture.
+      lerp: 0.12,
       smoothWheel: true,
+      // Phones keep native scrolling: smoothed touch fights the OS's own
+      // fling physics and is where Lenis feels worst.
+      syncTouch: false,
     });
 
     lenis.on('scroll', ScrollTrigger.update);

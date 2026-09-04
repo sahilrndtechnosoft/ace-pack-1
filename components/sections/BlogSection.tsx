@@ -58,7 +58,7 @@ export const BlogSection: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-[#b89858] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <span className="absolute top-4 left-4 bg-black/85 text-[#b89858] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                       {post.category}
                     </span>
                   </div>

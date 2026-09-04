@@ -35,7 +35,7 @@ const MarqueeRow: React.FC<{ items: string[]; reverse?: boolean }> = ({ items, r
         {loop.map((name, idx) => (
           <div
             key={idx}
-            className="shrink-0 flex items-center gap-2.5 bg-white/[0.04] backdrop-blur-sm border border-white/10 hover:border-[#b89858]/70 hover:bg-white/[0.07] rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 transition-colors duration-300"
+            className="shrink-0 flex items-center gap-2.5 bg-white/[0.06] border border-white/10 hover:border-[#b89858]/70 hover:bg-white/[0.07] rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 transition-colors duration-300"
           >
             <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#b89858] to-[#8a6f3d] text-white flex items-center justify-center shrink-0">
               <Building2 className="w-3.5 h-3.5" />

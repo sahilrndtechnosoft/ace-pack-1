@@ -149,3 +149,31 @@ body {
     50% { transform: translateY(-8px); }
   }
 }
+
+/* GSAP horizontal gallery — components/gallery/HorizontalGallery.tsx.
+   The track is a plain flex row that ScrollTrigger translates; its leading
+   padding matches the site container's gutter so the first card starts on the
+   same line as the heading above it. */
+.gallery-track {
+  padding-inline-start: max(1.25rem, calc((100vw - 1280px) / 2 + 1.25rem));
+}
+
+/* prefers-reduced-motion fallback: no pinning and no scroll remap, just a
+   swipeable strip with snap points. */
+.gallery-track-free {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: max(1.25rem, calc((100vw - 1280px) / 2 + 1.25rem));
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery-track-free::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-card {
+  scroll-snap-align: start;
+}

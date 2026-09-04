@@ -75,7 +75,7 @@ export const IndustriesServed: React.FC = () => {
                 >
                 <Link
                   href="/categories"
-                  className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 backdrop-blur-sm border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
+                  className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
                 >
                   <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#b89858]/[0.08] transition-colors duration-300 select-none">
                     {String(idx + 1).padStart(2, '0')}

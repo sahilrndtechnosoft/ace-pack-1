@@ -111,8 +111,12 @@ export const Reveal: React.FC<RevealProps> = ({
           scrollTrigger: {
             trigger: el,
             start,
-            end: 'bottom top',
-            toggleActions: 'play none none reverse',
+            // `once` rather than play/reverse: reversing meant every element
+            // re-animated on the way back up, and it kept ~30 triggers live
+            // for the whole page. Firing once lets ScrollTrigger retire each
+            // one after it plays, so scrolling gets cheaper as you go.
+            once: true,
+            toggleActions: 'play none none none',
             fastScrollEnd: true,
           },
         }

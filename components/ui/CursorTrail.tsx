@@ -3,8 +3,8 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-const FLAIR_COUNT = 12;
-const GAP = 60; // px of mouse travel between spawning the next shape
+const FLAIR_COUNT = 8;
+const GAP = 80; // px of mouse travel between spawning the next shape
 
 // Adapted from the classic GSAP "image trail" cursor demo: a pool of shapes
 // is cycled round-robin, each one popping in with an elastic scale, spinning
@@ -15,6 +15,7 @@ export const CursorTrail: React.FC = () => {
 
   useEffect(() => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const flair = flairRefs.current.filter((el): el is HTMLDivElement => !!el);
     const wrap = gsap.utils.wrap(0, flair.length);
@@ -109,7 +110,9 @@ export const CursorTrail: React.FC = () => {
               borderRadius: '9999px',
               background: isRing ? 'transparent' : 'rgba(184, 152, 88, 0.85)',
               border: isRing ? '2px solid rgba(184, 152, 88, 0.85)' : 'none',
-              boxShadow: isRing ? 'none' : '0 0 14px rgba(184, 152, 88, 0.5)',
+              // No box-shadow: a blurred shadow has to be re-rastered on every
+              // frame of the shape's fall, and there are several falling at
+              // once whenever the mouse is moving.
             }}
           />
         );

@@ -13,14 +13,19 @@ export const Header: React.FC = () => {
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
   useEffect(() => {
+    // Passive + rAF-coalesced: a non-passive scroll handler blocks the
+    // compositor on every wheel event, and this one only ever needs to answer
+    // one question ("past 20px?") once per frame.
+    let queued = false;
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        setIsScrolled(window.scrollY > 20);
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
