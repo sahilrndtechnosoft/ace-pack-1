@@ -1,0 +1,30 @@
+[
+  {
+    "file": "takeaway.glb",
+    "bytes": 63660,
+    "triangles": 29766,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "translate +Y, 0-0.055m",
+    "notes": "Reference takeaway container; clear lid uses KHR_materials_transmission."
+  },
+  {
+    "file": "deli.glb",
+    "bytes": 23320,
+    "triangles": 9984,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "translate +Y, 0\u20130.07m"
+  },
+  {
+    "file": "carton.glb",
+    "bytes": 43900,
+    "triangles": 3906,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "rotate X, 0 to -1.9 radians"
+  }
+]

@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        brand: { ivory: "#faf8f4", charcoal: "#1a1d20", gold: "#b89858" },
       },
     },
   },

@@ -1,4 +1,9 @@
 import type { Metadata } from "next";
+// Lenis ships its required stylesheet rather than injecting it at runtime, and
+// it was never imported — so the smooth scroller ran without the rules it
+// depends on (auto height on html/body, overscroll containment for
+// [data-lenis-prevent] regions, and blocking iframe pointer events mid-scroll).
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
