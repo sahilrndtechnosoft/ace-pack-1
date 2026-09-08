@@ -35,10 +35,13 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
   // 0 from 4:3 landscape upward, 1 on a phone held upright.
   const portrait=clamp((1.15-aspect)/.45);
   const pull=mix(1,2,portrait);
-  // How far the container sits below the camera's aim. It deepens once the
-  // collection carousel engages, because the product panels are taller than the
-  // craft facts and would otherwise sit underneath the model.
-  const drop=portrait*mix(.85,2.05,collection);
+  // How far the container sits below the camera's aim. The hero keeps it high,
+  // because the scroll cue and the lid button occupy the bottom strip there.
+  // Every stage after it (craft, collection) stacks copy above the model, so
+  // once the hero has handed off the container drops clear of that copy — the
+  // lid was otherwise crossing the fact paragraph, and the shallower setting
+  // left a band of dead space under the model.
+  const drop=portrait*mix(.85,2.05,intro);
   // The camera's aim stays put across phases. Tying it to `drop` would lower
   // the frame by the same amount the model moves down, cancelling most of it.
   const frameDrop=portrait*.5;

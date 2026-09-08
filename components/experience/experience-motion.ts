@@ -36,6 +36,14 @@ export function buildTextReveals(scope: HTMLElement): Cleanup {
     for (const el of targets) {
       const split = new SplitText(el, { type: 'lines,words', linesClass: 'xp-split-line' });
       splits.push(split);
+      // Already at or past its reveal point — a rebuild after a resize, a
+      // webfont that resolved late, or a page restored mid-scroll. Show the
+      // words outright: a `once` trigger whose start is already behind the
+      // viewport can leave them parked in the hidden from-state forever.
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
+        gsap.set(split.words, { yPercent: 0, opacity: 1 });
+        continue;
+      }
       tweens.push(
         gsap.fromTo(
           split.words,
@@ -140,6 +148,13 @@ export function buildScrollMotion(scope: HTMLElement, live: boolean): Cleanup {
         stagger: 0.12, force3D: true, scrollTrigger: enter('.xp-stats'),
       });
     }
+
+    // The still/3D switch only means anything while the scene is on screen; past
+    // the closing section it just floats over the footer copy.
+    gsap.to('.xp-motion-toggle', {
+      autoAlpha: 0, ease: 'none',
+      scrollTrigger: { trigger: '#footer', start: 'top 95%', end: 'top 60%', scrub: true },
+    });
 
     // --- Manufacturing backdrop ------------------------------------------
     gsap.to('.xp-pattern', {
