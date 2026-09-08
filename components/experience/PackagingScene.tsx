@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Environment, Lightformer, useGLTF, useProgress, Sparkles } from '@react-three/drei';
+import { Environment, Lightformer, useGLTF, useProgress, Sparkles, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import type { SceneState } from './config';
 import { getModelPose } from './scene-pose';
@@ -49,6 +49,8 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
       }
     });return copy;
   },[gltf.scene,kind,compact]);
+  const finishes=useMemo(()=>[new THREE.Color('#a8aaa2'),new THREE.Color('#303b31')],[]);
+  const bodies=useMemo(()=>{const result:THREE.MeshStandardMaterial[]=[];if(kind===0)scene.traverse(object=>{if(object instanceof THREE.Mesh){const material=object.material as THREE.MeshPhysicalMaterial;if(!material.transmission&&!material.transparent)result.push(material);}});return result;},[scene,kind]);
   const lid=useMemo(()=>scene.getObjectByName('LidPivot'),[scene]);
   const lidY=useMemo(()=>lid?.position.y??0,[lid]);
   const group=useRef<THREE.Group>(null);
@@ -57,6 +59,7 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
     const g=group.current;if(!g)return;
     const pose=getModelPose(kind,state.current,clock.elapsedTime,size.width/size.height);
     g.visible=pose.visible;if(!g.visible)return;
+    bodies.forEach(material=>material.color.lerpColors(finishes[0],finishes[1],state.current.finish));
     g.scale.setScalar(pose.scale);g.position.set(...pose.position);g.rotation.set(...pose.rotation);
     // Snap-fit lids (takeaway, deli) lift straight off; only the carton hinges.
     if(lid){if(kind===2)lid.rotation.x=-.08;else lid.position.y=lidY+pose.lidLift;}
@@ -77,15 +80,17 @@ function Rig({state,onFailure}:Pick<Props,'state'|'onFailure'>) {
     if(light.current)light.current.position.set(2+s.pointerX*2,3+s.pointerY,3);
     if(process.env.NODE_ENV==='development'&&clock.elapsedTime-last.current>.2){
       last.current=clock.elapsedTime;
-      gl.domElement.dataset.rotation=pose.rotation[1].toFixed(3);gl.domElement.dataset.lid=pose.lidAngle.toFixed(3);gl.domElement.dataset.range=s.range.toFixed(3);
+      gl.domElement.dataset.rotation=pose.rotation[1].toFixed(3);gl.domElement.dataset.lid=pose.lidAngle.toFixed(3);gl.domElement.dataset.range=s.range.toFixed(3);gl.domElement.dataset.finale=s.finale.toFixed(3);gl.domElement.dataset.hero=s.hero.toFixed(3);
     }
   });
   return <pointLight ref={light} intensity={12} distance={15} color="#e8cf9e"/>;
 }
 export default function PackagingScene(props:Props) {
   const compact=useCompactViewport();
-  return <><Progress onProgress={props.onProgress}/><Canvas frameloop={props.renderActive?'always':'demand'} dpr={compact?[1,1.5]:[1,1.75]} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
+  const [quality,setQuality]=useState(1.5);
+  return <><Progress onProgress={props.onProgress}/><Canvas frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
     <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd"/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
+    <PerformanceMonitor flipflops={2} onDecline={()=>setQuality(1)} onIncline={()=>setQuality(1.5)} onFallback={()=>setQuality(1)}/>
     <Rig state={props.state} onFailure={props.onFailure}/>
     <Environment resolution={compact?64:128} frames={1}>
       <Lightformer form="rect" intensity={4} position={[0,5,-2]} rotation={[Math.PI/2,0,0]} scale={[8,8,1]}/>

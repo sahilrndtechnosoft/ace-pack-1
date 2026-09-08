@@ -34,7 +34,9 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
   // screen with the copy stacked above, and pulls the camera back to fit it.
   // 0 from 4:3 landscape upward, 1 on a phone held upright.
   const portrait=clamp((1.15-aspect)/.45);
-  const pull=mix(1,2,portrait);
+  // Give the model breathing room on narrow desktop windows as well as phones.
+  const landscapePull=mix(1.22,1,clamp((aspect-1.15)/.6));
+  const pull=mix(landscapePull,2,portrait);
   // How far the container sits below the camera's aim. The hero keeps it high,
   // because the scroll cue and the lid button occupy the bottom strip there.
   // Every stage after it (craft, collection) stacks copy above the model, so
@@ -50,10 +52,13 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
   // The carousel slides each product in from off-stage; a portrait stage is a
   // third the width, so the desktop travel throws them far out of frame.
   const travel=mix(4.4,2.8,portrait);
+  const stageX=heroX+(kind-selected)*travel*collection;
+  const stageY=mix(-.7,-.95,intro)+idle-drop;
+
   return {
     visible:s.active&&(visibility>.001||finish>.001),
     scale:mix(size*Math.max(.001,visibility),kind===1?12.3:10,finish),
-    position:[mix(heroX+(kind-selected)*travel*collection,(kind-1)*spread,finish),mix(mix(-.7,-.95,intro)+idle-drop,-1.02-portrait*.6,finish),mix(0,kind===1?.4:0,finish)] as [number,number,number],
+    position:[mix(stageX,(kind-1)*spread,finish),mix(stageY,-1.02-portrait*.6,finish),mix(0,kind===1?.4:0,finish)] as [number,number,number],
     rotation:[mix(.22,.06,intro),-.58+s.craft*Math.PI*2+(kind-selected)*.95*collection+s.drag*(1-collection)+Math.sin(time*.25)*.08*(1-intro),mix(-.12,0,intro)*(1-finish)] as [number,number,number],
     lidAngle:-mix((.34+smooth((s.craft-.2)/.48)*1.7+s.inspect*.9*(1-intro))*(1-collection)+.12*collection,.1,finish),
     lidLift:kind===0?open*.055*(1-finish):kind===1?.05*focus*(1-finish):0,

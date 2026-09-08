@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { initialSceneState } from '../components/experience/config';
 import { getModelPose } from '../components/experience/scene-pose';
 const initial=initialSceneState();
+for (const aspect of [.5, 1.6, 2.1]) {
+ for (let kind=0;kind<3;kind++) assert.equal(getModelPose(kind,initial,0,aspect).visible,kind===0,'The hero must show only the main container at every viewport ratio');
+}
 const before=getModelPose(0,{...initial,hero:1},0);
 const opened=getModelPose(0,{...initial,hero:1,craft:1},0);
 assert.ok(Math.abs(opened.rotation[1]-before.rotation[1]-Math.PI*2)<1e-8,'Craft scroll must rotate exactly 360 degrees');

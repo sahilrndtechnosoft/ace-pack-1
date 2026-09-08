@@ -3,3 +3,4 @@ node_modules
 Miniconda3-latest-Linux-x86_64.sh
 .next
 .next-production
+.next-preview
