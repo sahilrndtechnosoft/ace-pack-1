@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject }
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Lightformer, useGLTF, useProgress, Sparkles, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
-import type { SceneState } from './config';
+import { containerFinishes, type SceneState, defaultFinish } from './config';
 import { getModelPose } from './scene-pose';
 
 type Props = { state:MutableRefObject<SceneState>; loadRange:boolean; renderActive:boolean; onReady:()=>void; onProgress:(n:number)=>void; onFailure:()=>void };
@@ -25,7 +25,7 @@ function Progress({onProgress}:Pick<Props,'onProgress'>) {
   useEffect(()=>onProgress(progress),[progress,onProgress]);return null;
 }
 function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'];compact:boolean;onReady?:()=>void}) {
-  const id=['takeaway','deli','carton'][kind];
+  const id=['takeaway','shallow-bowl','round-tub'][kind];
   const gltf=useGLTF(`/models/acepack/${id}.glb`,'/draco/',true);
   const scene=useMemo(()=>{
     const copy=gltf.scene.clone(true);
@@ -43,13 +43,13 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
           if(compact){mat.transmission=0;mat.thickness=0;mat.ior=1.49;mat.transparent=true;mat.opacity=.44;mat.color.set('#dfe4e2');mat.roughness=.16;}
           return;
         }
-        // The source body is near-black charcoal, which disappears against the
-        // hero's dark green. Lift it to the tone the collection already uses.
-        if(kind===0){mat.color.set('#a8aaa2');mat.roughness=.38;mat.metalness=.08;}
+        // Seed the hero body with the default finish so the very first frame is
+        // already the right colour; the per-frame lerp below then owns it.
+        if(kind===0){mat.color.set(containerFinishes[defaultFinish].color);mat.roughness=.34;mat.metalness=.1;}
       }
     });return copy;
   },[gltf.scene,kind,compact]);
-  const finishes=useMemo(()=>[new THREE.Color('#a8aaa2'),new THREE.Color('#303b31')],[]);
+  const finishes=useMemo(()=>containerFinishes.map(finish=>new THREE.Color(finish.color)),[]);
   const bodies=useMemo(()=>{const result:THREE.MeshStandardMaterial[]=[];if(kind===0)scene.traverse(object=>{if(object instanceof THREE.Mesh){const material=object.material as THREE.MeshPhysicalMaterial;if(!material.transmission&&!material.transparent)result.push(material);}});return result;},[scene,kind]);
   const lid=useMemo(()=>scene.getObjectByName('LidPivot'),[scene]);
   const lidY=useMemo(()=>lid?.position.y??0,[lid]);
@@ -59,10 +59,12 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
     const g=group.current;if(!g)return;
     const pose=getModelPose(kind,state.current,clock.elapsedTime,size.width/size.height);
     g.visible=pose.visible;if(!g.visible)return;
-    bodies.forEach(material=>material.color.lerpColors(finishes[0],finishes[1],state.current.finish));
+    const finish=THREE.MathUtils.clamp(state.current.finish,0,finishes.length-1);
+    const from=Math.floor(finish),to=Math.min(from+1,finishes.length-1);
+    bodies.forEach(material=>material.color.lerpColors(finishes[from],finishes[to],finish-from));
     g.scale.setScalar(pose.scale);g.position.set(...pose.position);g.rotation.set(...pose.rotation);
-    // Snap-fit lids (takeaway, deli) lift straight off; only the carton hinges.
-    if(lid){if(kind===2)lid.rotation.x=-.08;else lid.position.y=lidY+pose.lidLift;}
+    // All three formats now have separate snap-fit lids.
+    if(lid)lid.position.y=lidY+pose.lidLift;
   });
   return <group ref={group}><primitive object={scene}/></group>;
 }

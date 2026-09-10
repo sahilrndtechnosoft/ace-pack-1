@@ -2,7 +2,8 @@ import type { SceneState } from './config';
 const clamp = (v:number, min=0,max=1) => Math.min(max,Math.max(min,v));
 const mix = (a:number,b:number,p:number) => a+(b-a)*p;
 const smooth = (p:number) => {const t=clamp(p);return t*t*(3-2*t);};
-const SIZE = [[17.8,15.1],[18,16],[15,12.7]] as const;
+// Meter-scale assets: meal box, shallow bowl, deep round tub.
+const SIZE = [[17.8,15.1],[18,17],[18,16]] as const;
 
 /**
  * Scroll is sampled directly. Only the small idle movement depends on time.
@@ -61,7 +62,7 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
     position:[mix(stageX,(kind-1)*spread,finish),mix(stageY,-1.02-portrait*.6,finish),mix(0,kind===1?.4:0,finish)] as [number,number,number],
     rotation:[mix(.22,.06,intro),-.58+s.craft*Math.PI*2+(kind-selected)*.95*collection+s.drag*(1-collection)+Math.sin(time*.25)*.08*(1-intro),mix(-.12,0,intro)*(1-finish)] as [number,number,number],
     lidAngle:-mix((.34+smooth((s.craft-.2)/.48)*1.7+s.inspect*.9*(1-intro))*(1-collection)+.12*collection,.1,finish),
-    lidLift:kind===0?open*.055*(1-finish):kind===1?.05*focus*(1-finish):0,
+    lidLift:kind===0?open*.055*(1-finish):.025*focus*(1-finish),
     camera:[s.pointerX*.045,mix(2.1,1.65,intro),(mix(8.1,7.3,intro)+finish*.9-Math.sin(selected*Math.PI/2)*.3)*pull] as [number,number,number],
     lookAt:.3-frameDrop,
   };

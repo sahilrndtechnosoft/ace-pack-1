@@ -16,7 +16,7 @@
     "units": "meters",
     "origin": "base center",
     "lidNode": "LidPivot",
-    "lidMotion": "translate +Y, 0\u20130.07m"
+    "lidMotion": "translate +Y, 0–0.07m"
   },
   {
     "file": "carton.glb",
@@ -26,5 +26,32 @@
     "origin": "base center",
     "lidNode": "LidPivot",
     "lidMotion": "rotate X, 0 to -1.9 radians"
+  },
+  {
+    "file": "hinge-cup.glb",
+    "bytes": 17992,
+    "triangles": 5440,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "rotate X, 0 to -1.9 radians"
+  },
+  {
+    "file": "shallow-bowl.glb",
+    "bytes": 34136,
+    "triangles": 16512,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "translate +Y, 0–0.07m"
+  },
+  {
+    "file": "round-tub.glb",
+    "bytes": 33524,
+    "triangles": 16512,
+    "units": "meters",
+    "origin": "base center",
+    "lidNode": "LidPivot",
+    "lidMotion": "translate +Y, 0–0.07m"
   }
 ]

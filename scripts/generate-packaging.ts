@@ -1,11 +1,11 @@
 /** Original, meter-scale packaging assets. Re-run with npm run models:generate. */
 import * as THREE from 'three';
 import { Document, NodeIO } from '@gltf-transform/core';
-import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
+import { KHRDracoMeshCompression, KHRMaterialsTransmission, KHRMaterialsIOR, KHRMaterialsVolume } from '@gltf-transform/extensions';
 import { draco } from '@gltf-transform/functions';
 import draco3d from 'draco3dgltf';
 import sharp from 'sharp';
-import { mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile, readFile } from 'node:fs/promises';
 
 const destination = 'public/models/acepack';
 const charcoal = new THREE.MeshStandardMaterial({ color: '#292e2c', roughness: .44, metalness: .03 });
@@ -14,6 +14,49 @@ const ivory = new THREE.MeshStandardMaterial({ color: '#e2ddcd', roughness: .58 
 const kraft = new THREE.MeshStandardMaterial({ color: '#c6a476', roughness: .94, name: 'Kraft paper' });
 const label = new THREE.MeshStandardMaterial({ color: '#eee8d9', roughness: .86, name: 'Brand label' });
 const gold = new THREE.MeshStandardMaterial({ color: '#b89858', roughness: .55, metalness: .15 });
+const blackPP = new THREE.MeshStandardMaterial({ name: 'Black polypropylene', color: '#101113', roughness: .34, metalness: 0 });
+const clearPP = new THREE.MeshPhysicalMaterial({ name: 'Clear snap lid', color: '#ffffff', roughness: .09, metalness: 0, transmission: .97, thickness: .0009, ior: 1.49 });
+
+// Closed cross-sections include the underside, outer wall, sealing bead and
+// inner cavity. Dimensions are design approximations from the reference photos.
+function roundContainer(shallow: boolean) {
+  const root = new THREE.Group(); root.name = shallow ? 'ShallowBowl' : 'RoundTub';
+  const radius = shallow ? .073 : .075;
+  const height = shallow ? .043 : .067;
+  const base = radius * (shallow ? .78 : .81);
+  const profile: [number, number][] = [
+    [0,.0015],[base-.004,.0015],[base-.003,0],[base-.001,0],
+    [base+.0005,.001],[base+.0015,.003],[base+.002,.006],
+    [radius-.004,height-.009],[radius-.003,height-.004],
+    [radius-.001,height-.003],[radius+.0015,height-.002],
+    [radius+.0025,height-.0005],[radius+.0025,height+.001],
+    [radius+.001,height+.002],[radius-.001,height+.002],
+    [radius-.0025,height+.001],[radius-.0035,height-.001],
+    [radius-.0045,height-.005],[base+.0005,.007],
+    [base-.001,.0045],[base-.004,.0035],[0,.0035],
+  ];
+  const body = new THREE.Mesh(new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(...p)),192),blackPP);
+  body.name='Body'; root.add(body);
+  const lid = new THREE.Group(); lid.name='LidPivot'; lid.position.y=height+.001;
+  const capHeight=shallow?.017:.004;
+  const topRadius=radius*(shallow?.73:.91);
+  // Raised centre, recessed stacking ring and a rolled locking skirt. The
+  // inner return closes the thin plastic sheet instead of making a solid disc.
+  const capProfile:[number,number][]=[
+    [0,capHeight-.0009],[topRadius-.004,capHeight-.0009],
+    [topRadius-.002,capHeight-.0012],[topRadius,capHeight-.0025],
+    [radius-.006,.002],[radius-.003,.001],
+    [radius+.001,.001],[radius+.0025,0],[radius+.003,-.002],
+    [radius+.004,-.0025],[radius+.005,-.0015],[radius+.005,.0005],
+    [radius+.004,.002],[radius+.002,.0025],[radius-.002,.0025],
+    [radius-.004,.0035],[topRadius+.001,capHeight-.0005],
+    [topRadius,capHeight+.001],[topRadius-.0015,capHeight+.0018],
+    [topRadius-.003,capHeight+.0018],[topRadius-.004,capHeight+.0003],
+    [topRadius-.006,capHeight],[0,capHeight],
+  ];
+  const cap=new THREE.Mesh(new THREE.LatheGeometry(capProfile.map(p=>new THREE.Vector2(...p)),192),clearPP);
+  cap.name='Lid';lid.add(cap);root.add(lid);return root;
+}
 
 // Clockwise perimeter, seen from above; consistent ring indices preserve smooth normals.
 function perimeter(w: number, d: number, radius: number, steps = 24) {
@@ -88,8 +131,27 @@ function carton() {
   const brand = new THREE.Mesh(new THREE.PlaneGeometry(.095,.061),label);brand.rotation.x=-Math.PI/2;brand.position.set(0,.0012,.065);brand.name='BrandingSurface';lid.add(brand);
   root.add(lid);root.add(box(.002,.049,.002,gold,'Fold seam',.09,.029,.061));return root;
 }
+// One-piece hinged sauce container — the Hinge Cups line. Small tapered round
+// cup with a continuous rim flange and a lid that swings on the rear hinge, so
+// it reads at a glance as a different object from the meal box and the round tub.
+function hingeCup() {
+  const root=new THREE.Group();root.name='HingeCup';
+  const bodyProfile:[number,number][]=[[.022,0],[.023,.002],[.0245,.006],[.026,.013],[.028,.021],[.030,.028],[.031,.031],[.0325,.032],[.034,.034],[.033,.035],[.031,.035],[.0298,.033],[.0288,.028],[.0268,.020],[.0248,.012],[.0228,.005],[.021,.003],[0,.003]];
+  const body=new THREE.Mesh(new THREE.LatheGeometry(bodyProfile.map(([x,y])=>new THREE.Vector2(x,y)),96),ivory);
+  body.name='Body';root.add(body);
+  const lid=new THREE.Group();lid.name='LidPivot';lid.position.set(0,.035,-.034);
+  const capProfile:[number,number][]=[[0,.005],[.014,.005],[.022,.0048],[.027,.0042],[.0305,.003],[.0328,.0012],[.034,0],[.0335,-.0016],[.0312,-.0024],[.0285,-.0018],[0,-.0018]];
+  const cap=new THREE.Mesh(new THREE.LatheGeometry(capProfile.map(([x,y])=>new THREE.Vector2(x,y)),96),charcoal);
+  cap.name='Lid';cap.position.z=.034;lid.add(cap);
+  root.add(box(.020,.0026,.006,charcoal,'Hinge',0,.0336,-.0346));
+  root.add(box(.014,.0022,.005,rim,'Snap tab',0,.0332,.0352));
+  root.add(lid);return root;
+}
 async function exportAsset(root: THREE.Group, slug: string) {
   const doc=new Document();const buffer=doc.createBuffer();const scene=doc.createScene(root.name);
+  const transmission=doc.createExtension(KHRMaterialsTransmission);
+  const ior=doc.createExtension(KHRMaterialsIOR);
+  const volume=doc.createExtension(KHRMaterialsVolume);
   const materials=new Map<THREE.Material, ReturnType<Document['createMaterial']>>();
   async function add(object: THREE.Object3D, parent: ReturnType<Document['createNode']> | ReturnType<Document['createScene']>) {
     const node=doc.createNode(object.name).setTranslation(object.position.toArray()).setRotation(object.quaternion.toArray()).setScale(object.scale.toArray());parent.addChild(node);
@@ -97,6 +159,11 @@ async function exportAsset(root: THREE.Group, slug: string) {
       const geometry=object.geometry as THREE.BufferGeometry; const mat=object.material as THREE.MeshStandardMaterial;
       if(!materials.has(mat)) {
         const m=doc.createMaterial(mat.name||mat.color.getHexString()).setBaseColorFactor([mat.color.r,mat.color.g,mat.color.b,1]).setRoughnessFactor(mat.roughness).setMetallicFactor(mat.metalness);
+        if(mat instanceof THREE.MeshPhysicalMaterial && mat.transmission>0) {
+          m.setExtension('KHR_materials_transmission',transmission.createTransmission().setTransmissionFactor(mat.transmission));
+          m.setExtension('KHR_materials_ior',ior.createIOR().setIOR(mat.ior));
+          m.setExtension('KHR_materials_volume',volume.createVolume().setThicknessFactor(mat.thickness));
+        }
         if(mat===kraft) {
           const pixels=Buffer.alloc(128*128*3); let seed=7;
           for(let i=0;i<pixels.length;i+=3) { seed=(seed*16807)%2147483647;const c=222+(seed%29);pixels[i]=c;pixels[i+1]=c;pixels[i+2]=c; }
@@ -119,19 +186,22 @@ async function exportAsset(root: THREE.Group, slug: string) {
     for(const child of object.children)await add(child,node);
   }
   await add(root,scene);
-  const io=new NodeIO().registerExtensions([KHRDracoMeshCompression]).registerDependencies({'draco3d.encoder':await draco3d.createEncoderModule()});
+  const io=new NodeIO().registerExtensions([KHRDracoMeshCompression,KHRMaterialsTransmission,KHRMaterialsIOR,KHRMaterialsVolume]).registerDependencies({'draco3d.encoder':await draco3d.createEncoderModule()});
   await doc.transform(draco({method:'edgebreaker',encodeSpeed:5,decodeSpeed:5}));
   const data=await io.writeBinary(doc); await writeFile(`${destination}/${slug}.glb`,data);
   let triangles=0;root.traverse(o=>{if(o instanceof THREE.Mesh)triangles+=(o.geometry.index?.count??o.geometry.attributes.position.count)/3;});
-  return {file:`${slug}.glb`,bytes:data.length,triangles,units:'meters',origin:'base center',lidNode:'LidPivot',lidMotion:slug==='deli'?'translate +Y, 0–0.07m':'rotate X, 0 to -1.9 radians'};
+  return {file:`${slug}.glb`,bytes:data.length,triangles,units:'meters',origin:'base center',lidNode:'LidPivot',lidMotion:['deli','shallow-bowl','round-tub'].includes(slug)?'translate +Y, 0–0.07m':'rotate X, 0 to -1.9 radians'};
 }
 // Offline z-buffer render of the exact authored mesh. Mobile never needs Three.js.
 async function preview(root: THREE.Group, slug: string) {
   const W=1300,H=1000;
   root.rotation.y=-.45;
-  if(slug==='clamshell')root.getObjectByName('LidPivot')!.rotation.x=-.32;
+  if(slug==='clamshell'||slug==='hinge-cup')root.getObjectByName('LidPivot')!.rotation.x=-.32;
   const camera=new THREE.PerspectiveCamera(32,W/H,.01,10);
-  camera.position.set(.28,.25,.4);camera.lookAt(0,.04,0);camera.updateMatrixWorld();root.updateMatrixWorld(true);
+  // The hinge cup is roughly a third the size of the other containers; without
+  // pulling the camera in with it, it renders as a speck in the middle of frame.
+  const zoom=slug==='hinge-cup'?.35:1, aim=slug==='hinge-cup'?.017:.04;
+  camera.position.set(.28*zoom,.25*zoom,.4*zoom);camera.lookAt(0,aim,0);camera.updateMatrixWorld();root.updateMatrixWorld(true);
   const depth=new Float32Array(W*H).fill(Infinity);const pixels=Buffer.alloc(W*H*4);
   const light=new THREE.Vector3(-.4,1,.7).normalize();
   const normalMatrix=new THREE.Matrix3();
@@ -182,8 +252,20 @@ async function preview(root: THREE.Group, slug: string) {
 async function main(){
   await mkdir(destination,{recursive:true});await mkdir('public/draco',{recursive:true});
   for(const file of ['draco_wasm_wrapper.js','draco_decoder.wasm','draco_decoder.js'])await copyFile(`node_modules/three/examples/jsm/libs/draco/gltf/${file}`,`public/draco/${file}`);
-  const manifest=[];
-  for(const [slug,root] of [['clamshell',clamshell()],['deli',deli()],['carton',carton()]] as const){manifest.push(await exportAsset(root,slug));await preview(root,slug);}
+  // Pass slugs to rebuild only those, e.g. `npm run models:generate -- hinge-cup`.
+  // Without an argument every asset is regenerated.
+  const only=process.argv.slice(2);
+  const builders=[['clamshell',clamshell],['deli',deli],['carton',carton],['hinge-cup',hingeCup],['shallow-bowl',()=>roundContainer(true)],['round-tub',()=>roundContainer(false)]] as const;
+  const selected=only.length?builders.filter(([slug])=>only.includes(slug)):builders;
+  if(!selected.length){console.error(`No such model. Known: ${builders.map(([s])=>s).join(', ')}`);process.exit(1);}
+  let manifest:Awaited<ReturnType<typeof exportAsset>>[]=[];
+  try{manifest=JSON.parse(await readFile(`${destination}/manifest.json`,'utf8'));}catch{}
+  for(const [slug,build] of selected){
+    const root=build();
+    const entry=await exportAsset(root,slug);await preview(root,slug);
+    const at=manifest.findIndex(m=>m.file===entry.file);
+    at>=0?manifest[at]=entry:manifest.push(entry);
+  }
   await writeFile(`${destination}/manifest.json`,JSON.stringify(manifest,null,2)+'\n');console.log(manifest);
 }
 main().catch(e=>{console.error(e);process.exit(1);});

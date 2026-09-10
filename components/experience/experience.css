@@ -90,3 +90,17 @@
 @media(max-width:1100px){.xp-chapters{display:none}}
 @media(pointer:coarse),(prefers-reduced-motion:reduce){.xp-model-interaction{cursor:grab}}
 .xp-hero-material{pointer-events:auto}.xp-finish-label{font-size:10px;color:#899680;margin-right:10px}.xp-finishes{display:flex;gap:10px}.xp-finishes>button{display:flex;gap:8px;align-items:center;padding:8px 11px;border:1px solid #c4b28430;border-radius:25px;color:#96a28b;font-size:10px;transition:color .25s,border-color .25s,background .25s}.xp-finishes>button[aria-pressed=true]{color:#e3d6b6;border-color:#c4b28488;background:#d1b5740a}.xp-finishes i{width:14px;height:14px;border-radius:50%;border:1px solid #dbd4bc55;background:#deded0}.xp-finishes i[data-finish=Graphite]{background:#303b31}.xp-finishes>button:hover{border-color:#d4bd88}.xp-hero-material .xp-finish-label{letter-spacing:.02em}
+/* The production stat is now a 7-character number ("1,500,000+") rather than a
+   two-digit one, which no longer fits a three-up grid on a narrow screen. Stack
+   the stats on phones, and pull the figure size down through the tablet range
+   so the columns stop overflowing their section. */
+@media(max-width:1100px){
+ .xp-stats>div>span{font-size:clamp(34px,5.4vw,58px)}
+}
+@media(max-width:767px){
+ .xp-stats{grid-template-columns:1fr;gap:0}
+ .xp-stats>div{padding:16px 0;border-right:0;border-bottom:1px solid #ffffff29}
+ .xp-stats>div:last-child{border-bottom:0}
+ .xp-stats p{margin-top:6px}
+}
+.xp-finishes i[data-finish=Black]{background:#0b0c0e}.xp-finishes{flex-wrap:wrap}.xp-hero-material{flex-wrap:wrap}
