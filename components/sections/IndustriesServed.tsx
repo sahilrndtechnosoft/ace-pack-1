@@ -6,42 +6,26 @@ import { motion } from 'framer-motion';
 import { Container } from '../ui/Container';
 import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
-import { UtensilsCrossed, ChefHat, PartyPopper, Hotel, ShoppingCart, Ship, ArrowUpRight } from 'lucide-react';
+import { UtensilsCrossed, ChefHat, PartyPopper, Hotel, ShoppingCart, Ship, Milk, Candy, Snowflake, Croissant, Pill, Package, ArrowUpRight, type LucideIcon } from 'lucide-react';
+import { defaultIndustries, type Industry, type IndustryIcon } from '@/lib/data/industries';
 
-const industries = [
-  {
-    icon: UtensilsCrossed,
-    title: 'QSR & Delivery Chains',
-    description: 'Leak-proof, stackable containers built for high-volume takeaway and last-mile delivery.'
-  },
-  {
-    icon: ChefHat,
-    title: 'Cloud Kitchens',
-    description: 'Freezer-to-microwave safe packaging that holds up through multi-brand, multi-order kitchens.'
-  },
-  {
-    icon: PartyPopper,
-    title: 'Catering & Events',
-    description: 'Bulk-ready portion containers and platters for large-scale event and catering service.'
-  },
-  {
-    icon: Hotel,
-    title: 'Hotels & Restaurants',
-    description: 'Premium finish IML-branded packaging for in-house dining, banquets, and room service.'
-  },
-  {
-    icon: ShoppingCart,
-    title: 'Retail & Supermarkets',
-    description: 'Shelf-ready packaging for fresh produce, ready-to-eat meals, and bakery counters.'
-  },
-  {
-    icon: Ship,
-    title: 'Export Partners',
-    description: 'Container lines built to international food-safety standards for global export orders.'
-  }
-];
+// Data names its icons so it can cross the server -> client boundary; this is
+// the one place those names become components.
+const iconMap: Record<IndustryIcon, LucideIcon> = { UtensilsCrossed, ChefHat, PartyPopper, Hotel, ShoppingCart, Ship, Milk, Candy, Snowflake, Croissant, Pill, Package };
 
-export const IndustriesServed: React.FC = () => {
+interface IndustriesServedProps {
+  industries?: Industry[];
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+}
+
+export const IndustriesServed: React.FC<IndustriesServedProps> = ({
+  industries = defaultIndustries,
+  eyebrow = 'Who We Serve',
+  heading = 'Industries We Serve',
+  intro = 'From cloud kitchens to global export partners, AcePack packaging is engineered for the exact demands of your industry.',
+}) => {
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[280px] sm:w-[560px] h-[280px] sm:h-[560px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
@@ -51,21 +35,21 @@ export const IndustriesServed: React.FC = () => {
 
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#b89858] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#b89858]/10 border border-[#b89858]/20">
-            Who We Serve
+            {eyebrow}
           </span>
           <SplitHeading>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1A1D20] tracking-tight leading-tight">
-              Industries We Serve
+              {heading}
             </h2>
           </SplitHeading>
           <p className="text-xs sm:text-sm text-gray-600 mt-4 leading-relaxed">
-            From cloud kitchens to global export partners, AcePack packaging is engineered for the exact demands of your industry.
+            {intro}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {industries.map((item, idx) => {
-            const IconComponent = item.icon;
+            const IconComponent = iconMap[item.icon];
             return (
               <Reveal key={idx} type="fade-up" delay={idx * 0.07}>
                 <motion.div
@@ -74,7 +58,7 @@ export const IndustriesServed: React.FC = () => {
                   className="relative h-full"
                 >
                 <Link
-                  href="/categories"
+                  href={item.href ?? '/categories'}
                   className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
                 >
                   <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#b89858]/[0.08] transition-colors duration-300 select-none">

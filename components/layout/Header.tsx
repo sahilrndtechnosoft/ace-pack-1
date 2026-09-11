@@ -172,6 +172,10 @@ export const Header: React.FC = () => {
             Capabilities
           </Link>
 
+          <Link href="/industries" className="hover:text-[#b89858] transition-colors">
+            Industries
+          </Link>
+
           <Link href="/gallery" className="hover:text-[#b89858] transition-colors">
             Gallery
           </Link>
@@ -322,6 +326,27 @@ export const Header: React.FC = () => {
               className="py-2 hover:text-[#b89858]"
             >
               Capabilities
+            </Link>
+            <Link
+              href="/industries"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 hover:text-[#b89858]"
+            >
+              Industries
+            </Link>
+            <Link
+              href="/quality"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 hover:text-[#b89858]"
+            >
+              Quality &amp; Certifications
+            </Link>
+            <Link
+              href="/downloads"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 hover:text-[#b89858]"
+            >
+              Downloads
             </Link>
             <Link
               href="/gallery"

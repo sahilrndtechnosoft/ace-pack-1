@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
-import { ShieldCheck, Flame, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
+import { ShieldCheck, Flame, ArrowRight, CheckCircle2, Lock, FileDown } from 'lucide-react';
 
 interface SpecificProductPageProps {
   params: Promise<{
@@ -158,6 +158,20 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
                   </div>
                 </div>
 
+                {product.features && product.features.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#1A1D20] mb-3">Key Features & Benefits</h3>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {product.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 bg-[#FAF8F4] border border-[#E6DBC6] rounded-2xl px-3.5 py-3 text-xs text-gray-700">
+                          <CheckCircle2 className="w-4 h-4 text-[#b89858] shrink-0 mt-0.5" />
+                          <span className="font-semibold">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {product.applications && (
                   <div className="mb-6">
                     <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#1A1D20] mb-2">Ideal Applications</h3>
@@ -170,6 +184,13 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
                     </div>
                   </div>
                 )}
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link href={`/downloads#${category.slug}`} className="inline-flex items-center gap-2 text-xs font-bold text-[#1A1D20] bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#b89858] transition-colors">
+                    <FileDown className="w-4 h-4 text-[#b89858]" /> Datasheet &amp; brochure
+                  </Link>
+                  <span className="text-[11px] text-gray-500">Specifications, CAD drawings and certifications for the {category.name} line.</span>
+                </div>
               </div>
 
               <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border-2 border-[#b89858]/70 shadow-md">

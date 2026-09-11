@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
-import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck, Lock, MessageCircle, ExternalLink } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
 export const metadata: Metadata = {
@@ -60,6 +60,24 @@ export default function ContactPage() {
                   <span className="text-[10px] font-bold text-[#b89858] uppercase tracking-wider block mb-1">Official Inquiry Email</span>
                   <h3 className="text-base font-bold text-[#1A1D20] mb-1">info@acepack.co.in</h3>
                   <p className="text-xs text-gray-600">Guaranteed response within 4 business hours.</p>
+                </div>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#25D366]/15 text-[#128C7E] flex items-center justify-center shrink-0 border border-[#25D366]/30">
+                  <MessageCircle className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-[#b89858] uppercase tracking-wider block mb-1">WhatsApp Sales</span>
+                  <h3 className="text-base font-bold text-[#1A1D20] mb-2">+91 99250 15906</h3>
+                  <a
+                    href="https://wa.me/919925015906?text=Hello%20AcePack%2C%20I%27d%20like%20a%20wholesale%20quote%20for%20food%20containers."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#1ebe5b] rounded-xl px-4 py-2.5 transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" /> Chat on WhatsApp
+                  </a>
                 </div>
               </div>
 
@@ -125,6 +143,35 @@ export default function ContactPage() {
               </form>
             </div>
 
+          </div>
+
+          <div className="mt-12 md:mt-16">
+            <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
+              <div>
+                <span className="text-[10px] font-bold text-[#b89858] uppercase tracking-wider block mb-1">Find Us</span>
+                <h2 className="text-2xl font-extrabold text-[#1A1D20]">Daman Plant, Government Industrial Estate</h2>
+              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Plot+No.+42%2F1%2C+Government+Industrial+Estate%2C+Masat%2C+Daman+396210"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#b89858] transition-colors"
+              >
+                Open in Google Maps <ExternalLink className="w-3.5 h-3.5 text-[#b89858]" />
+              </a>
+            </div>
+            <div className="rounded-3xl overflow-hidden border border-[#E6DBC6] shadow-sm bg-white">
+              <iframe
+                title="AcePack Daman plant location"
+                src="https://www.google.com/maps?q=Plot+No.+42%2F1%2C+Government+Industrial+Estate%2C+Masat%2C+Daman+396210&output=embed"
+                width="100%"
+                height="420"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+                className="block w-full h-[320px] sm:h-[420px]"
+              />
+            </div>
           </div>
 
         </div>

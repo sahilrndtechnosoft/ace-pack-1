@@ -5,16 +5,18 @@ import { Cpu, ShieldCheck, CheckCircle2, RefreshCw, Box } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Manufacturing Process | AcePack Precision Moulding',
-  description: 'Learn about AcePack\'s 5-step precision injection moulding workflow from CAD toolroom engineering to robotic packaging.',
+  description: 'AcePack\'s 7-step precision injection moulding workflow, from virgin PP 05 procurement through robotic moulding, quality testing and dispatch.',
 };
 
 export default function ProcessPage() {
   const steps = [
-    { num: '01', title: 'Polymer Resin Drying & Plastifying', description: 'Virgin PP 05 resins are dehumidified and melted under digital temperature control.' },
-    { num: '02', title: 'High-Speed Multi-Cavity Injection', description: 'Injection under 180T–450T hydraulic clamp force with 2.8s cycle speed.' },
-    { num: '03', title: 'In-Mould Labelling (IML) Fusion', description: 'Robotic label insertion fuses vibrant full-color artwork directly into container walls.' },
-    { num: '04', title: 'Automated Robotic Pick & Place', description: '3-axis robotic arms remove finished containers onto cleanroom conveyors without human touch.' },
-    { num: '05', title: 'Quality Testing & Export Packaging', description: '100% leak testing, rim dimension verification, and automatic carton stacking.' }
+    { num: '01', title: 'Raw Material Procurement', description: '100% prime virgin polypropylene (PP 05) resin, food-contact certified to US FDA 21 CFR 177.1520. No regrind, no recycled content enters the line.' },
+    { num: '02', title: 'Polymer Resin Drying & Plastifying', description: 'Virgin PP 05 resins are dehumidified and melted under digital temperature control.' },
+    { num: '03', title: 'High-Speed Multi-Cavity Injection', description: 'Injection under 180T–450T hydraulic clamp force with 2.8s cycle speed.' },
+    { num: '04', title: 'In-Mould Labelling (IML) Fusion', description: 'Robotic label insertion fuses vibrant full-color artwork directly into container walls.' },
+    { num: '05', title: 'Automated Robotic Pick & Place', description: '3-axis robotic arms remove finished containers onto cleanroom conveyors without human touch.' },
+    { num: '06', title: 'Quality Testing & Export Packaging', description: '100% leak testing, rim dimension verification, and automatic carton stacking.' },
+    { num: '07', title: 'Dispatch', description: 'Palletised cartons leave the Daman plant by road across India and by sea to export partners in Australia, the UAE, Europe, Canada and the Middle East.' }
   ];
 
   return (
