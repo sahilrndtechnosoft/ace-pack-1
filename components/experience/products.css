@@ -1,0 +1,190 @@
+/* Products catalog. Same tokens and type as the other experience pages. The
+   working part is a sticky filter rail over a grid that reflows with GSAP Flip
+   when a line or sort is chosen — every card is rendered once and shown, hidden
+   or reordered in place, so filtering never re-renders or refetches anything. */
+
+.xpr{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:#b89858;--xp-line:#d9d5cc;--xp-header:84px;--xpr-dark:#202822;--xpr-tile:#15191b;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:Arial,Helvetica,sans-serif;overflow-x:clip}
+.xpr *{box-sizing:border-box}
+.xpr a{text-decoration:none;color:inherit}
+.xpr button,.xpr a{-webkit-tap-highlight-color:transparent}
+.xpr :focus-visible{outline:2px solid var(--xp-gold);outline-offset:4px}
+.xpr section{scroll-margin-top:calc(var(--xp-header) + 64px)}
+.xpr em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400}
+.xpr h1,.xpr h2,.xpr h3{font-weight:400;margin:0}
+.xpr-wrap{width:min(1280px,90%);margin:0 auto}
+.xpr .xp-eyebrow{display:block}
+
+/* ---------- Hero ---------- */
+.xpr-hero{background:var(--xpr-dark);color:#f5f1e8;position:relative;overflow:hidden;padding:88px 0 64px}
+.xpr-hero:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 30%,#c7ab6422,transparent 46%),linear-gradient(90deg,#ffffff03 1px,transparent 1px);background-size:auto,12.5% 100%;pointer-events:none}
+.xpr-hero-grid{position:relative;display:grid;grid-template-columns:1.3fr .7fr;gap:56px;align-items:end}
+.xpr-hero .xp-eyebrow{color:#c8b27d;margin-bottom:24px}
+.xpr-hero h1{font-size:clamp(50px,6.4vw,116px);line-height:.92;letter-spacing:-.06em;margin-bottom:26px}
+.xpr-hero h1 em{color:#ceb783;letter-spacing:-.05em}
+.xpr-title-mask{display:block;overflow:hidden;padding-bottom:.16em;margin-bottom:-.14em}
+.xpr-title-mask>span{display:block}
+.xpr-hero-lead{font-size:15px;line-height:1.8;color:#c2c8bb;max-width:540px;margin:0}
+.xpr-glance{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.xpr-glance div{padding:20px 20px 18px;border:1px solid #d3b97a26;border-radius:16px;background:#ffffff05}
+.xpr-glance b{display:block;font-size:clamp(28px,2.4vw,40px);letter-spacing:-.05em;font-weight:400;line-height:1;color:#f5f1e8;margin-bottom:8px;white-space:nowrap}
+.xpr-glance span{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#cbb783}
+
+/* ---------- Filter rail (sticky) ---------- */
+.xpr-bar{position:sticky;top:var(--xp-header);z-index:30;background:color-mix(in srgb,var(--xp-ivory) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--xp-line)}
+.xpr-bar-inner{display:flex;align-items:center;gap:20px;padding:14px 0}
+.xpr-filters{position:relative;display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:3px}
+.xpr-filters::-webkit-scrollbar{display:none}
+.xpr-filter{position:relative;z-index:1;flex-shrink:0;font:inherit;font-size:11px;letter-spacing:.11em;text-transform:uppercase;line-height:1;padding:11px 14px;border-radius:999px;border:0;background:transparent;color:#727669;cursor:pointer;transition:color .3s;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.xpr-filter small{font-size:10px;letter-spacing:0;color:#a39c8a;transition:color .3s}
+.xpr-filter:hover{color:var(--xp-ink)}
+.xpr-filter[aria-pressed=true]{color:var(--xp-ivory)}
+.xpr-filter[aria-pressed=true] small{color:#d6bc83}
+/* One indicator glides between pills instead of each pill repainting. */
+.xpr-indicator{position:absolute;top:3px;left:0;height:calc(100% - 6px);width:0;border-radius:999px;background:var(--xp-ink);pointer-events:none;z-index:0}
+.xpr-tools{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.xpr-count{font-size:11px;letter-spacing:.06em;color:#888b7d;white-space:nowrap}
+.xpr-count b{font-weight:400;color:var(--xp-ink)}
+.xpr-sort{font:inherit;font-size:11px;letter-spacing:.11em;text-transform:uppercase;line-height:1;padding:10px 14px;border-radius:999px;border:1px solid var(--xp-line);background:#fff;color:var(--xp-ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:border-color .3s}
+.xpr-sort:hover{border-color:var(--xp-ink)}
+.xpr-sort svg{transition:transform .35s ease}
+.xpr-sort[data-sort=capacity] svg{transform:rotate(180deg)}
+
+/* ---------- Grid ---------- */
+.xpr-catalog{padding:56px 0 110px}
+.xpr-catalog-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+.xpr-catalog-head .xp-eyebrow{color:#968152}
+.xpr-catalog-head h2{font-size:clamp(30px,3.4vw,52px);letter-spacing:-.045em;line-height:1.02;margin:12px 0 0}
+.xpr-catalog-head h2 em{color:#a58a51}
+.xpr-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:40px 28px}
+.xpr-card{content-visibility:auto;contain-intrinsic-width:0;contain-intrinsic-height:auto 480px;min-width:0;border-top:1px solid var(--xp-ink);padding-top:18px;display:flex;flex-direction:column}
+.xpr-card.is-hidden{display:none}
+.xpr-card-media{position:relative;display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--xpr-tile);isolation:isolate}
+.xpr-card-media img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .7s cubic-bezier(.22,1,.36,1);will-change:transform}
+.xpr-card-media:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 45%,#1a1d20c4 100%);pointer-events:none}
+.xpr-card:hover .xpr-card-media img{transform:scale(1.08)}
+.xpr-card-cap{position:absolute;left:18px;bottom:14px;z-index:1;color:#f5f1e8;font-size:clamp(30px,2.6vw,40px);line-height:1;letter-spacing:-.05em;white-space:nowrap}
+.xpr-card-cap small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#cbb783;margin-bottom:6px}
+.xpr-card-line{position:absolute;top:12px;left:14px;z-index:1;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#f5f1e8;background:#1a1d20b3;backdrop-filter:blur(6px);padding:8px 11px;border-radius:999px}
+.xpr-card-num{position:absolute;top:8px;right:14px;z-index:1;font-size:44px;line-height:1;letter-spacing:-.06em;color:#ffffff1c;pointer-events:none}
+.xpr-card-body{padding:18px 2px 0;display:flex;flex-direction:column;flex:1}
+.xpr-card h3{font-size:clamp(20px,1.55vw,24px);letter-spacing:-.03em;line-height:1.15;margin:0 0 12px}
+.xpr-card h3 a{transition:color .3s}
+.xpr-card:hover h3 a{color:#8a6f3d}
+.xpr-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:0 0 18px;padding:14px 0 0;border-top:1px solid var(--xp-line)}
+.xpr-specs div{min-width:0}
+.xpr-specs dt{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#968152;margin-bottom:4px}
+.xpr-specs dd{margin:0;font-size:12.5px;color:#434b3e;line-height:1.5}
+.xpr-card-actions{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.xpr-card-actions a{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:500}
+.xpr-card-actions .xpr-details{border-bottom:1px solid var(--xp-ink);padding-bottom:5px}
+.xpr-card-actions .xpr-inquire{width:40px;height:40px;border-radius:50%;border:1px solid var(--xp-line);display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s,transform .3s}
+.xpr-card-actions .xpr-inquire:hover{background:var(--xp-ink);color:var(--xp-ivory);border-color:var(--xp-ink);transform:rotate(45deg)}
+.xpr-empty{display:none;padding:64px 0;text-align:center;color:#727669;font-size:14px}
+.xpr-empty.is-on{display:block}
+
+/* ---------- Closing ---------- */
+.xpr-closing{padding:120px 0 140px;text-align:center;background:#f7f5ee;border-top:1px solid var(--xp-line)}
+.xpr-closing .xp-eyebrow{color:#968152}
+.xpr-closing h2{font-size:clamp(46px,6.4vw,108px);line-height:.95;letter-spacing:-.065em;margin:22px auto 40px;max-width:14ch}
+.xpr-closing h2 em{color:#a58a51}
+.xpr-closing-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.xpr-ghost{display:inline-flex;align-items:center;justify-content:space-between;gap:35px;border:1px solid var(--xp-ink);border-radius:2px;padding:17px 22px;font-size:12px;font-weight:500;min-height:51px;transition:background .2s,color .2s}
+.xpr-ghost:hover{background:var(--xp-ink);color:var(--xp-ivory)}
+
+/* ---------- Tablet ---------- */
+@media(max-width:1100px){
+ .xpr-hero-grid{grid-template-columns:1fr;gap:36px;align-items:start}
+ .xpr-glance{grid-template-columns:repeat(4,1fr)}
+ .xpr-grid{grid-template-columns:repeat(2,1fr);gap:36px 22px}
+}
+
+/* ---------- Phone ---------- */
+@media(max-width:767px){
+ .xpr{--xp-header:62px}
+ .xpr-hero{padding:56px 0 44px}
+ .xpr-hero h1{font-size:clamp(46px,12.5vw,72px)}
+ .xpr-hero-lead{font-size:13.5px}
+ .xpr-glance{grid-template-columns:1fr 1fr;gap:10px}
+ .xpr-glance div{padding:14px}
+ .xpr-glance b{font-size:24px}
+ /* Single row: the pill rail scrolls under a compact count + sort icon. Opaque
+    so the section heading never shows through while the bar is stuck. */
+ .xpr-bar{background:var(--xp-ivory)}
+ .xpr-bar-inner{gap:10px;padding:10px 0}
+ .xpr-filters{flex:1;min-width:0;margin:0 0 0 -5vw;padding:3px 0 3px 5vw;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+ .xpr-filter{padding:10px 12px;font-size:10px}
+ .xpr-tools{gap:8px}
+ .xpr-count{font-size:10px}
+ .xpr-sort{padding:9px 10px}
+ .xpr-sort-label{display:none}
+ .xpr-catalog{padding:40px 0 80px}
+ .xpr-catalog-head{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:22px}
+ /* Two-up compact cards: a catalog is scanned, not read. */
+ .xpr-grid{grid-template-columns:repeat(2,1fr);gap:26px 14px}
+ .xpr-card{padding-top:12px;contain-intrinsic-height:auto 380px}
+ .xpr-card-cap{left:12px;bottom:10px;font-size:22px}
+ .xpr-card-cap small{font-size:9px;margin-bottom:4px}
+ .xpr-card-line{top:8px;left:8px;font-size:9px;padding:6px 8px;max-width:calc(100% - 64px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .xpr-card-num{font-size:30px;top:6px;right:10px}
+ .xpr-card-body{padding-top:12px}
+ .xpr-card h3{font-size:15px;margin-bottom:8px}
+ .xpr-specs{grid-template-columns:1fr;gap:6px;margin-bottom:12px;padding-top:10px}
+ .xpr-specs div:nth-child(n+3){display:none}
+ .xpr-specs dd{font-size:11.5px}
+ .xpr-card-actions a{font-size:11px}
+ .xpr-card-actions .xpr-inquire{width:34px;height:34px}
+ .xpr-closing{padding:80px 0 90px}
+ .xpr-closing-actions{flex-direction:column;align-items:stretch}
+ .xpr-closing-actions>*{justify-content:center}
+}
+@media(max-width:360px){
+ .xpr-grid{grid-template-columns:1fr}
+ .xpr-card-cap{font-size:28px}
+ .xpr-card h3{font-size:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .xpr *,.xpr *:before,.xpr *:after{transition:none!important;animation:none!important}
+ .xpr-title-mask>span{transform:none!important}
+}
+
+/* ---------- Lines carousel (inside the hero) ---------- */
+/* Coverflow of the eleven lines. Cards are positioned from a single progress
+   value in LinesCarousel.tsx; this only styles them. */
+.xpl{position:relative;margin-top:64px;outline:none;user-select:none;-webkit-user-select:none}
+.xpl:focus-visible .xpl-stage{outline:2px solid var(--xp-gold);outline-offset:8px;border-radius:24px}
+.xpl-stage{position:relative;height:420px;perspective:1400px;transform-style:preserve-3d;cursor:grab;touch-action:pan-y}
+.xpl-stage:active{cursor:grabbing}
+.xpl-proxy{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.xpl-card{position:absolute;left:50%;top:50%;width:300px;height:380px;border-radius:18px;overflow:hidden;background:#15191b;border:1px solid #d3b97a26;padding:0;cursor:pointer;will-change:transform,opacity;text-align:left;color:#f5f1e8;font:inherit;transform-origin:center;box-shadow:0 30px 60px -30px #000000aa;transition:border-color .4s}
+.xpl-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.03);transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.xpl-card.is-centre img{transform:scale(1.08)}
+.xpl-card:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#1a1d2000 32%,#1a1d20e6 100%)}
+.xpl-card-num{position:absolute;top:14px;left:16px;z-index:1;font-size:12px;letter-spacing:.13em;color:#cbb783}
+.xpl-card-body{position:absolute;left:18px;right:18px;bottom:18px;z-index:1;display:block}
+.xpl-card-name{display:block;font-size:26px;letter-spacing:-.04em;line-height:1.05;margin-bottom:8px}
+.xpl-card-sub{display:block;font-size:11px;letter-spacing:.04em;color:#c2c8bb;line-height:1.5}
+.xpl-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#d6bc83;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.xpl-card.is-centre{border-color:#cbb78399}
+.xpl-card.is-centre .xpl-card-cta{opacity:1;transform:none}
+.xpl-controls{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:22px}
+.xpl-progress{flex:1;height:1px;background:#ffffff1f}
+.xpl-progress>span{display:block;height:100%;background:var(--xp-gold);transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
+.xpl-nav{display:flex;align-items:center;gap:10px}
+.xpl-count{font-size:12px;letter-spacing:.06em;color:#c3c9bc;margin-right:8px;white-space:nowrap}
+.xpl-count b{font-weight:400;color:#f5f1e8;font-size:20px;letter-spacing:-.04em;margin-right:4px}
+.xpl-nav button{width:44px;height:44px;border-radius:50%;border:1px solid #d7cba72b;background:transparent;color:#f5f1e8;display:grid;place-items:center;cursor:pointer;transition:background .3s,border-color .3s}
+.xpl-nav button:hover{background:#ffffff12;border-color:#cbb78380}
+@media(max-width:767px){
+ .xpl{margin-top:40px}
+ .xpl-stage{height:310px;perspective:1000px}
+ .xpl-card{width:220px;height:280px;border-radius:14px}
+ .xpl-card-name{font-size:20px}
+ .xpl-card-sub{display:none}
+ .xpl-card-cta{margin-top:10px;font-size:10px}
+ .xpl-controls{margin-top:14px}
+ .xpl-nav button{width:40px;height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+ .xpl-card img,.xpl-card-cta,.xpl-progress>span{transition:none}
+}
