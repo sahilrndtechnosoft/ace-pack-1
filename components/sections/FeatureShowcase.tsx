@@ -45,7 +45,7 @@ export const FeatureShowcase: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col justify-between text-left">
 
               <div>
-                <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-3">
+                <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
                   WHY CHOOSE ACEPACK PACKAGING
                 </span>
 
@@ -69,13 +69,13 @@ export const FeatureShowcase: React.FC = () => {
                       <motion.div
                         whileHover={{ y: -6, scale: 1.03 }}
                         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                        className="bg-[#050505] p-5 rounded-2xl border-2 border-[#b89858]/40 hover:border-[#b89858] shadow-md hover:shadow-2xl hover:shadow-[#b89858]/25 transition-all duration-300 group text-left flex flex-col justify-between"
+                        className="bg-[#050505] p-5 rounded-2xl border-2 border-[#cfa144]/40 hover:border-[#cfa144] shadow-md hover:shadow-2xl hover:shadow-[#cfa144]/25 transition-all duration-300 group text-left flex flex-col justify-between"
                       >
                         <div>
-                          <div className="w-10 h-10 rounded-xl bg-[#b89858]/20 text-[#b89858] flex items-center justify-center mb-3 group-hover:bg-[#b89858] group-hover:text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                          <div className="w-10 h-10 rounded-xl bg-[#cfa144]/20 text-[#a8812f] flex items-center justify-center mb-3 group-hover:bg-[#cfa144] group-hover:text-[#1A1D20] group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                             <IconComponent className="w-5 h-5" />
                           </div>
-                          <h3 className="text-md font-bold text-white mb-1.5 group-hover:text-[#b89858] transition-colors">
+                          <h3 className="text-md font-bold text-white mb-1.5 group-hover:text-[#a8812f] transition-colors">
                             {item.title}
                           </h3>
                           <p className="text-sm text-gray-400 leading-relaxed">
@@ -98,7 +98,7 @@ export const FeatureShowcase: React.FC = () => {
               {/* Main Featured Container Photo with Gold Border Glow */}
               <div
                 id="feature-model-target"
-                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#b89858]/60 hover:border-[#b89858] bg-gradient-to-br from-[#FFFDF9] via-[#F5F0E6] to-[#E9E1D1] flex-1 w-full group"
+                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#cfa144]/60 hover:border-[#cfa144] bg-gradient-to-br from-[#FFFDF9] via-[#F5F0E6] to-[#E9E1D1] flex-1 w-full group"
               >
                 {/* TEMP: hidden while testing the 3D container landing here.
                     The wrapping div must stay — ModelBanner measures it by id. */}
@@ -114,7 +114,7 @@ export const FeatureShowcase: React.FC = () => {
 
                 {/* Dark Gradient Overlay with Title */}
                 <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.78)_0%,rgba(26,29,32,0.38)_18%,rgba(26,29,32,0)_34%)] p-8 flex flex-col justify-end text-left">
-                  <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-1">
                     ROBOTIC INJECTION MOULDING
                   </span>
                   <p className="text-lg font-extrabold text-white leading-snug">

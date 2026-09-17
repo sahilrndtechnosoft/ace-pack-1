@@ -17,7 +17,7 @@ export const ProcessSection: React.FC = () => {
       <Container>
         
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+          <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
             PRODUCTION WORKFLOW
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1D20] tracking-tight">
@@ -31,7 +31,7 @@ export const ProcessSection: React.FC = () => {
         <div className="max-w-4xl mx-auto space-y-6">
           {steps.map((step, idx) => (
             <div key={idx} className="bg-[#FAF8F4] p-6 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-6">
-              <span className="text-3xl font-extrabold text-[#b89858] shrink-0">{step.num}</span>
+              <span className="text-3xl font-extrabold text-[#a8812f] shrink-0">{step.num}</span>
               <div>
                 <h3 className="text-lg font-bold text-[#1A1D20] mb-2">{step.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{step.description}</p>

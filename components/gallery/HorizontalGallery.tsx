@@ -129,7 +129,7 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
             whole travel and the pinned screen reads as one composition. */}
         <div className="container-custom w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-12 lg:items-end mb-6 sm:mb-8">
           <div className="lg:col-span-7">
-            <span className="text-[11px] sm:text-xs font-extrabold text-[#b89858] uppercase tracking-[0.16em] block mb-2 sm:mb-3">
+            <span className="text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-[0.16em] block mb-2 sm:mb-3">
               {kicker}
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-[1.15] text-[#1A1D20]">
@@ -148,7 +148,7 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
             left, position on the right. */}
         <div className="container-custom w-full flex items-center justify-between gap-6 mb-4 sm:mb-5">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-gray-500">
-            <MoveRight className="w-3.5 h-3.5 text-[#b89858]" />
+            <MoveRight className="w-3.5 h-3.5 text-[#a8812f]" />
             Keep scrolling
           </span>
 
@@ -219,7 +219,7 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
           <div className="h-[3px] w-full rounded-full bg-[#E6DBC6] overflow-hidden">
             <div
               ref={thumbRef}
-              className="h-full w-full rounded-full bg-[#b89858] origin-left will-change-transform"
+              className="h-full w-full rounded-full bg-[#cfa144] origin-left will-change-transform"
               style={{ transform: 'scaleX(0.03)' }}
             />
           </div>

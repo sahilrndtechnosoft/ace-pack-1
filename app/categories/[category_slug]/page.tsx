@@ -57,13 +57,13 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E6DBC6]">
             <div>
               <h2 className="text-2xl font-bold text-[#1A1D20] flex items-center gap-2">
-                <Box className="w-6 h-6 text-[#b89858]" />
+                <Box className="w-6 h-6 text-[#a8812f]" />
                 <span>{category.name} Available Models ({category.products.length})</span>
               </h2>
               <p className="text-xs text-gray-500 mt-1">Certified 100% Virgin Food-Grade Polypropylene PP 05.</p>
             </div>
 
-            <Link href="/categories" className="text-xs font-bold text-[#b89858] hover:underline flex items-center gap-1">
+            <Link href="/categories" className="text-xs font-bold text-[#a8812f] hover:underline flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> All Categories
             </Link>
           </div>
@@ -72,7 +72,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
             {category.products.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-3xl border-2 border-[#b89858]/70 hover:border-[#b89858] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl border-2 border-[#cfa144]/70 hover:border-[#cfa144] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   <div className="relative h-60 bg-[#050505] p-6 flex items-center justify-center border-b border-[#E6DBC6]">
@@ -81,20 +81,20 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                       alt={item.name}
                       className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl"
                     />
-                    <span className="absolute top-3 right-3 bg-[#b89858] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                    <span className="absolute top-3 right-3 bg-[#cfa144] text-[#1A1D20] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
                       {item.capacity}
                     </span>
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-[#1A1D20] mb-4 group-hover:text-[#b89858] transition-colors">
+                    <h3 className="text-xl font-bold text-[#1A1D20] mb-4 group-hover:text-[#a8812f] transition-colors">
                       {item.name}
                     </h3>
 
                     <div className="grid grid-cols-2 gap-3 text-xs bg-[#FAF8F4] p-3.5 rounded-2xl border border-[#E6DBC6] mb-4">
                       <div>
                         <span className="text-[10px] text-gray-500 uppercase font-semibold block">Size/Capacity</span>
-                        <span className="font-bold text-[#b89858]">{item.capacity}</span>
+                        <span className="font-bold text-[#a8812f]">{item.capacity}</span>
                       </div>
                       <div>
                         <span className="text-[10px] text-gray-500 uppercase font-semibold block">Quality</span>
@@ -122,7 +122,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
 
                   <Link
                     href={`/categories/${category.slug}/${item.product_slug}`}
-                    className="flex-1 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold py-3 rounded-xl text-center uppercase tracking-wider transition-colors flex items-center justify-center gap-1 shadow-sm"
+                    className="flex-1 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold py-3 rounded-xl text-center uppercase tracking-wider transition-colors flex items-center justify-center gap-1 shadow-sm"
                   >
                     <span>Read More</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -134,7 +134,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
 
           {category.faqs && category.faqs.length > 0 && (
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm mb-16">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#b89858] uppercase tracking-wider mb-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#a8812f] uppercase tracking-wider mb-2">
                 <HelpCircle className="w-4 h-4" /> FAQ & Guidance
               </div>
               <h3 className="text-2xl font-extrabold text-[#1A1D20] mb-6">Frequently Asked Questions about {category.name}</h3>
@@ -157,13 +157,13 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                 <Link
                   key={other.id}
                   href={`/categories/${other.slug}`}
-                  className="bg-white border border-[#E6DBC6] hover:border-[#b89858] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group"
+                  className="bg-white border border-[#E6DBC6] hover:border-[#cfa144] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group"
                 >
-                  <div className="w-16 h-16 rounded-xl bg-[#050505] p-2 flex items-center justify-center shrink-0 border border-[#b89858]/30">
+                  <div className="w-16 h-16 rounded-xl bg-[#050505] p-2 flex items-center justify-center shrink-0 border border-[#cfa144]/30">
                     <img src={other.heroImage} alt={other.name} className="max-h-full max-w-full object-contain" />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-[#1A1D20] group-hover:text-[#b89858] transition-colors">{other.name}</h4>
+                    <h4 className="text-base font-bold text-[#1A1D20] group-hover:text-[#a8812f] transition-colors">{other.name}</h4>
                     <p className="text-xs text-gray-500 mt-0.5">{other.products.length} Models available</p>
                   </div>
                 </Link>

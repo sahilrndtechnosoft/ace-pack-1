@@ -18,18 +18,18 @@ export const MDDesk: React.FC = () => {
       <div className="container-custom relative z-10">
         <Reveal type="fade-up">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-6">
+            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-6">
               From the MD&apos;s Desk
             </span>
 
-            <Quote className="w-10 h-10 text-[#b89858]/50 mx-auto mb-6" />
+            <Quote className="w-10 h-10 text-[#a8812f]/50 mx-auto mb-6" />
 
             <p className="text-lg sm:text-xl text-gray-200 leading-relaxed font-medium mb-8">
               &quot;{md.message}&quot;
             </p>
 
             <div className="flex flex-col items-center gap-3">
-              <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-br from-[#b89858] to-[#e0c081]">
+              <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-br from-[#cfa144] to-[#e0c081]">
                 <div className="w-full h-full rounded-full bg-[#1A1D20] text-[#e8cf9e] flex items-center justify-center font-extrabold text-lg">
                   MD
                 </div>

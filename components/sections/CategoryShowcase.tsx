@@ -19,7 +19,7 @@ export const CategoryShowcase: React.FC = () => {
         <Reveal type="fade-right">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div className="max-w-2xl text-left">
-              <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+              <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
                 OUR PRODUCT CATEGORIES
               </span>
               <SplitHeading>
@@ -31,7 +31,7 @@ export const CategoryShowcase: React.FC = () => {
 
             <Link
               href="/categories"
-              className="inline-flex items-center gap-2 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-6 py-3 rounded-full uppercase tracking-wider shadow hover:shadow-lg hover:shadow-[#b89858]/30 hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 self-start md:self-auto"
+              className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-6 py-3 rounded-full uppercase tracking-wider shadow hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 self-start md:self-auto"
             >
               <span>View All {productCategories.length} Categories</span>
               <ArrowRight className="w-4 h-4" />
@@ -49,7 +49,7 @@ export const CategoryShowcase: React.FC = () => {
             renderItem={(category) => (
               <Link
                 href={`/categories/${category.slug}`}
-                className="bg-white rounded-2xl overflow-hidden border border-[#E6DBC6] hover:border-[#b89858] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#b89858]/20 flex flex-col justify-between group text-left min-h-[460px] h-full"
+                className="bg-white rounded-2xl overflow-hidden border border-[#E6DBC6] hover:border-[#cfa144] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#cfa144]/20 flex flex-col justify-between group text-left min-h-[460px] h-full"
               >
                 <div>
                   <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
@@ -61,13 +61,13 @@ export const CategoryShowcase: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="absolute top-4 left-4 bg-black/80 text-[#b89858] text-[10px] font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow">
+                    <span className="absolute top-4 left-4 bg-black/80 text-[#a8812f] text-[10px] font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow">
                       {category.subtitleName}
                     </span>
                   </div>
 
                   <div className="p-7">
-                    <h3 className="text-2xl font-extrabold text-[#1A1D20] mb-2 group-hover:text-[#b89858] transition-colors leading-snug">
+                    <h3 className="text-2xl font-extrabold text-[#1A1D20] mb-2 group-hover:text-[#a8812f] transition-colors leading-snug">
                       {category.name}
                     </h3>
 
@@ -77,7 +77,7 @@ export const CategoryShowcase: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="px-6 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between text-sm font-bold text-[#b89858]">
+                <div className="px-6 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between text-sm font-bold text-[#a8812f]">
                   <span>{category.products.length} Models Available</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>

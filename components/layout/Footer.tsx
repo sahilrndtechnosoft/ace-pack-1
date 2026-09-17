@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
               <Link href="/" className="inline-block mb-6">
-                <div className="bg-white px-4 py-2 rounded-2xl border border-[#b89858]/40 shadow-md inline-flex items-center">
+                <div className="bg-white px-4 py-2 rounded-2xl border border-[#cfa144]/40 shadow-md inline-flex items-center">
                   <img
                     src="/images/ace-logo.webp"
                     alt="AcePack Container Solutions"
@@ -35,21 +35,21 @@ export const Footer: React.FC = () => {
               </p>
 
               <div className="inline-flex items-center gap-2 bg-[#161b1f] px-3.5 py-1.5 rounded-full border border-white/10 text-xs text-[#D6BC83]">
-                <ShieldCheck className="w-4 h-4 text-[#b89858]" /> ISO 9001:2015 & FDA Food-Grade Certified
+                <ShieldCheck className="w-4 h-4 text-[#cfa144]" /> ISO 9001:2015 & FDA Food-Grade Certified
               </div>
             </div>
 
             <div className="mt-8 flex flex-col gap-2 text-xs text-gray-300">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#b89858] shrink-0" />
+                <MapPin className="w-4 h-4 text-[#cfa144] shrink-0" />
                 <span>Unit 1: Survey No. 111, Dori Kadaiya, Daman-396210</span>
               </div>
               <div className="flex items-center gap-2">
-                <PhoneCall className="w-4 h-4 text-[#b89858] shrink-0" />
+                <PhoneCall className="w-4 h-4 text-[#cfa144] shrink-0" />
                 <span>+91 99250 15906 / +91 99251 55799</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#b89858] shrink-0" />
+                <Mail className="w-4 h-4 text-[#cfa144] shrink-0" />
                 <span>sales@acepack.co.in</span>
               </div>
             </div>
@@ -80,7 +80,7 @@ export const Footer: React.FC = () => {
               {productCategories.map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/categories/${cat.slug}`} className="hover:text-[#D6BC83] transition-colors flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#b89858]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#cfa144]" />
                     <span>{cat.name}</span>
                   </Link>
                 </li>
@@ -99,11 +99,11 @@ export const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Enter your business email"
-                className="bg-[#161b1f] border border-white/10 rounded-full px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b89858]"
+                className="bg-[#161b1f] border border-white/10 rounded-full px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#cfa144]"
               />
               <button
                 type="submit"
-                className="bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-semibold py-2.5 px-4 rounded-full transition-colors flex items-center justify-center gap-2"
+                className="bg-[#cfa144] hover:bg-[#a8812f] text-white text-xs font-semibold py-2.5 px-4 rounded-full transition-colors flex items-center justify-center gap-2"
               >
                 <span>Subscribe Catalog</span>
                 <ArrowRight className="w-3.5 h-3.5" />

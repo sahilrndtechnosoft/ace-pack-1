@@ -39,7 +39,7 @@ export const FaqSection: React.FC = () => {
           <Reveal type="fade-right" duration={0.8}>
           <div className="lg:col-span-6 flex flex-col text-left">
 
-            <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-3">
+            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
               HELP & FAQ
             </span>
 
@@ -56,18 +56,18 @@ export const FaqSection: React.FC = () => {
                   <div
                     key={idx}
                     className={`bg-[#050505] rounded-2xl border overflow-hidden transition-colors duration-300 ${
-                      isOpen ? 'border-[#b89858]/70' : 'border-white/15'
+                      isOpen ? 'border-[#cfa144]/70' : 'border-white/15'
                     }`}
                   >
                     <button
                       onClick={() => setOpenIndex(isOpen ? null : idx)}
-                      className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-white hover:text-[#b89858] transition-colors"
+                      className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-white hover:text-[#a8812f] transition-colors"
                     >
                       <span className="flex items-center gap-3">
-                        <HelpCircle className="w-5 h-5 text-[#b89858] shrink-0" />
+                        <HelpCircle className="w-5 h-5 text-[#a8812f] shrink-0" />
                         <span>{faq.question}</span>
                       </span>
-                      <ChevronDown className={`w-5 h-5 text-[#b89858] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-[#a8812f] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence initial={false}>
@@ -94,11 +94,11 @@ export const FaqSection: React.FC = () => {
             {/* Direct Phone & Email Bar */}
             <div className="mt-8 p-5 bg-[#050505] rounded-2xl border border-white/15 flex flex-wrap items-center justify-between gap-4 text-xs">
               <div className="flex items-center gap-2 text-gray-300">
-                <PhoneCall className="w-4 h-4 text-[#b89858]" />
+                <PhoneCall className="w-4 h-4 text-[#a8812f]" />
                 <span>Hotline: <strong>+91 98000 00000</strong></span>
               </div>
               <div className="flex items-center gap-2 text-gray-300">
-                <Mail className="w-4 h-4 text-[#b89858]" />
+                <Mail className="w-4 h-4 text-[#a8812f]" />
                 <span>Email: <strong>info@acepack.co.in</strong></span>
               </div>
             </div>
@@ -108,9 +108,9 @@ export const FaqSection: React.FC = () => {
 
           {/* Right Column: Contact Inquiry Form (lg:col-span-6) */}
           <Reveal type="fade-left" duration={0.8}>
-          <div className="lg:col-span-6 bg-[#050505] p-8 sm:p-10 rounded-3xl border-2 border-[#b89858]/60 shadow-2xl text-left">
+          <div className="lg:col-span-6 bg-[#050505] p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-2xl text-left">
 
-            <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
               GET IN TOUCH WITH ACEPACK
             </span>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Send Factory Inquiry</h3>
@@ -120,28 +120,28 @@ export const FaqSection: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Full Name *</label>
-                  <input type="text" placeholder="John Doe" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#b89858] transition-colors duration-200" />
+                  <input type="text" placeholder="John Doe" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Company / Brand *</label>
-                  <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#b89858] transition-colors duration-200" />
+                  <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Email Address *</label>
-                  <input type="email" placeholder="john@company.com" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#b89858] transition-colors duration-200" />
+                  <input type="email" placeholder="john@company.com" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Phone / WhatsApp *</label>
-                  <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#b89858] transition-colors duration-200" />
+                  <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
                 </div>
               </div>
 
               <div>
                 <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Container Category of Interest</label>
-                <select className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-gray-300 focus:outline-none focus:border-[#b89858] transition-colors duration-200">
+                <select className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-gray-300 focus:outline-none focus:border-[#cfa144] transition-colors duration-200">
                   <option value="">Select a container line...</option>
                   {productCategories.map((cat) => (
                     <option key={cat.id} value={cat.slug} className="bg-[#111518] text-white">{cat.name}</option>
@@ -151,16 +151,16 @@ export const FaqSection: React.FC = () => {
 
               <div>
                 <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Detailed Message / Order Quantity *</label>
-                <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#111518] border border-white/20 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-[#b89858] transition-colors duration-200"></textarea>
+                <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#111518] border border-white/20 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200"></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-[#b89858] hover:bg-[#9e8042] text-white font-bold py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b89858]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+              <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                 <span>Submit Wholesale Quotation Request</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                <Lock className="w-3 h-3 text-[#b89858]" /> Your information is 100% confidential & protected
+                <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
               </p>
             </form>
           </div>

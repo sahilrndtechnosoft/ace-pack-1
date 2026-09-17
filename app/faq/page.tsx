@@ -50,7 +50,7 @@ export default function FaqPage() {
             {faqs.map((faq, idx) => (
               <div key={idx} className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
                 <h3 className="text-lg font-bold text-[#1A1D20] mb-3 flex items-start gap-3">
-                  <HelpCircle className="w-5 h-5 text-[#b89858] shrink-0 mt-0.5" />
+                  <HelpCircle className="w-5 h-5 text-[#a8812f] shrink-0 mt-0.5" />
                   <span>{faq.question}</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed pl-8">
@@ -60,13 +60,13 @@ export default function FaqPage() {
             ))}
           </div>
 
-          <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#b89858]/60 shadow-md text-center max-w-2xl mx-auto">
+          <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-md text-center max-w-2xl mx-auto">
             <h3 className="text-xl font-bold text-[#1A1D20] mb-2">Have Additional Questions?</h3>
             <p className="text-xs text-gray-500 mb-6">Our sales & packaging engineers are standing by to assist your food brand.</p>
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-8 py-3.5 rounded-full uppercase tracking-wider shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-8 py-3.5 rounded-full uppercase tracking-wider shadow-sm transition-colors"
             >
               <span>Contact Our Technical Team</span>
               <ArrowRight className="w-4 h-4" />

@@ -28,7 +28,7 @@ export const ManufacturingPillars: React.FC = () => {
       <Container>
         
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+          <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
             MANUFACTURING EXCELLENCE
           </span>
           <h2 className="text-3xl font-extrabold text-[#1A1D20] tracking-tight">
@@ -42,9 +42,9 @@ export const ManufacturingPillars: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="bg-[#FAF8F4] p-8 rounded-3xl border border-[#E6DBC6] hover:border-[#b89858] transition-all hover:shadow-lg text-center flex flex-col items-center"
+                className="bg-[#FAF8F4] p-8 rounded-3xl border border-[#E6DBC6] hover:border-[#cfa144] transition-all hover:shadow-lg text-center flex flex-col items-center"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center mb-6 border border-[#b89858]/30">
+                <div className="w-14 h-14 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6 border border-[#cfa144]/30">
                   <Icon className="w-7 h-7" />
                 </div>
                 <h3 className="text-lg font-bold text-[#1A1D20] mb-3">{p.title}</h3>

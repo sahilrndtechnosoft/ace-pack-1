@@ -21,7 +21,7 @@ export const GallerySection: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <div>
-            <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
               VISUAL GALLERY
             </span>
             <h2 className="text-3xl font-extrabold text-[#1A1D20] tracking-tight">
@@ -31,7 +31,7 @@ export const GallerySection: React.FC = () => {
 
           <Link
             href="/gallery"
-            className="text-xs font-bold text-[#b89858] hover:underline uppercase tracking-wider flex items-center gap-1.5"
+            className="text-xs font-bold text-[#a8812f] hover:underline uppercase tracking-wider flex items-center gap-1.5"
           >
             <span>View Full Gallery</span>
             <ArrowRight className="w-4 h-4" />
@@ -42,7 +42,7 @@ export const GallerySection: React.FC = () => {
           {galleryItems.map((item, idx) => (
             <div
               key={idx}
-              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#b89858]/60 hover:border-[#b89858] shadow-sm hover:shadow-xl transition-all duration-300 relative group h-64 flex items-center justify-center p-4"
+              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#cfa144]/60 hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 relative group h-64 flex items-center justify-center p-4"
             >
               <img
                 src={item.image}

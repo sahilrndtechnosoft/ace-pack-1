@@ -282,7 +282,7 @@ export function FlipCarousel<T>({
             type="button"
             onClick={() => go(false)}
             aria-label="Previous"
-            className="w-11 h-11 rounded-full border border-[#E6DBC6] hover:border-[#b89858] bg-white hover:bg-[#b89858] text-[#1A1D20] hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
+            className="w-11 h-11 rounded-full border border-[#E6DBC6] hover:border-[#cfa144] bg-white hover:bg-[#cfa144] text-[#1A1D20] hover:text-[#1A1D20] flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -290,7 +290,7 @@ export function FlipCarousel<T>({
             type="button"
             onClick={() => go(true)}
             aria-label="Next"
-            className="w-11 h-11 rounded-full border border-[#E6DBC6] hover:border-[#b89858] bg-white hover:bg-[#b89858] text-[#1A1D20] hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
+            className="w-11 h-11 rounded-full border border-[#E6DBC6] hover:border-[#cfa144] bg-white hover:bg-[#cfa144] text-[#1A1D20] hover:text-[#1A1D20] flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

@@ -16,7 +16,7 @@ export const HeroWaves: React.FC<{ className?: string }> = ({ className = '' }) 
       >
         <path
           d="M0 150C150 80 350 220 600 150C850 80 1050 220 1200 150"
-          stroke="#b89858"
+          stroke="#cfa144"
           strokeWidth="1.5"
         />
       </svg>
@@ -28,7 +28,7 @@ export const HeroWaves: React.FC<{ className?: string }> = ({ className = '' }) 
       >
         <path
           d="M0 120C200 200 400 40 650 120C900 200 1050 60 1200 120"
-          stroke="#b89858"
+          stroke="#cfa144"
           strokeWidth="1.5"
         />
       </svg>

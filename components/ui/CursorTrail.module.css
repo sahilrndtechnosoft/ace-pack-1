@@ -4,7 +4,7 @@
   top: -13px;
   width: 26px;
   height: 26px;
-  border: 1px solid #b8985899;
+  border: 1px solid #cfa14499;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -29,8 +29,8 @@
   width: 40px;
   height: 40px;
   margin: -7px 0 0 -7px;
-  background: #b8985812;
-  border-color: #b8985870;
+  background: #cfa14412;
+  border-color: #cfa14470;
 }
 
 .cursor[data-kind='drag'] {
@@ -42,7 +42,7 @@
 }
 
 .cursor[data-kind='drag'] > span { opacity: 1; }
-.cursor[data-pressed='true'] { border-color: #e2c784; background: #b8985824; }
+.cursor[data-pressed='true'] { border-color: #e2c784; background: #cfa14424; }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
   .cursor { display: none; }

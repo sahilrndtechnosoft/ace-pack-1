@@ -3,14 +3,14 @@
    when a line or sort is chosen — every card is rendered once and shown, hidden
    or reordered in place, so filtering never re-renders or refetches anything. */
 
-.xpr{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:#b89858;--xp-line:#d9d5cc;--xp-header:84px;--xpr-dark:#202822;--xpr-tile:#15191b;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:Arial,Helvetica,sans-serif;overflow-x:clip}
+.xpr{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:#d9d5cc;--xp-header:84px;--xpr-dark:#202822;--xpr-tile:#15191b;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
 .xpr *{box-sizing:border-box}
 .xpr a{text-decoration:none;color:inherit}
 .xpr button,.xpr a{-webkit-tap-highlight-color:transparent}
 .xpr :focus-visible{outline:2px solid var(--xp-gold);outline-offset:4px}
 .xpr section{scroll-margin-top:calc(var(--xp-header) + 64px)}
-.xpr em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400}
-.xpr h1,.xpr h2,.xpr h3{font-weight:400;margin:0}
+.xpr em{font-family:var(--font-serif),Georgia,serif;font-style:italic;font-weight:400}
+.xpr h1,.xpr h2,.xpr h3{font-weight:500;margin:0}
 .xpr-wrap{width:min(1280px,90%);margin:0 auto}
 .xpr .xp-eyebrow{display:block}
 
@@ -23,7 +23,7 @@
 .xpr-hero h1 em{color:#ceb783;letter-spacing:-.05em}
 .xpr-title-mask{display:block;overflow:hidden;padding-bottom:.16em;margin-bottom:-.14em}
 .xpr-title-mask>span{display:block}
-.xpr-hero-lead{font-size:15px;line-height:1.8;color:#c2c8bb;max-width:540px;margin:0}
+.xpr-hero-lead{font-size:16px;line-height:1.8;color:#c2c8bb;max-width:540px;margin:0}
 .xpr-glance{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .xpr-glance div{padding:20px 20px 18px;border:1px solid #d3b97a26;border-radius:16px;background:#ffffff05}
 .xpr-glance b{display:block;font-size:clamp(28px,2.4vw,40px);letter-spacing:-.05em;font-weight:400;line-height:1;color:#f5f1e8;margin-bottom:8px;white-space:nowrap}
@@ -34,7 +34,7 @@
 .xpr-bar-inner{display:flex;align-items:center;gap:20px;padding:14px 0}
 .xpr-filters{position:relative;display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:3px}
 .xpr-filters::-webkit-scrollbar{display:none}
-.xpr-filter{position:relative;z-index:1;flex-shrink:0;font:inherit;font-size:11px;letter-spacing:.11em;text-transform:uppercase;line-height:1;padding:11px 14px;border-radius:999px;border:0;background:transparent;color:#727669;cursor:pointer;transition:color .3s;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.xpr-filter{position:relative;z-index:1;flex-shrink:0;font:inherit;font-size:11px;letter-spacing:.11em;text-transform:uppercase;line-height:1;padding:11px 14px;border-radius:999px;border:0;background:transparent;color:#5b6058;cursor:pointer;transition:color .3s;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
 .xpr-filter small{font-size:10px;letter-spacing:0;color:#a39c8a;transition:color .3s}
 .xpr-filter:hover{color:var(--xp-ink)}
 .xpr-filter[aria-pressed=true]{color:var(--xp-ivory)}
@@ -79,7 +79,7 @@
 .xpr-card-actions .xpr-details{border-bottom:1px solid var(--xp-ink);padding-bottom:5px}
 .xpr-card-actions .xpr-inquire{width:40px;height:40px;border-radius:50%;border:1px solid var(--xp-line);display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s,transform .3s}
 .xpr-card-actions .xpr-inquire:hover{background:var(--xp-ink);color:var(--xp-ivory);border-color:var(--xp-ink);transform:rotate(45deg)}
-.xpr-empty{display:none;padding:64px 0;text-align:center;color:#727669;font-size:14px}
+.xpr-empty{display:none;padding:64px 0;text-align:center;color:#5b6058;font-size:15px}
 .xpr-empty.is-on{display:block}
 
 /* ---------- Closing ---------- */
@@ -103,7 +103,7 @@
  .xpr{--xp-header:62px}
  .xpr-hero{padding:56px 0 44px}
  .xpr-hero h1{font-size:clamp(46px,12.5vw,72px)}
- .xpr-hero-lead{font-size:13.5px}
+ .xpr-hero-lead{font-size:14.5px}
  .xpr-glance{grid-template-columns:1fr 1fr;gap:10px}
  .xpr-glance div{padding:14px}
  .xpr-glance b{font-size:24px}
@@ -127,7 +127,7 @@
  .xpr-card-line{top:8px;left:8px;font-size:9px;padding:6px 8px;max-width:calc(100% - 64px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .xpr-card-num{font-size:30px;top:6px;right:10px}
  .xpr-card-body{padding-top:12px}
- .xpr-card h3{font-size:15px;margin-bottom:8px}
+ .xpr-card h3{font-size:16px;margin-bottom:8px}
  .xpr-specs{grid-template-columns:1fr;gap:6px;margin-bottom:12px;padding-top:10px}
  .xpr-specs div:nth-child(n+3){display:none}
  .xpr-specs dd{font-size:11.5px}

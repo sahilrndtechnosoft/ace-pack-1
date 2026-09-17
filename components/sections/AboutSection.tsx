@@ -57,7 +57,7 @@ export const AboutSection: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   /> */}
                   <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.82)_0%,rgba(26,29,32,0.45)_26%,rgba(26,29,32,0)_46%)] p-4 flex flex-col justify-end">
-                    <span className="text-[10px] font-extrabold text-[#b89858] uppercase tracking-wider block mb-0.5">
+                    <span className="text-[10px] font-extrabold text-[#a8812f] uppercase tracking-wider block mb-0.5">
                       ISO 9001:2015 TESTED
                     </span>
                     <p className="text-xs sm:text-sm font-bold text-white leading-tight">
@@ -75,7 +75,7 @@ export const AboutSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col justify-between text-left">
 
             <div>
-              <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-3">
+              <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
                 ABOUT ACEPACK PACKAGING
               </span>
 
@@ -94,10 +94,10 @@ export const AboutSection: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-8">
 
               <Reveal type="fade-up" delay={0.1}>
-                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#b89858] transition-colors">
-                  <div className="flex items-center gap-2 text-[#b89858] mb-1">
+                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#cfa144] transition-colors">
+                  <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <Award className="w-5 h-5" />
-                    <span className="text-2xl font-extrabold text-[#b89858]">
+                    <span className="text-2xl font-extrabold text-[#a8812f]">
                       <CountUp end={15} duration={2.5} enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
@@ -107,10 +107,10 @@ export const AboutSection: React.FC = () => {
               </Reveal>
 
               <Reveal type="fade-up" delay={0.2}>
-                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#b89858] transition-colors">
-                  <div className="flex items-center gap-2 text-[#b89858] mb-1">
+                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#cfa144] transition-colors">
+                  <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <Factory className="w-5 h-5" />
-                    <span className="text-2xl font-extrabold text-[#b89858]">
+                    <span className="text-2xl font-extrabold text-[#a8812f]">
                       <CountUp end={15000} duration={2.5} separator="," enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
@@ -120,10 +120,10 @@ export const AboutSection: React.FC = () => {
               </Reveal>
 
               <Reveal type="fade-up" delay={0.3}>
-                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#b89858] transition-colors">
-                  <div className="flex items-center gap-2 text-[#b89858] mb-1">
+                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#cfa144] transition-colors">
+                  <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <Package className="w-5 h-5" />
-                    <span className="text-2xl font-extrabold text-[#b89858]">
+                    <span className="text-2xl font-extrabold text-[#a8812f]">
                       <CountUp end={11} duration={2.5} enableScrollSpy scrollSpyOnce />
                     </span>
                   </div>
@@ -133,10 +133,10 @@ export const AboutSection: React.FC = () => {
               </Reveal>
 
               <Reveal type="fade-up" delay={0.4}>
-                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#b89858] transition-colors">
-                  <div className="flex items-center gap-2 text-[#b89858] mb-1">
+                <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs hover:border-[#cfa144] transition-colors">
+                  <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <ShieldCheck className="w-5 h-5" />
-                    <span className="text-2xl font-extrabold text-[#b89858]">
+                    <span className="text-2xl font-extrabold text-[#a8812f]">
                       <CountUp end={100} duration={2.5} suffix="%" enableScrollSpy scrollSpyOnce />
                     </span>
                   </div>
@@ -149,13 +149,13 @@ export const AboutSection: React.FC = () => {
 
             {/* Bottom Quote & Action Button */}
             <div>
-              <p className="text-xs font-semibold text-gray-700 italic mb-6 border-l-2 border-[#b89858] pl-4">
+              <p className="text-xs font-semibold text-gray-700 italic mb-6 border-l-2 border-[#cfa144] pl-4">
                 &quot;Engineered to protect food taste, eliminate zero-leak spillage, and elevate customer unboxing.&quot;
               </p>
 
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-7 py-3.5 rounded-full uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b89858]/30 hover:scale-105 active:scale-95 transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-7 py-3.5 rounded-full uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 <span>Learn More About Us</span>
                 <ArrowRight className="w-4 h-4" />

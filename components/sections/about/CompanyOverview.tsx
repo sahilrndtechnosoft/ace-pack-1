@@ -29,7 +29,7 @@ export const CompanyOverview: React.FC = () => {
                 />
               </div>
               <div className="absolute -bottom-6 -right-4 sm:-right-6 bg-white rounded-2xl border border-[#E6DBC6] shadow-lg px-6 py-4">
-                <span className="text-2xl font-extrabold text-[#b89858] block">15+</span>
+                <span className="text-2xl font-extrabold text-[#a8812f] block">15+</span>
                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Years in Business</span>
               </div>
             </div>
@@ -37,7 +37,7 @@ export const CompanyOverview: React.FC = () => {
 
           <Reveal type="fade-left" delay={0.1}>
             <div className="lg:col-span-7 text-left">
-              <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+              <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
                 Company Overview
               </span>
               <SplitHeading>
@@ -56,7 +56,7 @@ export const CompanyOverview: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {highlights.map((h, idx) => (
                   <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-2xl border border-[#E6DBC6]">
-                    <div className="w-9 h-9 rounded-xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0">
                       <h.icon className="w-4 h-4" />
                     </div>
                     <span className="text-xs font-semibold text-[#1A1D20] leading-snug">{h.text}</span>

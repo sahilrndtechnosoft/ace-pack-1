@@ -132,12 +132,12 @@ export const InfiniteCardCarousel: React.FC<InfiniteCardCarouselProps> = ({ card
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}
-              className="absolute left-1/2 top-1/2 w-[190px] sm:w-[230px] h-[300px] sm:h-[360px] rounded-3xl border-2 border-white/10 bg-[#111518] flex flex-col items-center justify-center text-center p-5 sm:p-6 overflow-hidden transition-colors duration-300 data-[active=true]:border-[#b89858] data-[active=true]:shadow-[0_0_50px_rgba(184,152,88,0.35)]"
+              className="absolute left-1/2 top-1/2 w-[190px] sm:w-[230px] h-[300px] sm:h-[360px] rounded-3xl border-2 border-white/10 bg-[#111518] flex flex-col items-center justify-center text-center p-5 sm:p-6 overflow-hidden transition-colors duration-300 data-[active=true]:border-[#cfa144] data-[active=true]:shadow-[0_0_50px_rgba(184,152,88,0.35)]"
             >
               <span className="absolute top-4 left-1/2 -translate-x-1/2 text-4xl sm:text-5xl font-black text-white/[0.06] select-none">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#b89858]/15 flex items-center justify-center mb-4 text-[#b89858]">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#cfa144]/15 flex items-center justify-center mb-4 text-[#a8812f]">
                 <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
               </div>
               <h3 className="text-white font-extrabold text-base sm:text-lg mb-2 leading-snug">{card.title}</h3>
@@ -151,14 +151,14 @@ export const InfiniteCardCarousel: React.FC<InfiniteCardCarouselProps> = ({ card
         <button
           onClick={() => go(-1)}
           aria-label="Previous category"
-          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-white hover:bg-[#b89858] hover:text-[#1A1D20] transition-colors"
+          className="w-11 h-11 rounded-full border border-[#cfa144]/40 flex items-center justify-center text-[#1A1D20] hover:bg-[#cfa144] hover:text-[#1A1D20] transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={() => go(1)}
           aria-label="Next category"
-          className="w-11 h-11 rounded-full border border-[#b89858]/40 flex items-center justify-center text-white hover:bg-[#b89858] hover:text-[#1A1D20] transition-colors"
+          className="w-11 h-11 rounded-full border border-[#cfa144]/40 flex items-center justify-center text-[#1A1D20] hover:bg-[#cfa144] hover:text-[#1A1D20] transition-colors"
         >
           <ChevronRight className="w-5 h-5" />
         </button>

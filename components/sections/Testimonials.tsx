@@ -65,7 +65,7 @@ export const Testimonials: React.FC = () => {
       <Container className="relative z-10">
 
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#b89858] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#b89858]/10 border border-[#b89858]/20">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/20">
             What Our Clients Say
           </span>
           <SplitHeading>
@@ -85,16 +85,16 @@ export const Testimonials: React.FC = () => {
               <div className="group relative h-full p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-[#E6DBC6] hover:border-transparent shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_24px_48px_-20px_rgba(184,152,88,0.4)] transition-all duration-300 flex flex-col overflow-hidden">
                 <span
                   aria-hidden="true"
-                  className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#b89858] via-[#e0c081] to-[#b89858] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"
+                  className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#cfa144] via-[#e0c081] to-[#cfa144] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"
                 />
 
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#b89858]/15 to-[#b89858]/5 text-[#b89858] flex items-center justify-center mb-4 border border-[#b89858]/20">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#cfa144]/15 to-[#cfa144]/5 text-[#a8812f] flex items-center justify-center mb-4 border border-[#cfa144]/20">
                   <Quote className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
 
                 <div className="flex items-center gap-1 mb-4">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[#b89858] text-[#b89858]" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-[#cfa144] text-[#a8812f]" />
                   ))}
                 </div>
 
@@ -103,8 +103,8 @@ export const Testimonials: React.FC = () => {
                 </p>
 
                 <div className="flex items-center gap-3 pt-4 border-t border-[#E6DBC6]">
-                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full shrink-0 p-[2px] bg-gradient-to-br from-[#b89858] to-[#e0c081]">
-                    <div className="w-full h-full rounded-full bg-white text-[#b89858] flex items-center justify-center font-extrabold text-sm">
+                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full shrink-0 p-[2px] bg-gradient-to-br from-[#cfa144] to-[#e0c081]">
+                    <div className="w-full h-full rounded-full bg-white text-[#a8812f] flex items-center justify-center font-extrabold text-sm">
                       {t.name.charAt(0)}
                     </div>
                   </div>

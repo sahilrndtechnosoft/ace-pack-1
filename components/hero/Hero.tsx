@@ -250,7 +250,7 @@ export const Hero: React.FC = () => {
         {HERO_PARTICLES.map((p, i) => (
           <span
             key={i}
-            className="absolute rounded-full bg-[#b89858]/30 hero-particle"
+            className="absolute rounded-full bg-[#cfa144]/30 hero-particle"
             style={{
               top: p.top,
               left: p.left,
@@ -299,7 +299,7 @@ export const Hero: React.FC = () => {
               {/* 3D Platform Pedestal Base */}
               <div
                 aria-hidden="true"
-                className="absolute -bottom-6 sm:-bottom-8 left-1/2 -translate-x-1/2 w-[240px] sm:w-[380px] lg:w-[460px] h-10 sm:h-16 rounded-[100%] bg-gradient-to-r from-[#b89858]/20 via-[#e8cf9e]/40 to-[#b89858]/20 blur-sm border border-[#b89858]/30 shadow-[0_12px_40px_rgba(184,152,88,0.35)] pointer-events-none"
+                className="absolute -bottom-6 sm:-bottom-8 left-1/2 -translate-x-1/2 w-[240px] sm:w-[380px] lg:w-[460px] h-10 sm:h-16 rounded-[100%] bg-gradient-to-r from-[#cfa144]/20 via-[#e8cf9e]/40 to-[#cfa144]/20 blur-sm border border-[#cfa144]/30 shadow-[0_12px_40px_rgba(184,152,88,0.35)] pointer-events-none"
               />
 
               {/* Floating Product Image Cutout */}
@@ -354,7 +354,7 @@ export const Hero: React.FC = () => {
             </p>
 
             {/* Zeropack Chevron Arrow Sequence >>>>>>>>>> */}
-            <div className="flex items-center text-[#b89858] font-mono tracking-tighter text-xs my-3 select-none" aria-hidden="true">
+            <div className="flex items-center text-[#a8812f] font-mono tracking-tighter text-xs my-3 select-none" aria-hidden="true">
               {Array.from({ length: 10 }).map((_, i) => (
                 <ChevronRight key={i} className="w-3.5 h-3.5 -mx-0.5" strokeWidth={3} />
               ))}
@@ -364,13 +364,13 @@ export const Hero: React.FC = () => {
             <div className="mt-2">
               <Link
                 href={slide.ctaLink}
-                className={`text-xs font-black px-7 py-3.5 rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 uppercase tracking-widest flex items-center gap-3 group border border-[#b89858]/40 ${slide.light
+                className={`text-xs font-black px-7 py-3.5 rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 uppercase tracking-widest flex items-center gap-3 group border border-[#cfa144]/40 ${slide.light
                   ? 'bg-[#111518] hover:bg-black text-[#e8cf9e]'
                   : 'bg-[#111518] hover:bg-black text-[#e8cf9e]'
                   }`}
               >
                 <span>{slide.ctaText}</span>
-                <ArrowRight className="w-4 h-4 text-[#b89858] group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-[#a8812f] group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </motion.div>
@@ -417,11 +417,11 @@ export const Hero: React.FC = () => {
           >
             <Link
               href={slide.ctaLink}
-              className={`text-xs font-black px-6 py-3 rounded-lg shadow-lg uppercase tracking-widest flex items-center gap-2 border border-[#b89858]/40 ${slide.light ? 'bg-[#1A1D20] text-[#e8cf9e]' : 'bg-[#111518] text-[#e8cf9e]'
+              className={`text-xs font-black px-6 py-3 rounded-lg shadow-lg uppercase tracking-widest flex items-center gap-2 border border-[#cfa144]/40 ${slide.light ? 'bg-[#1A1D20] text-[#e8cf9e]' : 'bg-[#111518] text-[#e8cf9e]'
                 }`}
             >
               <span>{slide.ctaText}</span>
-              <ArrowRight className="w-4 h-4 text-[#b89858]" />
+              <ArrowRight className="w-4 h-4 text-[#a8812f]" />
             </Link>
           </motion.div>
         </AnimatePresence>
@@ -434,7 +434,7 @@ export const Hero: React.FC = () => {
         aria-label={`Preview next slide: ${heroSlides[(currentSlide + 1) % heroSlides.length].title}`}
       >
         <span
-          className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-colors hover:text-[#b89858] ${slide.light ? 'text-[#1A1D20]/50' : 'text-white/40'
+          className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-colors hover:text-[#a8812f] ${slide.light ? 'text-[#1A1D20]/50' : 'text-white/40'
             }`}
         >
           {heroSlides[(currentSlide + 1) % heroSlides.length].title}
@@ -448,19 +448,19 @@ export const Hero: React.FC = () => {
             <button
               key={idx}
               onClick={() => goTo(idx)}
-              className="relative h-1.5 flex-1 rounded-full bg-[#b89858]/20 border border-[#b89858]/30 overflow-hidden"
+              className="relative h-1.5 flex-1 rounded-full bg-[#cfa144]/20 border border-[#cfa144]/30 overflow-hidden"
               aria-label={`Go to slide ${idx + 1}`}
             >
               {idx === currentSlide && (
                 <motion.span
                   key={`progress-${currentSlide}`}
-                  className="absolute inset-y-0 left-0 bg-[#b89858] rounded-full"
+                  className="absolute inset-y-0 left-0 bg-[#cfa144] rounded-full"
                   initial={{ width: '0%' }}
                   animate={{ width: '100%' }}
                   transition={{ duration: AUTO_ADVANCE_MS / 1000, ease: 'linear' }}
                 />
               )}
-              {idx < currentSlide && <span className="absolute inset-0 bg-[#b89858]/70 rounded-full" />}
+              {idx < currentSlide && <span className="absolute inset-0 bg-[#cfa144]/70 rounded-full" />}
             </button>
           ))}
         </div>
@@ -469,14 +469,14 @@ export const Hero: React.FC = () => {
       {/* Side Navigation Arrow Buttons */}
       <button
         onClick={() => goDirection(-1)}
-        className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-10 h-10 rounded-full bg-[#1A1D20]/85 hover:bg-[#1A1D20] backdrop-blur-md border border-[#b89858]/40 shadow-md transition-colors"
+        className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-10 h-10 rounded-full bg-[#1A1D20]/85 hover:bg-[#1A1D20] backdrop-blur-md border border-[#cfa144]/40 shadow-md transition-colors"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-5 h-5 text-[#e8cf9e]" />
       </button>
       <button
         onClick={() => goDirection(1)}
-        className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-10 h-10 rounded-full bg-[#1A1D20]/85 hover:bg-[#1A1D20] backdrop-blur-md border border-[#b89858]/40 shadow-md transition-colors"
+        className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-10 h-10 rounded-full bg-[#1A1D20]/85 hover:bg-[#1A1D20] backdrop-blur-md border border-[#cfa144]/40 shadow-md transition-colors"
         aria-label="Next slide"
       >
         <ChevronRight className="w-5 h-5 text-[#e8cf9e]" />

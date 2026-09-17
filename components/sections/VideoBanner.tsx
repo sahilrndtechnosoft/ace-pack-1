@@ -22,7 +22,7 @@ export const VideoBanner: React.FC = () => {
       <Container className="relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           
-          <span className="inline-flex items-center gap-2 bg-[#b89858] text-white text-[11px] font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider mb-6 shadow">
+          <span className="inline-flex items-center gap-2 bg-[#cfa144] text-[#1A1D20] text-[11px] font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider mb-6 shadow">
             <Award className="w-4 h-4" /> STATE-OF-THE-ART MANUFACTURING
           </span>
 
@@ -37,7 +37,7 @@ export const VideoBanner: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/capabilities"
-              className="bg-[#b89858] hover:bg-[#9e8042] text-white text-xs sm:text-sm font-bold px-8 py-3.5 rounded-full shadow-lg transition-all uppercase tracking-wider flex items-center gap-2"
+              className="bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs sm:text-sm font-bold px-8 py-3.5 rounded-full shadow-lg transition-all uppercase tracking-wider flex items-center gap-2"
             >
               <span>Explore Plant Infrastructure</span>
               <ArrowRight className="w-4 h-4" />

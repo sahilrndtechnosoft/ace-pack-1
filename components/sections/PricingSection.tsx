@@ -35,7 +35,7 @@ export const PricingSection: React.FC = () => {
       <Container>
         
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+          <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
             FACTORY DIRECT VOLUME PRICING
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1D20] tracking-tight">
@@ -51,17 +51,17 @@ export const PricingSection: React.FC = () => {
             <div
               key={idx}
               className={`bg-white rounded-3xl p-8 border-2 ${
-                tier.highlight ? 'border-[#b89858] shadow-xl relative' : 'border-[#E6DBC6] shadow-sm'
+                tier.highlight ? 'border-[#cfa144] shadow-xl relative' : 'border-[#E6DBC6] shadow-sm'
               } flex flex-col justify-between`}
             >
               <div>
                 {tier.highlight && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#b89858] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#cfa144] text-[#1A1D20] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow">
                     MOST POPULAR VOLUME TIER
                   </span>
                 )}
 
-                <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-1">
+                <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-1">
                   {tier.moq}
                 </span>
                 <h3 className="text-2xl font-extrabold text-[#1A1D20] mb-3">{tier.name}</h3>
@@ -70,7 +70,7 @@ export const PricingSection: React.FC = () => {
                 <div className="space-y-3 mb-8">
                   {tier.features.map((feat, i) => (
                     <div key={i} className="flex items-center gap-2.5 text-xs text-gray-700">
-                      <CheckCircle2 className="w-4 h-4 text-[#b89858] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[#a8812f] shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -81,7 +81,7 @@ export const PricingSection: React.FC = () => {
                 href="/contact"
                 className={`w-full font-bold py-3.5 rounded-xl text-center text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
                   tier.highlight
-                    ? 'bg-[#b89858] hover:bg-[#9e8042] text-white shadow-md'
+                    ? 'bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] shadow-md'
                     : 'bg-[#111518] hover:bg-black text-white'
                 }`}
               >

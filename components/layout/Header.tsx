@@ -2,15 +2,48 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, PhoneCall, ChevronRight, ArrowRight, Sparkles } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
+
+// Pages that used to be reachable only from the phone menu. One list feeds
+// the desktop "Resources" dropdown and the phone menu's grouped section.
+const resourceLinks = [
+  { href: '/quality', label: 'Quality & Certifications', hint: 'ISO 9001, FDA-grade PP 05' },
+  { href: '/process', label: 'Manufacturing Process', hint: 'Resin to dispatch in 7 steps' },
+  { href: '/capabilities', label: 'Capabilities', hint: 'Presses, tooling, capacity' },
+  { href: '/downloads', label: 'Download Center', hint: 'Catalogues and datasheets' },
+  { href: '/pricing', label: 'Pricing & MOQ', hint: 'Volume tiers and lead times' },
+  { href: '/faq', label: 'FAQ', hint: 'Answers before you order' },
+];
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
+  const pathname = usePathname() ?? '/';
+
+  // Which top-level section the current URL belongs to. "Our Products" owns
+  // both the category index and the product catalogue/detail routes, so the
+  // nav keeps a single lit item while someone browses the range.
+  const isActive = (href: string) => {
+    const roots =
+      href === '/categories' ? ['/categories', '/products']
+      : href === '/resources' ? resourceLinks.map((l) => l.href)
+      : [href];
+    return roots.some((root) => pathname === root || pathname.startsWith(`${root}/`));
+  };
+  const navLink = (href: string, extra = '') =>
+    `relative py-3 transition-colors hover:text-[#a8812f] after:absolute after:left-0 after:right-0 after:bottom-1 after:h-[2px] after:rounded-full after:bg-[#cfa144] after:origin-left after:transition-transform after:duration-300 ${
+      isActive(href) ? 'text-[#a8812f] after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+    } ${extra}`;
+  const mobileLink = (href: string) =>
+    `py-2 flex items-center gap-3 transition-colors hover:text-[#a8812f] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:transition-colors ${
+      isActive(href) ? 'text-[#a8812f] before:bg-[#cfa144]' : 'before:bg-transparent'
+    }`;
 
   useEffect(() => {
     // Passive + rAF-coalesced: a non-passive scroll handler blocks the
@@ -45,14 +78,14 @@ export const Header: React.FC = () => {
               width={320}
               height={165}
               decoding="async"
-              className="h-10 sm:h-16 w-auto max-w-[78px] sm:max-w-[124px] object-contain group-hover:scale-105 transition-transform"
+              className="h-14 sm:h-20 w-auto max-w-[110px] sm:max-w-[160px] object-contain group-hover:scale-105 transition-transform"
             />
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-xs font-bold uppercase tracking-wider text-[#1A1D20]">
-          <Link href="/about" className="hover:text-[#b89858] transition-colors">
+        <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider text-[#1A1D20]">
+          <Link href="/about" className={navLink('/about')} aria-current={isActive('/about') ? 'page' : undefined}>
             About Us
           </Link>
 
@@ -67,14 +100,14 @@ export const Header: React.FC = () => {
           >
             <Link
               href="/categories"
-              className={`hover:text-[#b89858] transition-colors inline-flex items-center gap-1 py-3 ${megaMenuOpen ? 'text-[#b89858]' : ''
-                }`}
+              className={navLink('/categories', `inline-flex items-center gap-1 ${megaMenuOpen ? 'text-[#a8812f]' : ''}`)}
+              aria-current={isActive('/categories') ? 'page' : undefined}
             >
               <span>Our Products</span>
-              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${megaMenuOpen ? 'text-[#b89858]' : 'opacity-60'}`} />
+              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${megaMenuOpen ? 'text-[#a8812f] -scale-y-100' : 'opacity-60'}`} />
             </Link>
 
-            {/* Brand Theme (#b89858) Category-Wise Product Variant Mega Menu.
+            {/* Brand Theme (#cfa144) Category-Wise Product Variant Mega Menu.
                 Positioning (centering) lives on this plain, non-animated
                 wrapper — NOT on the motion.div below. Framer Motion writes
                 its own inline `transform` for the opacity/y/scale animation,
@@ -89,38 +122,38 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white border-2 border-[#b89858]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal uppercase-none origin-top">
+                    className="bg-white border-2 border-[#cfa144]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal uppercase-none origin-top">
 
                     {/* Header Title Bar */}
                     <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-[#E6DBC6]">
                       <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-[#b89858]" />
-                        <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4 text-[#cfa144]" />
+                        <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider">
                           Product Categories & Model Variants
                         </span>
                       </div>
                       <Link
                         href="/products"
                         onClick={() => setMegaMenuOpen(false)}
-                        className="text-xs font-bold text-gray-700 hover:text-[#b89858] flex items-center gap-1 transition-colors"
+                        className="text-xs font-bold text-gray-700 hover:text-[#a8812f] flex items-center gap-1 transition-colors"
                       >
                         <span>View All Products Catalog</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#b89858]" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#cfa144]" />
                       </Link>
                     </div>
 
-                    {/* Multi-Column Category-Wise Variant Grid styled with AcePack Brand Gold Theme (#b89858) */}
+                    {/* Multi-Column Category-Wise Variant Grid styled with AcePack Brand Gold Theme (#cfa144) */}
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-6 sm:gap-y-8 max-h-[60vh] xl:max-h-[460px] overflow-y-auto pr-2">
                       {productCategories.map((category) => (
                         <div key={category.id} className="flex flex-col">
 
-                          {/* Category Heading in Brand Gold (#b89858) */}
+                          {/* Category Heading in Brand Gold (#cfa144) */}
                           <Link
                             href={`/categories/${category.slug}`}
                             onClick={() => setMegaMenuOpen(false)}
-                            className="group inline-block pb-2 mb-3 border-b-2 border-[#b89858]/40 hover:border-[#b89858] transition-colors"
+                            className="group inline-block pb-2 mb-3 border-b-2 border-[#cfa144]/40 hover:border-[#cfa144] transition-colors"
                           >
-                            <h3 className="text-sm font-extrabold text-[#b89858] group-hover:text-[#9e8042] transition-colors leading-tight">
+                            <h3 className="text-sm font-extrabold text-[#a8812f] group-hover:text-[#a8812f] transition-colors leading-tight">
                               {category.name}
                             </h3>
                           </Link>
@@ -132,9 +165,9 @@ export const Header: React.FC = () => {
                                 key={product.id}
                                 href={`/categories/${category.slug}/${product.product_slug}`}
                                 onClick={() => setMegaMenuOpen(false)}
-                                className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[#b89858] transition-colors group"
+                                className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[#a8812f] transition-colors group"
                               >
-                                <span className="text-[#b89858] font-bold text-sm leading-none group-hover:translate-x-0.5 transition-transform">
+                                <span className="text-[#a8812f] font-bold text-sm leading-none group-hover:translate-x-0.5 transition-transform">
                                   ›
                                 </span>
                                 <span className="leading-snug">{product.name}</span>
@@ -154,7 +187,7 @@ export const Header: React.FC = () => {
                       <Link
                         href="/contact"
                         onClick={() => setMegaMenuOpen(false)}
-                        className="font-bold text-[#b89858] hover:underline uppercase tracking-wider whitespace-nowrap"
+                        className="font-bold text-[#a8812f] hover:underline uppercase tracking-wider whitespace-nowrap"
                       >
                         Request Bulk Factory Quote →
                       </Link>
@@ -166,23 +199,65 @@ export const Header: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* <Link href="/capabilities" className="hover:text-[#b89858] transition-colors">
+          {/* <Link href="/capabilities" className={navLink('/capabilities')} aria-current={isActive('/capabilities') ? 'page' : undefined}>
             Capabilities
           </Link> */}
 
-          <Link href="/industries" className="hover:text-[#b89858] transition-colors">
+          <Link href="/industries" className={navLink('/industries')} aria-current={isActive('/industries') ? 'page' : undefined}>
             Industries
           </Link>
 
-          <Link href="/gallery" className="hover:text-[#b89858] transition-colors">
+          <div
+            className="relative"
+            onMouseEnter={() => setResourcesOpen(true)}
+            onMouseLeave={() => setResourcesOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setResourcesOpen((v) => !v)}
+              aria-expanded={resourcesOpen}
+              className={navLink('/resources', `inline-flex items-center gap-1 uppercase ${resourcesOpen ? 'text-[#a8812f]' : ''}`)}
+            >
+              <span>Resources</span>
+              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[#a8812f] -scale-y-100' : 'opacity-60'}`} />
+            </button>
+            <AnimatePresence>
+              {resourcesOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50">
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-[300px] bg-white border border-[#E6DBC6] rounded-2xl shadow-2xl p-2 normal-case tracking-normal"
+                  >
+                    {resourceLinks.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setResourcesOpen(false)}
+                        aria-current={isActive(item.href) ? 'page' : undefined}
+                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[#FAF8F4] ${isActive(item.href) ? 'bg-[#FAF8F4]' : ''}`}
+                      >
+                        <span className={`block text-[13px] font-bold ${isActive(item.href) ? 'text-[#a8812f]' : 'text-[#1A1D20]'}`}>{item.label}</span>
+                        <span className="block text-xs font-medium text-gray-500">{item.hint}</span>
+                      </Link>
+                    ))}
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <Link href="/gallery" className={navLink('/gallery')} aria-current={isActive('/gallery') ? 'page' : undefined}>
             Gallery
           </Link>
 
-          <Link href="/blog" className="hover:text-[#b89858] transition-colors">
+          <Link href="/blog" className={navLink('/blog')} aria-current={isActive('/blog') ? 'page' : undefined}>
             Blogs
           </Link>
 
-          <Link href="/contact" className="hover:text-[#b89858] transition-colors">
+          <Link href="/contact" className={navLink('/contact')} aria-current={isActive('/contact') ? 'page' : undefined}>
             Contact
           </Link>
         </nav>
@@ -191,15 +266,15 @@ export const Header: React.FC = () => {
         <div className="hidden sm:flex items-center gap-4">
           <a
             href="tel:+919820000000"
-            className="flex items-center gap-2 text-xs font-bold text-[#1A1D20] hover:text-[#b89858] transition-colors"
+            className="flex items-center gap-2 text-xs font-bold text-[#1A1D20] hover:text-[#a8812f] transition-colors"
           >
-            <PhoneCall className="w-3.5 h-3.5 text-[#b89858]" />
+            <PhoneCall className="w-3.5 h-3.5 text-[#cfa144]" />
             <span>+91 98200 00000</span>
           </a>
 
           <Link
             href="/contact"
-            className="bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-5 py-3 rounded-full shadow-sm hover:shadow transition-all uppercase tracking-wider"
+            className="bg-[#cfa144] text-[#1A1D20] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-xs font-bold px-5 py-3 rounded-full shadow-sm hover:shadow transition-all uppercase tracking-wider"
           >
             Get Quote
           </Link>
@@ -255,7 +330,8 @@ export const Header: React.FC = () => {
                 {/* <Link
                   href="/"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/')}
+                  aria-current={isActive('/') ? 'page' : undefined}
                 >
                   Home
                 </Link> */}
@@ -263,10 +339,12 @@ export const Header: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setMobileProductsOpen((v) => !v)}
-                    className="w-full py-2 flex items-center justify-between hover:text-[#b89858]"
+                    className={`w-full py-2 flex items-center gap-3 uppercase transition-colors hover:text-[#a8812f] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full ${
+                      isActive('/categories') ? 'text-[#a8812f] before:bg-[#cfa144]' : 'before:bg-transparent'
+                    }`}
                     aria-expanded={mobileProductsOpen}
                   >
-                    <span>Products</span>
+                    <span className="flex-1 text-left">Products</span>
                     <ChevronRight
                       className={`w-3.5 h-3.5 transition-transform ${mobileProductsOpen ? 'rotate-90' : ''}`}
                     />
@@ -286,16 +364,16 @@ export const Header: React.FC = () => {
                               key={category.id}
                               href={`/categories/${category.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="py-1.5 flex items-center gap-1.5 hover:text-[#b89858]"
+                              className="py-1.5 flex items-center gap-1.5 hover:text-[#a8812f]"
                             >
-                              <span className="text-[#b89858]">›</span>
+                              <span className="text-[#a8812f]">›</span>
                               {category.name}
                             </Link>
                           ))}
                           <Link
                             href="/categories"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="py-1.5 mt-1 font-extrabold text-[#b89858] hover:underline"
+                            className="py-1.5 mt-1 font-extrabold text-[#a8812f] hover:underline"
                           >
                             View All Categories →
                           </Link>
@@ -307,73 +385,75 @@ export const Header: React.FC = () => {
                 <Link
                   href="/products"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/products')}
+                  aria-current={isActive('/products') ? 'page' : undefined}
                 >
                   All Products Catalog
                 </Link>
                 <Link
                   href="/about"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/about')}
+                  aria-current={isActive('/about') ? 'page' : undefined}
                 >
                   About Us
                 </Link>
                 <Link
-                  href="/capabilities"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
-                >
-                  Capabilities
-                </Link>
-                <Link
                   href="/industries"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/industries')}
+                  aria-current={isActive('/industries') ? 'page' : undefined}
                 >
                   Industries
                 </Link>
                 <Link
-                  href="/quality"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
-                >
-                  Quality &amp; Certifications
-                </Link>
-                <Link
-                  href="/downloads"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
-                >
-                  Downloads
-                </Link>
-                <Link
                   href="/gallery"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/gallery')}
+                  aria-current={isActive('/gallery') ? 'page' : undefined}
                 >
                   Gallery
                 </Link>
                 <Link
                   href="/blog"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/blog')}
+                  aria-current={isActive('/blog') ? 'page' : undefined}
                 >
                   Blogs & Insights
                 </Link>
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2 hover:text-[#b89858]"
+                  className={mobileLink('/contact')}
+                  aria-current={isActive('/contact') ? 'page' : undefined}
                 >
                   Contact Us
                 </Link>
               </nav>
 
+              <div className="pt-4 border-t border-[#E6DBC6]">
+                <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a8812f] mb-2">Resources</span>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] font-semibold text-[#1A1D20]">
+                  {resourceLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      aria-current={isActive(item.href) ? 'page' : undefined}
+                      className={`py-1.5 transition-colors hover:text-[#a8812f] ${isActive(item.href) ? 'text-[#a8812f]' : ''}`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               <div className="pt-4 border-t border-[#E6DBC6] flex flex-col gap-3">
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold py-3 rounded-full text-center uppercase tracking-wider"
+                  className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold py-3 rounded-full text-center uppercase tracking-wider"
                 >
                   Request Quote
                 </Link>

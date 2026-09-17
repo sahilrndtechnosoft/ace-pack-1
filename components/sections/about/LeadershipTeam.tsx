@@ -38,7 +38,7 @@ export const LeadershipTeam: React.FC = () => {
   return (
     <div className="mb-20">
       <Reveal type="fade-right">
-        <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+        <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
           Who Runs AcePack
         </span>
       </Reveal>
@@ -53,11 +53,11 @@ export const LeadershipTeam: React.FC = () => {
           const Icon = leader.icon;
           return (
             <Reveal key={idx} type="fade-up" delay={idx * 0.1}>
-              <div className="group bg-white h-full p-6 rounded-2xl border border-[#E6DBC6] hover:border-[#b89858] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div className="w-14 h-14 rounded-2xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center mb-5 border border-[#b89858]/20 group-hover:bg-[#b89858] group-hover:text-white transition-all duration-300">
+              <div className="group bg-white h-full p-6 rounded-2xl border border-[#E6DBC6] hover:border-[#cfa144] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-5 border border-[#cfa144]/20 group-hover:bg-[#cfa144] group-hover:text-[#1A1D20] transition-all duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-extrabold text-[#b89858] uppercase tracking-wider block mb-1">
+                <span className="text-[10px] font-extrabold text-[#a8812f] uppercase tracking-wider block mb-1">
                   {leader.role}
                 </span>
                 <h4 className="text-sm font-bold text-[#1A1D20] mb-2">{leader.name}</h4>

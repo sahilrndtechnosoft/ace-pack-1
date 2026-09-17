@@ -49,7 +49,7 @@ export default function GalleryPage() {
         <div className="container-custom">
           <div className="rounded-[32px] bg-[#111518] text-white px-8 sm:px-14 py-12 sm:py-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="max-w-xl">
-              <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-[0.16em] block mb-3">
+              <span className="text-xs font-extrabold text-[#cfa144] uppercase tracking-[0.16em] block mb-3">
                 Samples & Specifications
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug">
@@ -63,14 +63,14 @@ export default function GalleryPage() {
             <div className="flex flex-wrap items-center gap-3 shrink-0">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
               >
                 <span>Request Samples</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/categories"
-                className="inline-flex items-center gap-2 border border-white/25 hover:border-[#b89858] hover:text-[#b89858] text-white text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
+                className="inline-flex items-center gap-2 border border-white/25 hover:border-[#cfa144] hover:text-[#a8812f] text-white text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
               >
                 <span>All Categories</span>
               </Link>

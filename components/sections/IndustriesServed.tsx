@@ -33,7 +33,7 @@ export const IndustriesServed: React.FC<IndustriesServedProps> = ({
       <Container className="relative z-10">
 
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#b89858] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#b89858]/10 border border-[#b89858]/20">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/20">
             {eyebrow}
           </span>
           <SplitHeading>
@@ -58,24 +58,24 @@ export const IndustriesServed: React.FC<IndustriesServedProps> = ({
                 >
                   <Link
                     href={item.href ?? '/categories'}
-                    className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
+                    className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#cfa144] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
                   >
-                    <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#b89858]/[0.08] transition-colors duration-300 select-none">
+                    <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#a8812f]/[0.08] transition-colors duration-300 select-none">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
 
-                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#b89858] to-[#8a6f3d] text-white flex items-center justify-center mb-4 sm:mb-5 shadow-md shadow-[#b89858]/25 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#cfa144] to-[#8a6f3d] text-white flex items-center justify-center mb-4 sm:mb-5 shadow-md shadow-[#cfa144]/25 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
                       <IconComponent className="w-6 h-6 sm:w-7 sm:h-7" />
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-bold text-[#1A1D20] mb-2 group-hover:text-[#b89858] transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1A1D20] mb-2 group-hover:text-[#a8812f] transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
                       {item.description}
                     </p>
 
-                    <span className="mt-auto inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#b89858] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    <span className="mt-auto inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#a8812f] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                       Explore range <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </Link>

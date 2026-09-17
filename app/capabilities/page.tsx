@@ -32,9 +32,9 @@ export default function CapabilitiesPage() {
           {/* Key Specs Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {specs.map((s, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-3xl border-2 border-[#b89858]/60 shadow-sm text-center">
+              <div key={idx} className="bg-white p-6 rounded-3xl border-2 border-[#cfa144]/60 shadow-sm text-center">
                 <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">{s.title}</span>
-                <span className="text-lg font-extrabold text-[#b89858]">{s.value}</span>
+                <span className="text-lg font-extrabold text-[#a8812f]">{s.value}</span>
               </div>
             ))}
           </div>
@@ -43,7 +43,7 @@ export default function CapabilitiesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
 
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6">
                 <Cpu className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-bold text-[#1A1D20] mb-4">Robotic Injection Moulding Line</h3>
@@ -51,14 +51,14 @@ export default function CapabilitiesPage() {
                 Our plant houses state-of-the-art European & Taiwanese injection moulding machines equipped with 3-axis high-speed robotic pick-and-place automation, ensuring zero human touch contamination.
               </p>
               <ul className="space-y-2.5 text-xs text-gray-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> Automatic hot-runner multi-cavity moulds</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> Real-time closed-loop temperature control</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> High clarity resin plasticizing screws</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> Automatic hot-runner multi-cavity moulds</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> Real-time closed-loop temperature control</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> High clarity resin plasticizing screws</li>
               </ul>
             </div>
 
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6">
                 <Wrench className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-bold text-[#1A1D20] mb-4">In-House CAD Toolroom & R&D</h3>
@@ -66,9 +66,9 @@ export default function CapabilitiesPage() {
                 Our team of toolmakers and CAD designers engineer custom moulds with optimized cooling channels, allowing us to turn around prototype designs into mass production within short lead times.
               </p>
               <ul className="space-y-2.5 text-xs text-gray-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> 3D SolidWorks & Moldflow analysis</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> CNC high-speed machining centers</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#b89858]" /> Custom branding embossing capabilities</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> 3D SolidWorks & Moldflow analysis</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> CNC high-speed machining centers</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#a8812f]" /> Custom branding embossing capabilities</li>
               </ul>
             </div>
 

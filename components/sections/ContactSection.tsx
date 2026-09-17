@@ -9,7 +9,7 @@ import { MapPin, Phone, Mail, ArrowRight, Lock } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
 const inputClasses =
-  'w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#b89858] focus:ring-4 focus:ring-[#b89858]/10 transition-all duration-200';
+  'w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144] focus:ring-4 focus:ring-[#cfa144]/10 transition-all duration-200';
 
 const contactCards = [
   {
@@ -40,7 +40,7 @@ export const ContactSection: React.FC = () => {
       <Container className="relative z-10">
 
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#b89858] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#b89858]/10 border border-[#b89858]/20">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/20">
             Get In Touch With AcePack
           </span>
           <SplitHeading>
@@ -63,13 +63,13 @@ export const ContactSection: React.FC = () => {
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E6DBC6] hover:border-[#b89858]/60 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4"
+                    className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E6DBC6] hover:border-[#cfa144]/60 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4"
                   >
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#b89858] to-[#8a6f3d] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#b89858]/25">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#cfa144] to-[#8a6f3d] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#cfa144]/25">
                       <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-[#b89858] uppercase tracking-wider block mb-1">{item.label}</span>
+                      <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">{item.label}</span>
                       <h3 className="text-sm sm:text-base font-bold text-[#1A1D20] mb-1 break-words">{item.title}</h3>
                       <p className="text-xs text-gray-600 leading-relaxed">{item.detail}</p>
                     </div>
@@ -80,7 +80,7 @@ export const ContactSection: React.FC = () => {
           </div>
 
           <Reveal type="fade-left" delay={0.15}>
-            <div className="lg:col-span-7 bg-white p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border-2 border-[#b89858]/70 shadow-lg">
+            <div className="lg:col-span-7 bg-white p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border-2 border-[#cfa144]/70 shadow-lg">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h3>
               <p className="text-xs text-gray-500 mb-6 sm:mb-8">Fill in your requirements below to receive a wholesale catalog & sample kit.</p>
 
@@ -127,14 +127,14 @@ export const ContactSection: React.FC = () => {
                   whileHover={{ scale: 1.015 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
-                  className="w-full bg-gradient-to-r from-[#b89858] to-[#9e8042] hover:from-[#9e8042] hover:to-[#b89858] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b89858]/30 transition-all duration-300 flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-[#cfa144] to-[#a8812f] hover:from-[#a8812f] hover:to-[#cfa144] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <span>Submit Wholesale Quotation Request</span>
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
                 <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                  <Lock className="w-3 h-3 text-[#b89858]" /> Your information is 100% confidential & protected
+                  <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
                 </p>
               </form>
             </div>

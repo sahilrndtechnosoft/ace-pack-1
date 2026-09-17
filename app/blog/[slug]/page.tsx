@@ -59,13 +59,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             
             <div className="lg:col-span-8 flex flex-col gap-8">
               
-              <div className="relative rounded-3xl overflow-hidden shadow-xl border-2 border-[#b89858]/60 bg-slate-900 h-[340px] sm:h-[450px]">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border-2 border-[#cfa144]/60 bg-slate-900 h-[340px] sm:h-[450px]">
                 <img
                   src={post.image}
                   alt={post.title}
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute top-4 left-4 bg-[#b89858] text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+                <span className="absolute top-4 left-4 bg-[#cfa144] text-[#1A1D20] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
                   {post.category}
                 </span>
               </div>
@@ -77,7 +77,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <div className="bg-white p-5 rounded-2xl border border-[#E6DBC6] shadow-xs flex flex-wrap items-center justify-between gap-6">
                 
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0">
                     <User className="w-5 h-5" />
                   </div>
                   <div>
@@ -87,7 +87,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0">
                     <Calendar className="w-5 h-5" />
                   </div>
                   <div>
@@ -97,7 +97,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
@@ -108,7 +108,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
               </div>
 
-              <div className="bg-[#FAF8F4] p-6 rounded-2xl border-l-4 border-[#b89858] border-y border-r border-[#E6DBC6]">
+              <div className="bg-[#FAF8F4] p-6 rounded-2xl border-l-4 border-[#cfa144] border-y border-r border-[#E6DBC6]">
                 <p className="text-xs sm:text-sm text-[#1A1D20] font-semibold leading-relaxed">
                   {post.summary}
                 </p>
@@ -122,14 +122,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 <hr className="border-[#E6DBC6] my-6" />
 
                 <h3 className="text-base font-bold text-[#1A1D20] flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-[#b89858]" />
+                  <CheckCircle2 className="w-5 h-5 text-[#a8812f]" />
                   <span>Key Packaging Benefits for Food Manufacturers</span>
                 </h3>
 
                 <ul className="space-y-2.5 text-xs text-gray-700 pl-2">
                   {post.takeaways.map((takeaway, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <span className="w-2 h-2 rounded-full bg-[#b89858] shrink-0 mt-1.5" />
+                      <span className="w-2 h-2 rounded-full bg-[#cfa144] shrink-0 mt-1.5" />
                       <span>{takeaway}</span>
                     </li>
                   ))}
@@ -152,7 +152,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <div className="bg-white p-6 rounded-3xl border border-[#E6DBC6] shadow-sm">
                 <h3 className="text-base font-bold text-[#1A1D20] pb-4 mb-4 border-b border-[#E6DBC6] flex items-center justify-between">
                   <span>Related Posts</span>
-                  <span className="w-2 h-2 rounded-full bg-[#b89858]" />
+                  <span className="w-2 h-2 rounded-full bg-[#cfa144]" />
                 </h3>
 
                 <div className="space-y-4">
@@ -171,7 +171,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       </div>
 
                       <div className="flex-1">
-                        <h4 className="text-xs font-bold text-[#1A1D20] group-hover:text-[#b89858] transition-colors leading-snug line-clamp-2 mb-1">
+                        <h4 className="text-xs font-bold text-[#1A1D20] group-hover:text-[#a8812f] transition-colors leading-snug line-clamp-2 mb-1">
                           {rel.title}
                         </h4>
                         <span className="text-[10px] text-gray-400 font-medium block">
@@ -183,7 +183,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-3xl border-2 border-[#b89858]/60 shadow-md">
+              <div className="bg-white p-6 rounded-3xl border-2 border-[#cfa144]/60 shadow-md">
                 <div className="pb-4 mb-4 border-b border-[#E6DBC6]">
                   <h3 className="text-lg font-bold text-[#1A1D20]">Inquiry Form</h3>
                   <p className="text-xs text-gray-500 mt-0.5">Get in touch with us for bulk container samples & quotes</p>
@@ -198,7 +198,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       type="text"
                       placeholder="e.g. John Smith"
                       required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b89858]"
+                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
                     />
                   </div>
 
@@ -210,7 +210,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       type="email"
                       placeholder="your@company.com"
                       required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b89858]"
+                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
                     />
                   </div>
 
@@ -221,7 +221,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                     <input
                       type="tel"
                       placeholder="10-digit mobile number"
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b89858]"
+                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
                     />
                   </div>
 
@@ -229,7 +229,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                     <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
                       Product of Interest
                     </label>
-                    <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#b89858]">
+                    <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#cfa144]">
                       <option value="">Choose a product line...</option>
                       {productCategories.map((cat) => (
                         <option key={cat.id} value={cat.slug}>
@@ -247,20 +247,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       rows={3}
                       placeholder="Describe your container requirements..."
                       required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-3.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b89858]"
+                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-3.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-[#b89858] hover:bg-[#9e8042] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
                   >
                     <span>Send Enquiry</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
                   <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                    <Lock className="w-3 h-3 text-[#b89858]" /> Your information is secure & confidential
+                    <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is secure & confidential
                   </p>
                 </form>
               </div>

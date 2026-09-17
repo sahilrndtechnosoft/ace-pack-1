@@ -1458,7 +1458,7 @@ export const ModelBanner: React.FC = () => {
         const index = actAt(progress);
         rail.querySelectorAll<HTMLButtonElement>('[data-act-rail]').forEach((button, buttonIndex) => {
           const active = buttonIndex === index;
-          button.style.backgroundColor = active ? '#b89858' : 'rgba(26, 29, 32, 0.18)';
+          button.style.backgroundColor = active ? '#cfa144' : 'rgba(26, 29, 32, 0.18)';
           button.style.transform = active ? 'scale(1.35)' : 'scale(1)';
           button.setAttribute('aria-current', active ? 'step' : 'false');
         });
@@ -2008,7 +2008,7 @@ export const ModelBanner: React.FC = () => {
           </div>
           <div className="h-1 overflow-hidden rounded-full bg-[#E6DBC6]">
             <div
-              className="h-full bg-[#B89858] transition-[width] duration-300 ease-out"
+              className="h-full bg-[#cfa144] transition-[width] duration-300 ease-out"
               style={{ width: `${loadProgress}%` }}
             />
           </div>
@@ -2044,17 +2044,17 @@ export const ModelBanner: React.FC = () => {
         aria-label="Product construction annotations"
       >
         <div data-annotation="rim" className="absolute w-40 text-[10px] uppercase tracking-[0.16em] text-[#1A1D20]">
-          <span className="mb-2 block h-px w-12 bg-[#B89858]" />
+          <span className="mb-2 block h-px w-12 bg-[#cfa144]" />
           <span className="font-semibold">Snap-fit rim</span>
           <span className="mt-1 block normal-case tracking-normal text-[#6E6250]">A clean seal, every service.</span>
         </div>
         <div data-annotation="label" className="absolute w-44 text-[10px] uppercase tracking-[0.16em] text-[#1A1D20]">
-          <span className="mb-2 block h-px w-12 bg-[#B89858]" />
+          <span className="mb-2 block h-px w-12 bg-[#cfa144]" />
           <span className="font-semibold">In-mould label</span>
           <span className="mt-1 block normal-case tracking-normal text-[#6E6250]">Brand detail stays crisp.</span>
         </div>
         <div data-annotation="material" className="absolute w-44 text-[10px] uppercase tracking-[0.16em] text-[#1A1D20]">
-          <span className="mb-2 block h-px w-12 bg-[#B89858]" />
+          <span className="mb-2 block h-px w-12 bg-[#cfa144]" />
           <span className="font-semibold">PP 05 material</span>
           <span className="mt-1 block normal-case tracking-normal text-[#6E6250]">Made for food contact.</span>
         </div>

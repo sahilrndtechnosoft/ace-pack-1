@@ -4,13 +4,13 @@
    needs swap to whichever segment is passing the middle of the screen. On touch
    layouts the panel goes and each row carries its own cover instead. */
 
-.xin{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:#b89858;--xp-line:#d9d5cc;--xp-header:84px;--xin-dark:#202822;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:Arial,Helvetica,sans-serif;overflow-x:clip}
+.xin{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:#d9d5cc;--xp-header:84px;--xin-dark:#202822;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
 .xin *{box-sizing:border-box}
 .xin a{text-decoration:none;color:inherit}
 .xin :focus-visible{outline:2px solid var(--xp-gold);outline-offset:4px}
 .xin section{scroll-margin-top:var(--xp-header)}
-.xin em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400}
-.xin h1,.xin h2,.xin h3{font-weight:400;margin:0}
+.xin em{font-family:var(--font-serif),Georgia,serif;font-style:italic;font-weight:400}
+.xin h1,.xin h2,.xin h3{font-weight:500;margin:0}
 .xin-wrap{width:min(1280px,90%);margin:0 auto}
 .xin .xp-eyebrow{display:block}
 
@@ -23,7 +23,7 @@
 .xin-hero h1 em{color:#ceb783;letter-spacing:-.05em}
 .xin-title-mask{display:block;overflow:hidden;padding-bottom:.16em;margin-bottom:-.14em}
 .xin-title-mask>span{display:block}
-.xin-hero-lead{font-size:15px;line-height:1.8;color:#c2c8bb;max-width:540px;margin:0}
+.xin-hero-lead{font-size:16px;line-height:1.8;color:#c2c8bb;max-width:540px;margin:0}
 .xin-glance{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .xin-glance div{padding:20px 20px 18px;border:1px solid #d3b97a26;border-radius:16px;background:#ffffff05}
 .xin-glance b{display:block;font-size:clamp(28px,2.4vw,40px);letter-spacing:-.05em;font-weight:400;line-height:1;color:#f5f1e8;margin-bottom:8px;white-space:nowrap}
@@ -43,9 +43,9 @@
 .xin-row-cover{display:none}
 .xin-row-head{display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:baseline}
 .xin-num{font-size:12px;letter-spacing:.13em;color:#968152;transition:color .3s}
-.xin-row.is-active .xin-num{color:var(--xp-gold)}
+.xin-row.is-active .xin-num{color:var(--brand-gold-deep)}
 .xin-row h3{font-size:clamp(30px,3.2vw,48px);letter-spacing:-.05em;line-height:1.02}
-.xin-row p{margin:16px 0 0 76px;font-size:15px;line-height:1.8;color:#5a5f56;max-width:560px}
+.xin-row p{margin:16px 0 0 76px;font-size:16px;line-height:1.8;color:#474c44;max-width:560px}
 .xin-needs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:18px 0 0 76px;padding:0}
 .xin-needs li{font-size:11px;letter-spacing:.06em;padding:8px 12px;border-radius:999px;border:1px solid var(--xp-line);background:#fff;color:#434b3e}
 .xin-lines{margin:20px 0 0 76px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:12px;color:#888b7d}
@@ -76,7 +76,7 @@
 .xin-standard h2{font-size:clamp(28px,3vw,44px);letter-spacing:-.045em;line-height:1.05;margin:12px 0 0}
 .xin-standard h2 em{color:#a58a51}
 .xin-standard-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 32px;list-style:none;margin:0;padding:0}
-.xin-standard-list li{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.6;color:#434b3e}
+.xin-standard-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.6;color:#434b3e}
 .xin-standard-list i{width:6px;height:6px;border-radius:50%;background:var(--xp-gold);margin-top:8px;flex-shrink:0}
 
 /* ---------- Closing ---------- */
@@ -84,7 +84,7 @@
 .xin-closing .xp-eyebrow{color:#968152}
 .xin-closing h2{font-size:clamp(46px,6.4vw,108px);line-height:.95;letter-spacing:-.065em;margin:22px auto 24px;max-width:14ch}
 .xin-closing h2 em{color:#a58a51}
-.xin-closing p{font-size:15px;line-height:1.8;color:#5a5f56;max-width:560px;margin:0 auto 40px}
+.xin-closing p{font-size:16px;line-height:1.8;color:#474c44;max-width:560px;margin:0 auto 40px}
 
 /* ---------- Tablet ---------- */
 @media(max-width:1100px){
@@ -126,7 +126,7 @@
  .xin{--xp-header:62px}
  .xin-hero{padding:56px 0 48px}
  .xin-hero h1{font-size:clamp(46px,12.5vw,72px)}
- .xin-hero-lead{font-size:13.5px}
+ .xin-hero-lead{font-size:14.5px}
  .xin-glance{grid-template-columns:1fr 1fr;gap:10px}
  .xin-glance div{padding:14px}
  .xin-glance b{font-size:24px}
@@ -138,7 +138,7 @@
  .xin-row-head{grid-template-columns:40px 1fr;gap:12px}
  .xin-row h3{font-size:28px}
  .xin-row p,.xin-needs,.xin-lines{margin-left:0}
- .xin-row p{font-size:14px;margin-top:12px}
+ .xin-row p{font-size:15px;margin-top:12px}
  .xin-standard{padding:48px 0}
  .xin-standard-list{grid-template-columns:1fr}
  .xin-closing{padding:90px 0 100px}

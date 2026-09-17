@@ -34,7 +34,7 @@ export const CapabilitiesSection: React.FC = () => {
         {/* Top Header Bar matching Section 7 of reference mockup */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16 pb-6 border-b border-white/10">
           <div>
-            <span className="text-xs font-extrabold text-[#b89858] uppercase tracking-wider block mb-2">
+            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
               OUR CAPABILITIES
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -44,7 +44,7 @@ export const CapabilitiesSection: React.FC = () => {
 
           <Link
             href="/capabilities"
-            className="inline-flex items-center gap-2 bg-[#b89858] hover:bg-[#9e8042] text-white text-xs font-bold px-6 py-3 rounded-full uppercase tracking-wider shadow transition-all self-start sm:self-auto"
+            className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-6 py-3 rounded-full uppercase tracking-wider shadow transition-all self-start sm:self-auto"
           >
             <span>Explore Capabilities</span>
             <ArrowRight className="w-4 h-4" />
@@ -56,7 +56,7 @@ export const CapabilitiesSection: React.FC = () => {
           {capabilities.map((item, idx) => (
             <div
               key={idx}
-              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#b89858]/60 hover:border-[#b89858] transition-all duration-300 hover:shadow-2xl flex flex-col justify-between group"
+              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#cfa144]/60 hover:border-[#cfa144] transition-all duration-300 hover:shadow-2xl flex flex-col justify-between group"
             >
               <div>
                 <div className="relative h-60 overflow-hidden bg-slate-900">
@@ -65,13 +65,13 @@ export const CapabilitiesSection: React.FC = () => {
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   />
-                  <span className="absolute top-4 left-4 bg-[#b89858] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                  <span className="absolute top-4 left-4 bg-[#cfa144] text-[#1A1D20] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
                     {item.badge}
                   </span>
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#b89858] transition-colors">
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#a8812f] transition-colors">
                     {item.title}
                   </h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
@@ -81,7 +81,7 @@ export const CapabilitiesSection: React.FC = () => {
               </div>
 
               <div className="px-6 pb-6 pt-2">
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#b89858]">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#a8812f]">
                   <CheckCircle2 className="w-4 h-4" /> 100% Quality Inspected
                 </div>
               </div>
