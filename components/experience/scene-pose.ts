@@ -8,10 +8,10 @@ const SIZE = [[17.8,15.1],[18,17],[18,16]] as const;
 /**
  * Scroll is sampled directly. Only the small idle movement depends on time.
  *
- * `aspect` is the canvas width/height. It defaults to a desktop ratio so the
- * choreography tests can stay 3-argument.
+ * `aspect` is the canvas width/height and `height` its CSS pixel height. Both
+ * default to a desktop frame so the choreography tests can stay 3-argument.
  */
-export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
+export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6,height=900) {
   const collection=smooth(s.range);
   const selected=clamp(s.range-1,0,2);
   const focus=clamp(1-Math.abs(selected-kind));
@@ -38,13 +38,20 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
   // Give the model breathing room on narrow desktop windows as well as phones.
   const landscapePull=mix(1.22,1,clamp((aspect-1.15)/.6));
   const pull=mix(landscapePull,2,portrait);
-  // How far the container sits below the camera's aim. The hero keeps it high,
-  // because the scroll cue and the lid button occupy the bottom strip there.
-  // Every stage after it (craft, collection) stacks copy above the model, so
-  // once the hero has handed off the container drops clear of that copy — the
-  // lid was otherwise crossing the fact paragraph, and the shallower setting
-  // left a band of dead space under the model.
-  const drop=portrait*mix(.85,2.05,intro);
+  // How far the container sits below the camera's aim. On a phone the hero
+  // copy runs down to its button around 45% of the screen and the lid button
+  // starts near 85%, so the container is centred in the band between them —
+  // the earlier, shallower setting had it lapping the button and the
+  // description. Every stage after the hero (craft, collection) stacks copy
+  // above the model, so the hand-off eases it a touch further down still.
+  // Two phones can share an aspect ratio and still differ in how much room the
+  // hero leaves: the copy is laid out in the document, so its button ends at
+  // the same pixel row on a 740px and an 844px screen, while the model is
+  // framed as a fraction of the viewport. On the short screen that band is
+  // barely taller than the container, so it shrinks and eases a little lower
+  // until the hero hands off.
+  const cramped=portrait*(1-intro)*clamp((800-height)/140);
+  const drop=portrait*mix(1.9,2.05,intro)+cramped*.3;
   // The camera's aim stays put across phases. Tying it to `drop` would lower
   // the frame by the same amount the model moves down, cancelling most of it.
   const frameDrop=portrait*.5;
@@ -58,7 +65,7 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6) {
 
   return {
     visible:s.active&&(visibility>.001||finish>.001),
-    scale:mix(size*Math.max(.001,visibility),kind===1?12.3:10,finish),
+    scale:mix(size*mix(1,.72,cramped)*Math.max(.001,visibility),kind===1?12.3:10,finish),
     position:[mix(stageX,(kind-1)*spread,finish),mix(stageY,-1.02-portrait*.6,finish),mix(0,kind===1?.4:0,finish)] as [number,number,number],
     rotation:[mix(.22,.06,intro),-.58+s.craft*Math.PI*2+(kind-selected)*.95*collection+s.drag*(1-collection)+Math.sin(time*.25)*.08*(1-intro),mix(-.12,0,intro)*(1-finish)] as [number,number,number],
     lidAngle:-mix((.34+smooth((s.craft-.2)/.48)*1.7+s.inspect*.9*(1-intro))*(1-collection)+.12*collection,.1,finish),

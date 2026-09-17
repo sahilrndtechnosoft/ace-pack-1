@@ -57,7 +57,7 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
   useEffect(()=>{onReady?.();return()=>{scene.traverse(object=>{if(object instanceof THREE.Mesh)(object.material as THREE.Material).dispose();});};},[onReady,scene]);
   useFrame(({clock,size})=>{
     const g=group.current;if(!g)return;
-    const pose=getModelPose(kind,state.current,clock.elapsedTime,size.width/size.height);
+    const pose=getModelPose(kind,state.current,clock.elapsedTime,size.width/size.height,size.height);
     g.visible=pose.visible;if(!g.visible)return;
     const finish=THREE.MathUtils.clamp(state.current.finish,0,finishes.length-1);
     const from=Math.floor(finish),to=Math.min(from+1,finishes.length-1);
@@ -77,7 +77,7 @@ function Rig({state,onFailure}:Pick<Props,'state'|'onFailure'>) {
     return()=>{gl.domElement.removeEventListener('webglcontextlost',lost);document.removeEventListener('visibilitychange',visibility);};
   },[gl,onFailure,setFrameloop,invalidate,state]);
   useFrame(({clock,size})=>{
-    const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height);
+    const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height,size.height);
     camera.position.set(...pose.camera);camera.lookAt(0,pose.lookAt,0);
     if(light.current)light.current.position.set(2+s.pointerX*2,3+s.pointerY,3);
     if(process.env.NODE_ENV==='development'&&clock.elapsedTime-last.current>.2){
