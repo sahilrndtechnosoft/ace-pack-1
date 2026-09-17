@@ -239,7 +239,7 @@ export default function CategoriesExperience() {
           <h2 data-split>Specify it <em>in hand.</em></h2>
           <div className="xc-closing-actions">
             <Link href="/contact" className="xp-button">Request wholesale pricing <ArrowRight size={18} /></Link>
-            <Link href="/downloads" className="xc-ghost">Download the catalog <FileDown size={18} /></Link>
+            <Link href="/downloads" className="xp-button xp-button--ghost">Download the catalog <FileDown size={18} /></Link>
           </div>
         </div>
       </section>

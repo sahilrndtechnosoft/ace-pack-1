@@ -91,8 +91,8 @@
 .xc-closing h2{font-size:clamp(48px,6.6vw,112px);line-height:.95;letter-spacing:-.065em;margin:22px auto 40px;max-width:14ch}
 .xc-closing h2 em{color:#a58a51}
 .xc-closing-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.xc-ghost{display:inline-flex;align-items:center;justify-content:space-between;gap:35px;border:1px solid var(--xp-ink);border-radius:2px;padding:17px 22px;font-size:12px;font-weight:500;min-height:51px;transition:background .2s,color .2s}
-.xc-ghost:hover{background:var(--xp-ink);color:var(--xp-ivory)}
+
+
 
 /* ---------- Tablet ---------- */
 @media(max-width:1100px){

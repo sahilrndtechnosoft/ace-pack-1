@@ -6,6 +6,7 @@ import { Manrope, Instrument_Serif } from "next/font/google";
 // [data-lenis-prevent] regions, and blocking iframe pointer events mid-scroll).
 import "lenis/dist/lenis.css";
 import "./globals.css";
+import "@/components/experience/shared.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";

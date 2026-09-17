@@ -1,0 +1,130 @@
+/* Primitives shared by every experience page (home, about, categories,
+   products, industries). Loaded once from app/layout.tsx so they sit at the
+   same cascade position on every route — before any page stylesheet — instead
+   of depending on which page happened to load experience.css first. Page
+   sheets only tint or resize these; they never redefine them. */
+
+.xp-eyebrow {
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: .13em;
+  text-transform: uppercase
+}
+
+.xp-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400
+}
+
+.xp-split-line {
+  overflow: hidden;
+  padding: .16em 0;
+  margin: -.16em 0
+}
+
+.xp-scroll-line {
+  position: fixed;
+  top: var(--xp-header, 84px);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--brand-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 51;
+  pointer-events: none
+}
+
+/* Button. Primary is ink on ivory pages; hover flips to brand gold. */
+.xp-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 2px;
+  /* background: var(--xp-ink, var(--foreground)); */
+  color: var(--xp-ivory, var(--background));
+  border: 1px solid var(--xp-ink, var(--foreground));
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+  will-change: transform
+}
+
+.xp-button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1)
+}
+
+.xp-button:hover {
+  background: var(--brand-gold);
+  border-color: var(--brand-gold);
+  color: #1a1d20
+}
+
+.xp-button:hover svg {
+  transform: translate(3px, -3px)
+}
+
+.xp-button:active {
+  transform: translateY(1px)
+}
+
+.xp-button:focus-visible {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 4px
+}
+
+/* Gold: for the dark hero panels. Hover lifts to ivory. */
+.xp-button--gold {
+  background: #d3bd8b;
+  border-color: #d3bd8b;
+  color: #202822
+}
+
+.xp-button--gold:hover {
+  background: #efe6cf;
+  border-color: #efe6cf;
+  color: #202822
+}
+
+/* Ghost: secondary action beside a primary. */
+.xp-button--ghost {
+  background: transparent;
+  color: var(--xp-ink, var(--foreground))
+}
+
+.xp-button--ghost:hover {
+  background: var(--xp-ink, var(--foreground));
+  border-color: var(--xp-ink, var(--foreground));
+  color: var(--xp-ivory, var(--background))
+}
+
+@media(max-width:767px) {
+  .xp-button {
+    min-height: 48px;
+    padding: 0 20px;
+    gap: 18px;
+    font-size: 12px
+  }
+
+  .xp-button svg {
+    width: 16px;
+    height: 16px
+  }
+}

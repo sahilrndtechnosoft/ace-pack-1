@@ -262,7 +262,7 @@ export default function ProductsExperience() {
           <h2 data-split>See it <em>before you order.</em></h2>
           <div className="xpr-closing-actions">
             <Link href="/contact" className="xp-button">Request wholesale pricing <ArrowRight size={18} /></Link>
-            <Link href="/downloads" className="xpr-ghost">Download datasheets <FileDown size={18} /></Link>
+            <Link href="/downloads" className="xp-button xp-button--ghost">Download datasheets <FileDown size={18} /></Link>
           </div>
         </div>
       </section>
