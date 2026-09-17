@@ -28,7 +28,7 @@ export default function CapabilitiesPage() {
 
       <section className="py-16 md:py-20">
         <div className="container-custom">
-          
+
           {/* Key Specs Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {specs.map((s, idx) => (
@@ -41,7 +41,7 @@ export default function CapabilitiesPage() {
 
           {/* Infrastructure Sections Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
-            
+
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
               <div className="w-12 h-12 rounded-2xl bg-[#b89858]/15 text-[#b89858] flex items-center justify-center mb-6">
                 <Cpu className="w-6 h-6" />
