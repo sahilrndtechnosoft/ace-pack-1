@@ -1,7 +1,3 @@
-// Quality standards, certifications and the checks run on every batch. Every
-// figure here is one already published elsewhere on the site (the About
-// certification cards, the capabilities stats, the process steps and the FAQ),
-// gathered so the Quality and Download pages describe the same facts.
 
 export interface Certification {
   id: string;

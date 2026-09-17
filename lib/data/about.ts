@@ -1,9 +1,6 @@
-// About page content, lifted verbatim from the previous About sections so the
-// redesign changes the presentation and not the claims. Edit copy here.
-
 export const aboutHero = {
   eyebrow: 'Since 2010 · Daman, India',
-  // Rendered as two masked lines; the second takes the serif accent.
+
   title: ['Fifteen years.', 'One standard.'],
   lead: 'AcePack Packaging is a high-precision injection-moulding manufacturer specialising in food-grade plastic containers for QSR chains, cloud kitchens, caterers and retail food brands. From our Daman base, we engineer containers that hold up through freezer storage, microwave reheating and the realities of last-mile delivery.',
   image: '/images/gallery/studio-range.webp',
@@ -11,9 +8,6 @@ export const aboutHero = {
   chip: { value: '1,500,000+', label: 'Containers a day' },
 };
 
-// Kept to figures the home page also carries, so the two pages agree. The
-// export-market count is deliberately absent: the About copy says 25+ and the
-// home page says 12+, and that needs one answer before it goes in a stat.
 export const aboutStats = [
   { value: 15, suffix: '+', label: 'Years in moulding' },
   { value: 1500000, suffix: '+', label: 'Containers moulded daily' },
@@ -48,8 +42,7 @@ export const milestones = [
 export const mdDesk = {
   eyebrow: 'From the MD’s desk',
   quote: 'When we started AcePack, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
-  // Fill in when the MD's name and portrait are available; the block signs
-  // itself as the office until then.
+
   name: '',
   role: 'Managing Director, AcePack Packaging',
   portrait: '',
@@ -73,8 +66,7 @@ export const plant = {
   ],
 };
 
-// Names and portraits are not yet supplied. Roles and remits are real; add
-// `name` and `portrait` to an entry and the card picks them up.
+
 export const leadership = [
   { role: 'Managing Director', remit: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.', name: '', portrait: '' },
   { role: 'Head of Operations', remit: 'Runs day-to-day production scheduling, robotic press uptime and dispatch reliability.', name: '', portrait: '' },

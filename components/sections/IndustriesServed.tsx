@@ -9,8 +9,7 @@ import { SplitHeading } from '../ui/SplitHeading';
 import { UtensilsCrossed, ChefHat, PartyPopper, Hotel, ShoppingCart, Ship, Milk, Candy, Snowflake, Croissant, Pill, Package, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import { defaultIndustries, type Industry, type IndustryIcon } from '@/lib/data/industries';
 
-// Data names its icons so it can cross the server -> client boundary; this is
-// the one place those names become components.
+
 const iconMap: Record<IndustryIcon, LucideIcon> = { UtensilsCrossed, ChefHat, PartyPopper, Hotel, ShoppingCart, Ship, Milk, Candy, Snowflake, Croissant, Pill, Package };
 
 interface IndustriesServedProps {
@@ -57,29 +56,29 @@ export const IndustriesServed: React.FC<IndustriesServedProps> = ({
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="relative h-full"
                 >
-                <Link
-                  href={item.href ?? '/categories'}
-                  className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
-                >
-                  <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#b89858]/[0.08] transition-colors duration-300 select-none">
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
+                  <Link
+                    href={item.href ?? '/categories'}
+                    className="relative flex flex-col h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/85 border border-[#E6DBC6] hover:border-[#b89858] shadow-[0_1px_2px_rgba(26,29,32,0.04)] hover:shadow-[0_20px_40px_-16px_rgba(184,152,88,0.35)] transition-all duration-300 group text-left overflow-hidden"
+                  >
+                    <span className="absolute top-4 right-5 text-4xl sm:text-5xl font-extrabold text-[#1A1D20]/[0.04] group-hover:text-[#b89858]/[0.08] transition-colors duration-300 select-none">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
 
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#b89858] to-[#8a6f3d] text-white flex items-center justify-center mb-4 sm:mb-5 shadow-md shadow-[#b89858]/25 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                    <IconComponent className="w-6 h-6 sm:w-7 sm:h-7" />
-                  </div>
+                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#b89858] to-[#8a6f3d] text-white flex items-center justify-center mb-4 sm:mb-5 shadow-md shadow-[#b89858]/25 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                      <IconComponent className="w-6 h-6 sm:w-7 sm:h-7" />
+                    </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-[#1A1D20] mb-2 group-hover:text-[#b89858] transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                    {item.description}
-                  </p>
+                    <h3 className="text-base sm:text-lg font-bold text-[#1A1D20] mb-2 group-hover:text-[#b89858] transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                      {item.description}
+                    </p>
 
-                  <span className="mt-auto inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#b89858] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                    Explore range <ArrowUpRight className="w-3.5 h-3.5" />
-                  </span>
-                </Link>
+                    <span className="mt-auto inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#b89858] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                      Explore range <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
                 </motion.div>
               </Reveal>
             );
