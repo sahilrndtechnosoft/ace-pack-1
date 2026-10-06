@@ -50,7 +50,7 @@ export const CompanyOverview: React.FC = () => {
                 Ace Packaging is a high-precision injection-moulding manufacturer specializing in food-grade plastic containers for QSR chains, cloud kitchens, caterers, and retail food brands. From our Daman manufacturing base, we engineer containers that hold up through freezer storage, microwave reheating, and the realities of last-mile delivery.
               </p>
               <p className="text-sm text-gray-600 leading-relaxed mb-8">
-                Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety isn&apos;t a line item we compromise on to hit a price point.
+                Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety guides every material and manufacturing decision.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

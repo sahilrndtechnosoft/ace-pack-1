@@ -1,4 +1,5 @@
 'use client';
+import '@/components/sections/resource-pages.css';
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -201,16 +202,18 @@ export default function AboutExperience() {
       {/* Leadership */}
       <section className="xa-leadership" id="leadership">
         <div className="xa-wrap">
-          <span className="xp-eyebrow">04 / Leadership</span>
-          <h2 data-split>Four remits. <em>One plant floor.</em></h2>
+          <span className="xp-eyebrow">04 / Our team</span>
+          <h2 data-split>The people behind <em>every container.</em></h2>
+          <p className="xa-team-note" id="team">Sample profiles for design review. Names and LinkedIn links will be replaced with the confirmed team details.</p>
           <div className="xa-lead-grid">
             {leadership.map((person, i) => (
               <div className="xa-lead" key={person.role}>
                 <span className="xa-lead-num">{String(i + 1).padStart(2, '0')}</span>
                 {person.portrait && <img className="xa-lead-portrait" src={person.portrait} alt={person.name || person.role} loading="lazy" />}
-                <h3>{person.role}</h3>
-                {person.name && <span className="xa-lead-name">{person.name}</span>}
+                <h3>{person.name}</h3>
+                <span className="xa-lead-name">{person.role}</span>
                 <p>{person.remit}</p>
+                <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn placeholder for ${person.name}`}>LinkedIn (sample link) <ArrowUpRight size={16} /></a>
               </div>
             ))}
           </div>
@@ -242,9 +245,9 @@ export default function AboutExperience() {
       {/* Closing */}
       <section className="xa-closing" id="closing">
         <div className="xa-wrap">
-          <span className="xp-eyebrow">Wholesale catalog &amp; sample kit</span>
+          <span className="xp-eyebrow">Product catalog &amp; sample kit</span>
           <h2 data-split>Let’s make <em>something good.</em></h2>
-          <Link href="/contact" className="xp-button">Request wholesale pricing <ArrowRight size={18} /></Link>
+          <Link href="/contact" className="xp-button">Discuss your requirements <ArrowRight size={18} /></Link>
           <span className="xa-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span>
         </div>
       </section>

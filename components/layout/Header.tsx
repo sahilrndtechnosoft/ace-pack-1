@@ -7,16 +7,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, PhoneCall, ChevronRight, ArrowRight, Sparkles } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
-// Pages that used to be reachable only from the phone menu. One list feeds
-// the desktop "Resources" dropdown and the phone menu's grouped section.
-const resourceLinks = [
-  { href: '/quality', label: 'Quality & Certifications', hint: 'ISO 9001, FDA-grade PP 05' },
-  { href: '/process', label: 'Manufacturing Process', hint: 'Resin to dispatch in 7 steps' },
-  { href: '/capabilities', label: 'Capabilities', hint: 'Presses, tooling, capacity' },
-  { href: '/downloads', label: 'Download Center', hint: 'Catalogues and datasheets' },
-  { href: '/pricing', label: 'Pricing & MOQ', hint: 'Volume tiers and lead times' },
-  { href: '/faq', label: 'FAQ', hint: 'Answers before you order' },
-];
+import { resourceLinks } from '@/lib/data/resources';
+import { PackagingIllustration } from '@/components/products/PackagingIllustration';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,7 +60,7 @@ export const Header: React.FC = () => {
       className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
         }`}
     >
-      <div className="container-custom max-w-[1600px] flex items-center justify-between gap-6">
+      <div className="container-custom max-w-[1600px] flex items-center justify-between gap-3">
 
         {/* Brand Logo - Official Ace Packaging Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-3 group">
@@ -97,6 +90,9 @@ export const Header: React.FC = () => {
           <div
             onMouseEnter={() => setMegaMenuOpen(true)}
             onMouseLeave={() => setMegaMenuOpen(false)}
+            onFocus={() => setMegaMenuOpen(true)}
+            onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setMegaMenuOpen(false); }}
+            onKeyDown={e => { if (e.key === 'Escape') { setMegaMenuOpen(false); e.stopPropagation(); } }}
           >
             <Link
               href="/categories"
@@ -122,7 +118,7 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white border-2 border-[var(--ace-orange)]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal uppercase-none origin-top">
+                    className="bg-white border-2 border-[var(--ace-orange)]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal normal-case whitespace-normal origin-top max-h-[calc(100dvh-130px)] overflow-y-auto" data-lenis-prevent>
 
                     {/* Header Title Bar */}
                     <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-[var(--ace-line)]">
@@ -143,9 +139,9 @@ export const Header: React.FC = () => {
                     </div>
 
                     {/* Multi-Column Category-Wise Variant Grid styled with Ace Packaging Brand Gold Theme (var(--ace-orange)) */}
-                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-6 sm:gap-y-8 max-h-[60vh] xl:max-h-[460px] overflow-y-auto pr-2">
+                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-6 sm:gap-y-8">
                       {productCategories.map((category) => (
-                        <div key={category.id} className="flex flex-col">
+                        <div key={category.id} className="flex flex-col min-w-0">
 
                           {/* Category Heading in Brand Gold (var(--ace-orange)) */}
                           <Link
@@ -153,7 +149,8 @@ export const Header: React.FC = () => {
                             onClick={() => setMegaMenuOpen(false)}
                             className="group inline-block pb-2 mb-3 border-b-2 border-[var(--ace-orange)]/40 hover:border-[var(--ace-orange)] transition-colors"
                           >
-                            <h3 className="text-sm font-extrabold text-[var(--ace-orange)] group-hover:text-[var(--ace-orange)] transition-colors leading-tight">
+                            <h3 className="text-sm font-extrabold text-[var(--ace-orange)] group-hover:text-[var(--ace-orange)] transition-colors leading-tight flex items-center gap-3 normal-case">
+                              <PackagingIllustration slug={category.slug} className="w-10 h-10 shrink-0" />
                               {category.name}
                             </h3>
                           </Link>
@@ -165,11 +162,9 @@ export const Header: React.FC = () => {
                                 key={product.id}
                                 href={`/categories/${category.slug}/${product.product_slug}`}
                                 onClick={() => setMegaMenuOpen(false)}
-                                className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[var(--ace-orange)] transition-colors group"
+                                className="flex items-center gap-2 text-sm font-semibold normal-case text-gray-800 hover:text-[var(--ace-orange)] transition-colors group"
                               >
-                                <span className="text-[var(--ace-orange)] font-bold text-sm leading-none group-hover:translate-x-0.5 transition-transform">
-                                  ›
-                                </span>
+                                <PackagingIllustration slug={category.slug} productId={product.id} className="w-8 h-8 shrink-0 text-[var(--ace-orange)]" />
                                 <span className="leading-snug">{product.name}</span>
                               </Link>
                             ))}
@@ -189,7 +184,7 @@ export const Header: React.FC = () => {
                         onClick={() => setMegaMenuOpen(false)}
                         className="font-bold text-[var(--ace-orange)] hover:underline uppercase tracking-wider whitespace-nowrap"
                       >
-                        Request Bulk Factory Quote →
+                        Discuss Your Requirements →
                       </Link>
                     </div>
 
@@ -209,8 +204,8 @@ export const Header: React.FC = () => {
 
           <div
             className="relative"
-            onMouseEnter={() => setResourcesOpen(true)}
-            onMouseLeave={() => setResourcesOpen(false)}
+            onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setResourcesOpen(false); }}
+            onKeyDown={e => { if (e.key === 'Escape') setResourcesOpen(false); }}
           >
             <button
               type="button"
@@ -229,7 +224,7 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-[300px] bg-white border border-[var(--ace-line)] rounded-2xl shadow-2xl p-2 normal-case tracking-normal"
+                    className="w-[300px] bg-white border border-[var(--ace-line)] rounded-2xl shadow-2xl p-2 normal-case tracking-normal max-h-[70vh] overflow-y-auto" data-lenis-prevent
                   >
                     {resourceLinks.map((item) => (
                       <Link
@@ -249,9 +244,7 @@ export const Header: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          <Link href="/gallery" className={navLink('/gallery')} aria-current={isActive('/gallery') ? 'page' : undefined}>
-            Gallery
-          </Link>
+
 
           <Link href="/blog" className={navLink('/blog')} aria-current={isActive('/blog') ? 'page' : undefined}>
             Blogs
@@ -262,21 +255,23 @@ export const Header: React.FC = () => {
           </Link>
         </nav>
 
+        <LanguageSelector />
+
         {/* Action Button */}
         <div className="hidden sm:flex shrink-0 items-center gap-4">
           <a
-            href="tel:+919820000000"
+            href="tel:+919925015906"
             className="hidden 2xl:flex items-center gap-2 text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
           >
             <PhoneCall className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-            <span>+91 98200 00000</span>
+            <span>+91 99250 15906</span>
           </a>
 
           <Link
             href="/contact"
             className="bg-[var(--ace-orange)] text-white hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-xs font-bold px-5 py-3 rounded-full shadow-sm hover:shadow transition-all uppercase tracking-wider"
           >
-            Get Quote
+            Contact Us
           </Link>
         </div>
 
@@ -325,7 +320,7 @@ export const Header: React.FC = () => {
             transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
             className="xl:hidden overflow-hidden bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)]"
           >
-            <div className="px-6 py-6 space-y-4">
+            <div className="px-6 py-6 space-y-4 max-h-[calc(100dvh-100px)] overflow-y-auto" data-lenis-prevent>
               <nav className="flex flex-col gap-3 text-sm font-bold uppercase text-[var(--ace-ink)]">
                 {/* <Link
                   href="/"
@@ -364,9 +359,9 @@ export const Header: React.FC = () => {
                               key={category.id}
                               href={`/categories/${category.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="py-1.5 flex items-center gap-1.5 hover:text-[var(--ace-orange)]"
+                              className="py-1.5 min-h-11 flex items-center gap-1.5 hover:text-[var(--ace-orange)]"
                             >
-                              <span className="text-[var(--ace-orange)]">›</span>
+                              <PackagingIllustration slug={category.slug} className="w-9 h-9 shrink-0 text-[var(--ace-orange)]" />
                               {category.name}
                             </Link>
                           ))}
@@ -406,14 +401,7 @@ export const Header: React.FC = () => {
                 >
                   Industries
                 </Link>
-                <Link
-                  href="/gallery"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={mobileLink('/gallery')}
-                  aria-current={isActive('/gallery') ? 'page' : undefined}
-                >
-                  Gallery
-                </Link>
+
                 <Link
                   href="/blog"
                   onClick={() => setMobileMenuOpen(false)}
@@ -441,7 +429,7 @@ export const Header: React.FC = () => {
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       aria-current={isActive(item.href) ? 'page' : undefined}
-                      className={`py-1.5 transition-colors hover:text-[var(--ace-orange)] ${isActive(item.href) ? 'text-[var(--ace-orange)]' : ''}`}
+                      className={`py-1.5 min-h-11 flex items-center transition-colors hover:text-[var(--ace-orange)] ${isActive(item.href) ? 'text-[var(--ace-orange)]' : ''}`}
                     >
                       {item.label}
                     </Link>
@@ -455,7 +443,7 @@ export const Header: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full bg-[var(--ace-orange)] hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-white text-xs font-bold py-3 rounded-full text-center uppercase tracking-wider"
                 >
-                  Request Quote
+                  Contact Us
                 </Link>
               </div>
             </div>

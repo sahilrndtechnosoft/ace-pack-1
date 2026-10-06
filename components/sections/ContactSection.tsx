@@ -49,7 +49,7 @@ export const ContactSection: React.FC = () => {
             </h2>
           </SplitHeading>
           <p className="text-xs sm:text-sm text-gray-600 mt-4 leading-relaxed">
-            Request wholesale pricing, inquire about custom IML branding, or speak with our polymer packaging engineers in Daman.
+            Discuss your requirements, inquire about custom IML branding, or speak with our polymer packaging engineers in Daman.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export const ContactSection: React.FC = () => {
           <Reveal type="fade-left" delay={0.15}>
             <div className="lg:col-span-7 bg-white p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border-2 border-[#cfa144]/70 shadow-lg">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h3>
-              <p className="text-xs text-gray-500 mb-6 sm:mb-8">Fill in your requirements below to receive a wholesale catalog & sample kit.</p>
+              <p className="text-xs text-gray-500 mb-6 sm:mb-8">Tell us about your application and request product information or a sample kit.</p>
 
               <form className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -129,7 +129,7 @@ export const ContactSection: React.FC = () => {
                   transition={{ duration: 0.2 }}
                   className="w-full bg-gradient-to-r from-[#cfa144] to-[#a8812f] hover:from-[#a8812f] hover:to-[#cfa144] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 transition-all duration-300 flex items-center justify-center gap-2"
                 >
-                  <span>Submit Wholesale Quotation Request</span>
+                  <span>Send Your Requirements</span>
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 

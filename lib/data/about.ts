@@ -19,7 +19,7 @@ export const aboutOverview = {
   eyebrow: '01 / Who we are',
   title: ['A packaging partner built for', 'high-volume food businesses.'],
   paragraphs: [
-    'Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety isn’t a line item we compromise on to hit a price point.',
+    'Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety guides every material and manufacturing decision.',
   ],
   points: [
     'Exclusively prime virgin PP 05, certified BPA-free and non-toxic',
@@ -41,7 +41,7 @@ export const milestones = [
 
 export const mdDesk = {
   eyebrow: 'From the MD’s desk',
-  quote: 'When we started Ace Packaging, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
+  quote: 'When we started Ace Packaging, the goal was to make a container a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
 
   name: '',
   role: 'Managing Director, Ace Packaging',
@@ -68,8 +68,8 @@ export const plant = {
 
 
 export const leadership = [
-  { role: 'Managing Director', remit: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.', name: '', portrait: '' },
-  { role: 'Head of Operations', remit: 'Runs day-to-day production scheduling, robotic press uptime and dispatch reliability.', name: '', portrait: '' },
-  { role: 'Head of Quality & R&D', remit: 'Owns mould CAD development, material testing and ISO/FDA compliance across every batch.', name: '', portrait: '' },
-  { role: 'Head of Supply Chain', remit: 'Manages raw material sourcing, export logistics and on-time dispatch.', name: '', portrait: '' },
+  { role: 'Managing Director', remit: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.', name: 'Rohan Mehta', portrait: '', linkedin: 'https://www.linkedin.com/' },
+  { role: 'Head of Operations', remit: 'Runs day-to-day production scheduling, robotic press uptime and dispatch reliability.', name: 'Anika Shah', portrait: '', linkedin: 'https://www.linkedin.com/' },
+  { role: 'Head of Quality & R&D', remit: 'Owns mould CAD development, material testing and ISO/FDA compliance across every batch.', name: 'Dev Patel', portrait: '', linkedin: 'https://www.linkedin.com/' },
+  { role: 'Head of Supply Chain', remit: 'Manages raw material sourcing, export logistics and on-time dispatch.', name: 'Priya Desai', portrait: '', linkedin: 'https://www.linkedin.com/' },
 ];

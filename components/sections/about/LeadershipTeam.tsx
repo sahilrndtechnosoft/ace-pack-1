@@ -3,36 +3,8 @@ import { Reveal } from '../../ui/Reveal';
 import { SplitHeading } from '../../ui/SplitHeading';
 import { Briefcase, Cog, FlaskConical, Truck } from 'lucide-react';
 
-// Placeholder org structure pending real leadership names, photos, and
-// bios — swap `name` and `bio` below before this section goes live.
-// Deliberately kept to role + remit only for now rather than inventing
-// specific people's names/photos for a real company's actual leadership.
-const leaders = [
-  {
-    role: 'Managing Director',
-    name: 'Leadership Name',
-    bio: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.',
-    icon: Briefcase
-  },
-  {
-    role: 'Head of Operations',
-    name: 'Leadership Name',
-    bio: 'Runs day-to-day production scheduling, robotic press uptime, and dispatch reliability.',
-    icon: Cog
-  },
-  {
-    role: 'Head of Quality & R&D',
-    name: 'Leadership Name',
-    bio: 'Owns mould CAD development, material testing, and ISO/FDA compliance across every batch.',
-    icon: FlaskConical
-  },
-  {
-    role: 'Head of Supply Chain',
-    name: 'Leadership Name',
-    bio: 'Manages raw material sourcing, export logistics, and on-time dispatch across 25+ countries.',
-    icon: Truck
-  }
-];
+import { leadership } from '@/lib/data/about';
+const leaders = leadership.map((person,i)=>({...person,bio:person.remit,icon:[Briefcase,Cog,FlaskConical,Truck][i]}));
 
 export const LeadershipTeam: React.FC = () => {
   return (
@@ -48,6 +20,7 @@ export const LeadershipTeam: React.FC = () => {
         </h2>
       </SplitHeading>
 
+      <p className="mb-6 text-sm text-gray-600">Sample names and LinkedIn links for design review.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {leaders.map((leader, idx) => {
           const Icon = leader.icon;
@@ -62,6 +35,7 @@ export const LeadershipTeam: React.FC = () => {
                 </span>
                 <h4 className="text-sm font-bold text-[#1A1D20] mb-2">{leader.name}</h4>
                 <p className="text-xs text-gray-600 leading-relaxed">{leader.bio}</p>
+                <a href={leader.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center mt-3 text-sm underline">LinkedIn (sample link)</a>
               </div>
             </Reveal>
           );

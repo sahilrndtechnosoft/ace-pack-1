@@ -1,0 +1,32 @@
+.resource-page{color:var(--ace-ink);background:var(--ace-paper)}
+.resource-hero{padding:80px 0;background:var(--ace-aqua-soft)}
+.resource-hero h1{font-size:clamp(40px,6vw,82px);max-width:900px;margin:18px 0 26px;font-weight:500;letter-spacing:var(--heading-tracking);line-height:var(--heading-leading)}
+.resource-hero p:not(.xp-eyebrow){max-width:680px;font-size:18px;line-height:1.8;margin-bottom:28px;color:var(--ace-muted)}
+.resource-content{padding-top:72px;padding-bottom:80px}
+.resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px}
+.resource-grid article,.resource-tool{border:1px solid var(--ace-line);background:var(--ace-white);border-radius:16px;padding:32px}
+.resource-grid article>span{font-size:14px;color:var(--ace-teal)}
+.resource-grid h2{font-size:28px;line-height:1.2;margin:16px 0}
+.resource-grid p,.resource-note{color:var(--ace-muted);line-height:1.8}
+.resource-note{margin-top:28px;font-size:15px}
+.resource-tool label{display:block;font-size:15px;font-weight:600;margin:20px 0}
+.resource-tool input{display:block;width:100%;min-height:48px;padding:10px 14px;margin-top:8px;border:1px solid var(--ace-line);border-radius:8px;background:var(--ace-paper);color:var(--ace-ink)}
+.resource-tool output{display:block;background:var(--ace-aqua-soft);padding:20px;border-radius:10px;font-size:20px;line-height:1.6}
+@media(max-width:767px){.resource-hero{padding:48px 0}.resource-content{padding-top:44px;padding-bottom:48px}.resource-grid{grid-template-columns:1fr}.resource-grid article,.resource-tool{padding:24px}}
+
+.export-preparation{position:relative;background:var(--ace-aqua-soft);padding:96px 0;color:var(--ace-ink)}
+.export-heading{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:end;margin:24px 0 48px}
+.export-heading h2{font-size:clamp(36px,4.2vw,64px);font-weight:500;letter-spacing:var(--heading-tracking);line-height:1.15}
+.export-heading h2 em{font-family:var(--font-serif);font-weight:400;color:var(--ace-orange)}
+.export-heading p,.export-steps p{font-size:16px;line-height:1.8;color:var(--ace-muted)}
+.export-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-bottom:40px}
+.export-steps article{border-top:1px solid var(--ace-line);padding-top:20px}
+.export-steps article>span{color:var(--ace-teal);font-size:14px}
+.export-steps h3{font-size:20px;line-height:1.4;margin:16px 0 10px}
+.xa-team-note{max-width:700px;font-size:15px;line-height:1.8;color:var(--ace-muted);margin:24px 0 36px}
+.xa-team-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:18px;font-size:15px;text-decoration:underline;text-underline-offset:5px}
+@media(max-width:1023px){.export-heading{gap:32px}.export-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:639px){.export-preparation{padding:56px 0}.export-heading{grid-template-columns:1fr;gap:24px;margin-bottom:32px}.export-steps{grid-template-columns:1fr;gap:24px}}
+
+.xa-leadership .xa-lead-name{font-size:15px;color:var(--ace-teal);line-height:1.6;letter-spacing:.01em;margin:8px 0 14px}
+.xa-leadership .xa-lead p{font-size:15px;color:var(--ace-muted);line-height:1.8}

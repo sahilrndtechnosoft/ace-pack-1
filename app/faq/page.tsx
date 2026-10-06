@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQ) | Ace Packaging',
-  description: 'Find answers regarding virgin PP 05 food safety, microwave reheating, leak testing, MOQ guidelines, and shipping logistics.',
+  description: 'Find answers regarding virgin PP 05 food safety, microwave reheating, leak testing, product enquiries, and shipping logistics.',
 };
 
 export default function FaqPage() {
@@ -24,8 +24,8 @@ export default function FaqPage() {
       answer: 'Our Hinge Cups feature a built-in snap-tight lid rim geometry that creates an airtight hermetic seal, preventing liquid spillage even during rough motorcycle transit.'
     },
     {
-      question: 'What is the minimum order quantity (MOQ) for factory direct orders?',
-      answer: 'Standard stock containers have a minimum order quantity of 1 master carton (typically 1,000–2,000 Pcs). Custom color or IML printed runs start from 25,000 Pcs.'
+      question: 'What information should I share when enquiring?',
+      answer: 'Share your food application, preferred format and capacity, expected quantities, destination, and any colour or IML artwork requirements. Our team can help you prepare the product specification.'
     },
     {
       question: 'Where is your manufacturing facility located?',

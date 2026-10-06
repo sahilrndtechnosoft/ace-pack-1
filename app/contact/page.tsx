@@ -6,7 +6,7 @@ import { productCategories } from '@/lib/data/products';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
-  description: 'Get in touch with Ace Packaging sales team for factory wholesale quotes, custom mould R&D, and free sample requests for plastic food containers.',
+  description: 'Get in touch with Ace Packaging sales team for product information, custom mould R&D, and free sample requests for plastic food containers.',
 };
 
 export default function ContactPage() {
@@ -14,7 +14,7 @@ export default function ContactPage() {
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
       <PageBanner
         title="Contact Our Factory & Sales Team"
-        subtitle="Request wholesale pricing, inquire about custom IML branding, or speak with our polymer packaging engineers in Daman."
+        subtitle="Discuss your requirements, inquire about custom IML branding, or speak with our polymer packaging engineers in Daman."
         badge="Get in touch with Ace Packaging"
         bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
         breadcrumbs={[{ name: 'Contact', href: '/contact' }]}
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">WhatsApp Sales</span>
                   <h3 className="text-base font-bold text-[#1A1D20] mb-2">+91 99250 15906</h3>
                   <a
-                    href="https://wa.me/919925015906?text=Hello%20Ace%20Packaging%2C%20I%27d%20like%20a%20wholesale%20quote%20for%20food%20containers."
+                    href="https://wa.me/919925015906?text=Hello%20Ace%20Packaging%2C%20I%27d%20like%20a%20product%20information%20for%20food%20containers."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#1ebe5b] rounded-xl px-4 py-2.5 transition-colors"
@@ -83,7 +83,7 @@ export default function ContactPage() {
 
               <div className="bg-white p-6 rounded-3xl border border-[#E6DBC6] shadow-sm text-center">
                 <div className="flex items-center justify-center gap-2 text-xs font-bold text-gray-700">
-                  <ShieldCheck className="w-4 h-4 text-[#a8812f]" /> 100% Direct Factory Wholesale Rates & Sample Kits
+                  <ShieldCheck className="w-4 h-4 text-[#a8812f]" /> Product Specifications & Sample Kits
                 </div>
               </div>
 
@@ -92,7 +92,7 @@ export default function ContactPage() {
             {/* Inquiry Form */}
             <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/70 shadow-lg">
               <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h2>
-              <p className="text-xs text-gray-500 mb-8">Fill in your requirements below to receive a wholesale catalog & sample kit.</p>
+              <p className="text-xs text-gray-500 mb-8">Tell us about your application and request product information or a sample kit.</p>
 
               <form className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -133,7 +133,7 @@ export default function ContactPage() {
                 </div>
 
                 <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2">
-                  <span>Submit Wholesale Quotation Request</span>
+                  <span>Send Your Requirements</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 

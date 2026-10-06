@@ -194,8 +194,8 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
               </div>
 
               <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border-2 border-[var(--ace-orange)]/70 shadow-md">
-                <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-1">Inquire Factory Pricing for {product.name}</h3>
-                <p className="text-xs text-gray-500 mb-6">Fill in your requirements below to receive a wholesale quote & free sample kit.</p>
+                <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-1">Discuss Specifications for {product.name}</h3>
+                <p className="text-xs text-gray-500 mb-6">Tell us about your application and request product information or a sample kit.</p>
 
                 <form className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -226,7 +226,7 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
                   </div>
 
                   <button type="submit" className="w-full bg-[var(--ace-orange)] hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-[var(--ace-ink)] font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2">
-                    <span>Submit Wholesale Quote Request</span>
+                    <span>Send Product Enquiry</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>

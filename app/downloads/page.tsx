@@ -90,7 +90,7 @@ export default function DownloadsPage() {
             <div className="flex-1">
               <span className="text-[10px] font-bold text-[#D6BC83] uppercase tracking-wider block mb-2">Need a physical sample?</span>
               <h3 className="text-xl font-extrabold mb-2">Sample kits ship with the printed catalog</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">Request a wholesale quote and we include a sample kit of the lines you are evaluating, so specifications can be checked in hand.</p>
+              <p className="text-xs text-gray-300 leading-relaxed">Request a sample kit of the lines you are evaluating, so specifications can be checked in hand.</p>
             </div>
             <Link href="/contact" className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3.5 px-7 rounded-xl text-xs uppercase tracking-wider transition-all">
               Request a sample kit <ArrowRight className="w-4 h-4" />

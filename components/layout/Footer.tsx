@@ -67,9 +67,12 @@ export const Footer: React.FC = () => {
               <li><Link href="/industries" className="hover:text-[#D6BC83] transition-colors">Industries We Serve</Link></li>
               <li><Link href="/quality" className="hover:text-[#D6BC83] transition-colors">Quality &amp; Certifications</Link></li>
               <li><Link href="/downloads" className="hover:text-[#D6BC83] transition-colors">Download Center</Link></li>
+              <li><Link href="/oem" className="hover:text-[#D6BC83] transition-colors">OEM</Link></li>
+              <li><Link href="/customization" className="hover:text-[#D6BC83] transition-colors">Customization</Link></li>
+              <li><Link href="/tools" className="hover:text-[#D6BC83] transition-colors">Tools</Link></li>
               <li><Link href="/gallery" className="hover:text-[#D6BC83] transition-colors">Visual Gallery</Link></li>
               <li><Link href="/blog" className="hover:text-[#D6BC83] transition-colors">Blog & Articles</Link></li>
-              <li><Link href="/contact" className="hover:text-[#D6BC83] transition-colors">Contact Sales</Link></li>
+              <li><Link href="/contact" className="hover:text-[#D6BC83] transition-colors">Contact Team</Link></li>
             </ul>
           </div>
 
@@ -92,7 +95,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-5">Catalog & Updates</h4>
             <p className="text-xs text-gray-400 leading-relaxed mb-4">
-              Subscribe to receive our latest product catalog, new CAD specifications, and factory wholesale rates.
+              Subscribe to receive our latest product catalog, new CAD specifications, and product updates.
             </p>
 
             <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-2.5">

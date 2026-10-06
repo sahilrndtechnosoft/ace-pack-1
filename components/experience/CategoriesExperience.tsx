@@ -238,7 +238,7 @@ export default function CategoriesExperience() {
           <span className="xp-eyebrow">Catalog &amp; sample kit</span>
           <h2 data-split>Specify it <em>in hand.</em></h2>
           <div className="xc-closing-actions">
-            <Link href="/contact" className="xp-button">Request wholesale pricing <ArrowRight size={18} /></Link>
+            <Link href="/contact" className="xp-button">Discuss your requirements <ArrowRight size={18} /></Link>
             <Link href="/downloads" className="xp-button xp-button--ghost">Download the catalog <FileDown size={18} /></Link>
           </div>
         </div>

@@ -114,7 +114,7 @@ export const FaqSection: React.FC = () => {
               Get in touch with Ace Packaging
             </span>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Send Factory Inquiry</h3>
-            <p className="text-xs text-gray-400 mb-8">Fill in your requirements below to receive a wholesale catalog & sample kit.</p>
+            <p className="text-xs text-gray-400 mb-8">Tell us about your application and request product information or a sample kit.</p>
 
             <form className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -155,7 +155,7 @@ export const FaqSection: React.FC = () => {
               </div>
 
               <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
-                <span>Submit Wholesale Quotation Request</span>
+                <span>Send Your Requirements</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 

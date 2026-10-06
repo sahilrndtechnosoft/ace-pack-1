@@ -258,10 +258,10 @@ export default function ProductsExperience() {
 
       <section className="xpr-closing">
         <div className="xpr-wrap">
-          <span className="xp-eyebrow">Wholesale pricing &amp; sample kit</span>
+          <span className="xp-eyebrow">Product information &amp; sample kit</span>
           <h2 data-split>See it <em>before you order.</em></h2>
           <div className="xpr-closing-actions">
-            <Link href="/contact" className="xp-button">Request wholesale pricing <ArrowRight size={18} /></Link>
+            <Link href="/contact" className="xp-button">Discuss your requirements <ArrowRight size={18} /></Link>
             <Link href="/downloads" className="xp-button xp-button--ghost">Download datasheets <FileDown size={18} /></Link>
           </div>
         </div>

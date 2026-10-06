@@ -186,7 +186,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <div className="bg-white p-6 rounded-3xl border-2 border-[#cfa144]/60 shadow-md">
                 <div className="pb-4 mb-4 border-b border-[#E6DBC6]">
                   <h3 className="text-lg font-bold text-[#1A1D20]">Inquiry Form</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">Get in touch with us for bulk container samples & quotes</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Get in touch for container specifications and samples</p>
                 </div>
 
                 <form className="space-y-3.5">
