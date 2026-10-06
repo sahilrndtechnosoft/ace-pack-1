@@ -3,14 +3,35 @@
 @tailwind utilities;
 
 :root {
-  --background: #faf8f4;
-  --foreground: #1a1d20;
-  /* Brand gold, lifted from the muted ochre it was: saturated enough to read
-     as an accent on cream and on the dark green, with a deeper step for
-     hover states and small text on light backgrounds. */
-  --brand-gold: #cfa144;
-  --brand-gold-deep: #a8812f;
-  --ink-soft: #474c44;
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-instrument);
+  --heading-tracking: -.02em;
+  --heading-leading: 1.1;
+  --ace-paper: #fafbf7;
+  --ace-white: #ffffff;
+  --ace-ink: #123b40;
+  --ace-teal: #17665e;
+  --ace-muted: #53666a;
+  --ace-orange: #b74725;
+  --ace-orange-bright: #ed8a5e;
+  --ace-aqua: #d9eeE8;
+  --ace-aqua-soft: #edf5f1;
+  --ace-aqua-line: #c4ded4;
+  --ace-line: #d9e2dc;
+  --ace-image-surface: #eff2eb;
+  --ace-pale-blue: #edf2f5;
+  --ace-pale-peach: #f6eee6;
+  --ace-light-text: #c3d8d5;
+  --ace-dark-line: #426064;
+  --ace-dark-surface: #21484c;
+  --ace-header-surface: #fafbf7f5;
+  --ace-shadow: #123b400c;
+  --ace-photo-shade: #123b40d9;
+  --background: var(--ace-paper);
+  --foreground: var(--ace-ink);
+  --brand-gold: var(--ace-orange);
+  --brand-gold-deep: var(--ace-orange);
+  --ink-soft: var(--ace-muted);
 }
 
 body {
@@ -185,4 +206,15 @@ body {
 
 .gallery-card {
   scroll-snap-align: start;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--ace-orange);
+  outline-offset: 4px;
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled), summary { cursor: pointer; }
+#main-content { scroll-margin-top: 140px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }

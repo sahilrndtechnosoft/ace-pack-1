@@ -62,7 +62,7 @@ export const blogPosts: BlogPost[] = [
     content: [
       'When hot gravies and soups at temperatures exceeding 80°C are poured into low-grade containers, plastic softening and harmful chemical leaching become major health concerns.',
       'Virgin Polypropylene (PP 05) features high heat distortion resistance, enabling microwave reheating up to 120°C without structural sagging or chemical emission.',
-      'AcePack uses 100% prime virgin PP 05 resins certified under US FDA 21 CFR 177.1520 guidelines, ensuring complete BPA-free safety for end consumers.'
+      'Ace Packaging uses 100% prime virgin PP 05 resins certified under US FDA 21 CFR 177.1520 guidelines, ensuring complete BPA-free safety for end consumers.'
     ],
     takeaways: [
       'Resists thermal deformation up to +120°C for direct hot soup pouring.',

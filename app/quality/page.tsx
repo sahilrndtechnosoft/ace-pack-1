@@ -7,8 +7,8 @@ import { certifications, qualityChecks, complianceStatements } from '@/lib/data/
 import { ShieldCheck, CheckCircle2, FileDown, ArrowRight, ClipboardCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Quality Assurance & Certifications | AcePack Packaging',
-  description: 'ISO 9001:2015 facility, US FDA 21 CFR 177.1520 certified virgin PP 05, 100% leak testing and ±0.02 mm wall tolerance. How every AcePack container is inspected before dispatch.',
+  title: 'Quality Assurance & Certifications | Ace Packaging',
+  description: 'ISO 9001:2015 facility, US FDA 21 CFR 177.1520 certified virgin PP 05, 100% leak testing and ±0.02 mm wall tolerance. How every Ace Packaging container is inspected before dispatch.',
 };
 
 export default function QualityPage() {
@@ -79,7 +79,7 @@ export default function QualityPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
               <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-2">Compliance</span>
-              <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-5">What every AcePack container is</h2>
+              <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-5">What every Ace Packaging container is</h2>
               <ul className="space-y-3">
                 {complianceStatements.map((statement) => (
                   <li key={statement} className="flex items-start gap-3 text-xs sm:text-sm text-gray-700">

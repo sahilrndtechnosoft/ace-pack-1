@@ -20,7 +20,7 @@ export const CompanyOverview: React.FC = () => {
               <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 h-[340px] sm:h-[420px] w-full">
                 <img
                   src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/ChatGPT%20Image%20Aug%2026,%202026,%2012_02_15%20PM.png?tr=w-800,q-78,f-webp"
-                  alt="AcePack manufacturing facility"
+                  alt="Ace Packaging manufacturing facility"
                   width={800}
                   height={450}
                   loading="lazy"
@@ -47,7 +47,7 @@ export const CompanyOverview: React.FC = () => {
               </SplitHeading>
 
               <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                AcePack Packaging is a high-precision injection-moulding manufacturer specializing in food-grade plastic containers for QSR chains, cloud kitchens, caterers, and retail food brands. From our Daman manufacturing base, we engineer containers that hold up through freezer storage, microwave reheating, and the realities of last-mile delivery.
+                Ace Packaging is a high-precision injection-moulding manufacturer specializing in food-grade plastic containers for QSR chains, cloud kitchens, caterers, and retail food brands. From our Daman manufacturing base, we engineer containers that hold up through freezer storage, microwave reheating, and the realities of last-mile delivery.
               </p>
               <p className="text-sm text-gray-600 leading-relaxed mb-8">
                 Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety isn&apos;t a line item we compromise on to hit a price point.

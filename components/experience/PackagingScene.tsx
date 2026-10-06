@@ -6,6 +6,7 @@ import { Environment, Lightformer, useGLTF, useProgress, Sparkles, PerformanceMo
 import * as THREE from 'three';
 import { containerFinishes, type SceneState, defaultFinish } from './config';
 import { getModelPose } from './scene-pose';
+import { fitSceneFrame } from './scene-framing';
 
 type Props = { state:MutableRefObject<SceneState>; loadRange:boolean; renderActive:boolean; onReady:()=>void; onProgress:(n:number)=>void; onFailure:()=>void };
 // Phones now run this scene rather than falling back to stills, so the parts
@@ -65,10 +66,10 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
     g.scale.setScalar(pose.scale);g.position.set(...pose.position);g.rotation.set(...pose.rotation);
     // All three formats now have separate snap-fit lids.
     if(lid)lid.position.y=lidY+pose.lidLift;
-  });
+  },-2);
   return <group ref={group}><primitive object={scene}/></group>;
 }
-function Rig({state,onFailure}:Pick<Props,'state'|'onFailure'>) {
+function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembly:React.RefObject<THREE.Group|null>}) {
   const {gl,camera,setFrameloop,invalidate}=useThree();const light=useRef<THREE.PointLight>(null);const last=useRef(0);
   useEffect(()=>{
     const lost=(event:Event)=>{event.preventDefault();onFailure();};
@@ -76,31 +77,38 @@ function Rig({state,onFailure}:Pick<Props,'state'|'onFailure'>) {
     gl.domElement.addEventListener('webglcontextlost',lost);document.addEventListener('visibilitychange',visibility);
     return()=>{gl.domElement.removeEventListener('webglcontextlost',lost);document.removeEventListener('visibilitychange',visibility);};
   },[gl,onFailure,setFrameloop,invalidate,state]);
-  useFrame(({clock,size})=>{
+  useFrame(({clock,size},delta)=>{
     const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height,size.height);
     camera.position.set(...pose.camera);camera.lookAt(0,pose.lookAt,0);
+    camera.updateMatrixWorld();
+    const bounds=assembly.current&&s.frame&&camera instanceof THREE.PerspectiveCamera?fitSceneFrame(assembly.current,camera,s.frame,delta):undefined;
     if(light.current)light.current.position.set(2+s.pointerX*2,3+s.pointerY,3);
     if(process.env.NODE_ENV==='development'&&clock.elapsedTime-last.current>.2){
       last.current=clock.elapsedTime;
       gl.domElement.dataset.rotation=pose.rotation[1].toFixed(3);gl.domElement.dataset.lid=pose.lidAngle.toFixed(3);gl.domElement.dataset.range=s.range.toFixed(3);gl.domElement.dataset.finale=s.finale.toFixed(3);gl.domElement.dataset.hero=s.hero.toFixed(3);
+      gl.domElement.dataset.modelBounds=bounds?JSON.stringify(bounds):'';
+      gl.domElement.dataset.modelFrame=s.frame?JSON.stringify(s.frame):'';
     }
-  });
+  },-1);
   return <pointLight ref={light} intensity={12} distance={15} color="#e8cf9e"/>;
 }
 export default function PackagingScene(props:Props) {
+  const assembly=useRef<THREE.Group>(null);
   const compact=useCompactViewport();
   const [quality,setQuality]=useState(1.5);
   return <><Progress onProgress={props.onProgress}/><Canvas frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
     <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd"/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
     <PerformanceMonitor flipflops={2} onDecline={()=>setQuality(1)} onIncline={()=>setQuality(1.5)} onFallback={()=>setQuality(1)}/>
-    <Rig state={props.state} onFailure={props.onFailure}/>
+    <Rig state={props.state} onFailure={props.onFailure} assembly={assembly}/>
     <Environment resolution={compact?64:128} frames={1}>
       <Lightformer form="rect" intensity={4} position={[0,5,-2]} rotation={[Math.PI/2,0,0]} scale={[8,8,1]}/>
       <Lightformer form="rect" intensity={3} position={[-5,2,2]} rotation={[0,Math.PI/2,0]} scale={[4,7,1]}/>
       <Lightformer form="rect" color="#d4b477" intensity={2} position={[4,1,0]} rotation={[0,-Math.PI/2,0]} scale={[3,6,1]}/>
     </Environment>
+    <group ref={assembly}>
     <Suspense fallback={null}><Container kind={0} compact={compact} state={props.state} onReady={props.onReady}/></Suspense>
     {props.loadRange&&<><Suspense fallback={null}><Container kind={1} compact={compact} state={props.state}/></Suspense><Suspense fallback={null}><Container kind={2} compact={compact} state={props.state}/></Suspense></>}
+    </group>
     <Sparkles count={compact?10:22} scale={[10,4,3]} position={[0,0,-2]} size={1.7} speed={.18} opacity={.28} color="#cdb881"/>
   </Canvas></>;
 }

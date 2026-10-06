@@ -18,7 +18,7 @@ interface PageBannerProps {
 export const PageBanner: React.FC<PageBannerProps> = ({
   title,
   subtitle,
-  badge = 'ACEPACK PACKAGING',
+  badge = 'Ace Packaging',
   bgImage = '/50d728a7-e02c-49d9-b530-58a7db8a6ecc.png',
   breadcrumbs = [],
 }) => {
@@ -37,7 +37,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({
       <div className="container-custom relative z-10 text-left">
         {/* Badge */}
         {badge && (
-          <span className="inline-block bg-[#cfa144] text-[#1A1D20] text-[11px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider mb-4 shadow">
+          <span className="inline-block bg-[#cfa144] text-[#1A1D20] text-[15px] font-extrabold px-4 py-1 rounded-full tracking-wide mb-4 shadow">
             {badge}
           </span>
         )}
@@ -55,7 +55,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({
         )}
 
         {/* Formal Breadcrumbs */}
-        <nav className="flex flex-wrap items-center gap-x-1.5 gap-y-1 sm:gap-2 max-w-full bg-black/60 backdrop-blur-md px-3 sm:px-5 py-1.5 sm:py-2 rounded-2xl sm:rounded-full border border-white/20 text-[11px] sm:text-xs font-semibold">
+        <nav className="flex flex-wrap items-center gap-x-1.5 gap-y-1 sm:gap-2 max-w-full bg-black/60 backdrop-blur-md px-3 sm:px-5 py-1.5 sm:py-2 rounded-2xl sm:rounded-full border border-white/20 text-[15px] sm:text-xs font-semibold">
           <Link href="/" className="text-gray-300 hover:text-[#cfa144] flex items-center gap-1 transition-colors shrink-0">
             <Home className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#cfa144]" />
             <span>Home</span>

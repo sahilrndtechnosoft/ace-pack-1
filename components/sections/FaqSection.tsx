@@ -13,8 +13,8 @@ export const FaqSection: React.FC = () => {
 
   const faqs = [
     {
-      question: 'What material resins are used in AcePack containers?',
-      answer: 'All AcePack containers are manufactured using 100% prime virgin Polypropylene (PP 05) certified under US FDA 21 CFR 177.1520 regulations. They are 100% BPA-free, heavy metal free, and food-contact safe.'
+      question: 'What material resins are used in Ace Packaging containers?',
+      answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) certified under US FDA 21 CFR 177.1520 regulations. They are 100% BPA-free, heavy metal free, and food-contact safe.'
     },
     {
       question: 'Are your plastic containers microwave and freezer safe?',
@@ -39,7 +39,7 @@ export const FaqSection: React.FC = () => {
           <Reveal type="fade-right" duration={0.8}>
           <div className="lg:col-span-6 flex flex-col text-left">
 
-            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
+            <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-3">
               HELP & FAQ
             </span>
 
@@ -110,8 +110,8 @@ export const FaqSection: React.FC = () => {
           <Reveal type="fade-left" duration={0.8}>
           <div className="lg:col-span-6 bg-[#050505] p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-2xl text-left">
 
-            <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
-              GET IN TOUCH WITH ACEPACK
+            <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-2">
+              Get in touch with Ace Packaging
             </span>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Send Factory Inquiry</h3>
             <p className="text-xs text-gray-400 mb-8">Fill in your requirements below to receive a wholesale catalog & sample kit.</p>
@@ -154,7 +154,7 @@ export const FaqSection: React.FC = () => {
                 <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#111518] border border-white/20 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200"></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+              <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                 <span>Submit Wholesale Quotation Request</span>
                 <ArrowRight className="w-4 h-4" />
               </button>

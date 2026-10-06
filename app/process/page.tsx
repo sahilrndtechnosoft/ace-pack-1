@@ -4,8 +4,8 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { Cpu, ShieldCheck, CheckCircle2, RefreshCw, Box } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Manufacturing Process | AcePack Precision Moulding',
-  description: 'AcePack\'s 7-step precision injection moulding workflow, from virgin PP 05 procurement through robotic moulding, quality testing and dispatch.',
+  title: 'Manufacturing Process | Ace Packaging Precision Moulding',
+  description: 'Ace Packaging\'s 7-step precision injection moulding workflow, from virgin PP 05 procurement through robotic moulding, quality testing and dispatch.',
 };
 
 export default function ProcessPage() {

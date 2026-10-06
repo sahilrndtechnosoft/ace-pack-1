@@ -37,12 +37,12 @@ export const Header: React.FC = () => {
     return roots.some((root) => pathname === root || pathname.startsWith(`${root}/`));
   };
   const navLink = (href: string, extra = '') =>
-    `relative py-3 transition-colors hover:text-[#a8812f] after:absolute after:left-0 after:right-0 after:bottom-1 after:h-[2px] after:rounded-full after:bg-[#cfa144] after:origin-left after:transition-transform after:duration-300 ${
-      isActive(href) ? 'text-[#a8812f] after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+    `relative py-3 transition-colors hover:text-[var(--ace-orange)] after:absolute after:left-0 after:right-0 after:bottom-1 after:h-[2px] after:rounded-full after:bg-[var(--ace-orange)] after:origin-left after:transition-transform after:duration-300 ${
+      isActive(href) ? 'text-[var(--ace-orange)] after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
     } ${extra}`;
   const mobileLink = (href: string) =>
-    `py-2 flex items-center gap-3 transition-colors hover:text-[#a8812f] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:transition-colors ${
-      isActive(href) ? 'text-[#a8812f] before:bg-[#cfa144]' : 'before:bg-transparent'
+    `py-2 flex items-center gap-3 transition-colors hover:text-[var(--ace-orange)] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:transition-colors ${
+      isActive(href) ? 'text-[var(--ace-orange)] before:bg-[var(--ace-orange)]' : 'before:bg-transparent'
     }`;
 
   useEffect(() => {
@@ -64,17 +64,17 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[#f3f3f3] border-b border-[#E6DBC6] text-[#1A1D20] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
+      className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
         }`}
     >
-      <div className="container-custom flex items-center justify-between">
+      <div className="container-custom max-w-[1600px] flex items-center justify-between gap-6">
 
-        {/* Brand Logo - Official AcePack Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
+        {/* Brand Logo - Official Ace Packaging Logo */}
+        <Link href="/" className="flex shrink-0 items-center gap-3 group">
           <div className="flex items-center justify-center">
             <img
               src="/images/ace-logo.webp"
-              alt="AcePack Container Solutions"
+              alt="Ace Packaging"
               width={320}
               height={165}
               decoding="async"
@@ -84,7 +84,7 @@ export const Header: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider text-[#1A1D20]">
+        <nav className="hidden xl:flex items-center gap-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--ace-ink)]">
           <Link href="/about" className={navLink('/about')} aria-current={isActive('/about') ? 'page' : undefined}>
             About Us
           </Link>
@@ -100,14 +100,14 @@ export const Header: React.FC = () => {
           >
             <Link
               href="/categories"
-              className={navLink('/categories', `inline-flex items-center gap-1 ${megaMenuOpen ? 'text-[#a8812f]' : ''}`)}
+              className={navLink('/categories', `inline-flex items-center gap-1 ${megaMenuOpen ? 'text-[var(--ace-orange)]' : ''}`)}
               aria-current={isActive('/categories') ? 'page' : undefined}
             >
               <span>Our Products</span>
-              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${megaMenuOpen ? 'text-[#a8812f] -scale-y-100' : 'opacity-60'}`} />
+              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${megaMenuOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'}`} />
             </Link>
 
-            {/* Brand Theme (#cfa144) Category-Wise Product Variant Mega Menu.
+            {/* Brand Theme (var(--ace-orange)) Category-Wise Product Variant Mega Menu.
                 Positioning (centering) lives on this plain, non-animated
                 wrapper — NOT on the motion.div below. Framer Motion writes
                 its own inline `transform` for the opacity/y/scale animation,
@@ -122,38 +122,38 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white border-2 border-[#cfa144]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal uppercase-none origin-top">
+                    className="bg-white border-2 border-[var(--ace-orange)]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal uppercase-none origin-top">
 
                     {/* Header Title Bar */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-[#E6DBC6]">
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-[var(--ace-line)]">
                       <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-[#cfa144]" />
-                        <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4 text-[var(--ace-orange)]" />
+                        <span className="text-xs font-extrabold text-[var(--ace-orange)] uppercase tracking-wider">
                           Product Categories & Model Variants
                         </span>
                       </div>
                       <Link
                         href="/products"
                         onClick={() => setMegaMenuOpen(false)}
-                        className="text-xs font-bold text-gray-700 hover:text-[#a8812f] flex items-center gap-1 transition-colors"
+                        className="text-xs font-bold text-gray-700 hover:text-[var(--ace-orange)] flex items-center gap-1 transition-colors"
                       >
                         <span>View All Products Catalog</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#cfa144]" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
                       </Link>
                     </div>
 
-                    {/* Multi-Column Category-Wise Variant Grid styled with AcePack Brand Gold Theme (#cfa144) */}
+                    {/* Multi-Column Category-Wise Variant Grid styled with Ace Packaging Brand Gold Theme (var(--ace-orange)) */}
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-6 sm:gap-y-8 max-h-[60vh] xl:max-h-[460px] overflow-y-auto pr-2">
                       {productCategories.map((category) => (
                         <div key={category.id} className="flex flex-col">
 
-                          {/* Category Heading in Brand Gold (#cfa144) */}
+                          {/* Category Heading in Brand Gold (var(--ace-orange)) */}
                           <Link
                             href={`/categories/${category.slug}`}
                             onClick={() => setMegaMenuOpen(false)}
-                            className="group inline-block pb-2 mb-3 border-b-2 border-[#cfa144]/40 hover:border-[#cfa144] transition-colors"
+                            className="group inline-block pb-2 mb-3 border-b-2 border-[var(--ace-orange)]/40 hover:border-[var(--ace-orange)] transition-colors"
                           >
-                            <h3 className="text-sm font-extrabold text-[#a8812f] group-hover:text-[#a8812f] transition-colors leading-tight">
+                            <h3 className="text-sm font-extrabold text-[var(--ace-orange)] group-hover:text-[var(--ace-orange)] transition-colors leading-tight">
                               {category.name}
                             </h3>
                           </Link>
@@ -165,9 +165,9 @@ export const Header: React.FC = () => {
                                 key={product.id}
                                 href={`/categories/${category.slug}/${product.product_slug}`}
                                 onClick={() => setMegaMenuOpen(false)}
-                                className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[#a8812f] transition-colors group"
+                                className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[var(--ace-orange)] transition-colors group"
                               >
-                                <span className="text-[#a8812f] font-bold text-sm leading-none group-hover:translate-x-0.5 transition-transform">
+                                <span className="text-[var(--ace-orange)] font-bold text-sm leading-none group-hover:translate-x-0.5 transition-transform">
                                   ›
                                 </span>
                                 <span className="leading-snug">{product.name}</span>
@@ -180,14 +180,14 @@ export const Header: React.FC = () => {
                     </div>
 
                     {/* Bottom Footer Bar inside Mega Menu */}
-                    <div className="mt-6 pt-4 border-t border-[#E6DBC6] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#FAF8F4] -mx-5 sm:-mx-8 -mb-5 sm:-mb-8 p-4 rounded-b-3xl text-xs text-gray-600">
+                    <div className="mt-6 pt-4 border-t border-[var(--ace-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[var(--ace-paper)] -mx-5 sm:-mx-8 -mb-5 sm:-mb-8 p-4 rounded-b-3xl text-xs text-gray-600">
                       <span className="font-semibold text-gray-700">
                         💡 All containers are manufactured from 100% Virgin PP 05 Food Grade Plastic.
                       </span>
                       <Link
                         href="/contact"
                         onClick={() => setMegaMenuOpen(false)}
-                        className="font-bold text-[#a8812f] hover:underline uppercase tracking-wider whitespace-nowrap"
+                        className="font-bold text-[var(--ace-orange)] hover:underline uppercase tracking-wider whitespace-nowrap"
                       >
                         Request Bulk Factory Quote →
                       </Link>
@@ -216,10 +216,10 @@ export const Header: React.FC = () => {
               type="button"
               onClick={() => setResourcesOpen((v) => !v)}
               aria-expanded={resourcesOpen}
-              className={navLink('/resources', `inline-flex items-center gap-1 uppercase ${resourcesOpen ? 'text-[#a8812f]' : ''}`)}
+              className={navLink('/resources', `inline-flex items-center gap-1 uppercase ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`)}
             >
               <span>Resources</span>
-              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[#a8812f] -scale-y-100' : 'opacity-60'}`} />
+              <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'}`} />
             </button>
             <AnimatePresence>
               {resourcesOpen && (
@@ -229,7 +229,7 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-[300px] bg-white border border-[#E6DBC6] rounded-2xl shadow-2xl p-2 normal-case tracking-normal"
+                    className="w-[300px] bg-white border border-[var(--ace-line)] rounded-2xl shadow-2xl p-2 normal-case tracking-normal"
                   >
                     {resourceLinks.map((item) => (
                       <Link
@@ -237,9 +237,9 @@ export const Header: React.FC = () => {
                         href={item.href}
                         onClick={() => setResourcesOpen(false)}
                         aria-current={isActive(item.href) ? 'page' : undefined}
-                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[#FAF8F4] ${isActive(item.href) ? 'bg-[#FAF8F4]' : ''}`}
+                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[var(--ace-paper)] ${isActive(item.href) ? 'bg-[var(--ace-paper)]' : ''}`}
                       >
-                        <span className={`block text-[13px] font-bold ${isActive(item.href) ? 'text-[#a8812f]' : 'text-[#1A1D20]'}`}>{item.label}</span>
+                        <span className={`block text-[15px] font-bold ${isActive(item.href) ? 'text-[var(--ace-orange)]' : 'text-[var(--ace-ink)]'}`}>{item.label}</span>
                         <span className="block text-xs font-medium text-gray-500">{item.hint}</span>
                       </Link>
                     ))}
@@ -263,18 +263,18 @@ export const Header: React.FC = () => {
         </nav>
 
         {/* Action Button */}
-        <div className="hidden sm:flex items-center gap-4">
+        <div className="hidden sm:flex shrink-0 items-center gap-4">
           <a
             href="tel:+919820000000"
-            className="flex items-center gap-2 text-xs font-bold text-[#1A1D20] hover:text-[#a8812f] transition-colors"
+            className="hidden 2xl:flex items-center gap-2 text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
           >
-            <PhoneCall className="w-3.5 h-3.5 text-[#cfa144]" />
+            <PhoneCall className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
             <span>+91 98200 00000</span>
           </a>
 
           <Link
             href="/contact"
-            className="bg-[#cfa144] text-[#1A1D20] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-xs font-bold px-5 py-3 rounded-full shadow-sm hover:shadow transition-all uppercase tracking-wider"
+            className="bg-[var(--ace-orange)] text-white hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-xs font-bold px-5 py-3 rounded-full shadow-sm hover:shadow transition-all uppercase tracking-wider"
           >
             Get Quote
           </Link>
@@ -283,7 +283,7 @@ export const Header: React.FC = () => {
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-[#E6DBC6]/50 text-[#1A1D20] hover:bg-[#E6DBC6] transition-colors"
+          className="xl:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--ace-line)]/50 text-[var(--ace-ink)] hover:bg-[var(--ace-line)] transition-colors"
           aria-label="Toggle Navigation Menu"
         >
           <AnimatePresence initial={false} mode="wait">
@@ -323,10 +323,10 @@ export const Header: React.FC = () => {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
-            className="lg:hidden overflow-hidden bg-[#f3f3f3] border-b border-[#E6DBC6] text-[#1A1D20]"
+            className="xl:hidden overflow-hidden bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)]"
           >
             <div className="px-6 py-6 space-y-4">
-              <nav className="flex flex-col gap-3 text-sm font-bold uppercase text-[#1A1D20]">
+              <nav className="flex flex-col gap-3 text-sm font-bold uppercase text-[var(--ace-ink)]">
                 {/* <Link
                   href="/"
                   onClick={() => setMobileMenuOpen(false)}
@@ -339,8 +339,8 @@ export const Header: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setMobileProductsOpen((v) => !v)}
-                    className={`w-full py-2 flex items-center gap-3 uppercase transition-colors hover:text-[#a8812f] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full ${
-                      isActive('/categories') ? 'text-[#a8812f] before:bg-[#cfa144]' : 'before:bg-transparent'
+                    className={`w-full py-2 flex items-center gap-3 uppercase transition-colors hover:text-[var(--ace-orange)] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full ${
+                      isActive('/categories') ? 'text-[var(--ace-orange)] before:bg-[var(--ace-orange)]' : 'before:bg-transparent'
                     }`}
                     aria-expanded={mobileProductsOpen}
                   >
@@ -358,22 +358,22 @@ export const Header: React.FC = () => {
                         transition={{ height: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.2 } }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-3 py-1 flex flex-col gap-1 border-l-2 border-[#E6DBC6] normal-case font-semibold text-xs text-gray-700">
+                        <div className="pl-3 py-1 flex flex-col gap-1 border-l-2 border-[var(--ace-line)] normal-case font-semibold text-xs text-gray-700">
                           {productCategories.map((category) => (
                             <Link
                               key={category.id}
                               href={`/categories/${category.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="py-1.5 flex items-center gap-1.5 hover:text-[#a8812f]"
+                              className="py-1.5 flex items-center gap-1.5 hover:text-[var(--ace-orange)]"
                             >
-                              <span className="text-[#a8812f]">›</span>
+                              <span className="text-[var(--ace-orange)]">›</span>
                               {category.name}
                             </Link>
                           ))}
                           <Link
                             href="/categories"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="py-1.5 mt-1 font-extrabold text-[#a8812f] hover:underline"
+                            className="py-1.5 mt-1 font-extrabold text-[var(--ace-orange)] hover:underline"
                           >
                             View All Categories →
                           </Link>
@@ -432,16 +432,16 @@ export const Header: React.FC = () => {
                 </Link>
               </nav>
 
-              <div className="pt-4 border-t border-[#E6DBC6]">
-                <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a8812f] mb-2">Resources</span>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] font-semibold text-[#1A1D20]">
+              <div className="pt-4 border-t border-[var(--ace-line)]">
+                <span className="block text-[15px] font-bold uppercase tracking-[0.16em] text-[var(--ace-orange)] mb-2">Resources</span>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[15px] font-semibold text-[var(--ace-ink)]">
                   {resourceLinks.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       aria-current={isActive(item.href) ? 'page' : undefined}
-                      className={`py-1.5 transition-colors hover:text-[#a8812f] ${isActive(item.href) ? 'text-[#a8812f]' : ''}`}
+                      className={`py-1.5 transition-colors hover:text-[var(--ace-orange)] ${isActive(item.href) ? 'text-[var(--ace-orange)]' : ''}`}
                     >
                       {item.label}
                     </Link>
@@ -449,11 +449,11 @@ export const Header: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#E6DBC6] flex flex-col gap-3">
+              <div className="pt-4 border-t border-[var(--ace-line)] flex flex-col gap-3">
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold py-3 rounded-full text-center uppercase tracking-wider"
+                  className="w-full bg-[var(--ace-orange)] hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-white text-xs font-bold py-3 rounded-full text-center uppercase tracking-wider"
                 >
                   Request Quote
                 </Link>

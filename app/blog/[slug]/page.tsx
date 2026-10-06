@@ -21,10 +21,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
-  if (!post) return { title: 'Article Not Found | AcePack' };
+  if (!post) return { title: 'Article Not Found | Ace Packaging' };
 
   return {
-    title: `${post.title} | AcePack Packaging Insights`,
+    title: `${post.title} | Ace Packaging Insights`,
     description: post.summary,
   };
 }

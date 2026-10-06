@@ -39,7 +39,7 @@ export const LeadershipTeam: React.FC = () => {
     <div className="mb-20">
       <Reveal type="fade-right">
         <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
-          Who Runs AcePack
+          Who Runs Ace Packaging
         </span>
       </Reveal>
       <SplitHeading>

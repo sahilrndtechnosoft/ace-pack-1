@@ -56,6 +56,51 @@ export default function HomeExperience() {
   const onReady=useCallback(()=>{setReady(true);},[]);
   const onFailure=useCallback(()=>{setFallbackReason('renderer-unavailable');setMode('static');setReady(true);},[]);
   useEffect(()=>{
+    if(mode!=='3d'||!root.current)return;
+    const scope=root.current;
+    const measure=()=>{
+      const viewport=scope.querySelector('.xp-scene-layer')?.getBoundingClientRect();
+      if(!viewport?.width||!viewport.height)return;
+      const owners=Array.from(scope.querySelectorAll<HTMLElement>('.xp-hero-copy,.xp-fact,.xp-product-copy,.xp-closing>div'));
+      const copies:DOMRect[]=[];let stacked=false;
+      for(const owner of owners) {
+        const rect=owner.getBoundingClientRect();
+        const panel=owner.closest<HTMLElement>('.xp-fact,.xp-product');
+        if(panel?.getAttribute('aria-hidden')==='true'&&Number(getComputedStyle(panel).opacity)<.05)continue;
+        if(rect.bottom<=viewport.top||rect.top>=viewport.bottom)continue;
+        stacked ||= rect.width>viewport.width*.6||!!owner.closest('.xp-closing');
+        for(const leaf of owner.querySelectorAll('h1,h2,h3,p,dl,.xp-button,.xp-eyebrow,.xp-finishes')) {
+          if(!leaf.getClientRects().length)continue;
+          const range=document.createRange();range.selectNodeContents(leaf);
+          const text=leaf.matches('.xp-button,dl,.xp-finishes')?leaf.getBoundingClientRect():range.getBoundingClientRect();
+          if(text.height&&text.bottom>viewport.top&&text.top<viewport.bottom)copies.push(text);
+        }
+      }
+      const headings=Array.from(scope.querySelectorAll('.xp-hero-caption,.xp-section-heading h2,.xp-collection-heading')).map(el=>el.getBoundingClientRect()).filter(r=>r.height&&r.bottom>viewport.top&&r.top<viewport.bottom);
+      let top=viewport.top+16,left=viewport.left+16,bottom=viewport.bottom-24;
+      if(stacked)top=Math.max(top,...copies.map(r=>r.bottom+16),...headings.map(r=>r.bottom+16));
+      else { left=Math.max(left,...copies.map(r=>r.right+24));top=Math.max(top,...headings.map(r=>r.bottom+16)); }
+      for(const selector of ['.xp-inspect','.xp-hero-bottom','.xp-motion-toggle','.xp-closing-note','#manufacturing','.xp-trust','body>footer']) {
+        const el=selector==='body>footer'?document.querySelector(selector):scope.querySelector(selector);
+        const rect=el?.getBoundingClientRect();
+        if(rect&&rect.top>viewport.top&&rect.top<viewport.bottom)bottom=Math.min(bottom,rect.top-16);
+      }
+      if(stacked) {
+        const intervals=[...copies,...headings].map(r=>[Math.max(viewport.top+16,r.top-16),Math.min(bottom,r.bottom+16)]).filter(([a,b])=>b>a).sort((a,b)=>a[0]-b[0]);
+        let cursor=viewport.top+16,bestTop=cursor,bestBottom=cursor;
+        for(const [start,end] of [...intervals,[bottom,bottom]]) {
+          if(start-cursor>bestBottom-bestTop||(start===bottom&&start-cursor>=80)){bestTop=cursor;bestBottom=start;}
+          cursor=Math.max(cursor,end);
+        }
+        if(bestBottom-bestTop<80)return;
+        top=bestTop;bottom=bestBottom;
+      }
+      state.current.frame={left:(left-viewport.left)/viewport.width,top:(top-viewport.top)/viewport.height,right:1-16/viewport.width,bottom:(bottom-viewport.top)/viewport.height};
+    };
+    measure();gsap.ticker.add(measure);
+    return()=>{gsap.ticker.remove(measure);delete state.current.frame;};
+  },[mode]);
+  useEffect(()=>{
     const media=window.matchMedia('(prefers-reduced-motion: reduce)');
     // Phones get the 3D scene too; the old `(max-width:767px)` clause here put
     // every phone on the static stills, which is why mobile had nothing moving.
@@ -107,21 +152,26 @@ export default function HomeExperience() {
     const ctx=gsap.context(()=>{
       const headerOffset=()=>document.querySelector('body>header')?.getBoundingClientRect().height??84;
       ['main-content','craft','collection','manufacturing','closing'].forEach(id=>ScrollTrigger.create({trigger:`#${id}`,start:'top 55%',end:'bottom 55%',onToggle:self=>{if(self.isActive)setChapter(id);}}));
-      gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:true}});
-      gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:true,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
+      gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:.6}});
+      gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:.6,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
       const collectionProgress={value:0};
       gsap.fromTo(collectionProgress,{value:0},{value:1,ease:'none',immediateRender:false,onUpdate:()=>{
         const p=collectionProgress.value;
         state.current.range=p<.23?p/.23:p<.43?1:p<.5?1+(p-.43)/.07:p<.70?2:p<.77?2+(p-.70)/.07:3;
         setActiveProduct(Math.max(0,Math.min(2,Math.round(state.current.range)-1)));
-      },scrollTrigger:{trigger:'#collection',start:'top bottom',end:'bottom bottom',scrub:true}});
-      gsap.fromTo(state.current,{finale:0},{finale:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#closing',start:'top bottom',end:'top top',scrub:true}});
-      ScrollTrigger.create({trigger:'#manufacturing',start:'top top',endTrigger:'#closing',end:'top bottom',onToggle:self=>{state.current.active=!self.isActive;setRenderActive(!self.isActive);}});
-      gsap.to('.xp-scene-layer',{opacity:0,ease:'none',scrollTrigger:{trigger:'#footer',start:'top bottom',end:'top 40%',scrub:true}});
+      },scrollTrigger:{trigger:'#collection',start:'top bottom',end:'bottom bottom',scrub:.6}});
+      gsap.fromTo(state.current,{finale:0},{finale:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#closing',start:'top bottom',end:'top top',scrub:.6}});
+      ScrollTrigger.create({trigger:'#manufacturing',start:'top 85%',endTrigger:'#closing',end:'top bottom',onToggle:self=>{
+        if(!self.isActive){state.current.active=true;setRenderActive(true);}
+        gsap.to('.xp-scene-layer',{xPercent:self.isActive?110:0,duration:.65,ease:'power2.inOut',overwrite:'auto',onComplete:()=>{
+          if(self.isActive){state.current.active=false;setRenderActive(false);}
+        }});
+      }});
+      gsap.to('.xp-scene-layer',{opacity:0,ease:'none',scrollTrigger:{trigger:'#footer',start:'top bottom',end:'top 40%',scrub:.6}});
     },root);
     const pointer=(e:PointerEvent)=>{state.current.pointerX=e.clientX/window.innerWidth*2-1;state.current.pointerY=1-e.clientY/window.innerHeight*2;};
     window.addEventListener('pointermove',pointer,{passive:true});
-    return()=>{ctx.revert();window.removeEventListener('pointermove',pointer);state.current=initialSceneState();};
+    return()=>{gsap.killTweensOf('.xp-scene-layer');ctx.revert();window.removeEventListener('pointermove',pointer);state.current=initialSceneState();};
   },[mode]);
   const live=mode==='3d';
   // Static mode (every phone, plus desktop "still" mode) has no scene driving
@@ -137,11 +187,11 @@ export default function HomeExperience() {
   return <MotionConfig reducedMotion="user"><div ref={root} className={`xp-home ${live?'xp-live':'xp-static'}`} data-render-reason={fallbackReason}>
     <a href="#main-content" className="xp-skip">Skip to content</a>
     {live&&<div className="xp-scene-layer" aria-hidden="true"><SceneBoundary key={retry} onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
-    {live&&!ready&&<div className="xp-loader" role="status"><span className="xp-loader-logo">acepack<span>.</span></span><span className="xp-eyebrow">Good things are taking shape</span><div role="progressbar" aria-label="Loading 3D packaging" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xp-loader-track"><span style={{width:`${progress}%`}}/></div><span>{Math.round(progress)}%</span><button onClick={onFailure}>Continue with still images <ArrowRight size={14}/></button></div>}
+    {live&&!ready&&<div className="xp-loader" role="status"><span className="xp-loader-logo">Ace Packaging</span><span className="xp-eyebrow">Good things are taking shape</span><div role="progressbar" aria-label="Loading 3D packaging" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xp-loader-track"><span style={{width:`${progress}%`}}/></div><span>{Math.round(progress)}%</span><button onClick={onFailure}>Continue with still images <ArrowRight size={14}/></button></div>}
     <div className="xp-scroll-line" aria-hidden="true"/>
     <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['manufacturing','Our thinking'],['closing','Let’s talk']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
     <section id="main-content" className="xp-hero">
-      <div className="xp-hero-topline"><span><i/> Smart, sustainable packaging for brands.</span><span>AcePack / Container solutions</span></div>
+      <div className="xp-hero-topline"><span><i/> Smart, sustainable packaging for brands.</span><span>Ace Packaging / Container solutions</span></div>
       <div className="xp-hero-copy"><p className="xp-eyebrow">US FDA food-grade · ISO 9001:2015</p><h1 aria-label="Beyond the box.">{['Beyond','the box.'].map((line,i)=><span className={`xp-title-mask ${i?'xp-serif':''}`} key={line}><motion.span initial={{y:'110%'}} animate={{y:ready||!live?0:'110%'}} transition={{duration:1.1,delay:.15*i,ease:[.22,1,.36,1]}}>{line}</motion.span></span>)}</h1><p className="xp-hero-description">Injection-moulded food containers in 100% prime virgin PP 05.<br/>Engineered for zero-leak delivery, from our Daman plant.</p><MagneticLink href="#craft" className="xp-button--gold">Unpack the difference</MagneticLink><div className="xp-hero-material">{live?<><span className="xp-finish-label">Explore a finish</span><div className="xp-finishes" aria-label="Preview container finish">{containerFinishes.map(({name},i)=><button key={name} aria-label={`${name} finish`} aria-pressed={finish===i} onClick={()=>setFinish(i)}><i data-finish={name}/><span>{name}</span></button>)}</div></>:<><span className="xp-material-swatch"/><span>Good form. Better function.<br/><b>Made for your everyday.</b></span></>}</div></div>
       {!live&&<div className="xp-hero-still"><img src={products[activeProduct].image} alt={products[activeProduct].title} width="1000" height="769" fetchPriority="high"/><div className="xp-static-selector">{products.map((p,i)=><button key={p.id} aria-pressed={activeProduct===i} onClick={()=>setActiveProduct(i)}>{p.number}<span className="sr-only">{p.title}</span></button>)}</div></div>}
       {live&&<div className="xp-model-interaction" data-cursor="drag" onPointerDown={e=>{dragging.current=e.clientX;e.currentTarget.setPointerCapture(e.pointerId);}} onPointerMove={e=>{if(dragging.current!==null){state.current.drag+=(e.clientX-dragging.current)*.008;dragging.current=e.clientX;}}} onPointerUp={()=>{dragging.current=null;}} onPointerCancel={()=>{dragging.current=null;}} aria-hidden="true"/>}

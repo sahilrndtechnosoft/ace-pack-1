@@ -1,4 +1,4 @@
-// Industry segments AcePack serves. Plain, serialisable data: icons are named
+// Industry segments Ace Packaging serves. Plain, serialisable data: icons are named
 // rather than imported so a server page can hand this straight to the client
 // component, which owns the name -> icon mapping.
 

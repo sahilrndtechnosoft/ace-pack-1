@@ -5,15 +5,15 @@ import { HelpCircle, ShieldCheck, Flame, Lock, Truck, ArrowRight } from 'lucide-
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions (FAQ) | AcePack Packaging',
+  title: 'Frequently Asked Questions (FAQ) | Ace Packaging',
   description: 'Find answers regarding virgin PP 05 food safety, microwave reheating, leak testing, MOQ guidelines, and shipping logistics.',
 };
 
 export default function FaqPage() {
   const faqs = [
     {
-      question: 'What material resins are used in AcePack containers?',
-      answer: 'All AcePack containers are manufactured using 100% prime virgin Polypropylene (PP 05) certified under US FDA 21 CFR 177.1520 regulations. They are 100% BPA-free, heavy metal free, and food-contact safe.'
+      question: 'What material resins are used in Ace Packaging containers?',
+      answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) certified under US FDA 21 CFR 177.1520 regulations. They are 100% BPA-free, heavy metal free, and food-contact safe.'
     },
     {
       question: 'Are your plastic containers microwave and freezer safe?',

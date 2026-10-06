@@ -8,7 +8,7 @@ import { Quote } from 'lucide-react';
 // a real executive of the business.
 const md = {
   role: 'Managing Director',
-  message: `When we started AcePack, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that's still the only metric that matters to me: did the food arrive the way it left the kitchen.`
+  message: `When we started Ace Packaging, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that's still the only metric that matters to me: did the food arrive the way it left the kitchen.`
 };
 
 export const MDDesk: React.FC = () => {
@@ -36,7 +36,7 @@ export const MDDesk: React.FC = () => {
               </div>
               <div>
                 <p className="text-sm font-bold text-white">{md.role}</p>
-                <p className="text-xs text-gray-400">AcePack Packaging</p>
+                <p className="text-xs text-gray-400">Ace Packaging</p>
               </div>
             </div>
           </div>

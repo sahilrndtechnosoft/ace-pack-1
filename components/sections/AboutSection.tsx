@@ -31,7 +31,7 @@ export const AboutSection: React.FC = () => {
                     The wrapping div must stay — ModelBanner measures it by id. */}
                 {/* <img
                   src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/ChatGPT%20Image%20Aug%2026,%202026,%2012_02_15%20PM.png?tr=w-800,q-78,f-webp"
-                  alt="AcePack Precision Moulding Facility"
+                  alt="Ace Packaging Precision Moulding Facility"
                   width={800}
                   height={450}
                   loading="lazy"
@@ -49,7 +49,7 @@ export const AboutSection: React.FC = () => {
                   {/* TEMP: hidden while testing the 3D container landing here. */}
                   {/* <img
                     src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/Flat%20Containers.png?tr=w-350,q-78,f-webp"
-                    alt="AcePack Precision Container Series"
+                    alt="Ace Packaging Precision Container Series"
                     width={350}
                     height={307}
                     loading="lazy"
@@ -57,7 +57,7 @@ export const AboutSection: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   /> */}
                   <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.82)_0%,rgba(26,29,32,0.45)_26%,rgba(26,29,32,0)_46%)] p-4 flex flex-col justify-end">
-                    <span className="text-[10px] font-extrabold text-[#a8812f] uppercase tracking-wider block mb-0.5">
+                    <span className="text-[10px] font-extrabold text-[#a8812f] tracking-wider block mb-0.5">
                       ISO 9001:2015 TESTED
                     </span>
                     <p className="text-xs sm:text-sm font-bold text-white leading-tight">
@@ -75,8 +75,8 @@ export const AboutSection: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col justify-between text-left">
 
             <div>
-              <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
-                ABOUT ACEPACK PACKAGING
+              <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-3">
+                About Ace Packaging
               </span>
 
               <SplitHeading>
@@ -155,7 +155,7 @@ export const AboutSection: React.FC = () => {
 
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-7 py-3.5 rounded-full uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-105 active:scale-95 transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-7 py-3.5 rounded-full tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 <span>Learn More About Us</span>
                 <ArrowRight className="w-4 h-4" />

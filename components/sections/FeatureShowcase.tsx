@@ -45,8 +45,8 @@ export const FeatureShowcase: React.FC = () => {
             <div className="lg:col-span-6 flex flex-col justify-between text-left">
 
               <div>
-                <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-3">
-                  WHY CHOOSE ACEPACK PACKAGING
+                <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-3">
+                  Why choose Ace Packaging
                 </span>
 
                 <SplitHeading>
@@ -104,7 +104,7 @@ export const FeatureShowcase: React.FC = () => {
                     The wrapping div must stay — ModelBanner measures it by id. */}
                 {/* <img
                   src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/ChatGPT%20Image%20Aug%2026,%202026,%2012_02_11%20PM.png?tr=w-800,q-78,f-webp"
-                  alt="AcePack Precision Food Packaging Line"
+                  alt="Ace Packaging Precision Food Packaging Line"
                   width={800}
                   height={450}
                   loading="lazy"
@@ -114,7 +114,7 @@ export const FeatureShowcase: React.FC = () => {
 
                 {/* Dark Gradient Overlay with Title */}
                 <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(26,29,32,0.78)_0%,rgba(26,29,32,0.38)_18%,rgba(26,29,32,0)_34%)] p-8 flex flex-col justify-end text-left">
-                  <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-1">
                     ROBOTIC INJECTION MOULDING
                   </span>
                   <p className="text-lg font-extrabold text-white leading-snug">

@@ -93,7 +93,7 @@ const ACTS: readonly Act[] = [
     label: 'Dissolve',
     range: [0.85, 1],
     copy: {
-      eyebrow: 'ACEPACK PACKAGING',
+      eyebrow: 'Ace Packaging',
       title: 'Protection you can build a business on.',
       detail: 'Precision-moulded containers made for food that needs to travel well.',
     },
@@ -930,7 +930,7 @@ export const ModelBanner: React.FC = () => {
           box.max.z + 0.012
         );
         const brandSpecs = [
-          ['ACEPACK', '#d9b978'],
+          ['Ace Packaging', '#d9b978'],
           ['FRESH BITES', '#77a88f'],
           ['URBAN EATS', '#d4794d'],
         ] as const;
@@ -2026,7 +2026,7 @@ export const ModelBanner: React.FC = () => {
             className="absolute bottom-0 left-0 w-full transition-[opacity,transform] duration-500 ease-out"
             style={{ opacity: index === 0 ? 1 : 0, transform: index === 0 ? 'translateY(0)' : 'translateY(10px)' }}
           >
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8A6336]">
+            <p className="mb-2 text-[15px] font-semibold tracking-[0.08em] text-[#8A6336]">
               {act.copy.eyebrow}
             </p>
             <h1 className="max-w-[390px] text-[clamp(2rem,4vw,3.9rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[#1A1D20]">

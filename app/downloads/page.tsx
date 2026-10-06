@@ -7,15 +7,15 @@ import { downloadGroups, requestEmail, type DownloadItem } from '@/lib/data/down
 import { FileDown, Mail, FileText, BookOpen, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Download Center | AcePack Catalogs, Datasheets & Certifications',
-  description: 'AcePack product catalog, per-line container datasheets, IML branding guide and ISO / FDA compliance certificates for buyer and export audits.',
+  title: 'Download Center | Ace Packaging Catalogs, Datasheets & Certifications',
+  description: 'Ace Packaging product catalog, per-line container datasheets, IML branding guide and ISO / FDA compliance certificates for buyer and export audits.',
 };
 
 const typeIcon = { Catalog: BookOpen, Brochure: BookOpen, Datasheet: FileText, Certificate: ShieldCheck } as const;
 
 function requestHref(item: DownloadItem) {
   const subject = encodeURIComponent(`Document request: ${item.title}`);
-  const body = encodeURIComponent(`Hello AcePack,\n\nPlease send the following document:\n${item.title}\n\nCompany:\nContact number:\n`);
+  const body = encodeURIComponent(`Hello Ace Packaging,\n\nPlease send the following document:\n${item.title}\n\nCompany:\nContact number:\n`);
   return `mailto:${requestEmail}?subject=${subject}&body=${body}`;
 }
 

@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, Tag, Search } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Packaging Industry Insights & Blogs | AcePack Packaging Solutions',
-  description: 'Stay updated with the latest food packaging trends, polymer material innovations, PP 05 safety guidelines, and cloud kitchen packaging solutions from AcePack.',
+  title: 'Packaging Industry Insights & Blogs | Ace Packaging',
+  description: 'Stay updated with the latest food packaging trends, polymer material innovations, PP 05 safety guidelines, and cloud kitchen packaging solutions from Ace Packaging.',
 };
 
 export default function BlogGridPage() {

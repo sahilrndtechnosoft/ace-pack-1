@@ -2,9 +2,9 @@ export const aboutHero = {
   eyebrow: 'Since 2010 · Daman, India',
 
   title: ['Fifteen years.', 'One standard.'],
-  lead: 'AcePack Packaging is a high-precision injection-moulding manufacturer specialising in food-grade plastic containers for QSR chains, cloud kitchens, caterers and retail food brands. From our Daman base, we engineer containers that hold up through freezer storage, microwave reheating and the realities of last-mile delivery.',
+  lead: 'Ace Packaging is a high-precision injection-moulding manufacturer specialising in food-grade plastic containers for QSR chains, cloud kitchens, caterers and retail food brands. From our Daman base, we engineer containers that hold up through freezer storage, microwave reheating and the realities of last-mile delivery.',
   image: '/images/gallery/studio-range.webp',
-  imageAlt: 'The AcePack container range — rectangular meal boxes and round tubs with clear snap lids',
+  imageAlt: 'The Ace Packaging container range — rectangular meal boxes and round tubs with clear snap lids',
   chip: { value: '1,500,000+', label: 'Containers a day' },
 };
 
@@ -28,7 +28,7 @@ export const aboutOverview = {
     '99.8% on-time dispatch for QSR chains and cloud kitchens',
   ],
   image: '/images/gallery/kitchen-set.webp',
-  imageAlt: 'AcePack containers in a professional kitchen',
+  imageAlt: 'Ace Packaging containers in a professional kitchen',
 };
 
 export const milestones = [
@@ -41,10 +41,10 @@ export const milestones = [
 
 export const mdDesk = {
   eyebrow: 'From the MD’s desk',
-  quote: 'When we started AcePack, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
+  quote: 'When we started Ace Packaging, the goal was never to be the cheapest container on the shelf — it was to be the one a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
 
   name: '',
-  role: 'Managing Director, AcePack Packaging',
+  role: 'Managing Director, Ace Packaging',
   portrait: '',
 };
 

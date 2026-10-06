@@ -40,8 +40,8 @@ export const ContactSection: React.FC = () => {
       <Container className="relative z-10">
 
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/20">
-            Get In Touch With AcePack
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] tracking-wide mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/20">
+            Get In Touch With Ace Packaging
           </span>
           <SplitHeading>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1A1D20] tracking-tight leading-tight">

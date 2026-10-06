@@ -6,8 +6,8 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { HorizontalGallery, GalleryItem } from '@/components/gallery/HorizontalGallery';
 
 export const metadata: Metadata = {
-  title: 'Container Visual Gallery | AcePack Food Packaging',
-  description: 'Explore AcePack\'s high-precision plastic food container product gallery, cleanroom manufacturing facility, and custom IML branded products.',
+  title: 'Container Visual Gallery | Ace Packaging Food Packaging',
+  description: 'Explore Ace Packaging\'s high-precision plastic food container product gallery, cleanroom manufacturing facility, and custom IML branded products.',
 };
 
 // Every frame is served from /images/gallery as a webp pre-cropped to one

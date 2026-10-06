@@ -4,8 +4,8 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { Cpu, Wrench, ShieldCheck, Flame, Layers, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Manufacturing Capabilities | AcePack Injection Moulding & Toolroom',
-  description: 'Discover AcePack\'s advanced high-speed robotic injection moulding machines (180T-450T), in-house CAD mold toolroom, and IML labelling technology.',
+  title: 'Manufacturing Capabilities | Ace Packaging Injection Moulding & Toolroom',
+  description: 'Discover Ace Packaging\'s advanced high-speed robotic injection moulding machines (180T-450T), in-house CAD mold toolroom, and IML labelling technology.',
 };
 
 export default function CapabilitiesPage() {

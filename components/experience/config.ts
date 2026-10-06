@@ -16,5 +16,5 @@ export const containerFinishes = [
 // photography shows, so the scene opens on it. Looked up by name rather than
 // index so reordering the picker cannot silently change the default.
 export const defaultFinish = Math.max(0, containerFinishes.findIndex(finish => finish.name === 'Black'));
-export type SceneState = { finish:number; hero: number; inspect: number; drag: number; craft: number; range: number; finale: number; pointerX: number; pointerY: number; active: boolean };
+export type SceneState = { finish:number; hero: number; inspect: number; drag: number; craft: number; range: number; finale: number; pointerX: number; pointerY: number; active: boolean; frame?: import('./scene-framing').SceneFrame };
 export const initialSceneState = (): SceneState => ({ finish:defaultFinish, hero:0, inspect:0, drag:0, craft: 0, range: 0, finale: 0, pointerX: 0, pointerY: 0, active: true });

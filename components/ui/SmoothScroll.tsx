@@ -109,7 +109,7 @@ export const SmoothScroll: React.FC = () => {
       } else {
         window.scrollTo({
           top: target.getBoundingClientRect().top + window.scrollY - headerOffset(),
-          behavior: 'smooth',
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         });
         settle();
       }

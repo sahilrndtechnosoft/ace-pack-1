@@ -38,7 +38,7 @@ export const productCategories: ProductCategory[] = [
     slug: 'hinge-cups',
     subtitleName: 'One-Piece Hinged Sauce Containers',
     shortDescription: 'Leak-proof one-piece hinged lids for chutneys, dips, dressings, and condiments. Attached lid eliminates lost cap inventory in busy kitchens.',
-    description: 'AcePack Hinge Cups feature a built-in snap-tight hinged lid engineered from 100% virgin polypropylene (PP 05). Designed for high-speed QSR assembly, zero-leak motorcycle delivery, and clear product presentation.',
+    description: 'Ace Packaging Hinge Cups feature a built-in snap-tight hinged lid engineered from 100% virgin polypropylene (PP 05). Designed for high-speed QSR assembly, zero-leak motorcycle delivery, and clear product presentation.',
     heroImage: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
     features: ['Attached Hinged Snap-Lid', '100% Leak-Proof Rim', 'Virgin Food-Grade PP 05', 'Microwave Safe up to 120°C'],
     gallery: [

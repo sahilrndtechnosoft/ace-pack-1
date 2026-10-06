@@ -5,8 +5,8 @@ import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck, Lock, MessageCircl
 import { productCategories } from '@/lib/data/products';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | AcePack Plastic Food Packaging Manufacturer',
-  description: 'Get in touch with AcePack sales team for factory wholesale quotes, custom mould R&D, and free sample requests for plastic food containers.',
+  title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
+  description: 'Get in touch with Ace Packaging sales team for factory wholesale quotes, custom mould R&D, and free sample requests for plastic food containers.',
 };
 
 export default function ContactPage() {
@@ -15,7 +15,7 @@ export default function ContactPage() {
       <PageBanner
         title="Contact Our Factory & Sales Team"
         subtitle="Request wholesale pricing, inquire about custom IML branding, or speak with our polymer packaging engineers in Daman."
-        badge="GET IN TOUCH WITH ACEPACK"
+        badge="Get in touch with Ace Packaging"
         bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
         breadcrumbs={[{ name: 'Contact', href: '/contact' }]}
       />
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">WhatsApp Sales</span>
                   <h3 className="text-base font-bold text-[#1A1D20] mb-2">+91 99250 15906</h3>
                   <a
-                    href="https://wa.me/919925015906?text=Hello%20AcePack%2C%20I%27d%20like%20a%20wholesale%20quote%20for%20food%20containers."
+                    href="https://wa.me/919925015906?text=Hello%20Ace%20Packaging%2C%20I%27d%20like%20a%20wholesale%20quote%20for%20food%20containers."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#1ebe5b] rounded-xl px-4 py-2.5 transition-colors"
@@ -162,7 +162,7 @@ export default function ContactPage() {
             </div>
             <div className="rounded-3xl overflow-hidden border border-[#E6DBC6] shadow-sm bg-white">
               <iframe
-                title="AcePack Daman plant location"
+                title="Ace Packaging Daman plant location"
                 src="https://www.google.com/maps?q=Plot+No.+42%2F1%2C+Government+Industrial+Estate%2C+Masat%2C+Daman+396210&output=embed"
                 width="100%"
                 height="420"

@@ -5,7 +5,7 @@ import { ShieldCheck, CheckCircle2, ArrowRight, Package, Truck, Layers } from 'l
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Wholesale Pricing & MOQ Tiers | AcePack Packaging',
+  title: 'Wholesale Pricing & MOQ Tiers | Ace Packaging',
   description: 'Factory-direct volume pricing tiers, bulk carton rates, custom IML branding quotes, and wholesale sample kits for plastic food containers.',
 };
 

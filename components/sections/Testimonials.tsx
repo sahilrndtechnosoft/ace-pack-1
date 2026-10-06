@@ -20,7 +20,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 't1',
-    quote: 'Zero leakage complaints since we switched to AcePack\'s hinge cups — the rim seal genuinely holds up through our entire delivery radius.',
+    quote: 'Zero leakage complaints since we switched to Ace Packaging\'s hinge cups — the rim seal genuinely holds up through our entire delivery radius.',
     name: 'Operations Head',
     role: 'Cloud Kitchen Chain, Mumbai'
   },
@@ -38,7 +38,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 't4',
-    quote: 'Bulk catering orders used to be our biggest packaging headache — AcePack\'s portion containers now go out stacked and leak-free every single time.',
+    quote: 'Bulk catering orders used to be our biggest packaging headache — Ace Packaging\'s portion containers now go out stacked and leak-free every single time.',
     name: 'Catering Director',
     role: 'Event Catering Co., Pune'
   },

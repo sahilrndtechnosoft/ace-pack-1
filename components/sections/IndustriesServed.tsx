@@ -23,7 +23,7 @@ export const IndustriesServed: React.FC<IndustriesServedProps> = ({
   industries = defaultIndustries,
   eyebrow = 'Who We Serve',
   heading = 'Industries We Serve',
-  intro = 'From cloud kitchens to global export partners, AcePack packaging is engineered for the exact demands of your industry.',
+  intro = 'From cloud kitchens to global export partners, Ace Packaging packaging is engineered for the exact demands of your industry.',
 }) => {
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
