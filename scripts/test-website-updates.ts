@@ -13,6 +13,10 @@ assert.ok(languages.length>=249);
 assert.ok(languages.every(item=>item.name && /^[a-zA-Z-]+$/.test(item.code)));
 for (const item of languages) {
   const link = new URL(translatedWebsiteUrl('https://acepack.co.in/products?email=private@example.com#details',item.code)!);
+  if (item.code === 'en') {
+    assert.equal(link.href,'https://acepack.co.in/products');
+    continue;
+  }
   assert.equal(link.hostname,'translate.google.com');
   assert.equal(link.searchParams.get('tl'),item.code);
   assert.equal(link.searchParams.get('u'),'https://acepack.co.in/products');
@@ -21,5 +25,14 @@ for (const page of ['http://localhost:3000/tools','http://127.0.0.1/','http://19
   assert.equal(translatedWebsiteUrl(page,'hi'),null);
 }
 assert.equal(translatedWebsiteUrl('https://acepack.co.in/','made-up'),null);
+const published = 'https://ace-pack-1.vercel.app';
+for (const page of ['http://localhost:3000/tools','https://ace--pack--1-vercel-app.translate.goog/tools?_x_tr_tl=hi']) {
+  const french = new URL(translatedWebsiteUrl(page,'fr',published)!);
+  assert.equal(french.searchParams.get('u'),`${published}/tools`);
+  assert.equal(french.searchParams.get('tl'),'fr');
+  assert.equal(translatedWebsiteUrl(page,'en',published),`${published}/tools`);
+}
+assert.equal(translatedWebsiteUrl('https://ace--pack--1-vercel-app.translate.goog/tools','fr'),null);
+assert.equal(translatedWebsiteUrl('http://localhost:3000/','hi','http://127.0.0.1/'),null);
 assert.ok(['/gallery','/oem','/customization','/tools'].every(href=>resourceLinks.some(item=>item.href===href)));
 console.log(`Website updates passed: carton rounding/validation, ${languages.length} translation destinations, URL privacy and Resources links.`);
