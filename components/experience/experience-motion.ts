@@ -33,6 +33,7 @@ export function buildTextReveals(scope: HTMLElement): Cleanup {
 
   const build = () => {
     teardown();
+    if (document.documentElement.dataset.siteLanguage && document.documentElement.dataset.siteLanguage !== 'en') return;
     for (const el of targets) {
       const split = new SplitText(el, { type: 'lines,words', linesClass: 'xp-split-line' });
       splits.push(split);
@@ -78,10 +79,12 @@ export function buildTextReveals(scope: HTMLElement): Cleanup {
     timer = setTimeout(build, 280);
   };
   window.addEventListener('resize', onResize);
+  window.addEventListener('ace-language-change', build);
 
   return () => {
     cancelled = true;
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('ace-language-change', build);
     clearTimeout(timer);
     teardown();
   };

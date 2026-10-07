@@ -1,60 +1,116 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Languages, ChevronDown, Check } from 'lucide-react';
-import { languages } from '@/lib/data/languages';
-import { translatedWebsiteUrl } from '@/lib/website-translation';
+import { useEffect, useRef, useState } from 'react';
+import { Languages, ChevronDown } from 'lucide-react';
+import { languagePreference, translationNavigationUrl } from '@/lib/website-translation';
 import './language-selector.css';
 
-// The published version is available to Google's translator; localhost is not.
-const publishedSite = process.env.NEXT_PUBLIC_SITE_URL || 'https://ace-pack-1.vercel.app';
+type TranslateWindow = Window & {
+  google?: { translate?: { TranslateElement: new (options: {pageLanguage:string;autoDisplay:boolean},host:string) => unknown } };
+  acePackagingTranslateReady?: () => void;
+};
+const storageKey = 'ace-packaging-language';
 
 export function LanguageSelector() {
-  const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState('en');
-  const [page, setPage] = useState('');
-  const pathname = usePathname();
+  const host = useRef<HTMLDivElement>(null);
+  const activeLanguage = useRef('en');
+  const [ready,setReady] = useState(false);
+  const [error,setError] = useState(false);
+  const [attempt,setAttempt] = useState(0);
   useEffect(() => {
-    // Restore once. Route changes must not replace a choice being made.
-    try {
-      const translated = new URL(location.href).searchParams.get('_x_tr_tl');
-      const saved = translated || localStorage.getItem('ace-packaging-language');
-      if (languages.some(item => item.code === saved)) setSelected(saved!);
-    } catch { /* Language selection remains usable without storage. */ }
-  }, []);
-  useEffect(() => { setPage(window.location.href); }, [pathname]);
-  const matches = languages.filter(item => `${item.name} ${item.code}`.toLowerCase().includes(query.trim().toLowerCase()));
-  const name = languages.find(item => item.code === selected)?.name || 'English';
-  const href = translatedWebsiteUrl(page, selected, publishedSite);
-  const localPreview = page && !new URL(page).hostname.endsWith('.translate.goog') && !translatedWebsiteUrl(page, 'hi');
-  function chooseLanguage(code: string) {
-    setSelected(code);
-    setQuery('');
-    try { localStorage.setItem('ace-packaging-language', code); } catch { /* Optional preference. */ }
-  }
-  return <div className="language-selector" translate="no">
-    <button type="button" popoverTarget="site-languages" aria-label="Choose website language" className="language-trigger" onClick={() => setQuery('')}>
+    const target = host.current;
+    if (!target) return;
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(storageKey); } catch { /* Storage is optional. */ }
+    const language = languagePreference(document.cookie,saved);
+    activeLanguage.current = language;
+    document.cookie = `googtrans=/en/${language};path=/;SameSite=Lax`;
+    document.documentElement.dataset.siteLanguage = language;
+    document.documentElement.lang = language;
+    const browser = window as TranslateWindow;
+    let disposed = false;
+    let started = (target.querySelector<HTMLSelectElement>('.goog-te-combo')?.options.length ?? 0) > 1;
+    const init = () => {
+      if (disposed || started || !browser.google?.translate) return;
+      started = true;
+      target.replaceChildren();
+      new browser.google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},target.id);
+    };
+    const observe = () => {
+      const select = target.querySelector<HTMLSelectElement>('.goog-te-combo');
+      if (select && select.options.length > 1) {
+        select.setAttribute('aria-label','Website language');
+        setReady(true);
+        setError(false);
+      }
+    };
+    const observer = new MutationObserver(observe);
+    observer.observe(target,{childList:true,subtree:true});
+    observe();
+    const change = (event: Event) => {
+      const select = event.target;
+      if (!(select instanceof HTMLSelectElement) || !select.value) return;
+      const code = select.value;
+      const previous = activeLanguage.current;
+      activeLanguage.current = code;
+      try { localStorage.setItem(storageKey,code); } catch { /* Cookie still preserves page navigation. */ }
+      document.cookie = `googtrans=/en/${code};path=/;SameSite=Lax`;
+      document.documentElement.dataset.siteLanguage = code;
+      document.documentElement.lang = code;
+      // Revert word-splitting before Google's handler changes any text nodes.
+      if (code === 'en' && previous !== 'en') window.location.reload();
+      else window.dispatchEvent(new Event('ace-language-change'));
+    };
+    target.addEventListener('change',change,true);
+    const navigate = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+      if (!link || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
+      const url = translationNavigationUrl(link.href,location.href,activeLanguage.current);
+      if (!url) return;
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.assign(url);
+    };
+    document.addEventListener('click',navigate,true);
+    // On history traversal, restore translation on a clean document as well.
+    const history = () => { if (activeLanguage.current !== 'en') window.location.reload(); };
+    window.addEventListener('popstate',history);
+    browser.acePackagingTranslateReady = () => { document.fonts.ready.then(init); };
+    setError(false);
+    if (browser.google?.translate) document.fonts.ready.then(init);
+    else {
+      let script = document.getElementById('ace-translate-script') as HTMLScriptElement | null;
+      if (script?.dataset.failed) { script.remove(); script = null; }
+      if (!script) {
+        script = document.createElement('script');
+        script.id = 'ace-translate-script';
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=acePackagingTranslateReady';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+      script.onerror = () => { if (!disposed) { script!.dataset.failed = 'true'; setError(true); } };
+    }
+    const timeout = window.setTimeout(() => { if ((target.querySelector<HTMLSelectElement>('.goog-te-combo')?.options.length ?? 0) < 2) setError(true); },20000);
+    return () => {
+      disposed = true;
+      observer.disconnect();
+      target.removeEventListener('change',change,true);
+      document.removeEventListener('click',navigate,true);
+      window.removeEventListener('popstate',history);
+      clearTimeout(timeout);
+    };
+  },[attempt]);
+  return <div className="language-selector notranslate" translate="no">
+    <button type="button" popoverTarget="site-languages" aria-label="Choose website language" className="language-trigger">
       <Languages size={20} /><span>Languages</span><ChevronDown size={14} />
     </button>
     <div id="site-languages" popover="auto" className="language-panel" data-lenis-prevent>
       <div className="language-heading"><strong>Choose your language</strong><button type="button" popoverTarget="site-languages" popoverTargetAction="hide" aria-label="Close language selector">×</button></div>
-      <p className="language-intro">Choose a language, then apply it.</p>
-      <label htmlFor="language-search">Search {languages.length} languages</label>
-      <input id="language-search" type="search" value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => {
-        if (e.key === 'Enter' && matches.length === 1) { e.preventDefault(); chooseLanguage(matches[0].code); }
-      }} placeholder="Search a language or code" autoComplete="off" />
-      <div className="language-options" role="group" aria-label="Available languages" data-lenis-prevent>
-        {matches.map(item => <button type="button" key={item.code} aria-pressed={selected === item.code} onClick={() => chooseLanguage(item.code)}>
-          <span>{item.name}</span><small>{item.code}</small>{selected === item.code && <Check size={18} aria-hidden="true" />}
-        </button>)}
-        {!matches.length && <p role="status">No matching languages. Try another spelling.</p>}
-      </div>
-      <div className="language-footer">
-        <p className="language-selected" role="status">Selected: <strong>{name}</strong></p>
-        {href ? <a className="language-open" href={href}>{selected === 'en' ? 'View original English' : `Apply ${name}`}<span aria-hidden="true">→</span></a> : <p role="status">Translation link is unavailable. Please reopen the selector.</p>}
-        <p className="language-note">{localPreview ? 'Local preview: opens the published site. ' : ''}{selected !== 'en' && 'Opens Google’s free translated view in this tab.'}</p>
-      </div>
+      <p className="language-intro">Translate this page. Your choice stays active across pages and refreshes.</p>
+      <div id="ace-google-translate" ref={host} />
+      {!ready && <p role="status">{error ? 'The translator could not load. Check your connection or allow Google Translate in your browser.' : 'Loading available languages…'}</p>}
+      {error && <button type="button" className="language-retry" onClick={()=>setAttempt(value=>value+1)}>Retry translator</button>}
     </div>
   </div>;
 }

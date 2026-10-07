@@ -108,7 +108,7 @@ export function StylePreview() {
     setTracking(-.02); setLeading(1.1);
   }
 
-  return <>
+  return <div className="notranslate" translate="no">
     <button type="button" className="style-preview-trigger" popoverTarget="site-style-preview" aria-label="Open font and colour preview" title="Fonts & colours">
       <Palette size={20}/><span>Fonts & colours</span>
     </button>
@@ -123,5 +123,5 @@ export function StylePreview() {
       <label>Heading line spacing <output>{leading.toFixed(2)}</output><input aria-label="Heading line spacing" type="range" min="1.02" max="1.25" step="0.01" value={leading} onChange={e => setLeading(Number(e.target.value))}/></label>
       <button type="button" className="style-preview-reset" onClick={reset}><RotateCcw size={16}/>Reset to default</button>
     </section>
-  </>;
+  </div>;
 }

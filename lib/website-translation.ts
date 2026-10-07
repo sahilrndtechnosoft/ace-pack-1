@@ -1,30 +1,28 @@
 import { languages } from './data/languages';
 
-function isPublic(url: URL) {
-  const host = url.hostname.toLowerCase();
-  return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password &&
-    host.includes('.') && !host.endsWith('.localhost') && !host.endsWith('.local') &&
-    !/^\d+\.\d+\.\d+\.\d+$/.test(host) && !host.includes(':');
+export function languagePreference(cookies: string, saved: string | null) {
+  const supported = (code: string | null) => languages.some(item => item.code === code);
+  if (supported(saved)) return saved!;
+  for (const cookie of cookies.split(';')) {
+    const [name,...value] = cookie.trim().split('=');
+    if (name !== 'googtrans') continue;
+    try {
+      const code = decodeURIComponent(value.join('=')).split('/').pop()!;
+      if (supported(code)) return code;
+    } catch { /* Ignore malformed cookies, not the entire preference restore. */ }
+  }
+  return 'en';
 }
 
-export function translatedWebsiteUrl(page: string, language: string, publishedSite?: string) {
-  if (!languages.some(item => item.code === language)) return null;
+// Google changes text nodes. A translated page must load a fresh document when
+// navigating, so React never reconciles a new route against those changed nodes.
+export function translationNavigationUrl(href: string, current: string, language: string) {
+  if (language === 'en') return null;
   try {
-    let url = new URL(page);
-    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return null;
-    // Always translate the source site, never an already-translated proxy.
-    // An explicit public origin also allows local previews to open the published version.
-    if (!isPublic(url) || url.hostname.endsWith('.translate.goog')) {
-      if (!publishedSite) return null;
-      const source = new URL(publishedSite);
-      if (!isPublic(source) || source.hostname.endsWith('.translate.goog')) return null;
-      url = new URL(url.pathname, source.origin);
-    }
-    url.search = '';
-    url.hash = '';
-    if (language === 'en') return url.href;
-    const translated = new URL('https://translate.google.com/translate');
-    translated.search = new URLSearchParams({ sl: 'en', tl: language, u: url.href }).toString();
-    return translated.href;
+    const page = new URL(current);
+    const next = new URL(href,page);
+    if (!['http:','https:'].includes(next.protocol) || next.username || next.password ||
+        next.origin !== page.origin || (next.pathname === page.pathname && next.search === page.search)) return null;
+    return next.href;
   } catch { return null; }
 }

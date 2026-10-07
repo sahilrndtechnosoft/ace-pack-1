@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { cartonPlan, resourceLinks } from '../lib/data/resources';
 import { languages } from '../lib/data/languages';
-import { translatedWebsiteUrl } from '../lib/website-translation';
+import { languagePreference, translationNavigationUrl } from '../lib/website-translation';
 
 assert.deepEqual(cartonPlan(10001,500),{cartons:21,spare:499});
 assert.deepEqual(cartonPlan(10000,500),{cartons:20,spare:0});
@@ -12,27 +12,20 @@ assert.equal(new Set(languages.map(item=>item.code)).size,languages.length);
 assert.ok(languages.length>=249);
 assert.ok(languages.every(item=>item.name && /^[a-zA-Z-]+$/.test(item.code)));
 for (const item of languages) {
-  const link = new URL(translatedWebsiteUrl('https://acepack.co.in/products?email=private@example.com#details',item.code)!);
-  if (item.code === 'en') {
-    assert.equal(link.href,'https://acepack.co.in/products');
-    continue;
+  assert.equal(languagePreference('',item.code),item.code);
+  assert.equal(languagePreference(`googtrans=/en/${item.code}`,null),item.code);
+}
+assert.equal(languagePreference('other=value; googtrans=%2Fen%2Ffr',null),'fr');
+assert.equal(languagePreference('googtrans=%broken',null),'en');
+assert.equal(languagePreference('googtrans=/en/hi','fr'),'fr');
+assert.equal(languagePreference('googtrans=/en/unknown','bad'),'en');
+for (const origin of ['http://localhost:3000','https://ace-pack-1.vercel.app']) {
+  assert.equal(translationNavigationUrl('/oem?format=500#details',`${origin}/tools`,'fr'),`${origin}/oem?format=500#details`);
+  assert.equal(translationNavigationUrl('/tools#calculator',`${origin}/tools`,'fr'),null);
+  assert.equal(translationNavigationUrl('/oem',`${origin}/tools`,'en'),null);
+  for (const href of ['https://translate.google.com/translate','https://other.example/oem','mailto:sales@acepack.co.in','javascript:alert(1)']) {
+    assert.equal(translationNavigationUrl(href,`${origin}/tools`,'fr'),null);
   }
-  assert.equal(link.hostname,'translate.google.com');
-  assert.equal(link.searchParams.get('tl'),item.code);
-  assert.equal(link.searchParams.get('u'),'https://acepack.co.in/products');
 }
-for (const page of ['http://localhost:3000/tools','http://127.0.0.1/','http://192.168.1.1/','http://demo.local/','http://[::1]/','javascript:alert(1)','https://user:secret@example.com/','invalid']) {
-  assert.equal(translatedWebsiteUrl(page,'hi'),null);
-}
-assert.equal(translatedWebsiteUrl('https://acepack.co.in/','made-up'),null);
-const published = 'https://ace-pack-1.vercel.app';
-for (const page of ['http://localhost:3000/tools','https://ace--pack--1-vercel-app.translate.goog/tools?_x_tr_tl=hi']) {
-  const french = new URL(translatedWebsiteUrl(page,'fr',published)!);
-  assert.equal(french.searchParams.get('u'),`${published}/tools`);
-  assert.equal(french.searchParams.get('tl'),'fr');
-  assert.equal(translatedWebsiteUrl(page,'en',published),`${published}/tools`);
-}
-assert.equal(translatedWebsiteUrl('https://ace--pack--1-vercel-app.translate.goog/tools','fr'),null);
-assert.equal(translatedWebsiteUrl('http://localhost:3000/','hi','http://127.0.0.1/'),null);
 assert.ok(['/gallery','/oem','/customization','/tools'].every(href=>resourceLinks.some(item=>item.href===href)));
-console.log(`Website updates passed: carton rounding/validation, ${languages.length} translation destinations, URL privacy and Resources links.`);
+console.log(`Website updates passed: carton rounding/validation, ${languages.length} language preferences, same-origin navigation and Resources links.`);

@@ -39,6 +39,8 @@ export const SplitHeading: React.FC<SplitHeadingProps> = ({
       tween?.scrollTrigger?.kill();
       tween?.kill();
       split?.revert();
+      split = undefined;
+      if (document.documentElement.dataset.siteLanguage && document.documentElement.dataset.siteLanguage !== 'en') return;
 
       split = new SplitText(el, {
         type: 'lines,words',
@@ -105,10 +107,12 @@ export const SplitHeading: React.FC<SplitHeadingProps> = ({
       resizeTimer = setTimeout(build, 300);
     };
     window.addEventListener('resize', handleResize);
+    window.addEventListener('ace-language-change', build);
 
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('ace-language-change', build);
       clearTimeout(resizeTimer);
       tween?.scrollTrigger?.kill();
       tween?.kill();
