@@ -5,11 +5,19 @@
 .language-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:19px}
 .language-heading button{min-width:44px;min-height:44px;font-size:26px}
 .language-panel .language-intro{margin:4px 0 18px;color:var(--ace-muted);font-size:14px}
-#ace-google-translate .goog-te-combo{width:100%;min-height:48px;padding:10px;margin:0 0 14px;border:1px solid var(--ace-line);border-radius:8px;font-family:var(--font-sans);font-size:16px;background:var(--ace-white);color:var(--ace-ink)}
+#ace-google-translate .goog-te-combo{display:none}
+.language-search-wrap{position:relative;margin-bottom:14px}
+.language-search{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--ace-line);border-radius:10px;font-family:var(--font-sans);font-size:16px;background:var(--ace-white);color:var(--ace-ink)}
+.language-search:focus-visible{outline:2px solid var(--ace-orange);outline-offset:2px}
+.language-options{position:absolute;z-index:2;top:calc(100% + 6px);left:0;right:0;max-height:min(260px,45dvh);overflow-y:auto;padding:6px;border:1px solid var(--ace-line);border-radius:12px;background:var(--ace-white);box-shadow:0 12px 32px #123b4026}
+.language-options button{display:block;width:100%;min-height:44px;padding:9px 12px;border:0;border-radius:8px;background:transparent;color:var(--ace-ink);font:500 15px/1.4 var(--font-sans);text-align:left;cursor:pointer}
+.language-options button:hover,.language-options button:focus-visible{outline:none;background:var(--ace-aqua-soft);color:var(--ace-orange)}
+.language-options p{margin:0;padding:12px;color:var(--ace-muted);font-size:14px}
 #ace-google-translate .goog-te-gadget{font-family:var(--font-sans);font-size:13px;color:var(--ace-muted)}
 .language-retry{min-height:44px;padding:8px 16px;margin-top:12px;border:1px solid var(--ace-line);border-radius:8px}
 /* Keep the original navigation and model viewport clear of Google's toolbar.
    The widget's Google attribution remains visible inside the language panel. */
 html[data-site-language] .VIpgJd-ZVi9od-ORHb-OEVmcd,html[data-site-language] iframe.goog-te-banner-frame{display:none!important}
 html[data-site-language] body{top:0!important}
-@media(max-width:639px){.language-trigger span,.language-trigger>svg:last-child{display:none}.language-trigger{width:44px;justify-content:center;margin-left:auto}.language-panel{top:84px;right:16px;max-height:calc(100dvh - 100px)}}
+@media(max-width:1279px){.language-trigger span,.language-trigger>svg:last-child{display:none}.language-trigger{width:44px;justify-content:center;padding:8px}}
+@media(max-width:639px){.language-trigger{margin-left:auto}.language-panel{top:84px;right:16px;max-height:calc(100dvh - 100px)}}

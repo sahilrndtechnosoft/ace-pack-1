@@ -4,7 +4,7 @@ import { Component, useCallback, useEffect, useRef, useState, type ReactNode } f
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, MotionConfig, useReducedMotion, type MotionProps } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, ArrowRight, Plus, Pause, Play, Rotate3D, MoveUpRight } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, ArrowRight, Plus, Rotate3D, MoveUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { products, containerFinishes, initialSceneState, defaultFinish } from './config';
@@ -51,9 +51,9 @@ export default function HomeExperience() {
   const root=useRef<HTMLDivElement>(null),state=useRef(initialSceneState());
   const [mode,setMode]=useState<'pending'|'3d'|'static'>('pending');
   const [ready,setReady]=useState(false),[progress,setProgress]=useState(0),[loadRange,setLoadRange]=useState(false);
-  const [paused,setPaused]=useState(false),[renderActive,setRenderActive]=useState(true),[activeProduct,setActiveProduct]=useState(0);
+  const [renderActive,setRenderActive]=useState(true),[activeProduct,setActiveProduct]=useState(0);
   const [craftPhase,setCraftPhase]=useState(0),[openLid,setOpenLid]=useState(false),[fallbackReason,setFallbackReason]=useState('');
-  const [finish,setFinish]=useState(defaultFinish);const [retry,setRetry]=useState(0);const [chapter,setChapter]=useState('main-content');const dragging=useRef<number|null>(null);const reduced=useReducedMotion();
+  const [finish,setFinish]=useState(defaultFinish);const [chapter,setChapter]=useState('main-content');const dragging=useRef<number|null>(null);const reduced=useReducedMotion();
   const onReady=useCallback(()=>{setReady(true);},[]);
   const onFailure=useCallback(()=>{setFallbackReason('renderer-unavailable');setMode('static');setReady(true);},[]);
   useEffect(()=>{
@@ -81,7 +81,7 @@ export default function HomeExperience() {
       let top=viewport.top+16,left=viewport.left+16,bottom=viewport.bottom-24;
       if(stacked)top=Math.max(top,...copies.map(r=>r.bottom+16),...headings.map(r=>r.bottom+16));
       else { left=Math.max(left,...copies.map(r=>r.right+24));top=Math.max(top,...headings.map(r=>r.bottom+16)); }
-      for(const selector of ['.xp-inspect','.xp-hero-bottom','.xp-motion-toggle','.xp-closing-note','#manufacturing','.xp-trust','body>footer']) {
+      for(const selector of ['.xp-inspect','.xp-hero-bottom','.xp-closing-note','#manufacturing','.xp-trust','body>footer']) {
         const el=selector==='body>footer'?document.querySelector(selector):scope.querySelector(selector);
         const rect=el?.getBoundingClientRect();
         if(rect&&rect.top>viewport.top&&rect.top<viewport.bottom)bottom=Math.min(bottom,rect.top-16);
@@ -115,11 +115,11 @@ export default function HomeExperience() {
     // webglcontextlost handler catches one that dies, and the load timeout
     // catches one that never arrives. All three fall back to stills.
     const detect=()=>{
-      if(media.matches||paused){setFallbackReason(paused?'paused':'motion-preference');setMode('static');setReady(true);return;}
+      if(media.matches){setFallbackReason('motion-preference');setMode('static');setReady(true);return;}
       setFallbackReason('');setMode('3d');setReady(false);
     };
     detect();media.addEventListener('change',detect);return()=>media.removeEventListener('change',detect);
-  },[paused,retry]);
+  },[]);
   useEffect(()=>{
     if(mode!=='3d'||ready)return;
     const timeout=window.setTimeout(onFailure,30000);return()=>clearTimeout(timeout);
@@ -187,7 +187,7 @@ export default function HomeExperience() {
     :{animate:{opacity:visible?1:0,y:visible?0:offset}};
   return <MotionConfig reducedMotion="user"><div ref={root} className={`xp-home ${live?'xp-live':'xp-static'}`} data-render-reason={fallbackReason}>
     <a href="#main-content" className="xp-skip">Skip to content</a>
-    {live&&<div className="xp-scene-layer" aria-hidden="true"><SceneBoundary key={retry} onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
+    {live&&<div className="xp-scene-layer" aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
     {live&&!ready&&<div className="xp-loader" role="status"><span className="xp-loader-logo">Ace Packaging</span><span className="xp-eyebrow">Good things are taking shape</span><div role="progressbar" aria-label="Loading 3D packaging" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xp-loader-track"><span style={{width:`${progress}%`}}/></div><span>{Math.round(progress)}%</span><button onClick={onFailure}>Continue with still images <ArrowRight size={14}/></button></div>}
     <div className="xp-scroll-line" aria-hidden="true"/>
     <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['manufacturing','Our thinking'],['closing','Let’s talk']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
@@ -209,6 +209,5 @@ export default function HomeExperience() {
     <ExportPreparation />
     <section id="closing" className="xp-closing"><Reveal><span className="xp-eyebrow">Product catalog &amp; sample kit</span><h2 data-split>Let’s make<br/><em>something good.</em></h2><MagneticLink href="/contact">Discuss your requirements</MagneticLink></Reveal>{!live&&<div className="xp-lineup">{products.map(p=><img key={p.id} src={p.image} alt={p.title} loading="lazy" width="1000" height="769"/>)}</div>}<span className="xp-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span></section>
     <div id="footer" aria-hidden="true"/>
-    <button className="xp-motion-toggle" onClick={()=>{if(fallbackReason==='renderer-unavailable'){setFallbackReason('');setRetry(retry+1);}else setPaused(!paused);}} aria-pressed={paused} aria-label={live?'Use still images':'Enable 3D motion'}>{live?<Pause size={13}/>:<Play size={13}/>}<span>{live?'3D on':fallbackReason==='renderer-unavailable'?'Retry 3D':paused?'Enable 3D':'Still mode'}</span></button>
   </div></MotionConfig>;
 }

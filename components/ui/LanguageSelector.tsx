@@ -10,13 +10,26 @@ type TranslateWindow = Window & {
   acePackagingTranslateReady?: () => void;
 };
 const storageKey = 'ace-packaging-language';
+type LanguageOption = { code: string; name: string };
 
 export function LanguageSelector() {
   const host = useRef<HTMLDivElement>(null);
   const activeLanguage = useRef('en');
+  const [languages,setLanguages] = useState<LanguageOption[]>([]);
+  const [languageQuery,setLanguageQuery] = useState('');
+  const [languageListOpen,setLanguageListOpen] = useState(false);
   const [ready,setReady] = useState(false);
   const [error,setError] = useState(false);
   const [attempt,setAttempt] = useState(0);
+  const filteredLanguages = languages.filter(language => language.name.toLocaleLowerCase().includes(languageQuery.trim().toLocaleLowerCase()));
+  const chooseLanguage = (option: LanguageOption) => {
+    setLanguageQuery(option.name);
+    setLanguageListOpen(false);
+    const select = host.current?.querySelector<HTMLSelectElement>('.goog-te-combo');
+    if (!select) return;
+    select.value = option.code;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  };
   useEffect(() => {
     const target = host.current;
     if (!target) return;
@@ -40,6 +53,7 @@ export function LanguageSelector() {
       const select = target.querySelector<HTMLSelectElement>('.goog-te-combo');
       if (select && select.options.length > 1) {
         select.setAttribute('aria-label','Website language');
+        setLanguages(Array.from(select.options).filter(option => option.value).map(option => ({ code: option.value, name: option.text.trim() })));
         setReady(true);
         setError(false);
       }
@@ -108,6 +122,20 @@ export function LanguageSelector() {
     <div id="site-languages" popover="auto" className="language-panel" data-lenis-prevent>
       <div className="language-heading"><strong>Choose your language</strong><button type="button" popoverTarget="site-languages" popoverTargetAction="hide" aria-label="Close language selector">×</button></div>
       <p className="language-intro">Translate this page. Your choice stays active across pages and refreshes.</p>
+      {ready && <>
+        <div className="language-search-wrap">
+          <input className="language-search" type="search" value={languageQuery} placeholder="Search languages…" aria-label="Search languages" aria-controls="language-options" aria-expanded={languageListOpen} onFocus={() => setLanguageListOpen(true)} onBlur={event => {
+            if (event.relatedTarget instanceof Node && event.currentTarget.parentElement?.contains(event.relatedTarget)) return;
+            window.setTimeout(() => setLanguageListOpen(false), 150);
+          }} onKeyDown={event => {
+            if (event.key === 'Escape') setLanguageListOpen(false);
+            if (event.key === 'Enter' && filteredLanguages[0]) { event.preventDefault(); chooseLanguage(filteredLanguages[0]); }
+          }} onChange={event => { setLanguageQuery(event.target.value); setLanguageListOpen(true); }} />
+          {languageListOpen && <div id="language-options" className="language-options" role="group" aria-label="Matching languages">
+            {filteredLanguages.length ? filteredLanguages.map(language => <button key={language.code} type="button" onMouseDown={event => event.preventDefault()} onClick={() => chooseLanguage(language)}>{language.name}</button>) : <p role="status">No matching languages.</p>}
+          </div>}
+        </div>
+      </>}
       <div id="ace-google-translate" ref={host} />
       {!ready && <p role="status">{error ? 'The translator could not load. Check your connection or allow Google Translate in your browser.' : 'Loading available languages…'}</p>}
       {error && <button type="button" className="language-retry" onClick={()=>setAttempt(value=>value+1)}>Retry translator</button>}

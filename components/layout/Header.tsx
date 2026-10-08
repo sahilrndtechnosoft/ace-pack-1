@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--ace-ink)]">
+        <nav className="hidden xl:flex items-center gap-4 text-[13px] font-semibold whitespace-nowrap text-[var(--ace-ink)] 2xl:gap-6">
           <Link href="/about" className={navLink('/about')} aria-current={isActive('/about') ? 'page' : undefined}>
             About Us
           </Link>
@@ -112,20 +112,20 @@ export const Header: React.FC = () => {
                 class), so the two responsibilities have to be split. */}
             <AnimatePresence>
               {megaMenuOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[92vw] max-w-[960px] z-50">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[94vw] max-w-[1120px] z-50">
                   <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white border-2 border-[var(--ace-orange)]/80 rounded-3xl shadow-2xl p-5 sm:p-8 tracking-normal normal-case whitespace-normal origin-top max-h-[calc(100dvh-130px)] overflow-y-auto" data-lenis-prevent>
+                    className="bg-[var(--ace-paper)] border border-[var(--ace-line)] rounded-[28px] shadow-[0_24px_70px_rgba(22,39,39,0.16)] p-4 sm:p-6 tracking-normal normal-case whitespace-normal origin-top max-h-[calc(100dvh-130px)] overflow-y-auto" data-lenis-prevent>
 
                     {/* Header Title Bar */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-[var(--ace-line)]">
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-[var(--ace-line)]">
                       <div className="flex items-center gap-2">
                         <Sparkles className="w-4 h-4 text-[var(--ace-orange)]" />
-                        <span className="text-xs font-extrabold text-[var(--ace-orange)] uppercase tracking-wider">
-                          Product Categories & Model Variants
+                        <span className="text-sm font-bold text-[var(--ace-ink)]">
+                          Browse product lines
                         </span>
                       </div>
                       <Link
@@ -139,32 +139,32 @@ export const Header: React.FC = () => {
                     </div>
 
                     {/* Multi-Column Category-Wise Variant Grid styled with Ace Packaging Brand Gold Theme (var(--ace-orange)) */}
-                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-6 sm:gap-y-8">
+                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                       {productCategories.map((category) => (
-                        <div key={category.id} className="flex flex-col min-w-0">
+                        <div key={category.id} className="min-w-0 rounded-2xl border border-[var(--ace-line)] bg-white p-3 sm:p-3.5">
 
                           {/* Category Heading in Brand Gold (var(--ace-orange)) */}
                           <Link
                             href={`/categories/${category.slug}`}
                             onClick={() => setMegaMenuOpen(false)}
-                            className="group inline-block pb-2 mb-3 border-b-2 border-[var(--ace-orange)]/40 hover:border-[var(--ace-orange)] transition-colors"
+                            className="group flex min-h-10 items-center gap-2 border-b border-[var(--ace-line)] pb-2 hover:text-[var(--ace-orange)] transition-colors"
                           >
-                            <h3 className="text-sm font-extrabold text-[var(--ace-orange)] group-hover:text-[var(--ace-orange)] transition-colors leading-tight flex items-center gap-3 normal-case">
-                              <PackagingIllustration slug={category.slug} className="w-10 h-10 shrink-0" />
+                            <PackagingIllustration slug={category.slug} className="w-8 h-8 shrink-0 text-[var(--ace-orange)]" />
+                            <h3 className="text-[13px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors leading-snug normal-case">
                               {category.name}
                             </h3>
                           </Link>
 
                           {/* Variant List with Brand Gold Chevrons (›) */}
-                          <div className="space-y-2">
+                          <div className="pt-1.5">
                             {category.products.map((product) => (
                               <Link
                                 key={product.id}
                                 href={`/categories/${category.slug}/${product.product_slug}`}
                                 onClick={() => setMegaMenuOpen(false)}
-                                className="flex items-center gap-2 text-sm font-semibold normal-case text-gray-800 hover:text-[var(--ace-orange)] transition-colors group"
+                                className="flex min-h-9 items-center gap-2 rounded-lg px-1 text-[13px] font-medium normal-case text-[var(--ace-ink)] hover:bg-[var(--ace-paper)] hover:text-[var(--ace-orange)] transition-colors group"
                               >
-                                <PackagingIllustration slug={category.slug} productId={product.id} className="w-8 h-8 shrink-0 text-[var(--ace-orange)]" />
+                                <PackagingIllustration slug={category.slug} productId={product.id} className="w-6 h-6 shrink-0 text-[var(--ace-orange)]" />
                                 <span className="leading-snug">{product.name}</span>
                               </Link>
                             ))}
@@ -175,7 +175,7 @@ export const Header: React.FC = () => {
                     </div>
 
                     {/* Bottom Footer Bar inside Mega Menu */}
-                    <div className="mt-6 pt-4 border-t border-[var(--ace-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[var(--ace-paper)] -mx-5 sm:-mx-8 -mb-5 sm:-mb-8 p-4 rounded-b-3xl text-xs text-gray-600">
+                    <div className="mt-4 pt-4 border-t border-[var(--ace-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 p-4 rounded-b-[28px] text-xs text-[var(--ace-muted)]">
                       <span className="font-semibold text-gray-700">
                         💡 All containers are manufactured from 100% Virgin PP 05 Food Grade Plastic.
                       </span>
@@ -211,7 +211,7 @@ export const Header: React.FC = () => {
               type="button"
               onClick={() => setResourcesOpen((v) => !v)}
               aria-expanded={resourcesOpen}
-              className={navLink('/resources', `inline-flex items-center gap-1 uppercase ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`)}
+              className={navLink('/resources', `inline-flex items-center gap-1 ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`)}
             >
               <span>Resources</span>
               <ChevronRight className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'}`} />
@@ -250,15 +250,12 @@ export const Header: React.FC = () => {
             Blogs
           </Link>
 
-          <Link href="/contact" className={navLink('/contact')} aria-current={isActive('/contact') ? 'page' : undefined}>
-            Contact
-          </Link>
         </nav>
 
         <LanguageSelector />
 
         {/* Action Button */}
-        <div className="hidden sm:flex shrink-0 items-center gap-4">
+        <div className="hidden lg:flex shrink-0 items-center gap-4">
           <a
             href="tel:+919925015906"
             className="hidden 2xl:flex items-center gap-2 text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
@@ -278,7 +275,7 @@ export const Header: React.FC = () => {
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="xl:hidden relative w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--ace-line)]/50 text-[var(--ace-ink)] hover:bg-[var(--ace-line)] transition-colors"
+          className="xl:hidden relative w-11 h-11 shrink-0 flex items-center justify-center rounded-full border border-[var(--ace-line)] bg-white text-[var(--ace-ink)] hover:bg-[var(--ace-aqua-soft)] transition-colors"
           aria-label="Toggle Navigation Menu"
         >
           <AnimatePresence initial={false} mode="wait">
