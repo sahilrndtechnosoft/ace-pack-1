@@ -10,7 +10,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { products, containerFinishes, initialSceneState, defaultFinish } from './config';
 import { buildScrollMotion, buildTextReveals, refreshOnSettle } from './experience-motion';
 import './experience.css';
-import { ExportPreparation } from '@/components/sections/ExportPreparation';
+import { QualityCertificationsSection } from '@/components/sections/QualityCertificationsSection';
+import { ExportMarketingSection } from '@/components/sections/ExportMarketingSection';
+import { FaqSection } from '@/components/sections/FaqSection';
+import { ProductShowcaseCarousel } from '@/components/products/ProductShowcaseCarousel';
+import { PreFooterCTA } from '@/components/sections/PreFooterCTA';
 
 const PackagingScene = dynamic(() => import('./PackagingScene'), { ssr: false });
 gsap.registerPlugin(ScrollTrigger);
@@ -98,8 +102,30 @@ export default function HomeExperience() {
       }
       state.current.frame={left:(left-viewport.left)/viewport.width,top:(top-viewport.top)/viewport.height,right:1-16/viewport.width,bottom:(bottom-viewport.top)/viewport.height};
     };
-    measure();gsap.ticker.add(measure);
-    return()=>{gsap.ticker.remove(measure);delete state.current.frame;};
+    let pending = false;
+    let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+    const requestMeasure = () => {
+      if (!pending) {
+        pending = true;
+        requestAnimationFrame(() => {
+          measure();
+          pending = false;
+        });
+      }
+    };
+    const onScroll = () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(requestMeasure, 60);
+    };
+    measure();
+    window.addEventListener('resize', requestMeasure);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('resize', requestMeasure);
+      window.removeEventListener('scroll', onScroll);
+      if (scrollTimer) clearTimeout(scrollTimer);
+      delete state.current.frame;
+    };
   },[mode]);
   useEffect(()=>{
     const media=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -161,14 +187,30 @@ export default function HomeExperience() {
         state.current.range=p<.23?p/.23:p<.43?1:p<.5?1+(p-.43)/.07:p<.70?2:p<.77?2+(p-.70)/.07:3;
         setActiveProduct(Math.max(0,Math.min(2,Math.round(state.current.range)-1)));
       },scrollTrigger:{trigger:'#collection',start:'top bottom',end:'bottom bottom',scrub:.6}});
-      gsap.fromTo(state.current,{finale:0},{finale:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#closing',start:'top bottom',end:'top top',scrub:.6}});
-      ScrollTrigger.create({trigger:'#manufacturing',start:'top 85%',endTrigger:'#closing',end:'top bottom',onToggle:self=>{
-        if(!self.isActive){state.current.active=true;setRenderActive(true);}
-        gsap.to('.xp-scene-layer',{xPercent:self.isActive?110:0,duration:.65,ease:'power2.inOut',overwrite:'auto',onComplete:()=>{
-          if(self.isActive){state.current.active=false;setRenderActive(false);}
-        }});
-      }});
-      gsap.to('.xp-scene-layer',{opacity:0,ease:'none',scrollTrigger:{trigger:'#footer',start:'top bottom',end:'top 40%',scrub:.6}});
+      ScrollTrigger.create({
+        trigger: '#manufacturing',
+        start: 'top 85%',
+        end: 'max',
+        onToggle: self => {
+          if (!self.isActive) {
+            state.current.active = true;
+            setRenderActive(true);
+          }
+          gsap.to('.xp-scene-layer', {
+            xPercent: self.isActive ? 110 : 0,
+            opacity: self.isActive ? 0 : 1,
+            duration: .65,
+            ease: 'power2.inOut',
+            overwrite: 'auto',
+            onComplete: () => {
+              if (self.isActive) {
+                state.current.active = false;
+                setRenderActive(false);
+              }
+            }
+          });
+        }
+      });
     },root);
     const pointer=(e:PointerEvent)=>{state.current.pointerX=e.clientX/window.innerWidth*2-1;state.current.pointerY=1-e.clientY/window.innerHeight*2;};
     window.addEventListener('pointermove',pointer,{passive:true});
@@ -206,8 +248,29 @@ export default function HomeExperience() {
     <section id="collection" className="xp-collection">{live&&products.map((p,i)=><span key={p.id} className="xp-range-anchor" id={`product-${p.id}`} style={{top:`${[0,106,185][i]}vh`}}/>)}<div className="xp-collection-stage"><div className="xp-collection-heading"><div><span className="xp-eyebrow">02 / Made for every menu</span><h2 data-split>Find your <em>form.</em></h2></div><Link href="/categories">View all categories <ArrowUpRight size={18}/></Link></div><div className="xp-product-panels">{products.map((p,i)=><motion.article key={`${p.id}-${revealMotion}`} className="xp-product" aria-hidden={live&&activeProduct!==i} inert={live&&activeProduct!==i} {...panelMotion(!live||activeProduct===i,35)} transition={{duration:.6,ease:[.22,1,.36,1]}}><div className="xp-product-copy"><span className="xp-eyebrow">{p.number} / {p.title}</span><h3>{p.name.split('\n').map((line,j)=><span key={line} className={j?'xp-serif':''}>{line}</span>)}</h3><p>{p.description}</p><dl><div><dt>Material</dt><dd>{p.material}</dd></div><div><dt>Format</dt><dd>{p.capacity}</dd></div><div><dt>Made for</dt><dd>{p.use}</dd></div></dl><MagneticLink href={p.href}>{p.link}</MagneticLink></div>{!live&&<img src={p.image} alt={p.title} width="1000" height="769" loading="lazy"/>}</motion.article>)}</div><span className="xp-product-watermark" aria-hidden="true">0{activeProduct+1}</span><div className="xp-collection-bottom"><div className="xp-product-tabs" aria-label="Jump to product">{products.map((p,i)=><a href={live?`#product-${p.id}`:p.href} key={p.id} aria-current={activeProduct===i?'true':undefined}><span>{p.number}</span>{p.title}<ArrowUpRight size={14}/></a>)}</div><span>Three distinct forms.<br/>One considered collection.</span></div></div></section>
     <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">03 / Made with intent</span><Plus size={30}/></div><Reveal><h2 data-split>Robotic precision.<br/><em>1.5 million a day.</em></h2></Reveal><div className="xp-manufacturing-copy"><p>Fifteen years of injection moulding across two Daman units — Dori Kadaiya and Dabhel — supplying QSR chains, cloud kitchens and food brands in Australia, the UAE, Europe, Canada and the Middle East. Moulded exclusively from 100% prime virgin PP 05.</p><Link href="/capabilities">Inside our process <ArrowUpRight size={19}/></Link></div><div className="xp-stats"><div><Count value={1500000} suffix="+"/><p>Containers moulded daily</p></div><div><Count value={1000} suffix="+"/><p>Clients served</p></div><div><Count value={12} suffix="+"/><p>Export markets worldwide</p></div></div><p className="xp-recycling-note">ISO 9001:2015 and US FDA 21 CFR 177.1520 certified. PP 05 is widely recyclable — check local collection guidance for each format.</p></section>
     <section className="xp-trust"><div className="xp-trust-heading"><span className="xp-eyebrow">Trusted at scale</span><p>1,000+ brands served across India and 12 export markets.</p></div><div className="xp-marquee" tabIndex={0} aria-label="Packaging for restaurants, cafés, caterers, cloud kitchens, and retail"><div className="xp-marquee-track">{[0,1].map(copy=><div className="xp-marquee-group" aria-hidden={copy===1} key={copy}>{['Restaurants','Dairy','Confectionery','Frozen foods','Bakery','QSR','Pharma','FMCG'].map((name,i)=><span key={name} className={i%2?'xp-serif':''}>{name}<Plus size={23}/></span>)}</div>)}</div></div></section>
-    <ExportPreparation />
-    <section id="closing" className="xp-closing"><Reveal><span className="xp-eyebrow">Product catalog &amp; sample kit</span><h2 data-split>Let’s make<br/><em>something good.</em></h2><MagneticLink href="/contact">Discuss your requirements</MagneticLink></Reveal>{!live&&<div className="xp-lineup">{products.map(p=><img key={p.id} src={p.image} alt={p.title} loading="lazy" width="1000" height="769"/>)}</div>}<span className="xp-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span></section>
+    {/* Homepage Certifications & Quality Credentials */}
+    <QualityCertificationsSection />
+
+    {/* Dedicated Export Marketing Section ("Every container we ship for export is carefully planned/prepared for delivery") */}
+    <ExportMarketingSection />
+
+    {/* Help & FAQ with Factory Inquiry Form */}
+    <FaqSection />
+
+    {/* Interactive Product Image Carousel (replaces old model lineup before footer) */}
+    <ProductShowcaseCarousel />
+
+    {/* Pre-Footer Call to Action & Gated Catalogue Download */}
+    <PreFooterCTA />
+
+    <section id="closing" className="xp-closing">
+      <Reveal>
+        <span className="xp-eyebrow">Product catalog &amp; sample kit</span>
+        <h2 data-split>Let’s make<br/><em>something good.</em></h2>
+        <MagneticLink href="/contact">Discuss your requirements</MagneticLink>
+      </Reveal>
+      <span className="xp-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span>
+    </section>
     <div id="footer" aria-hidden="true"/>
   </div></MotionConfig>;
 }

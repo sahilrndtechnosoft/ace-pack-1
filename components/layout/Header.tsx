@@ -66,7 +66,7 @@ export const Header: React.FC = () => {
         <Link href="/" className="flex shrink-0 items-center gap-3 group">
           <div className="flex items-center justify-center">
             <img
-              src="/images/ace-logo.webp"
+              src="/images/ACE_Pack_Logo-01.png"
               alt="Ace Packaging"
               width={320}
               height={165}

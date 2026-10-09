@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
 };
 
+import { ContentProtection } from "@/components/ui/ContentProtection";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${serif.variable} ${dmSans.variable} ${sourceSerif.variable} ${spaceGrotesk.variable} ${jakarta.variable} ${outfit.variable} ${lora.variable} ${dmSerif.variable} ${cormorant.variable}`}>
       <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground">
+        <ContentProtection />
         <SmoothScroll />
         <CursorTrail />
         <Header />

@@ -35,12 +35,12 @@ const MarqueeRow: React.FC<{ items: string[]; reverse?: boolean }> = ({ items, r
         {loop.map((name, idx) => (
           <div
             key={idx}
-            className="shrink-0 flex items-center gap-2.5 bg-white/[0.06] border border-white/10 hover:border-[#cfa144]/70 hover:bg-white/[0.07] rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 transition-colors duration-300"
+            className="shrink-0 flex items-center gap-2.5 bg-white border border-[#E6DBC6] hover:border-[#b99750] hover:shadow-md rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 transition-all duration-300"
           >
-            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#cfa144] to-[#8a6f3d] text-white flex items-center justify-center shrink-0">
+            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#b99750] to-[#8a6f3d] text-white flex items-center justify-center shrink-0">
               <Building2 className="w-3.5 h-3.5" />
             </span>
-            <span className="text-xs sm:text-sm font-bold text-gray-300 uppercase tracking-wide whitespace-nowrap">
+            <span className="text-xs sm:text-sm font-bold text-gray-800 uppercase tracking-wide whitespace-nowrap">
               {name}
             </span>
           </div>
@@ -52,24 +52,23 @@ const MarqueeRow: React.FC<{ items: string[]; reverse?: boolean }> = ({ items, r
 
 export const ClientLogos: React.FC = () => {
   return (
-    <section className="relative py-16 sm:py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.09)_0%,rgba(184,152,88,0)_70%)]" />
+    <section className="relative py-16 sm:py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
+      <div aria-hidden="true" className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.09)_0%,transparent_70%)]" />
 
       <Container className="relative z-10">
         <Reveal type="fade-up">
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-            <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#a8812f] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#cfa144]/10 border border-[#cfa144]/25">
+            <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-3 px-3.5 py-1.5 rounded-full bg-[#b99750]/10 border border-[#b99750]/25">
               Trusted At Scale
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              Trusted by 500+ Businesses Across India
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1A1D20] tracking-tight leading-tight">
+              Trusted by 500+ Businesses Across India &amp; Global Markets
             </h2>
           </div>
         </Reveal>
       </Container>
 
-      {/* Two independently-scrolling rows moving opposite directions —
-          a widely used pattern for a livelier, layered trust strip. */}
+      {/* Two independently-scrolling rows moving opposite directions */}
       <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
         <MarqueeRow items={partnersRowA} />
         <MarqueeRow items={partnersRowB} reverse />

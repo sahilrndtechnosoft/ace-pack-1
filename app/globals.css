@@ -12,8 +12,8 @@
   --ace-ink: #123b40;
   --ace-teal: #17665e;
   --ace-muted: #53666a;
-  --ace-orange: #b74725;
-  --ace-orange-bright: #ed8a5e;
+  --ace-orange: #b99750;
+  --ace-orange-bright: #d4b06a;
   --ace-aqua: #d9eeE8;
   --ace-aqua-soft: #edf5f1;
   --ace-aqua-line: #c4ded4;
@@ -23,14 +23,14 @@
   --ace-pale-peach: #f6eee6;
   --ace-light-text: #c3d8d5;
   --ace-dark-line: #426064;
-  --ace-dark-surface: #21484c;
+  --ace-dark-surface: #123b40;
   --ace-header-surface: #fafbf7f5;
   --ace-shadow: #123b400c;
   --ace-photo-shade: #123b40d9;
   --background: var(--ace-paper);
   --foreground: var(--ace-ink);
-  --brand-gold: var(--ace-orange);
-  --brand-gold-deep: var(--ace-orange);
+  --brand-gold: #b99750;
+  --brand-gold-deep: #9e7f3b;
   --ink-soft: var(--ace-muted);
 }
 
@@ -42,6 +42,22 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, select {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .container-custom {

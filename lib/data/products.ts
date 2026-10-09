@@ -13,6 +13,8 @@ export interface ProductItem {
   };
   packaging?: string;
   image: string;
+  blankImage?: string;
+  lockingFoodImage?: string;
   description?: string;
   applications?: string[];
 }

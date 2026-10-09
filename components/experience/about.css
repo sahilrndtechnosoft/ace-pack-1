@@ -67,13 +67,14 @@
 /* ---------- Hero ---------- */
 .xa-hero {
    min-height: calc(100svh - var(--xp-header));
-   background: var(--xa-dark);
-   color: var(--ace-paper);
+   background: var(--xp-ivory);
+   color: var(--xp-ink);
    position: relative;
    overflow: hidden;
    display: flex;
    flex-direction: column;
-   padding: 56px 0 0
+   padding: 56px 0 0;
+   border-bottom: 1px solid var(--xp-line);
 }
 
 .xa-hero>.xa-wrap {
@@ -87,8 +88,7 @@
    content: '';
    position: absolute;
    inset: 0;
-   background: radial-gradient(ellipse at 78% 38%, #c7ab6422, transparent 48%), linear-gradient(90deg, #ffffff03 1px, transparent 1px);
-   background-size: auto, 12.5% 100%;
+   background: radial-gradient(ellipse at 78% 38%, rgba(185,151,80,0.12), transparent 48%);
    pointer-events: none
 }
 
@@ -102,7 +102,7 @@
 }
 
 .xa-hero .xp-eyebrow {
-   color: #c8b27d;
+   color: var(--brand-gold);
    margin-bottom: 28px
 }
 
@@ -110,11 +110,12 @@
    font-size: clamp(64px, 8.4vw, 150px);
    line-height:var(--heading-leading);
    letter-spacing:var(--heading-tracking);
-   margin-bottom: 32px
+   margin-bottom: 32px;
+   color: var(--xp-ink);
 }
 
 .xa-hero h1 em {
-   color: var(--ace-orange);
+   color: var(--brand-gold);
    letter-spacing:var(--heading-tracking)
 }
 
@@ -132,7 +133,7 @@
 .xa-hero-lead {
    font-size: 17px;
    line-height: 1.8;
-   color: #d3d8cc;
+   color: var(--ace-muted);
    max-width: 540px;
    margin: 0
 }
@@ -566,18 +567,19 @@
 
 /* ---------- MD's desk ---------- */
 .xa-desk {
-   background: var(--xa-dark);
-   color: var(--ace-paper);
+   background: var(--xp-ivory);
+   color: var(--xp-ink);
    padding: 140px 0;
    position: relative;
-   overflow: hidden
+   overflow: hidden;
+   border-bottom: 1px solid var(--xp-line);
 }
 
 .xa-desk:before {
    content: '';
    position: absolute;
    inset: 0;
-   background: radial-gradient(ellipse at 50% 100%, #c7ab6418, transparent 55%);
+   background: radial-gradient(ellipse at 50% 100%, rgba(185,151,80,0.12), transparent 55%);
    pointer-events: none
 }
 
@@ -587,7 +589,7 @@
 }
 
 .xa-desk .xp-eyebrow {
-   color: #c8b27d
+   color: var(--brand-gold);
 }
 
 .xa-desk blockquote {
@@ -598,12 +600,12 @@
    line-height: 1.28;
    letter-spacing:var(--heading-tracking);
    font-weight: 400;
-   color: var(--ace-paper)
+   color: var(--xp-ink)
 }
 
 .xa-desk blockquote:before {
    content: '\201C';
-   color: #cdb77c;
+   color: var(--brand-gold);
    margin-right: .08em
 }
 
@@ -613,7 +615,7 @@
    align-items: center;
    gap: 18px;
    font-size: 12px;
-   color: #c2c8bb
+   color: var(--ace-muted)
 }
 
 .xa-desk-sign i {
@@ -700,17 +702,18 @@
 
 /* ---------- Plant ---------- */
 .xa-plant {
-   background: var(--xa-dark-2);
-   color: var(--ace-paper);
+   background: #f7f6f0;
+   color: var(--xp-ink);
    padding: 120px 0 80px;
    position: relative;
-   overflow: hidden
+   overflow: hidden;
+   border-bottom: 1px solid var(--xp-line);
 }
 
 .xa-pattern {
    position: absolute;
    inset: -30%;
-   opacity: .14;
+   opacity: .06;
    background: repeating-radial-gradient(ellipse at 0% 10%, transparent 0 70px, #b8a57c 71px, transparent 72px 130px);
    transform: rotate(-15deg);
    pointer-events: none
@@ -721,7 +724,7 @@
 }
 
 .xa-plant .xp-eyebrow {
-   color: #cabb99
+   color: var(--brand-gold)
 }
 
 .xa-plant h2 {
@@ -733,7 +736,7 @@
 }
 
 .xa-plant h2 em {
-   color: #c6ad7e
+   color: var(--brand-gold)
 }
 
 .xa-plant-copy {
@@ -743,7 +746,7 @@
 
 .xa-plant-copy p {
    font-size: 16px;
-   color: #c5c9c2;
+   color: var(--ace-muted);
    line-height: 1.85;
    margin: 0
 }
@@ -754,19 +757,19 @@
    gap: 22px;
    font-size: 12px;
    margin-top: 28px;
-   color: var(--ace-paper)
+   color: var(--brand-gold)
 }
 
 .xa-plant-grid {
    display: grid;
    grid-template-columns: repeat(4, 1fr);
-   border-top: 1px solid #ffffff29;
+   border-top: 1px solid var(--xp-line);
    padding-top: 40px
 }
 
 .xa-plant-stat {
    padding: 0 28px;
-   border-right: 1px solid #ffffff29
+   border-right: 1px solid var(--xp-line)
 }
 
 .xa-plant-stat:first-child {
@@ -781,15 +784,16 @@
    display: block;
    font-size: clamp(34px, 3.4vw, 56px);
    letter-spacing:var(--heading-tracking);
-   font-weight: 400;
+   font-weight: 700;
    line-height: 1;
+   color: var(--xp-ink);
    white-space: nowrap
 }
 
 .xa-plant-stat p {
    font-size: 11px;
    margin: 12px 0 0;
-   color: #c5c9c2;
+   color: var(--ace-muted);
    letter-spacing: .08em;
    text-transform: uppercase
 }

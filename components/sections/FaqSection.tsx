@@ -27,9 +27,9 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-[#111518] text-white border-b border-white/10 overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/3 left-0 w-[200px] sm:w-[380px] h-[200px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.11)_0%,rgba(184,152,88,0)_70%)]" />
+    <section className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
+      <div aria-hidden="true" className="pointer-events-none absolute top-1/3 left-0 w-[200px] sm:w-[380px] h-[200px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.11)_0%,transparent_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.11)_0%,transparent_70%)]" />
       <Container className="relative z-10">
 
         {/* Merged Layout: Left Side FAQ, Right Side Contact Form */}
@@ -39,12 +39,12 @@ export const FaqSection: React.FC = () => {
           <Reveal type="fade-right" duration={0.8}>
           <div className="lg:col-span-6 flex flex-col text-left">
 
-            <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-3">
-              HELP & FAQ
+            <span className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider block mb-3">
+              HELP &amp; FAQ
             </span>
 
             <SplitHeading>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-8">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1A1D20] tracking-tight leading-tight mb-8">
                 Everything You Need to Know About Food Packaging
               </h2>
             </SplitHeading>
@@ -55,19 +55,19 @@ export const FaqSection: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className={`bg-[#050505] rounded-2xl border overflow-hidden transition-colors duration-300 ${
-                      isOpen ? 'border-[#cfa144]/70' : 'border-white/15'
+                    className={`bg-white rounded-2xl border overflow-hidden transition-all duration-300 shadow-sm ${
+                      isOpen ? 'border-[#b99750] ring-1 ring-[#b99750]/20' : 'border-[#E6DBC6]'
                     }`}
                   >
                     <button
                       onClick={() => setOpenIndex(isOpen ? null : idx)}
-                      className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-white hover:text-[#a8812f] transition-colors"
+                      className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-[#1A1D20] hover:text-[#b99750] transition-colors"
                     >
                       <span className="flex items-center gap-3">
-                        <HelpCircle className="w-5 h-5 text-[#a8812f] shrink-0" />
+                        <HelpCircle className="w-5 h-5 text-[#b99750] shrink-0" />
                         <span>{faq.question}</span>
                       </span>
-                      <ChevronDown className={`w-5 h-5 text-[#a8812f] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-[#b99750] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence initial={false}>
@@ -80,7 +80,7 @@ export const FaqSection: React.FC = () => {
                           transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
                           className="overflow-hidden"
                         >
-                          <div className="px-5 pb-5 pt-2 text-sm sm:text-base text-gray-300 leading-relaxed border-t border-white/10 font-normal">
+                          <div className="px-5 pb-5 pt-2 text-sm sm:text-base text-gray-600 leading-relaxed border-t border-[#E6DBC6]/40 font-normal">
                             {faq.answer}
                           </div>
                         </motion.div>
@@ -92,13 +92,13 @@ export const FaqSection: React.FC = () => {
             </div>
 
             {/* Direct Phone & Email Bar */}
-            <div className="mt-8 p-5 bg-[#050505] rounded-2xl border border-white/15 flex flex-wrap items-center justify-between gap-4 text-xs">
-              <div className="flex items-center gap-2 text-gray-300">
-                <PhoneCall className="w-4 h-4 text-[#a8812f]" />
+            <div className="mt-8 p-5 bg-white rounded-2xl border border-[#E6DBC6] flex flex-wrap items-center justify-between gap-4 text-xs shadow-sm">
+              <div className="flex items-center gap-2 text-gray-700">
+                <PhoneCall className="w-4 h-4 text-[#b99750]" />
                 <span>Hotline: <strong>+91 98000 00000</strong></span>
               </div>
-              <div className="flex items-center gap-2 text-gray-300">
-                <Mail className="w-4 h-4 text-[#a8812f]" />
+              <div className="flex items-center gap-2 text-gray-700">
+                <Mail className="w-4 h-4 text-[#b99750]" />
                 <span>Email: <strong>info@acepack.co.in</strong></span>
               </div>
             </div>
@@ -108,59 +108,59 @@ export const FaqSection: React.FC = () => {
 
           {/* Right Column: Contact Inquiry Form (lg:col-span-6) */}
           <Reveal type="fade-left" duration={0.8}>
-          <div className="lg:col-span-6 bg-[#050505] p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-2xl text-left">
+          <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-xl text-left">
 
-            <span className="text-xs font-extrabold text-[#a8812f] tracking-wider block mb-2">
+            <span className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider block mb-2">
               Get in touch with Ace Packaging
             </span>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Send Factory Inquiry</h3>
-            <p className="text-xs text-gray-400 mb-8">Tell us about your application and request product information or a sample kit.</p>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h3>
+            <p className="text-xs text-gray-500 mb-8">Tell us about your application and request product specifications or a custom sample kit.</p>
 
             <form className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Full Name *</label>
-                  <input type="text" placeholder="John Doe" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Full Name *</label>
+                  <input type="text" placeholder="John Doe" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Company / Brand *</label>
-                  <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Company / Brand *</label>
+                  <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Email Address *</label>
-                  <input type="email" placeholder="john@company.com" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Email Address *</label>
+                  <input type="email" placeholder="john@company.com" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Phone / WhatsApp *</label>
-                  <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200" />
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Phone / WhatsApp *</label>
+                  <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
                 </div>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Container Category of Interest</label>
-                <select className="w-full bg-[#111518] border border-white/20 rounded-xl px-4 py-3 text-xs text-gray-300 focus:outline-none focus:border-[#cfa144] transition-colors duration-200">
+                <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Container Category of Interest</label>
+                <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200">
                   <option value="">Select a container line...</option>
                   {productCategories.map((cat) => (
-                    <option key={cat.id} value={cat.slug} className="bg-[#111518] text-white">{cat.name}</option>
+                    <option key={cat.id} value={cat.slug} className="bg-white text-[#1A1D20]">{cat.name}</option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-300 uppercase block mb-1">Detailed Message / Order Quantity *</label>
-                <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#111518] border border-white/20 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-[#cfa144] transition-colors duration-200"></textarea>
+                <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Detailed Message / Order Volume *</label>
+                <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-4 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200"></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+              <button type="submit" className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b99750]/30 hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                 <span>Send Your Requirements</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
+              <p className="text-[10px] text-gray-500 text-center flex items-center justify-center gap-1 mt-2">
+                <Lock className="w-3 h-3 text-[#b99750]" /> Your information is 100% confidential &amp; protected
               </p>
             </form>
           </div>

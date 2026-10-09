@@ -43,6 +43,7 @@ export function fitSceneFrame(stage:THREE.Group,camera:THREE.PerspectiveCamera,f
     stage.position.lerpVectors(previousPosition,stage.position.clone(),amount);
     stage.scale.setScalar(THREE.MathUtils.lerp(previousScale,stage.scale.x,amount));
   }
+  stage.scale.setScalar(THREE.MathUtils.clamp(stage.scale.x, 0.82, 1.25));
   stage.userData.framed=true;
   return measure();
 }
