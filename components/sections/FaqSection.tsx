@@ -95,11 +95,11 @@ export const FaqSection: React.FC = () => {
             <div className="mt-8 p-5 bg-white rounded-2xl border border-[#E6DBC6] flex flex-wrap items-center justify-between gap-4 text-xs shadow-sm">
               <div className="flex items-center gap-2 text-gray-700">
                 <PhoneCall className="w-4 h-4 text-[#b99750]" />
-                <span>Hotline: <strong>+91 98000 00000</strong></span>
+                <span>Factory Hotline: <strong>+91 99250 15906 / +91 99251 55799</strong></span>
               </div>
               <div className="flex items-center gap-2 text-gray-700">
                 <Mail className="w-4 h-4 text-[#b99750]" />
-                <span>Email: <strong>info@acepack.co.in</strong></span>
+                <span>Sales Email: <strong>sales@acepack.co.in</strong></span>
               </div>
             </div>
 
@@ -135,7 +135,7 @@ export const FaqSection: React.FC = () => {
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Phone / WhatsApp *</label>
-                  <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
+                  <input type="tel" placeholder="+91 99250 15906" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
                 </div>
               </div>
 

@@ -465,6 +465,63 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
         </div>
       </div>
 
+      {/* Visual Food Applications Showcase with Real Food Visuals */}
+      <div className="mt-12 bg-white rounded-3xl border border-[#E6DBC6] p-6 sm:p-10 shadow-sm text-left">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-4 border-b border-[#E6DBC6]/60">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <UtensilsCrossed className="w-4 h-4 text-[#b99750]" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#b99750]">
+                Culinary Applications &amp; Food Visuals
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--ace-ink)] tracking-tight">
+              Real-World Food Usage for {product.name}
+            </h2>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
+              Tested across commercial QSR kitchens, cloud kitchens, catering setups, and motorcycle delivery routes.
+            </p>
+          </div>
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] text-gray-700 shrink-0 self-start sm:self-auto">
+            100% Food-Contact Safe (PP 05)
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {foodApplications.map((app, idx) => (
+            <div
+              key={idx}
+              className="group relative rounded-2xl overflow-hidden border border-[#E6DBC6] bg-[#FAF8F4] flex flex-col justify-between hover:border-[#b99750] hover:shadow-md transition-all duration-300"
+            >
+              <div className="relative h-44 w-full overflow-hidden bg-slate-100">
+                <img
+                  src={
+                    idx === 0
+                      ? lockingFoodImage
+                      : idx === 1
+                      ? '/images/gallery/bento-meal.webp'
+                      : idx === 2
+                      ? '/images/gallery/kitchen-set.webp'
+                      : '/images/gallery/studio-range.webp'
+                  }
+                  alt={app}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <span className="absolute bottom-2.5 left-2.5 right-2.5 text-white text-xs font-bold leading-tight drop-shadow-xs">
+                  {app}
+                </span>
+              </div>
+              <div className="p-3 text-[11px] text-gray-600 flex items-center justify-between">
+                <span>{product.capacity}</span>
+                <span className="text-[#b99750] font-semibold">Zero-Leak Snap Seal</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <CatalogueDownloadModal
         isOpen={catalogueOpen}
         onClose={() => setCatalogueOpen(false)}

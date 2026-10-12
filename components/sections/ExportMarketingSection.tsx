@@ -54,7 +54,7 @@ export const ExportMarketingSection: React.FC = () => {
             </SplitHeading>
 
             <p className="mt-4 text-base text-gray-600 leading-relaxed">
-              From our Daman manufacturing hub to international distribution centers across 12+ countries, ACE Packaging implements rigorous pallet engineering, sea-freight protection, and regulatory clearances so products arrive pristine, sterile, and ready for immediate service.
+              From our Daman manufacturing hub to international distribution centers across 12+ countries, Ace Packaging implements rigorous pallet engineering, sea-freight protection, and regulatory clearances so products arrive pristine, sterile, and ready for immediate service.
             </p>
           </div>
         </Reveal>

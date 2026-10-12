@@ -61,7 +61,7 @@ export const QualityCertificationsSection: React.FC = () => {
                 </h2>
               </SplitHeading>
               <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
-                ACE Packaging adheres to stringent international food contact clearances, laboratory migration audits, and cleanroom quality management protocols.
+                Ace Packaging adheres to stringent international food contact clearances, laboratory migration audits, and cleanroom quality management protocols.
               </p>
             </div>
 

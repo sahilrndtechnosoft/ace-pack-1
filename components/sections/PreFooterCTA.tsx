@@ -11,7 +11,7 @@ export const PreFooterCTA: React.FC = () => {
 
   return (
     <>
-      <section className="relative py-16 sm:py-20 bg-gradient-to-b from-[#fafbf7] via-[#f8f9f5] to-[#f4f5f0] text-[var(--ace-ink)] border-b border-[#E6DBC6]/60 overflow-hidden">
+      <section id="closing" className="relative py-16 sm:py-20 bg-gradient-to-b from-[#fafbf7] via-[#f8f9f5] to-[#f4f5f0] text-[var(--ace-ink)] border-b border-[#E6DBC6]/60 overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.12)_0%,transparent_70%)]"
@@ -64,6 +64,10 @@ export const PreFooterCTA: React.FC = () => {
                 <span>US FDA &amp; ISO 9001 Certified</span>
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 text-center text-xs sm:text-sm text-gray-500 font-medium tracking-wide">
+            Daman, India · sales@acepack.co.in · +91 99250 15906
           </div>
         </Container>
       </section>

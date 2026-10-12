@@ -8,7 +8,8 @@
    background: var(--xp-ivory);
    color: var(--xp-ink);
    isolation: isolate;
-   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif
+   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+   overflow-x: clip;
 }
 
 .xp-home * {
@@ -64,7 +65,8 @@
    position: fixed;
    inset: var(--xp-header) 0 0;
    z-index: 2;
-   pointer-events: none
+   pointer-events: none;
+   contain: layout paint;
 }
 
 .xp-scene-layer canvas {
@@ -798,10 +800,14 @@
    border: 0
 }
 
-.xp-stats>div>span {
+.xp-stats>div>span,
+.xp-counter-number {
    font-size: 84px;
    letter-spacing:var(--heading-tracking);
-   color: var(--xp-ink)
+   color: #fafbf7;
+   font-weight: 700;
+   display: block;
+   line-height: 1.1;
 }
 
 .xp-stats p {
@@ -1648,7 +1654,13 @@
    cursor: none
 }
 
-/* Small chapter markers keep the long product story easy to explore or skip. */
+/* Small chapter markers keep the long product story easy to explore or skip on wide screens. */
+@media(max-width: 1023px) {
+   .xp-chapters {
+      display: none !important;
+   }
+}
+
 .xp-chapters {
    position: fixed;
    right: 20px;
@@ -1836,7 +1848,9 @@
 .xp-craft,.xp-closing { background:var(--ace-aqua-soft); }
 .xp-collection,.xp-trust { background:var(--ace-paper); border-color:var(--ace-line); }
 .xp-manufacturing { background:var(--ace-ink); }
+.xp-manufacturing h2 { color:#fafbf7; }
 .xp-manufacturing-copy p,.xp-recycling-note,.xp-stats p { color:var(--ace-light-text); }
+.xp-stats>div>span,.xp-counter-number { color:#fafbf7 !important; }
 .xp-manufacturing em,.xp-manufacturing-top { color:var(--ace-aqua); }
 .xp-hero-description { font-size:18px; line-height:1.8; }
 .xp-fact p,.xp-product-copy p,.xp-manufacturing-copy p { font-size:17px; line-height:1.75; }

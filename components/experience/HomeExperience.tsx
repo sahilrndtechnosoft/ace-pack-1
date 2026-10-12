@@ -10,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { products, containerFinishes, initialSceneState, defaultFinish } from './config';
 import { buildScrollMotion, buildTextReveals, refreshOnSettle } from './experience-motion';
 import './experience.css';
+import CountUp from 'react-countup';
 import { QualityCertificationsSection } from '@/components/sections/QualityCertificationsSection';
 import { ExportMarketingSection } from '@/components/sections/ExportMarketingSection';
 import { FaqSection } from '@/components/sections/FaqSection';
@@ -39,12 +40,12 @@ function Reveal({ children, className='' }: { children:ReactNode; className?:str
   return <motion.div className={className} initial={{opacity:0,y:32}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.15}} transition={{duration:.75,ease:[.22,1,.36,1]}}>{children}</motion.div>;
 }
 function Count({ value, suffix='' }: { value:number; suffix?:string }) {
-  const ref=useRef<HTMLSpanElement>(null);const reduced=useReducedMotion();
-  useEffect(()=>{
-    const el=ref.current;if(!el||reduced)return;
-    const context=gsap.context(()=>{const counter={value:0};gsap.to(counter,{value,duration:1.6,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',once:true},onUpdate:()=>{el.textContent=Math.round(counter.value).toLocaleString('en-US')+suffix;}});});return()=>context.revert();
-  },[value,suffix,reduced]);
-  return <span ref={ref}>{value.toLocaleString('en-US')}{suffix}</span>;
+  return (
+    <span className="xp-counter-number">
+      <CountUp end={value} duration={2} separator="," enableScrollSpy scrollSpyOnce />
+      <span>{suffix}</span>
+    </span>
+  );
 }
 const craftFacts=[
   {title:'100% virgin\nPP 05.',body:'US FDA 21 CFR 177.1520 certified food-grade polymer. Completely BPA-free, heavy-metal free and non-toxic.',tag:'01 / Material integrity'},
@@ -178,7 +179,7 @@ export default function HomeExperience() {
     if(mode!=='3d'||!root.current)return;
     const ctx=gsap.context(()=>{
       const headerOffset=()=>document.querySelector('body>header')?.getBoundingClientRect().height??84;
-      ['main-content','craft','collection','manufacturing','closing'].forEach(id=>ScrollTrigger.create({trigger:`#${id}`,start:'top 55%',end:'bottom 55%',onToggle:self=>{if(self.isActive)setChapter(id);}}));
+      ['main-content','craft','collection','products-showcase','manufacturing','closing'].forEach(id=>ScrollTrigger.create({trigger:`#${id}`,start:'top 55%',end:'bottom 55%',onToggle:self=>{if(self.isActive)setChapter(id);}}));
       gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:.6}});
       gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:.6,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
       const collectionProgress={value:0};
@@ -188,27 +189,19 @@ export default function HomeExperience() {
         setActiveProduct(Math.max(0,Math.min(2,Math.round(state.current.range)-1)));
       },scrollTrigger:{trigger:'#collection',start:'top bottom',end:'bottom bottom',scrub:.6}});
       ScrollTrigger.create({
-        trigger: '#manufacturing',
-        start: 'top 85%',
+        trigger: '#collection',
+        start: 'bottom 95%',
         end: 'max',
-        onToggle: self => {
-          if (!self.isActive) {
-            state.current.active = true;
-            setRenderActive(true);
-          }
-          gsap.to('.xp-scene-layer', {
-            xPercent: self.isActive ? 110 : 0,
-            opacity: self.isActive ? 0 : 1,
-            duration: .65,
-            ease: 'power2.inOut',
-            overwrite: 'auto',
-            onComplete: () => {
-              if (self.isActive) {
-                state.current.active = false;
-                setRenderActive(false);
-              }
-            }
-          });
+        onEnter: () => {
+          state.current.active = false;
+          setRenderActive(false);
+          gsap.set('.xp-scene-layer', { display: 'none', opacity: 0, visibility: 'hidden' });
+        },
+        onLeaveBack: () => {
+          state.current.active = true;
+          setRenderActive(true);
+          gsap.set('.xp-scene-layer', { display: 'block', visibility: 'visible' });
+          gsap.to('.xp-scene-layer', { opacity: 1, duration: 0.3 });
         }
       });
     },root);
@@ -232,12 +225,12 @@ export default function HomeExperience() {
     {live&&<div className="xp-scene-layer" aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
     {live&&!ready&&<div className="xp-loader" role="status"><span className="xp-loader-logo">Ace Packaging</span><span className="xp-eyebrow">Good things are taking shape</span><div role="progressbar" aria-label="Loading 3D packaging" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xp-loader-track"><span style={{width:`${progress}%`}}/></div><span>{Math.round(progress)}%</span><button onClick={onFailure}>Continue with still images <ArrowRight size={14}/></button></div>}
     <div className="xp-scroll-line" aria-hidden="true"/>
-    <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['manufacturing','Our thinking'],['closing','Let’s talk']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
+    <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','3D Model'],['products-showcase','Products'],['manufacturing','Our thinking'],['closing','Sample kit']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
     <section id="main-content" className="xp-hero">
       <div className="xp-hero-topline"><span><i/> Smart, sustainable packaging for brands.</span><span>Ace Packaging / Container solutions</span></div>
       <div className="xp-hero-copy"><p className="xp-eyebrow">US FDA food-grade · ISO 9001:2015</p><h1 aria-label="Beyond the box.">{['Beyond','the box.'].map((line,i)=><span className={`xp-title-mask ${i?'xp-serif':''}`} key={line}><motion.span initial={{y:'110%'}} animate={{y:ready||!live?0:'110%'}} transition={{duration:1.1,delay:.15*i,ease:[.22,1,.36,1]}}>{line}</motion.span></span>)}</h1><p className="xp-hero-description">Injection-moulded food containers in 100% prime virgin PP 05.<br/>Engineered for zero-leak delivery, from our Daman plant.</p><MagneticLink href="#craft" className="xp-button--gold">Unpack the difference</MagneticLink><div className="xp-hero-material">{live?<><span className="xp-finish-label">Explore a finish</span><div className="xp-finishes" aria-label="Preview container finish">{containerFinishes.map(({name},i)=><button key={name} aria-label={`${name} finish`} aria-pressed={finish===i} onClick={()=>setFinish(i)}><i data-finish={name}/><span>{name}</span></button>)}</div></>:<><span className="xp-material-swatch"/><span>Good form. Better function.<br/><b>Made for your everyday.</b></span></>}</div></div>
       {!live&&<div className="xp-hero-still"><img src={products[activeProduct].image} alt={products[activeProduct].title} width="1000" height="769" fetchPriority="high"/><div className="xp-static-selector">{products.map((p,i)=><button key={p.id} aria-pressed={activeProduct===i} onClick={()=>setActiveProduct(i)}>{p.number}<span className="sr-only">{p.title}</span></button>)}</div></div>}
-      {live&&<div className="xp-model-interaction" data-cursor="drag" onPointerDown={e=>{dragging.current=e.clientX;e.currentTarget.setPointerCapture(e.pointerId);}} onPointerMove={e=>{if(dragging.current!==null){state.current.drag+=(e.clientX-dragging.current)*.008;dragging.current=e.clientX;}}} onPointerUp={()=>{dragging.current=null;}} onPointerCancel={()=>{dragging.current=null;}} aria-hidden="true"/>}
+      {live&&<div className="xp-model-interaction" data-cursor="drag" onPointerDown={e=>{dragging.current=e.clientX;if(e.pointerType==='mouse'){e.currentTarget.setPointerCapture(e.pointerId);}}} onPointerMove={e=>{if(dragging.current!==null){state.current.drag+=(e.clientX-dragging.current)*.008;dragging.current=e.clientX;}}} onPointerUp={()=>{dragging.current=null;}} onPointerCancel={()=>{dragging.current=null;}} aria-hidden="true"/>}
       <div className="xp-orbit" aria-hidden="true"><span/><span/></div>
       <div className="xp-hero-caption"><span className="xp-eyebrow">01 / Meal Boxes</span><span className="xp-caption-rule"/><span>ISO-certified. Moulded in Daman, India.</span></div>
       {live&&<button className="xp-inspect" aria-pressed={openLid} onClick={()=>setOpenLid(!openLid)}><Plus size={16}/>{openLid?'Close the lid':'Open the lid'}</button>}
@@ -246,8 +239,15 @@ export default function HomeExperience() {
     </section>
     <section id="craft" className="xp-craft"><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">01 / A closer look</span><span className="xp-eyebrow">Beauty is in the details.</span></div><div className="xp-section-heading"><h2 data-split>Unbox <em>the craft.</em></h2></div><div className="xp-craft-facts">{craftFacts.map((fact,i)=><motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={live&&craftPhase!==i} {...panelMotion(!live||craftPhase===i,24)} transition={{duration:.55,ease:[.22,1,.36,1]}}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line=><span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule"/></motion.div>)}</div>{!live&&<img className="xp-craft-image" src="/models/acepack/clamshell.webp" alt="Hinged clamshell with its lid slightly open" width="1000" height="769" loading="lazy"/>}<span className="xp-craft-measure" aria-hidden="true">+<span>Designed to do more.</span>+</span><div className="xp-story-bottom"><span>One simple form.<br/><b>A world of thought.</b></span><div className="xp-story-steps">{['Consider','Open','Discover'].map((word,i)=><span key={word} className={craftPhase===i?'is-active':''}><b>0{i+1}</b>{word}</span>)}</div><span className="xp-turn-label"><Rotate3D size={20}/>360° of consideration</span></div></div></section>
     <section id="collection" className="xp-collection">{live&&products.map((p,i)=><span key={p.id} className="xp-range-anchor" id={`product-${p.id}`} style={{top:`${[0,106,185][i]}vh`}}/>)}<div className="xp-collection-stage"><div className="xp-collection-heading"><div><span className="xp-eyebrow">02 / Made for every menu</span><h2 data-split>Find your <em>form.</em></h2></div><Link href="/categories">View all categories <ArrowUpRight size={18}/></Link></div><div className="xp-product-panels">{products.map((p,i)=><motion.article key={`${p.id}-${revealMotion}`} className="xp-product" aria-hidden={live&&activeProduct!==i} inert={live&&activeProduct!==i} {...panelMotion(!live||activeProduct===i,35)} transition={{duration:.6,ease:[.22,1,.36,1]}}><div className="xp-product-copy"><span className="xp-eyebrow">{p.number} / {p.title}</span><h3>{p.name.split('\n').map((line,j)=><span key={line} className={j?'xp-serif':''}>{line}</span>)}</h3><p>{p.description}</p><dl><div><dt>Material</dt><dd>{p.material}</dd></div><div><dt>Format</dt><dd>{p.capacity}</dd></div><div><dt>Made for</dt><dd>{p.use}</dd></div></dl><MagneticLink href={p.href}>{p.link}</MagneticLink></div>{!live&&<img src={p.image} alt={p.title} width="1000" height="769" loading="lazy"/>}</motion.article>)}</div><span className="xp-product-watermark" aria-hidden="true">0{activeProduct+1}</span><div className="xp-collection-bottom"><div className="xp-product-tabs" aria-label="Jump to product">{products.map((p,i)=><a href={live?`#product-${p.id}`:p.href} key={p.id} aria-current={activeProduct===i?'true':undefined}><span>{p.number}</span>{p.title}<ArrowUpRight size={14}/></a>)}</div><span>Three distinct forms.<br/>One considered collection.</span></div></div></section>
+
+    {/* Immediate Product Offering Prominence: Signature Product Carousel */}
+    <div id="products-showcase">
+      <ProductShowcaseCarousel />
+    </div>
+
     <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">03 / Made with intent</span><Plus size={30}/></div><Reveal><h2 data-split>Robotic precision.<br/><em>1.5 million a day.</em></h2></Reveal><div className="xp-manufacturing-copy"><p>Fifteen years of injection moulding across two Daman units — Dori Kadaiya and Dabhel — supplying QSR chains, cloud kitchens and food brands in Australia, the UAE, Europe, Canada and the Middle East. Moulded exclusively from 100% prime virgin PP 05.</p><Link href="/capabilities">Inside our process <ArrowUpRight size={19}/></Link></div><div className="xp-stats"><div><Count value={1500000} suffix="+"/><p>Containers moulded daily</p></div><div><Count value={1000} suffix="+"/><p>Clients served</p></div><div><Count value={12} suffix="+"/><p>Export markets worldwide</p></div></div><p className="xp-recycling-note">ISO 9001:2015 and US FDA 21 CFR 177.1520 certified. PP 05 is widely recyclable — check local collection guidance for each format.</p></section>
     <section className="xp-trust"><div className="xp-trust-heading"><span className="xp-eyebrow">Trusted at scale</span><p>1,000+ brands served across India and 12 export markets.</p></div><div className="xp-marquee" tabIndex={0} aria-label="Packaging for restaurants, cafés, caterers, cloud kitchens, and retail"><div className="xp-marquee-track">{[0,1].map(copy=><div className="xp-marquee-group" aria-hidden={copy===1} key={copy}>{['Restaurants','Dairy','Confectionery','Frozen foods','Bakery','QSR','Pharma','FMCG'].map((name,i)=><span key={name} className={i%2?'xp-serif':''}>{name}<Plus size={23}/></span>)}</div>)}</div></div></section>
+    
     {/* Homepage Certifications & Quality Credentials */}
     <QualityCertificationsSection />
 
@@ -257,20 +257,9 @@ export default function HomeExperience() {
     {/* Help & FAQ with Factory Inquiry Form */}
     <FaqSection />
 
-    {/* Interactive Product Image Carousel (replaces old model lineup before footer) */}
-    <ProductShowcaseCarousel />
-
     {/* Pre-Footer Call to Action & Gated Catalogue Download */}
     <PreFooterCTA />
 
-    <section id="closing" className="xp-closing">
-      <Reveal>
-        <span className="xp-eyebrow">Product catalog &amp; sample kit</span>
-        <h2 data-split>Let’s make<br/><em>something good.</em></h2>
-        <MagneticLink href="/contact">Discuss your requirements</MagneticLink>
-      </Reveal>
-      <span className="xp-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span>
-    </section>
     <div id="footer" aria-hidden="true"/>
   </div></MotionConfig>;
 }

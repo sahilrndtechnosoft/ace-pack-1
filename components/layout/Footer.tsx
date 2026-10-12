@@ -7,7 +7,7 @@ import { productCategories } from '@/lib/data/products';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#FAF8F4] text-[var(--ace-ink)] pt-16 pb-10 border-t-2 border-[#E6DBC6]">
+    <footer className="relative z-30 isolate bg-[#FAF8F4] text-[var(--ace-ink)] pt-16 pb-10 border-t-2 border-[#E6DBC6] overflow-hidden">
       <div className="container-custom max-w-[1600px]">
         
         {/* Main Footer Grid */}
