@@ -55,17 +55,40 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
   const lid=useMemo(()=>scene.getObjectByName('LidPivot'),[scene]);
   const lidY=useMemo(()=>lid?.position.y??0,[lid]);
   const group=useRef<THREE.Group>(null);
+  const wasVisible=useRef(false);
   useEffect(()=>{onReady?.();return()=>{scene.traverse(object=>{if(object instanceof THREE.Mesh)(object.material as THREE.Material).dispose();});};},[onReady,scene]);
-  useFrame(({clock,size})=>{
+  useFrame(({clock,size},delta)=>{
     const g=group.current;if(!g)return;
     const pose=getModelPose(kind,state.current,clock.elapsedTime,size.width/size.height,size.height);
-    g.visible=pose.visible;if(!g.visible)return;
+    if(!pose.visible) {
+      g.visible = false;
+      wasVisible.current = false;
+      return;
+    }
+    g.visible = true;
     const finish=THREE.MathUtils.clamp(state.current.finish,0,finishes.length-1);
     const from=Math.floor(finish),to=Math.min(from+1,finishes.length-1);
     bodies.forEach(material=>material.color.lerpColors(finishes[from],finishes[to],finish-from));
-    g.scale.setScalar(pose.scale);g.position.set(...pose.position);g.rotation.set(...pose.rotation);
-    // All three formats now have separate snap-fit lids.
-    if(lid)lid.position.y=lidY+pose.lidLift;
+
+    // When first becoming visible, initialize directly to the target pose to avoid dragging from origin or stale coordinates
+    if (!wasVisible.current) {
+      g.position.set(pose.position[0], pose.position[1], pose.position[2]);
+      g.scale.setScalar(pose.scale);
+      g.rotation.set(pose.rotation[0], pose.rotation[1], pose.rotation[2]);
+      if (lid) lid.position.y = lidY + pose.lidLift;
+      wasVisible.current = true;
+    } else {
+      // Smooth exponential damping prevents wheel-notch jitter and abrupt jumps
+      const damping = 1 - Math.exp(-22 * Math.min(delta, 0.05));
+      g.position.x = THREE.MathUtils.lerp(g.position.x, pose.position[0], damping);
+      g.position.y = THREE.MathUtils.lerp(g.position.y, pose.position[1], damping);
+      g.position.z = THREE.MathUtils.lerp(g.position.z, pose.position[2], damping);
+      g.scale.setScalar(THREE.MathUtils.lerp(g.scale.x, pose.scale, damping));
+      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, pose.rotation[0], damping);
+      g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, pose.rotation[1], damping);
+      g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, pose.rotation[2], damping);
+      if (lid) lid.position.y = THREE.MathUtils.lerp(lid.position.y, lidY + pose.lidLift, damping);
+    }
   },-2);
   return <group ref={group}><primitive object={scene}/></group>;
 }
@@ -79,7 +102,10 @@ function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembl
   },[gl,onFailure,setFrameloop,invalidate,state]);
   useFrame(({clock,size},delta)=>{
     const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height,size.height);
-    camera.position.set(...pose.camera);camera.lookAt(0,pose.lookAt,0);
+    const targetCam = new THREE.Vector3(...pose.camera);
+    const camDamping = 1 - Math.exp(-20 * Math.min(delta, 0.05));
+    camera.position.lerp(targetCam, camDamping);
+    camera.lookAt(0,pose.lookAt,0);
     camera.updateMatrixWorld();
     const bounds=assembly.current&&s.frame&&camera instanceof THREE.PerspectiveCamera?fitSceneFrame(assembly.current,camera,s.frame,delta):undefined;
     if(light.current)light.current.position.set(2+s.pointerX*2,3+s.pointerY,3);

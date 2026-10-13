@@ -27,7 +27,7 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
+    <section id="faq-section" className="relative py-20 bg-[#FAF8F4] text-[#1A1D20] border-b border-[#E6DBC6]/40 overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute top-1/3 left-0 w-[200px] sm:w-[380px] h-[200px] sm:h-[380px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.11)_0%,transparent_70%)]" />
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0 w-[220px] sm:w-[420px] h-[220px] sm:h-[420px] rounded-full [background:radial-gradient(circle,rgba(185,151,80,0.11)_0%,transparent_70%)]" />
       <Container className="relative z-10">
@@ -44,7 +44,7 @@ export const FaqSection: React.FC = () => {
             </span>
 
             <SplitHeading>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1A1D20] tracking-tight leading-tight mb-8">
+              <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#1A1D20] tracking-tight leading-snug mb-6">
                 Everything You Need to Know About Food Packaging
               </h2>
             </SplitHeading>

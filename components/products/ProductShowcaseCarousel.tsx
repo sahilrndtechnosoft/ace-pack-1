@@ -167,7 +167,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                 Signature Product Showcase
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug">
               Containers Engineered for <span className="text-[#b99750] italic font-serif font-normal">Every Format</span>
             </h2>
             <p className="mt-3 text-sm sm:text-base text-gray-600 max-w-2xl leading-relaxed">

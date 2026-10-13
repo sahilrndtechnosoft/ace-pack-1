@@ -32,7 +32,7 @@ export const ExportMarketingSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-white text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
+    <section id="export-shipping" className="relative py-20 bg-white text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
       {/* Background radial gold glow */}
       <div
         aria-hidden="true"
@@ -48,7 +48,7 @@ export const ExportMarketingSection: React.FC = () => {
             </div>
 
             <SplitHeading>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight">
                 Every container we ship for export is carefully planned and prepared for delivery.
               </h2>
             </SplitHeading>

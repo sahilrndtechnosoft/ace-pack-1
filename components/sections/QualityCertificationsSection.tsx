@@ -40,7 +40,7 @@ export const QualityCertificationsSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-gradient-to-b from-[#FAF8F4] to-[#f4f1e8] text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
+    <section id="certifications-quality" className="relative py-20 bg-gradient-to-b from-[#FAF8F4] to-[#f4f1e8] text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
       {/* Background radial gold glow */}
       <div
         aria-hidden="true"
@@ -56,7 +56,7 @@ export const QualityCertificationsSection: React.FC = () => {
                 <span>Certified &amp; Qualified Manufacturing</span>
               </div>
               <SplitHeading>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--ace-ink)] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight">
                   Qualified &amp; Certified for Global Food Safety
                 </h2>
               </SplitHeading>
@@ -83,16 +83,25 @@ export const QualityCertificationsSection: React.FC = () => {
               <Reveal key={idx} type="fade-up" delay={idx * 0.08}>
                 <div className="h-full bg-white rounded-3xl border-2 border-[#E6DBC6] hover:border-[#b99750] p-6 sm:p-7 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group text-left">
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-[#b99750]/15 text-[#b99750] flex items-center justify-center border border-[#b99750]/30 group-hover:scale-105 transition-transform">
+                    {/* Top Row: Icon & Serial Number */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-12 h-12 rounded-2xl bg-[#b99750]/15 text-[#b99750] flex items-center justify-center border border-[#b99750]/30 group-hover:scale-105 transition-transform shrink-0">
                         <Icon className="w-6 h-6" />
                       </div>
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#b99750] bg-[#FAF8F4] border border-[#E6DBC6] px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-mono font-bold text-[#b99750]/70 bg-[#FAF8F4] px-2.5 py-1 rounded-full border border-[#E6DBC6]">
+                        0{idx + 1}
+                      </span>
+                    </div>
+
+                    {/* Dedicated Credential Badge */}
+                    <div className="mb-3">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-[#96742e] bg-[#FAF8F4] border border-[#E6DBC6] shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#b99750]" />
                         {item.badge}
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-[var(--ace-ink)] mb-2 group-hover:text-[#b99750] transition-colors leading-snug">
+                    <h3 className="text-base sm:text-lg font-bold text-[var(--ace-ink)] mb-2 group-hover:text-[#b99750] transition-colors leading-snug min-h-[3rem] flex items-center">
                       {item.title}
                     </h3>
 

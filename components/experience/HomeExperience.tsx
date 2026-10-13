@@ -76,9 +76,7 @@ export default function HomeExperience() {
         if(rect.bottom<=viewport.top||rect.top>=viewport.bottom)continue;
         stacked ||= rect.width>viewport.width*.6||!!owner.closest('.xp-closing');
         for(const leaf of owner.querySelectorAll('h1,h2,h3,p,dl,.xp-button,.xp-eyebrow,.xp-finishes')) {
-          if(!leaf.getClientRects().length)continue;
-          const range=document.createRange();range.selectNodeContents(leaf);
-          const text=leaf.matches('.xp-button,dl,.xp-finishes')?leaf.getBoundingClientRect():range.getBoundingClientRect();
+          const text=leaf.getBoundingClientRect();
           if(text.height&&text.bottom>viewport.top&&text.top<viewport.bottom)copies.push(text);
         }
       }
@@ -183,27 +181,47 @@ export default function HomeExperience() {
       gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:.6}});
       gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:.6,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
       const collectionProgress={value:0};
+      const smoothStep=(min:number,max:number,val:number)=>{
+        const t=Math.max(0,Math.min(1,(val-min)/(max-min)));
+        return t*t*(3-2*t);
+      };
       gsap.fromTo(collectionProgress,{value:0},{value:1,ease:'none',immediateRender:false,onUpdate:()=>{
         const p=collectionProgress.value;
-        state.current.range=p<.23?p/.23:p<.43?1:p<.5?1+(p-.43)/.07:p<.70?2:p<.77?2+(p-.70)/.07:3;
-        setActiveProduct(Math.max(0,Math.min(2,Math.round(state.current.range)-1)));
+        const range=p<.22?(p/.22)
+          :p<.38?1
+          :p<.54?1+smoothStep(.38,.54,p)
+          :p<.70?2
+          :p<.86?2+smoothStep(.70,.86,p)
+          :3;
+        state.current.range=range;
+        const targetProduct=range<1.5?0:range<2.5?1:2;
+        setActiveProduct(targetProduct);
       },scrollTrigger:{trigger:'#collection',start:'top bottom',end:'bottom bottom',scrub:.6}});
-      ScrollTrigger.create({
-        trigger: '#collection',
-        start: 'bottom 95%',
-        end: 'max',
-        onEnter: () => {
-          state.current.active = false;
-          setRenderActive(false);
-          gsap.set('.xp-scene-layer', { display: 'none', opacity: 0, visibility: 'hidden' });
+      const exitProgress={value:0};
+      gsap.fromTo(exitProgress,{value:0},{value:1,ease:'none',immediateRender:false,scrollTrigger:{
+        trigger:'#collection',
+        start:'bottom bottom',
+        end:'bottom 60%',
+        scrub:.5,
+        onUpdate:(self)=>{
+          state.current.finale=self.progress;
+          gsap.set('.xp-scene-layer',{opacity:1-self.progress});
         },
-        onLeaveBack: () => {
-          state.current.active = true;
+        onLeave:()=>{
+          state.current.active=false;
+          setRenderActive(false);
+          gsap.set('.xp-scene-layer',{display:'none',visibility:'hidden'});
+        },
+        onEnterBack:()=>{
+          state.current.active=true;
           setRenderActive(true);
-          gsap.set('.xp-scene-layer', { display: 'block', visibility: 'visible' });
-          gsap.to('.xp-scene-layer', { opacity: 1, duration: 0.3 });
+          gsap.set('.xp-scene-layer',{display:'block',visibility:'visible'});
+        },
+        onLeaveBack:()=>{
+          state.current.finale=0;
+          gsap.set('.xp-scene-layer',{opacity:1});
         }
-      });
+      }});
     },root);
     const pointer=(e:PointerEvent)=>{state.current.pointerX=e.clientX/window.innerWidth*2-1;state.current.pointerY=1-e.clientY/window.innerHeight*2;};
     window.addEventListener('pointermove',pointer,{passive:true});
@@ -238,7 +256,7 @@ export default function HomeExperience() {
       <div className="xp-hero-bottom"><a href="#craft" className="xp-scroll-cue"><span className="xp-down"><ArrowDown size={17}/></span>Scroll to discover</a><span>{live?'Drag to rotate. Scroll to transform.':'Thoughtful packaging. From every angle.'}</span><span className="xp-live-label"><i/>{live?'Interactive collection':'The collection'} <span>01—03</span></span></div>
     </section>
     <section id="craft" className="xp-craft"><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">01 / A closer look</span><span className="xp-eyebrow">Beauty is in the details.</span></div><div className="xp-section-heading"><h2 data-split>Unbox <em>the craft.</em></h2></div><div className="xp-craft-facts">{craftFacts.map((fact,i)=><motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={live&&craftPhase!==i} {...panelMotion(!live||craftPhase===i,24)} transition={{duration:.55,ease:[.22,1,.36,1]}}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line=><span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule"/></motion.div>)}</div>{!live&&<img className="xp-craft-image" src="/models/acepack/clamshell.webp" alt="Hinged clamshell with its lid slightly open" width="1000" height="769" loading="lazy"/>}<span className="xp-craft-measure" aria-hidden="true">+<span>Designed to do more.</span>+</span><div className="xp-story-bottom"><span>One simple form.<br/><b>A world of thought.</b></span><div className="xp-story-steps">{['Consider','Open','Discover'].map((word,i)=><span key={word} className={craftPhase===i?'is-active':''}><b>0{i+1}</b>{word}</span>)}</div><span className="xp-turn-label"><Rotate3D size={20}/>360° of consideration</span></div></div></section>
-    <section id="collection" className="xp-collection">{live&&products.map((p,i)=><span key={p.id} className="xp-range-anchor" id={`product-${p.id}`} style={{top:`${[0,106,185][i]}vh`}}/>)}<div className="xp-collection-stage"><div className="xp-collection-heading"><div><span className="xp-eyebrow">02 / Made for every menu</span><h2 data-split>Find your <em>form.</em></h2></div><Link href="/categories">View all categories <ArrowUpRight size={18}/></Link></div><div className="xp-product-panels">{products.map((p,i)=><motion.article key={`${p.id}-${revealMotion}`} className="xp-product" aria-hidden={live&&activeProduct!==i} inert={live&&activeProduct!==i} {...panelMotion(!live||activeProduct===i,35)} transition={{duration:.6,ease:[.22,1,.36,1]}}><div className="xp-product-copy"><span className="xp-eyebrow">{p.number} / {p.title}</span><h3>{p.name.split('\n').map((line,j)=><span key={line} className={j?'xp-serif':''}>{line}</span>)}</h3><p>{p.description}</p><dl><div><dt>Material</dt><dd>{p.material}</dd></div><div><dt>Format</dt><dd>{p.capacity}</dd></div><div><dt>Made for</dt><dd>{p.use}</dd></div></dl><MagneticLink href={p.href}>{p.link}</MagneticLink></div>{!live&&<img src={p.image} alt={p.title} width="1000" height="769" loading="lazy"/>}</motion.article>)}</div><span className="xp-product-watermark" aria-hidden="true">0{activeProduct+1}</span><div className="xp-collection-bottom"><div className="xp-product-tabs" aria-label="Jump to product">{products.map((p,i)=><a href={live?`#product-${p.id}`:p.href} key={p.id} aria-current={activeProduct===i?'true':undefined}><span>{p.number}</span>{p.title}<ArrowUpRight size={14}/></a>)}</div><span>Three distinct forms.<br/>One considered collection.</span></div></div></section>
+    <section id="collection" className="xp-collection">{live&&products.map((p,i)=><span key={p.id} className="xp-range-anchor" id={`product-${p.id}`} style={{top:`${[0,110,195][i]}vh`}}/>)}<div className="xp-collection-stage"><div className="xp-collection-heading"><div><span className="xp-eyebrow">02 / Made for every menu</span><h2 data-split>Find your <em>form.</em></h2></div><Link href="/categories">View all categories <ArrowUpRight size={18}/></Link></div><div className="xp-product-panels">{products.map((p,i)=><motion.article key={`${p.id}-${revealMotion}`} className="xp-product" aria-hidden={live&&activeProduct!==i} inert={live&&activeProduct!==i} {...panelMotion(!live||activeProduct===i,35)} transition={{duration:.6,ease:[.22,1,.36,1]}}><div className="xp-product-copy"><span className="xp-eyebrow">{p.number} / {p.title}</span><h3>{p.name.split('\n').map((line,j)=><span key={line} className={j?'xp-serif':''}>{line}</span>)}</h3><p>{p.description}</p><dl><div><dt>Material</dt><dd>{p.material}</dd></div><div><dt>Format</dt><dd>{p.capacity}</dd></div><div><dt>Made for</dt><dd>{p.use}</dd></div></dl><MagneticLink href={p.href}>{p.link}</MagneticLink></div>{!live&&<img src={p.image} alt={p.title} width="1000" height="769" loading="lazy"/>}</motion.article>)}</div><span className="xp-product-watermark" aria-hidden="true">0{activeProduct+1}</span><div className="xp-collection-bottom"><div className="xp-product-tabs" aria-label="Jump to product">{products.map((p,i)=><a href={live?`#product-${p.id}`:p.href} key={p.id} aria-current={activeProduct===i?'true':undefined}><span>{p.number}</span>{p.title}<ArrowUpRight size={14}/></a>)}</div><span>Three distinct forms.<br/>One considered collection.</span></div></div></section>
 
     {/* Immediate Product Offering Prominence: Signature Product Carousel */}
     <div id="products-showcase">

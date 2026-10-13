@@ -24,7 +24,7 @@ export const PreFooterCTA: React.FC = () => {
               <span>Complimentary Factory Samples</span>
             </span>
 
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-tight mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-[32px] font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight mb-4">
               Ready to Upgrade Your Food Delivery Packaging?
             </h2>
 

@@ -12,7 +12,6 @@ import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import { CursorTrail } from "@/components/ui/CursorTrail";
-import { StylePreview } from "@/components/ui/StylePreview";
 
 
 // Site type. Manrope for everything set in sans — its larger x-height and open
@@ -52,7 +51,6 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <ScrollToTopButton />
-        <StylePreview />
       </body>
     </html>
   );

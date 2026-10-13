@@ -15,9 +15,18 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6,hei
   const collection=smooth(s.range);
   const selected=clamp(s.range-1,0,2);
   const focus=clamp(1-Math.abs(selected-kind));
-  const visibility=kind===0?Math.max(1-collection,focus):focus*collection;
+  const smoothFocus=smooth(focus);
+  const visibility=kind===0?Math.max(1-collection,smoothFocus):smoothFocus*collection;
   const intro=smooth(s.hero);
   const idle=(1-intro)*Math.sin(time*.65)*.065;
+
+  // Finale exit smoothing: as finale climbs 0 -> 1, models gracefully drift up and fade without collapsing geometry
+  const finale=clamp(s.finale||0);
+  const exitFade=1-smooth(finale);
+  const exitLift=smooth(finale)*2.0;
+  const exitDepth=-smooth(finale)*1.2;
+  const exitScale=mix(1,0.94,smooth(finale));
+
   // Per-kind scale, [before hero settle, after].
   const size=mix(SIZE[kind][0],SIZE[kind][1],intro);
   const open=clamp((smooth((s.craft-.2)/.48)*1.15+s.inspect*.85*(1-intro))*(1-collection));
@@ -30,15 +39,15 @@ export function getModelPose(kind:number,s:SceneState,time:number,aspect=1.6,hei
   const heroX=mix(1.35,0,portrait);
   const travel=mix(4.4,2.8,portrait);
   const stageX=heroX+(kind-selected)*travel*collection;
-  const stageY=mix(-.7,-.95,intro)+idle-drop;
+  const stageY=mix(-.7,-.95,intro)+idle-drop+exitLift;
 
-  // Models must never appear at the end of the homepage (during finale or when inactive)
-  const isVisible = s.active && visibility > 0.001 && (s.finale || 0) < 0.1;
+  // Models remain smoothly visible until finale exit finishes
+  const isVisible = s.active && visibility > 0.001 && exitFade > 0.001;
 
   return {
     visible: isVisible,
-    scale: size*mix(1,.72,cramped)*Math.max(.001,visibility),
-    position: [stageX, stageY, 0] as [number,number,number],
+    scale: size*mix(1,.72,cramped)*Math.max(.001,visibility)*exitScale,
+    position: [stageX, stageY, exitDepth] as [number,number,number],
     rotation: [
       mix(.22,.06,intro),
       -.58+s.craft*Math.PI*2+(kind-selected)*.95*collection+s.drag*(1-collection)+Math.sin(time*.25)*.08*(1-intro),
