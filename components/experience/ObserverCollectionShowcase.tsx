@@ -142,9 +142,14 @@ export function ObserverCollectionShowcase() {
       // PINNING: Pin the section smoothly to viewport with ScrollTrigger
       const pinDistance = window.innerHeight * (products.length - 1) * 0.85;
 
+      const getHeaderOffset = () => {
+        const header = document.querySelector('header');
+        return header ? Math.round(header.getBoundingClientRect().height) : 84;
+      };
+
       pinTrigger = ScrollTrigger.create({
         trigger: root,
-        start: 'top top',
+        start: () => `top ${getHeaderOffset()}`,
         end: () => `+=${pinDistance}`,
         pin: true,
         pinSpacing: true,
@@ -197,12 +202,12 @@ export function ObserverCollectionShowcase() {
     <section
       ref={containerRef}
       id="collection"
-      className="obs-carousel-wrapper relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-[#0C0D0E] text-white select-none touch-pan-y"
+      className="obs-carousel-wrapper relative h-[calc(100svh-var(--xp-header,84px))] min-h-[580px] w-full overflow-hidden bg-[#0C0D0E] text-white select-none touch-pan-y"
     >
       {/* Pinned Global Overlay Header */}
-      <div className="absolute top-0 inset-x-0 z-40 px-6 sm:px-12 pt-16 sm:pt-20 pb-3 sm:pb-5 flex items-center justify-between pointer-events-auto bg-gradient-to-b from-black/90 via-black/50 to-transparent">
+      <div className="absolute top-0 inset-x-0 z-40 px-6 sm:px-12 pt-7 sm:pt-9 pb-3 sm:pb-4 flex items-center justify-between pointer-events-auto bg-gradient-to-b from-black/90 via-black/50 to-transparent">
         <div>
-          <span className="text-[9px] sm:text-[11px] font-bold text-[#b99750] uppercase tracking-[0.2em] block mb-0.5 sm:mb-1">
+          <span className="text-[10px] sm:text-xs font-bold text-[#b99750] uppercase tracking-[0.2em] block mb-1">
             02 / Plastic Food Containers
           </span>
           <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -232,7 +237,7 @@ export function ObserverCollectionShowcase() {
                   backgroundImage: `linear-gradient(180deg, rgba(12, 13, 14, 0.85) 0%, rgba(12, 13, 14, 0.5) 45%, rgba(12, 13, 14, 0.95) 100%), url(${p.foodImage})`,
                 }}
               >
-                <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-26 sm:pt-32 pb-8 sm:pb-12 relative z-20">
+                <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-24 sm:pt-30 pb-6 sm:pb-8 relative z-20">
                   {/* Category Badge & Topline */}
                   <div className="flex items-center justify-between w-full mb-1 sm:mb-2">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black/60 text-[#b99750] border border-[#b99750]/40 backdrop-blur-md">
