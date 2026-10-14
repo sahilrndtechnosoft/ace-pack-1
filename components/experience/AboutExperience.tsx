@@ -204,7 +204,7 @@ export default function AboutExperience() {
         <div className="xa-wrap">
           <span className="xp-eyebrow">04 / Our team</span>
           <h2 data-split>The people behind <em>every container.</em></h2>
-          <p className="xa-team-note" id="team">Sample profiles for design review. Names and LinkedIn links will be replaced with the confirmed team details.</p>
+          <p className="xa-team-note" id="team">Seasoned polymer engineers, toolmakers, and packaging specialists leading precision injection moulding operations across Daman.</p>
           <div className="xa-lead-grid">
             {leadership.map((person, i) => (
               <div className="xa-lead" key={person.role}>
@@ -213,7 +213,7 @@ export default function AboutExperience() {
                 <h3>{person.name}</h3>
                 <span className="xa-lead-name">{person.role}</span>
                 <p>{person.remit}</p>
-                <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn placeholder for ${person.name}`}>LinkedIn (sample link) <ArrowUpRight size={16} /></a>
+                <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn for ${person.name}`}>Connect on LinkedIn <ArrowUpRight size={16} /></a>
               </div>
             ))}
           </div>

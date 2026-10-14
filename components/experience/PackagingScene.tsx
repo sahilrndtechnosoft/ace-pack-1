@@ -132,8 +132,9 @@ export default function PackagingScene(props:Props) {
       <Lightformer form="rect" color="#d4b477" intensity={2} position={[4,1,0]} rotation={[0,-Math.PI/2,0]} scale={[3,6,1]}/>
     </Environment>
     <group ref={assembly}>
-    <Suspense fallback={null}><Container kind={0} compact={compact} state={props.state} onReady={props.onReady}/></Suspense>
-    {props.loadRange&&<><Suspense fallback={null}><Container kind={1} compact={compact} state={props.state}/></Suspense><Suspense fallback={null}><Container kind={2} compact={compact} state={props.state}/></Suspense></>}
+      <Suspense fallback={null}>
+        <Container kind={0} compact={compact} state={props.state} onReady={props.onReady}/>
+      </Suspense>
     </group>
     <Sparkles count={compact?10:22} scale={[10,4,3]} position={[0,0,-2]} size={1.7} speed={.18} opacity={.28} color="#cdb881"/>
   </Canvas></>;

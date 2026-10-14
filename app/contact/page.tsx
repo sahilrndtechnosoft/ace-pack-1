@@ -33,10 +33,11 @@ export default function ContactPage() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Factory Location</span>
-                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">Daman Plant Unit</h3>
+                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Manufacturing Units</span>
+                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">Unit 1 & Unit 2, Daman</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    Plot No. 42/1, Government Industrial Estate, Masat, Daman - 396210, U.T., India.
+                    <strong>Unit 1:</strong> Survey No. 42/1, Dori Kadaiya Road, Kadaiya, Nani Daman - 396 210, U.T., India.<br />
+                    <strong>Unit 2:</strong> Survey No. 191/1, Somnath Road, Dabhel, Daman - 396 210, U.T., India.
                   </p>
                 </div>
               </div>
@@ -47,7 +48,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Direct Sales Hotline</span>
-                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">+91 98000 00000 / +91 98251 00000</h3>
+                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">+91 98251 20023 / +91 98251 47525</h3>
                   <p className="text-xs text-gray-600">Available Monday through Saturday, 9:00 AM – 7:00 PM IST.</p>
                 </div>
               </div>
@@ -57,9 +58,9 @@ export default function ContactPage() {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Official Inquiry Email</span>
-                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">info@acepack.co.in</h3>
-                  <p className="text-xs text-gray-600">Guaranteed response within 4 business hours.</p>
+                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Official Inquiry Emails</span>
+                  <h3 className="text-base font-bold text-[#1A1D20] mb-1">acepack2011@gmail.com</h3>
+                  <p className="text-xs text-gray-600">Domestic: acepack2011@gmail.com | Export: sales@acepack.co.in</p>
                 </div>
               </div>
 
@@ -113,7 +114,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Phone / WhatsApp *</label>
-                    <input type="tel" placeholder="+91 98000 00000" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
+                    <input type="tel" placeholder="+91 98251 20023" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
                   </div>
                 </div>
 
@@ -149,10 +150,10 @@ export default function ContactPage() {
             <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
               <div>
                 <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Find Us</span>
-                <h2 className="text-2xl font-extrabold text-[#1A1D20]">Daman Plant, Government Industrial Estate</h2>
+                <h2 className="text-2xl font-extrabold text-[#1A1D20]">Daman Manufacturing Units (Unit 1 & Unit 2)</h2>
               </div>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Plot+No.+42%2F1%2C+Government+Industrial+Estate%2C+Masat%2C+Daman+396210"
+                href="https://www.google.com/maps/search/?api=1&query=Survey+No.+42%2F1%2C+Dori+Kadaiya+Road%2C+Kadaiya%2C+Nani+Daman+396210"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#cfa144] transition-colors"
@@ -163,7 +164,7 @@ export default function ContactPage() {
             <div className="rounded-3xl overflow-hidden border border-[#E6DBC6] shadow-sm bg-white">
               <iframe
                 title="Ace Packaging Daman plant location"
-                src="https://www.google.com/maps?q=Plot+No.+42%2F1%2C+Government+Industrial+Estate%2C+Masat%2C+Daman+396210&output=embed"
+                src="https://www.google.com/maps?q=Survey+No.+42%2F1%2C+Dori+Kadaiya+Road%2C+Kadaiya%2C+Nani+Daman+396210&output=embed"
                 width="100%"
                 height="420"
                 loading="lazy"

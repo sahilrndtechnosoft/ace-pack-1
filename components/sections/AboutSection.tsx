@@ -101,8 +101,8 @@ export const AboutSection: React.FC = () => {
                       <CountUp end={15} duration={2.5} enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-[#1A1D20] block">Years Legacy</span>
-                  <p className="text-[10px] text-gray-500 mt-0.5">Daman Plant Unit 1 & 2</p>
+                  <span className="text-xs font-bold text-[#1A1D20] block">Years Experience</span>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Designing &amp; Mfg.</p>
                 </div>
               </Reveal>
 
@@ -111,11 +111,11 @@ export const AboutSection: React.FC = () => {
                   <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <Factory className="w-5 h-5" />
                     <span className="text-2xl font-extrabold text-[#a8812f]">
-                      <CountUp end={15000} duration={2.5} separator="," enableScrollSpy scrollSpyOnce />+
+                      <CountUp end={1500000} duration={2.5} separator="," enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-[#1A1D20] block">Daily Output Pcs</span>
-                  <p className="text-[10px] text-gray-500 mt-0.5">Robotic Injection Presses</p>
+                  <span className="text-xs font-bold text-[#1A1D20] block">Containers Daily</span>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Moulded in Daman Units</p>
                 </div>
               </Reveal>
 
@@ -124,11 +124,11 @@ export const AboutSection: React.FC = () => {
                   <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <Package className="w-5 h-5" />
                     <span className="text-2xl font-extrabold text-[#a8812f]">
-                      <CountUp end={11} duration={2.5} enableScrollSpy scrollSpyOnce />
+                      <CountUp end={1000} duration={2.5} separator="," enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-[#1A1D20] block">Product Categories</span>
-                  <p className="text-[10px] text-gray-500 mt-0.5">Hinge, Portion, RO, Bento</p>
+                  <span className="text-xs font-bold text-[#1A1D20] block">Happy Clients</span>
+                  <p className="text-[10px] text-gray-500 mt-0.5">QSR, Dairy &amp; Food Brands</p>
                 </div>
               </Reveal>
 
@@ -137,11 +137,11 @@ export const AboutSection: React.FC = () => {
                   <div className="flex items-center gap-2 text-[#a8812f] mb-1">
                     <ShieldCheck className="w-5 h-5" />
                     <span className="text-2xl font-extrabold text-[#a8812f]">
-                      <CountUp end={100} duration={2.5} suffix="%" enableScrollSpy scrollSpyOnce />
+                      <CountUp end={12} duration={2.5} enableScrollSpy scrollSpyOnce />+
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-[#1A1D20] block">Virgin PP 05 Food Grade</span>
-                  <p className="text-[10px] text-gray-500 mt-0.5">US FDA 21 CFR Certified</p>
+                  <span className="text-xs font-bold text-[#1A1D20] block">Global Footprints</span>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Australia, UAE, UK, USA</p>
                 </div>
               </Reveal>
 

@@ -14,21 +14,21 @@ const inputClasses =
 const contactCards = [
   {
     icon: MapPin,
-    label: 'Factory Location',
-    title: 'Daman Plant Unit',
-    detail: 'Plot No. 42/1, Government Industrial Estate, Masat, Daman - 396210, U.T., India.'
+    label: 'Manufacturing Facilities',
+    title: 'Unit 1 & Unit 2, Daman',
+    detail: 'Unit 1: Survey No. 42/1, Dori Kadaiya Road, Kadaiya, Nani Daman - 396 210 | Unit 2: Survey No. 191/1, Somnath Road, Dabhel, Daman - 396 210'
   },
   {
     icon: Phone,
-    label: 'Direct Sales Hotline',
-    title: '+91 98000 00000 / +91 98251 00000',
-    detail: 'Available Monday through Saturday, 9:00 AM – 7:00 PM IST.'
+    label: 'Direct Sales & WhatsApp',
+    title: '+91 98251 20023 / +91 98251 47525',
+    detail: 'WhatsApp: +91 99250 15906 | Mon – Sat, 9:00 AM – 7:00 PM IST'
   },
   {
     icon: Mail,
-    label: 'Official Inquiry Email',
-    title: 'info@acepack.co.in',
-    detail: 'Guaranteed response within 4 business hours.'
+    label: 'Official Inquiries',
+    title: 'acepack2011@gmail.com',
+    detail: 'Domestic: acepack2011@gmail.com | Export: sales@acepack.co.in'
   }
 ];
 
@@ -103,7 +103,7 @@ export const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Phone / WhatsApp *</label>
-                    <input type="tel" placeholder="+91 98000 00000" required className={inputClasses} />
+                    <input type="tel" placeholder="+91 98251 20023" required className={inputClasses} />
                   </div>
                 </div>
 

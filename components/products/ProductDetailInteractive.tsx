@@ -431,7 +431,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Phone Number *</label>
                   <input
                     type="tel"
-                    placeholder="+91 98000 00000"
+                    placeholder="+91 98251 20023"
                     required
                     className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[var(--ace-ink)] focus:outline-none focus:border-[#b99750]"
                   />

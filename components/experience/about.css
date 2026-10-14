@@ -107,16 +107,17 @@
 }
 
 .xa-hero h1 {
-   font-size: clamp(64px, 8.4vw, 150px);
-   line-height:var(--heading-leading);
-   letter-spacing:var(--heading-tracking);
-   margin-bottom: 32px;
+   font-size: clamp(34px, 3.6vw, 54px);
+   line-height: 1.15;
+   letter-spacing: var(--heading-tracking);
+   margin-bottom: 24px;
    color: var(--xp-ink);
+   max-width: 620px;
 }
 
 .xa-hero h1 em {
    color: var(--brand-gold);
-   letter-spacing:var(--heading-tracking)
+   letter-spacing: var(--heading-tracking);
 }
 
 .xa-title-mask {
@@ -1029,7 +1030,8 @@
    }
 
    .xa-hero h1 {
-      font-size: clamp(72px, 11.5vw, 124px)
+      font-size: clamp(30px, 4.8vw, 44px);
+      line-height: 1.18;
    }
 
    .xa-hero-lead,
@@ -1083,7 +1085,8 @@
    }
 
    .xa-hero h1 {
-      font-size: clamp(60px, 15.5vw, 88px)
+      font-size: clamp(26px, 7vw, 36px);
+      line-height: 1.22;
    }
 
    .xa-hero-lead {

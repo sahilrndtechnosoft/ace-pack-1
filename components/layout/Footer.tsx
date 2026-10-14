@@ -31,7 +31,7 @@ export const Footer: React.FC = () => {
               </Link>
 
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-sm mb-6">
-                Pioneering high-precision injection-moulded plastic containers, portion cups, and custom packaging systems for QSR chains, cloud kitchens, and dairy brands nationwide.
+                The foundation of Ace Packaging was laid to manufacture, distribute, and export premium food packaging containers. With over 15 years of experience, we offer our customers the finest, durable, and extensive quality products.
               </p>
 
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#b99750]/40 text-xs font-semibold text-[#8c6f2a] shadow-2xs">
@@ -43,15 +43,23 @@ export const Footer: React.FC = () => {
             <div className="mt-8 flex flex-col gap-2.5 text-xs text-gray-700">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#b99750] shrink-0 mt-0.5" />
-                <span>Unit 1: Survey No. 111, Dori Kadaiya, Daman - 396210, India</span>
+                <span>Unit 1: Survey No. 111, Gala No. 2, Village Dori Kadaiya, Daman - 396210</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-[#b99750] shrink-0 mt-0.5" />
+                <span>Unit 2: Survey No. 201/(24), Nr. Atiyawad Check Post, Dabhel, Daman - 396210</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <PhoneCall className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>+91 99250 15906 / +91 99251 55799</span>
+                <span>(+91) 99250 15906 / (+91) 99251 55799</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>sales@acepack.co.in</span>
+                <span>Domestic: acepack2011@gmail.com</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-[#b99750] shrink-0" />
+                <span>Export: sales@acepack.co.in / exports@acepack.co.in</span>
               </div>
             </div>
           </div>

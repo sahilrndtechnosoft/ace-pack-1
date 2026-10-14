@@ -83,12 +83,12 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
               >
                 <div>
                   {/* Clean Light Image Surface */}
-                  <div className="relative h-60 bg-[#FAF8F4] p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
+                  <div className="relative h-60 bg-gradient-to-b from-white to-[#F7F4EC] p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
                     <img
                       src={item.image}
                       alt={item.name}
                       loading="lazy"
-                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_18px_rgba(0,0,0,0.1)]"
                     />
                     <span className="absolute top-3 right-3 bg-[#b99750] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                       {item.capacity}

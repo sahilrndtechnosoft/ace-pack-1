@@ -274,15 +274,15 @@ export const ProductShowcaseCarousel: React.FC = () => {
 
             {/* Right: High-Res Product Image Frame */}
             <div className="lg:col-span-6 flex items-center justify-center order-1 lg:order-2">
-              <div className="relative w-full max-w-[500px] aspect-4/3 rounded-2xl overflow-hidden bg-[#FAF8F4] border border-[#E6DBC6] p-6 sm:p-8 flex items-center justify-center shadow-xs group">
+              <div className="relative w-full max-w-[500px] aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] p-6 sm:p-8 flex items-center justify-center shadow-sm group">
                 <img
                   src={activeProduct.image}
                   alt={activeProduct.name}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-xs text-[11px] font-semibold text-gray-700 px-3 py-1 rounded-full border border-[#E6DBC6]">
+                <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-gray-700 px-3 py-1 rounded-full border border-[#E6DBC6] shadow-xs">
                   Moulded in Daman, India
                 </span>
               </div>
@@ -302,10 +302,10 @@ export const ProductShowcaseCarousel: React.FC = () => {
                 className={`relative rounded-xl p-2.5 text-left transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
                   isActive
                     ? 'border-[#b99750] bg-white shadow-md shadow-[#b99750]/15 scale-102 ring-2 ring-[#b99750]'
-                    : 'border-[#E6DBC6] bg-white/80 hover:border-gray-400 hover:bg-white opacity-85 hover:opacity-100'
+                    : 'border-[#E6DBC6] bg-white hover:border-gray-400 opacity-90 hover:opacity-100'
                 }`}
               >
-                <div className="h-16 w-full flex items-center justify-center overflow-hidden mb-1.5">
+                <div className="h-16 w-full flex items-center justify-center overflow-hidden mb-1.5 p-1 bg-[#FAF8F4]/60 rounded-lg">
                   <img
                     src={item.image}
                     alt={item.name}

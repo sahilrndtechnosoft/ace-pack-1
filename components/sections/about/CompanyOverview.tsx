@@ -4,9 +4,9 @@ import { SplitHeading } from '../../ui/SplitHeading';
 import { ShieldCheck, Factory, Globe2 } from 'lucide-react';
 
 const highlights = [
-  { icon: Factory, text: '2 manufacturing units in Daman, U.T.' },
-  { icon: ShieldCheck, text: '100% virgin PP 05 food-grade polymer' },
-  { icon: Globe2, text: 'Exporting to 25+ countries worldwide' }
+  { icon: Factory, text: '2 manufacturing units in Daman (Dori Kadaiya & Dabhel)' },
+  { icon: ShieldCheck, text: '100% virgin PP 05 food-grade polymer (ISO & FDA certified)' },
+  { icon: Globe2, text: '12+ global footprints across Australia, UAE, UK, Europe, Canada & USA' }
 ];
 
 export const CompanyOverview: React.FC = () => {
@@ -30,7 +30,7 @@ export const CompanyOverview: React.FC = () => {
               </div>
               <div className="absolute -bottom-6 -right-4 sm:-right-6 bg-white rounded-2xl border border-[#E6DBC6] shadow-lg px-6 py-4">
                 <span className="text-2xl font-extrabold text-[#a8812f] block">15+</span>
-                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Years in Business</span>
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Years of Experience</span>
               </div>
             </div>
           </Reveal>
@@ -38,19 +38,19 @@ export const CompanyOverview: React.FC = () => {
           <Reveal type="fade-left" delay={0.1}>
             <div className="lg:col-span-7 text-left">
               <span className="text-xs font-extrabold text-[#a8812f] uppercase tracking-wider block mb-2">
-                Company Overview
+                Know About Ace Packaging
               </span>
               <SplitHeading>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1D20] tracking-tight mb-6 leading-tight">
-                  A Packaging Partner Built for High-Volume Food Businesses
+                  Pioneers of Injection Moulded Food Packaging Containers in India
                 </h2>
               </SplitHeading>
 
               <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                Ace Packaging is a high-precision injection-moulding manufacturer specializing in food-grade plastic containers for QSR chains, cloud kitchens, caterers, and retail food brands. From our Daman manufacturing base, we engineer containers that hold up through freezer storage, microwave reheating, and the realities of last-mile delivery.
+                Ace Packaging was established with a vision to manufacture, distribute, and export high-quality food packaging containers. With over 15 years of designing and manufacturing experience, we take pride in offering our customers durable, superior, and precisely crafted products. Our commitment to excellence drives us to go beyond expectations, ensuring every product reflects reliability and performance.
               </p>
               <p className="text-sm text-gray-600 leading-relaxed mb-8">
-                Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety guides every material and manufacturing decision.
+                We utilize advanced technologies and quality-approved raw materials that meet modern market standards. Our facility is equipped with state-of-the-art machinery, precision moulds, and automated packaging systems, enabling us to maintain consistency, efficiency, and exceptional quality across all our offerings. Ace Packaging has built a strong global presence, serving clients across Australia, the UAE, London, Oman, Europe, Canada, and the Middle East.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

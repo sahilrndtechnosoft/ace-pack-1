@@ -41,11 +41,11 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'One-Piece Hinged Sauce Containers',
     shortDescription: 'Leak-proof one-piece hinged lids for chutneys, dips, dressings, and condiments. Attached lid eliminates lost cap inventory in busy kitchens.',
     description: 'Ace Packaging Hinge Cups feature a built-in snap-tight hinged lid engineered from 100% virgin polypropylene (PP 05). Designed for high-speed QSR assembly, zero-leak motorcycle delivery, and clear product presentation.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Hinge Cups.png',
     features: ['Attached Hinged Snap-Lid', '100% Leak-Proof Rim', 'Virgin Food-Grade PP 05', 'Microwave Safe up to 120°C'],
     gallery: [
-      'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
-      'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop'
+      '/AcePackaging/Hinge Cups.png',
+      '/AcePackaging/Portion Cups.png'
     ],
     faqs: [
       { question: 'Does the hinged lid detach during transport?', answer: 'No, our hinges are engineered with flexible virgin PP polymer tested for over 50 open-close cycles without tearing.' },
@@ -62,7 +62,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Attached Snap Lid', 'Clear High Transparency', 'Leak Proof'],
         dimensions: { top: '45mm', height: '28mm' },
         packaging: '2,000 Pcs per Master Carton',
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Hinge Cups.png',
         applications: ['Chutneys', 'Dips', 'Ketchup', 'Salad Dressings']
       },
       {
@@ -75,7 +75,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Leak-Proof Snap Rim', 'Microwave Reheatable', 'Stackable Base'],
         dimensions: { top: '55mm', height: '35mm' },
         packaging: '1,500 Pcs per Master Carton',
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Hinge Cups.png',
         applications: ['Mayonnaise', 'Raita', 'Soy Sauce', 'Butter Ghee']
       },
       {
@@ -88,7 +88,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Deep Rim Airtight Lock', 'High Clarity PP', 'Freezer Safe'],
         dimensions: { top: '70mm', height: '42mm' },
         packaging: '1,000 Pcs per Master Carton',
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Hinge Cups.png',
         applications: ['Desserts', 'Gulab Jamun', 'Dahi Raita', 'Sambar']
       }
     ]
@@ -100,7 +100,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Separate Lid Condiment Containers',
     shortDescription: 'High-clarity round portion containers with separate matching snap lids for precise side-dish serving.',
     description: 'Precision portion cups engineered for side sauces, dips, and small sides. Compatible with matching flat leak-resistant lids.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Portion Cups.png',
     features: ['Crystal Clarity', 'BPA Free Virgin Material', 'Matching Snap Lids'],
     products: [
       {
@@ -111,7 +111,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Heavy Duty',
         features: ['Stackable', 'Leak Proof'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Portion Cups.png',
         applications: ['Sauces', 'Pickles']
       },
       {
@@ -122,7 +122,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Heavy Duty',
         features: ['Microwave Safe', 'High Stacking Strength'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Portion Cups.png',
         applications: ['Hummus', 'Gravies']
       }
     ]
@@ -134,7 +134,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Round Injection Moulded Containers',
     shortDescription: 'Industry-standard round tubs for hot soups, curries, biryani, and food delivery packaging.',
     description: 'The RO Series offers heavy-duty round container geometry with tight rim locking, withstands hot oil and boiling soup filling up to 120°C.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/RO-Series Containers.png',
     features: ['High Heat Tolerance', 'Microwave Reheatable', 'Zero Leakage'],
     products: [
       {
@@ -145,7 +145,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['Microwave Reheatable', 'Leak Proof Snap Rim'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RO-Series Containers.png',
         applications: ['Soups', 'Gravies', 'Sweets']
       },
       {
@@ -156,7 +156,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['Heavy Duty Wall', 'Freezer Safe down to -20°C'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RO-Series Containers.png',
         applications: ['Biryani', 'Curries', 'Ice Cream']
       },
       {
@@ -167,7 +167,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['High Stacking Strength', 'Hermetic Seal'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RO-Series Containers.png',
         applications: ['Family Meals', 'Curries', 'Bulk Food']
       }
     ]
@@ -179,7 +179,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Rectangular Compartment Containers',
     shortDescription: 'Multi-compartment bento meal boxes designed for cloud kitchen thali and combo meal delivery.',
     description: 'Engineered with separated compartments preventing meal mixing during transit. Ideal for Indian thali meals, Chinese combos, and executive lunches.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306583-082f9bfd88b4?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/RE Series Containers.png',
     features: ['Compartment Separation', 'Heavy Gauge Construction', 'Airtight Clear Lid'],
     products: [
       {
@@ -190,7 +190,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Export Grade',
         features: ['No Flavor Transfer', 'Microwave Safe'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306583-082f9bfd88b4?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RE Series Containers.png',
         applications: ['Curry & Rice', 'Noodles & Manchurian']
       },
       {
@@ -201,7 +201,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Export Grade',
         features: ['3 Flavor Separation', 'Ultra Clear Lid'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306583-082f9bfd88b4?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RE Series Containers.png',
         applications: ['Indian Combo Thali', 'Salad Meal']
       }
     ]
@@ -213,7 +213,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Standard Round Food Tubs',
     shortDescription: 'Versatile food-grade round tubs for bakeries, food processors, and catering.',
     description: 'High durability round tubs ideal for food storage, prep, and delivery.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Deli Series Container.png',
     features: ['Durable Wall Geometry', 'High Clarity', 'Food Contact Safe'],
     products: [
       {
@@ -224,7 +224,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Standard Grade',
         features: ['Airtight Lid', 'Microwave Safe'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Deli Series Container.png',
         applications: ['Soup', 'Curry', 'Gravy']
       }
     ]
@@ -236,7 +236,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Confectionery & Mithai Boxes',
     shortDescription: 'Crystal-clear rigid containers custom designed for Indian sweets, dry fruits, and mithai gifts.',
     description: 'Ultra-clear gift boxes for Indian mithai, dry fruits, chocolates, and festive hampers.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Sweet Box Containers.png',
     features: ['Crystal-Like Presentation', 'Sturdy Impact Resistance', 'Food Grade'],
     products: [
       {
@@ -247,7 +247,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Food Grade Polypropylene',
         quality: 'Luxury Gift Grade',
         features: ['High Transparency', 'Festive Packaging'],
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Sweet Box Containers.png',
         applications: ['Indian Sweets', 'Kaju Katli', 'Dry Fruits']
       }
     ]
@@ -259,7 +259,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Premium Thick-Wall Containers',
     shortDescription: 'Heavyweight thick-wall containers providing luxury touch and extra insulation.',
     description: 'Premium container range offering reinforced rim strength and tactile quality.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/RO-Series Containers.png',
     features: ['Extra Heavy Wall', 'Superior Thermal Insulation'],
     products: [
       {
@@ -270,7 +270,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Luxury Heavyweight',
         features: ['Reinforced Rim', 'Microwave Safe'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306445-9874fe01971a?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RO-Series Containers.png',
         applications: ['Gourmet Meal Packaging']
       }
     ]
@@ -282,7 +282,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Security Lock Containers',
     shortDescription: 'Security tab lock containers assuring end consumers of untouched food integrity.',
     description: 'Containers with breakable security tabs guaranteeing food freshness and anti-tamper security.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Deli Series Container.png',
     features: ['Breakable Security Tab', '100% Leak Proof'],
     products: [
       {
@@ -293,7 +293,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Security Certified',
         features: ['Lock Tab', 'Hermetic Seal'],
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Deli Series Container.png',
         applications: ['Dairy Products', 'Yogurt', 'Gravies']
       }
     ]
@@ -305,7 +305,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Executive Combo Meal Packaging',
     shortDescription: 'Sleek meal packaging boxes tailored for airlines, corporate catering, and train meals.',
     description: 'Compact stackable combo boxes optimized for volume meal distribution.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306583-082f9bfd88b4?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/Flat Containers.png',
     features: ['Compact Geometry', 'Stackable Base'],
     products: [
       {
@@ -316,7 +316,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Commercial Airline Grade',
         features: ['Zero Flavor Leak', 'Space Saving'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306583-082f9bfd88b4?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/Flat Containers.png',
         applications: ['Corporate Lunches', 'Airline Meals']
       }
     ]
@@ -328,7 +328,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep-Freeze Ice Cream & Dairy Packaging',
     shortDescription: 'Freezer-grade plastic containers resistant to low-temperature embrittlement down to -30°C.',
     description: 'Designed specifically for ice cream manufacturers, frozen yogurts, and gelato packaging.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/RO-Series Containers.png',
     features: ['Deep Freeze Safe down to -30°C', 'High Moisture Barrier'],
     products: [
       {
@@ -339,7 +339,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Impact Modified PP',
         quality: 'Dairy Grade',
         features: ['Crack Resistant', 'IML Printable'],
-        image: 'https://plus.unsplash.com/premium_photo-1701213306476-132f16a0a01e?w=800&auto=format&fit=crop',
+        image: '/AcePackaging/RO-Series Containers.png',
         applications: ['Ice Cream', 'Frozen Yogurt']
       }
     ]
@@ -351,7 +351,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'In-Mould Labelling Branded Packaging',
     shortDescription: 'Full-color high definition IML printed containers for high brand recall.',
     description: 'In-Mould Labelling fuses vibrant artwork directly into container walls during moulding.',
-    heroImage: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+    heroImage: '/AcePackaging/ZEN Series Containers.png',
     features: ['Waterproof Printing', 'Scratch Resistance', 'Full Cover Artwork'],
     products: [
       {
@@ -362,7 +362,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 + IML Film',
         quality: 'Custom Branded',
         features: ['Full HD Graphics', '100% Recyclable'],
-        image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
+        image: '/AcePackaging/ZEN Series Containers.png',
         applications: ['Brand Retail Packaging', 'Butter', 'Cheese']
       }
     ]

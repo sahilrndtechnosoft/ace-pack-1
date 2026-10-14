@@ -1,47 +1,48 @@
 export const aboutHero = {
-  eyebrow: 'Since 2010 · Daman, India',
+  eyebrow: 'Since 2011 · Daman, India',
 
-  title: ['Fifteen years.', 'One standard.'],
-  lead: 'Ace Packaging is a high-precision injection-moulding manufacturer specialising in food-grade plastic containers for QSR chains, cloud kitchens, caterers and retail food brands. From our Daman base, we engineer containers that hold up through freezer storage, microwave reheating and the realities of last-mile delivery.',
+  title: ['Pioneers in Premium', 'Food Container Solutions.'],
+  lead: 'Ace Packaging was established with a vision to manufacture, distribute, and export high-quality food packaging containers. Leading manufacturer of injection moulded food packaging articles with over 15 years of designing and manufacturing experience.',
   image: '/images/gallery/studio-range.webp',
   imageAlt: 'The Ace Packaging container range — rectangular meal boxes and round tubs with clear snap lids',
-  chip: { value: '1,500,000+', label: 'Containers a day' },
+  chip: { value: '1,500,000+', label: 'Containers moulded daily' },
 };
 
 export const aboutStats = [
-  { value: 15, suffix: '+', label: 'Years in moulding' },
+  { value: 15, suffix: '+', label: 'Years of experience' },
   { value: 1500000, suffix: '+', label: 'Containers moulded daily' },
-  { value: 1000, suffix: '+', label: 'Food brands served' },
-  { value: 2, suffix: '', label: 'Daman plant units' },
+  { value: 1000, suffix: '+', label: 'Happy clients' },
+  { value: 12, suffix: '+', label: 'Global footprints' },
 ];
 
 export const aboutOverview = {
   eyebrow: '01 / Who we are',
-  title: ['A packaging partner built for', 'high-volume food businesses.'],
+  title: ['Know About', 'Ace Packaging'],
   paragraphs: [
-    'Every container we produce is manufactured exclusively from 100% prime virgin PP 05 polymer — never regrind, never mixed-grade material — because food safety guides every material and manufacturing decision.',
+    'Ace Packaging was established with a vision to manufacture, distribute, and export high-quality food packaging containers. With over 15 years of designing and manufacturing experience, we take pride in offering our customers durable, superior, and precisely crafted products. Our commitment to excellence drives us to go beyond expectations, ensuring every product reflects reliability and performance.',
+    'Ace Packaging has built a strong global presence, serving clients across Australia, the UAE, London, Oman, Europe, Canada, and the Middle East. With well-developed infrastructure and strategic locations across two manufacturing units in Daman, we ensure quick and efficient deliveries worldwide.',
   ],
   points: [
-    'Exclusively prime virgin PP 05, certified BPA-free and non-toxic',
-    'Zero-leak snap-rim geometry engineered for motorcycle delivery',
-    '100% recyclable polypropylene for circular reuse',
-    '99.8% on-time dispatch for QSR chains and cloud kitchens',
+    'Pioneers of Injection Moulded Food Packaging Containers in India',
+    'Exclusively prime virgin PP 05, certified BPA-free, sturdy & recyclable',
+    'Certified as per Domestic & Global Standards by Competent & Reliable Authorities',
+    'Shorter order processing times resulting in faster deliveries worldwide',
   ],
   image: '/images/gallery/kitchen-set.webp',
   imageAlt: 'Ace Packaging containers in a professional kitchen',
 };
 
 export const milestones = [
-  { year: '2010', title: 'Factory established', body: 'Founded Unit 1 in Daman with 4 high-speed injection moulding machines.' },
+  { year: '2011', title: 'Factory established', body: 'Founded Unit 1 in Daman with state-of-the-art injection moulding machinery.' },
   { year: '2015', title: 'FDA & ISO certified', body: 'Achieved ISO 9001:2015 certification and US FDA food-contact clearance.' },
-  { year: '2019', title: 'Robotic automation', body: 'Commissioned 100% automated IML labelling and robotic pick-and-place arms.' },
-  { year: '2023', title: 'Unit 2 launched', body: 'Expanded manufacturing capacity to 10,000+ metric tons annually across 2 plant units.' },
-  { year: '2026', title: 'Global export network', body: 'Exporting premium food containers to over 25 countries across the Middle East, Europe and Asia.' },
+  { year: '2019', title: 'Automated packaging', body: 'Commissioned automated packaging systems and precision high-cavity tooling.' },
+  { year: '2023', title: 'Unit 2 launched', body: 'Expanded manufacturing capacity to over 1.5 million containers daily across 2 plant units.' },
+  { year: '2026', title: 'Global footprint', body: 'Exporting premium food containers to 12+ countries including Australia, UAE, UK, Oman, Europe, Canada, and USA.' },
 ];
 
 export const mdDesk = {
   eyebrow: 'From the MD’s desk',
-  quote: 'When we started Ace Packaging, the goal was to make a container a kitchen manager never has to think twice about. Every mould we design, every batch of virgin polymer we test, and every container that leaves our Daman plant carries that responsibility. Fifteen years and 25+ export markets later, that’s still the only metric that matters to me: did the food arrive the way it left the kitchen.',
+  quote: 'When we established Ace Packaging, our commitment was to ensure every product reflects reliability, performance, and complete food safety. Every mould we engineer, every batch of virgin PP 05 polymer we process, and every container that leaves our Daman manufacturing units carries that promise. With 15+ years of experience and 1,000+ happy clients globally, delivering superior quality remains our highest priority.',
 
   name: '',
   role: 'Managing Director, Ace Packaging',
@@ -49,9 +50,9 @@ export const mdDesk = {
 };
 
 export const values = [
-  { num: '01', title: 'Our mission', body: 'To manufacture the safest, highest-clarity and leak-proof plastic food containers that empower food businesses to deliver fresh meals seamlessly.' },
-  { num: '02', title: 'Our vision', body: 'To become the global benchmark for eco-engineered polypropylene packaging, trusted by 10,000+ food brands worldwide.' },
-  { num: '03', title: 'Core values', body: 'Uncompromising hygiene standards, technological innovation in mould CAD, and unwavering dedication to customer fulfilment.' },
+  { num: '01', title: 'Our mission', body: 'To pursue our commitment to continuous innovation in terms of manufacturing, technology, product design, and product quality for creating a wider market base of national and international clients.' },
+  { num: '02', title: 'Our vision', body: 'To achieve the highest level of standards in manufacturing for providing a unique range of food packaging solutions to our esteemed distributors, channel partners, and institutional customers.' },
+  { num: '03', title: 'Core values', body: 'To develop and maintain the bond and trust with our Channel Partners and focus on continuous evolution for the long-term sustainability of the company by focusing on the strengths to deliver the promises.' },
 ];
 
 export const plant = {
