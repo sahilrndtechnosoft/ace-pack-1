@@ -19,6 +19,7 @@ export function ObserverCollectionShowcase() {
   const pinTriggerRef = useRef<ScrollTrigger | null>(null);
   const gotoSectionRef = useRef<((index: number, direction: number) => void) | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [variantImages, setVariantImages] = useState<Record<string, string>>({});
 
   const goToSlide = useCallback((index: number) => {
     const st = pinTriggerRef.current;
@@ -224,7 +225,10 @@ export function ObserverCollectionShowcase() {
       </div>
 
       {/* The 6 GSAP Observer Sliding Panels */}
-      {products.map((p, idx) => (
+      {products.map((p, idx) => {
+        const cardImage = variantImages[p.id] || p.image;
+        const isCardPhoto = cardImage.startsWith('/DSC') || cardImage.endsWith('.JPG');
+        return (
         <div
           key={p.id}
           className={`obs-section obs-panel-${idx} absolute inset-0 w-full h-full overflow-hidden`}
@@ -273,14 +277,60 @@ export function ObserverCollectionShowcase() {
 
                           <div className="relative w-full h-[120px] sm:h-[150px] my-1">
                             <Image
-                              src={p.image}
+                              src={cardImage}
                               alt={`${p.title} structure`}
                               fill
                               sizes="(max-width: 640px) 300px, 420px"
-                              className="object-contain drop-shadow-[0_14px_22px_rgba(0,0,0,0.7)]"
+                              className={`object-contain ${isCardPhoto ? 'rounded-lg' : 'drop-shadow-[0_14px_22px_rgba(0,0,0,0.7)]'}`}
                               priority={idx === 0}
                             />
                           </div>
+
+                          {/* Photos selector for RO and Deli on mobile */}
+                          {p.id === 'ro-series' && (
+                            <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
+                              {[
+                                { label: 'Clear', src: p.image },
+                                { label: 'Black Photo', src: '/DSC04062.JPG' },
+                                { label: 'White Photo', src: '/DSC03993.JPG' },
+                                { label: 'Tub Photo', src: '/DSC04053.JPG' },
+                              ].map((v) => (
+                                <button
+                                  key={v.src}
+                                  type="button"
+                                  onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
+                                  className={`px-2 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${
+                                    cardImage === v.src
+                                      ? 'bg-[#b99750] text-black shadow-xs'
+                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                  }`}
+                                >
+                                  {v.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                          {p.id === 'deli-series' && (
+                            <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
+                              {[
+                                { label: 'Graphic', src: p.image },
+                                { label: 'Tall Tub Studio Shot', src: '/DSC04053.JPG' },
+                              ].map((v) => (
+                                <button
+                                  key={v.src}
+                                  type="button"
+                                  onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
+                                  className={`px-2 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${
+                                    cardImage === v.src
+                                      ? 'bg-[#b99750] text-black shadow-xs'
+                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                  }`}
+                                >
+                                  {v.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
 
                           <div className="w-full bg-black/50 rounded-xl px-2.5 py-1.5 border border-white/10 flex items-center gap-2">
                             <div className="w-5 h-5 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
@@ -353,14 +403,66 @@ export function ObserverCollectionShowcase() {
                         {/* Packaging Container Image with Hover Specular Glow */}
                         <div className="relative w-full h-[220px] my-auto">
                           <Image
-                            src={p.image}
+                            src={cardImage}
                             alt={`${p.title} structure`}
                             fill
                             sizes="400px"
-                            className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                            className={`object-contain ${isCardPhoto ? 'rounded-2xl' : 'drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]'} group-hover:scale-105 transition-transform duration-700 ease-out`}
                             priority={idx === 0}
                           />
                         </div>
+
+                        {/* Photos selector for RO and Deli on Desktop */}
+                        {p.id === 'ro-series' && (
+                          <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
+                            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
+                              Real Shots:
+                            </span>
+                            {[
+                              { label: 'Standard', src: p.image },
+                              { label: 'Black Finish', src: '/DSC04062.JPG' },
+                              { label: 'White Finish', src: '/DSC03993.JPG' },
+                              { label: 'Clear Tub', src: '/DSC04053.JPG' },
+                            ].map((v) => (
+                              <button
+                                key={v.src}
+                                type="button"
+                                onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
+                                className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
+                                  cardImage === v.src
+                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
+                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                }`}
+                              >
+                                {v.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        {p.id === 'deli-series' && (
+                          <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
+                            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
+                              Real Shot:
+                            </span>
+                            {[
+                              { label: 'Standard', src: p.image },
+                              { label: 'Clear Deli Tub', src: '/DSC04053.JPG' },
+                            ].map((v) => (
+                              <button
+                                key={v.src}
+                                type="button"
+                                onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
+                                className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
+                                  cardImage === v.src
+                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
+                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                }`}
+                              >
+                                {v.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
 
                         {/* Culinary Pairing Footnote */}
                         <div className="w-full bg-black/40 rounded-2xl p-3 border border-white/10 flex items-center gap-3">
@@ -392,7 +494,8 @@ export function ObserverCollectionShowcase() {
             </div>
           </div>
         </div>
-      ))}
+        );
+      })}
 
       {/* Floating Vertical Next/Prev Chevrons for Mouse/Touch Clicking */}
       <div className="absolute right-6 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col gap-3">

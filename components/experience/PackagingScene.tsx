@@ -25,6 +25,22 @@ function Progress({onProgress}:Pick<Props,'onProgress'>) {
   const progress=useProgress(s=>s.progress);
   useEffect(()=>onProgress(progress),[progress,onProgress]);return null;
 }
+function FoodFilling({compact}:{compact:boolean}) {
+  const {scene}=useGLTF(compact?'/models/food/pasta-scan-mobile.glb':'/models/food/pasta-scan.glb','/draco/',true);
+  const filling=useMemo(()=>{
+    const copy=scene.clone(true);
+    copy.traverse(object=>{
+      if(object instanceof THREE.Mesh){
+        object.material=object.material.clone();
+        (object.material as THREE.MeshStandardMaterial).envMapIntensity=.12;
+        object.castShadow=true;object.receiveShadow=true;
+      }
+    });
+    return copy;
+  },[scene]);
+  useEffect(()=>()=>{filling.traverse(object=>{if(object instanceof THREE.Mesh)(object.material as THREE.Material).dispose();});},[filling]);
+  return <primitive object={filling}/>;
+}
 function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'];compact:boolean;onReady?:()=>void}) {
   const id=['takeaway','shallow-bowl','round-tub'][kind];
   const gltf=useGLTF(`/models/acepack/${id}.glb`,'/draco/',true);
@@ -39,11 +55,13 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
         // and volume thickness, and the opaque-plastic overrides below would
         // flatten it into frosted grey. Its clarity is the point of the part.
         if(mat.transmission>0){
+          mat.envMapIntensity=.18;mat.roughness=.045;mat.specularIntensity=.25;
           // Real transmission costs an extra render pass per frame. On phones
           // trade it for plain alpha: still reads as a clear lid, one pass.
-          if(compact){mat.transmission=0;mat.thickness=0;mat.ior=1.49;mat.transparent=true;mat.opacity=.44;mat.color.set('#dfe4e2');mat.roughness=.16;}
+          if(compact){mat.transmission=0;mat.thickness=0;mat.ior=1.49;mat.transparent=true;mat.opacity=.22;mat.color.set('#dfe4e2');mat.roughness=.08;}
           return;
         }
+        object.receiveShadow=true;object.castShadow=true;
         // Seed the hero body with the default finish so the very first frame is
         // already the right colour; the per-frame lerp below then owns it.
         if(kind===0){mat.color.set(containerFinishes[defaultFinish].color);mat.roughness=.34;mat.metalness=.1;}
@@ -90,10 +108,13 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
       if (lid) lid.position.y = THREE.MathUtils.lerp(lid.position.y, lidY + pose.lidLift, damping);
     }
   },-2);
-  return <group ref={group}><primitive object={scene}/></group>;
+  return <group ref={group}><primitive object={scene}/>{kind===0&&<FoodFilling compact={compact}/>}</group>;
 }
 function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembly:React.RefObject<THREE.Group|null>}) {
   const {gl,camera,setFrameloop,invalidate}=useThree();const light=useRef<THREE.PointLight>(null);const last=useRef(0);
+  const targetCam=useMemo(()=>new THREE.Vector3(),[]);
+  const lookAt=useRef(.3);
+  const frameSamples=useRef<number[]>([]);
   useEffect(()=>{
     const lost=(event:Event)=>{event.preventDefault();onFailure();};
     const visibility=()=>{setFrameloop(document.hidden?'never':state.current.active?'always':'demand');invalidate();};
@@ -102,13 +123,23 @@ function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembl
   },[gl,onFailure,setFrameloop,invalidate,state]);
   useFrame(({clock,size},delta)=>{
     const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height,size.height);
-    const targetCam = new THREE.Vector3(...pose.camera);
+    targetCam.set(...pose.camera);
     const camDamping = 1 - Math.exp(-20 * Math.min(delta, 0.05));
     camera.position.lerp(targetCam, camDamping);
-    camera.lookAt(0,pose.lookAt,0);
+    lookAt.current=THREE.MathUtils.lerp(lookAt.current,pose.lookAt,camDamping);
+    camera.lookAt(0,lookAt.current,0);
     camera.updateMatrixWorld();
     const bounds=assembly.current&&s.frame&&camera instanceof THREE.PerspectiveCamera?fitSceneFrame(assembly.current,camera,s.frame,delta):undefined;
     if(light.current)light.current.position.set(2+s.pointerX*2,3+s.pointerY,3);
+    if(process.env.NODE_ENV==='development'){
+      const samples=frameSamples.current;
+      samples.push(delta*1000);
+      if(samples.length>=120){
+        const sorted=[...samples].sort((a,b)=>a-b);
+        gl.domElement.dataset.performance=JSON.stringify({fps:Number((1000*samples.length/samples.reduce((a,b)=>a+b,0)).toFixed(1)),p95ms:Number(sorted[Math.floor(sorted.length*.95)].toFixed(1)),slowFrames:samples.filter(ms=>ms>33.4).length,frames:samples.length,drawCalls:gl.info.render.calls,triangles:gl.info.render.triangles,textures:gl.info.memory.textures,dpr:gl.getPixelRatio()});
+        samples.length=0;
+      }
+    }
     if(process.env.NODE_ENV==='development'&&clock.elapsedTime-last.current>.2){
       last.current=clock.elapsedTime;
       gl.domElement.dataset.rotation=pose.rotation[1].toFixed(3);gl.domElement.dataset.lid=pose.lidAngle.toFixed(3);gl.domElement.dataset.range=s.range.toFixed(3);gl.domElement.dataset.finale=s.finale.toFixed(3);gl.domElement.dataset.hero=s.hero.toFixed(3);
@@ -122,8 +153,8 @@ export default function PackagingScene(props:Props) {
   const assembly=useRef<THREE.Group>(null);
   const compact=useCompactViewport();
   const [quality,setQuality]=useState(1.5);
-  return <><Progress onProgress={props.onProgress}/><Canvas frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
-    <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd"/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
+  return <><Progress onProgress={props.onProgress}/><Canvas title="Food scan: Pasta Bowl - Polycam by Moshe Caine (CC BY 4.0), adapted. Credits: /models/food/CREDITS.md" shadows="percentage" frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
+    <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd" castShadow shadow-mapSize-width={compact?512:1024} shadow-mapSize-height={compact?512:1024} shadow-bias={-.0001} shadow-normalBias={.003}/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
     <PerformanceMonitor flipflops={2} onDecline={()=>setQuality(1)} onIncline={()=>setQuality(1.5)} onFallback={()=>setQuality(1)}/>
     <Rig state={props.state} onFailure={props.onFailure} assembly={assembly}/>
     <Environment resolution={compact?64:128} frames={1}>

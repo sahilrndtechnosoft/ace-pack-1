@@ -179,35 +179,19 @@ export default function HomeExperience() {
     const ctx=gsap.context(()=>{
       const headerOffset=()=>document.querySelector('body>header')?.getBoundingClientRect().height??84;
       ['main-content','craft','collection','products-showcase','manufacturing','closing'].forEach(id=>ScrollTrigger.create({trigger:`#${id}`,start:'top 55%',end:'bottom 55%',onToggle:self=>{if(self.isActive)setChapter(id);}}));
-      gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:.6}});
-      gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:.6,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
-      const exitProgress={value:0};
-      gsap.fromTo(exitProgress,{value:0},{value:1,ease:'none',immediateRender:false,scrollTrigger:{
-        trigger:'#craft',
-        start:'bottom 90%',
-        end:'bottom 35%',
-        scrub:.5,
-        onUpdate:(self)=>{
-          state.current.finale=self.progress;
-          gsap.set('.xp-scene-layer',{opacity:1-self.progress});
+      gsap.fromTo(state.current,{hero:0},{hero:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:'top bottom',end:()=>`top ${headerOffset()}`,scrub:.35}});
+      gsap.fromTo(state.current,{craft:0},{craft:1,immediateRender:false,ease:'none',scrollTrigger:{trigger:'#craft',start:()=>`top ${headerOffset()}`,end:'bottom bottom',scrub:.35,onUpdate:self=>{setCraftPhase(Math.min(2,Math.floor(self.progress*3)));}}});
+      gsap.fromTo(state.current,{finale:0},{finale:1,ease:'none',immediateRender:false,
+        onUpdate:()=>{
+          const progress=state.current.finale;
+          const active=progress<.999;
+          if(state.current.active!==active){state.current.active=active;setRenderActive(active);}
+          gsap.set('.xp-scene-layer',{opacity:1-progress,visibility:active?'visible':'hidden'});
         },
-        onLeave:()=>{
-          state.current.active=false;
-          setRenderActive(false);
-          gsap.set('.xp-scene-layer',{display:'none',visibility:'hidden'});
-        },
-        onEnterBack:()=>{
-          state.current.active=true;
-          setRenderActive(true);
-          gsap.set('.xp-scene-layer',{display:'block',visibility:'visible'});
-        },
-        onLeaveBack:()=>{
-          state.current.finale=0;
-          gsap.set('.xp-scene-layer',{opacity:1,display:'block',visibility:'visible'});
-        }
-      }});
+        scrollTrigger:{trigger:'#craft',start:'bottom 90%',end:'bottom 35%',scrub:.35}
+      });
     },root);
-    const pointer=(e:PointerEvent)=>{state.current.pointerX=e.clientX/window.innerWidth*2-1;state.current.pointerY=1-e.clientY/window.innerHeight*2;};
+    const pointer=(e:PointerEvent)=>{if(e.pointerType!=='mouse')return;state.current.pointerX=e.clientX/window.innerWidth*2-1;state.current.pointerY=1-e.clientY/window.innerHeight*2;};
     window.addEventListener('pointermove',pointer,{passive:true});
     return()=>{gsap.killTweensOf('.xp-scene-layer');ctx.revert();window.removeEventListener('pointermove',pointer);state.current=initialSceneState();};
   },[mode]);

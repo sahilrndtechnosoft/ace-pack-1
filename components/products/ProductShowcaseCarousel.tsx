@@ -11,6 +11,7 @@ export interface ProductCarouselItem {
   series: string;
   categorySlug: string;
   image: string;
+  gallery?: string[];
   capacities: string;
   bestFor: string;
   tag: string;
@@ -30,11 +31,60 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     highlights: ['Zero-leak snap fit', 'Microwave safe up to 120°C', 'Interlocking stacking base'],
   },
   {
+    id: 'ro-round-black',
+    name: 'RO Series Round Bowl Container (Black)',
+    series: 'Standard Black Finish',
+    categorySlug: 'ro-series',
+    image: '/DSC04062.JPG',
+    gallery: ['/DSC04062.JPG', '/DSC03993.JPG', '/DSC04053.JPG'],
+    capacities: '500ml · 750ml',
+    bestFor: 'Cloud Kitchen Takeaways, Gourmet Bowls, Biryanis & Curries',
+    tag: 'Standard Black',
+    highlights: [
+      'Sleek deep-black base with crystal-clear snap lid',
+      '100% Virgin food-grade PP 05 (US FDA compliant)',
+      'Interlocking stackable base for zero-spill delivery',
+    ],
+  },
+  {
+    id: 'ro-round-white',
+    name: 'RO Series White Round Food Container',
+    series: 'Crisp White Finish',
+    categorySlug: 'ro-series',
+    image: '/DSC03993.JPG',
+    gallery: ['/DSC03993.JPG', '/DSC04062.JPG', '/DSC04053.JPG'],
+    capacities: '500ml · 750ml · 1000ml',
+    bestFor: 'Hot Gravies, Biryani Combos, Rice Dishes & Dairy Packaging',
+    tag: 'Crisp White',
+    highlights: [
+      'Purity white virgin polymer with tight hermetic seal',
+      'Microwave safe up to 120°C and freezer resistant to -20°C',
+      'Clear optical lid with steam release perimeter vent',
+    ],
+  },
+  {
+    id: 'clear-deli-tub',
+    name: 'Round Storage & Deli Tub with Clear Lid',
+    series: 'Clear Translucent Finish',
+    categorySlug: 'round-containers',
+    image: '/DSC04053.JPG',
+    gallery: ['/DSC04053.JPG', '/DSC03993.JPG', '/DSC04062.JPG'],
+    capacities: '500ml · 750ml · 1000ml · 1500ml',
+    bestFor: 'Hot Soups, Broths, Bulk Gravies, Salads & Food Prep',
+    tag: 'Crystal Clear',
+    highlights: [
+      'High optical transparency for fresh food visibility',
+      'Deep cylindrical leak-proof wall geometry with tight snap',
+      'Reinforced top rim designed for automated packing lines',
+    ],
+  },
+  {
     id: 'ro-series',
     name: 'RO Series Round Bowls & Tubs',
     series: 'Salad & Gravy Series',
     categorySlug: 'ro-series',
     image: '/AcePackaging/RO-Series Containers.png',
+    gallery: ['/AcePackaging/RO-Series Containers.png', '/DSC04062.JPG', '/DSC03993.JPG', '/DSC04053.JPG'],
     capacities: '250ml · 500ml · 750ml · 1000ml',
     bestFor: 'Soups, Noodle Bowls, Gravies & Salads',
     tag: 'High Clarity',
@@ -57,6 +107,7 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     series: 'Heavy Duty Storage',
     categorySlug: 'deli-series',
     image: '/AcePackaging/Deli Series Container.png',
+    gallery: ['/AcePackaging/Deli Series Container.png', '/DSC04053.JPG'],
     capacities: '350ml · 500ml · 750ml · 1500ml',
     bestFor: 'Dairy, Yogurts, Ice Creams & Wet Curries',
     tag: 'Airtight Lock',
@@ -147,7 +198,16 @@ export const ProductShowcaseCarousel: React.FC = () => {
     touchStartX.current = null;
   };
 
+  const [selectedGalleryImg, setSelectedGalleryImg] = useState<string | null>(null);
+
+  // Reset selected gallery photo when switching slide
+  useEffect(() => {
+    setSelectedGalleryImg(null);
+  }, [currentIndex]);
+
   const activeProduct = CAROUSEL_PRODUCTS[currentIndex];
+  const displayImage = selectedGalleryImg || activeProduct.image;
+  const isPhoto = displayImage.startsWith('/DSC') || displayImage.endsWith('.JPG');
 
   return (
     <section className="relative py-20 bg-[#FAF8F4] text-[var(--ace-ink)] border-t border-b border-[#E6DBC6] overflow-hidden">
@@ -183,14 +243,14 @@ export const ProductShowcaseCarousel: React.FC = () => {
             <button
               onClick={prevSlide}
               aria-label="Previous product"
-              className="w-11 h-11 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xs"
+              className="w-11 h-11 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xs cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <button
               onClick={nextSlide}
               aria-label="Next product"
-              className="w-11 h-11 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xs"
+              className="w-11 h-11 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xs cursor-pointer"
             >
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -273,27 +333,69 @@ export const ProductShowcaseCarousel: React.FC = () => {
             </div>
 
             {/* Right: High-Res Product Image Frame */}
-            <div className="lg:col-span-6 flex items-center justify-center order-1 lg:order-2">
-              <div className="relative w-full max-w-[500px] aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] p-6 sm:p-8 flex items-center justify-center shadow-sm group">
+            <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 w-full">
+              <div className={`relative w-full max-w-[500px] aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] ${isPhoto ? 'p-0' : 'p-6 sm:p-8'} flex items-center justify-center shadow-sm group`}>
                 <img
-                  src={activeProduct.image}
+                  src={displayImage}
                   alt={activeProduct.name}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className={`w-full h-full ${isPhoto ? 'object-cover' : 'object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)]'} group-hover:scale-105 transition-transform duration-700 ease-out`}
                 />
+                {isPhoto && (
+                  <span className="absolute top-3 left-3 bg-[#b99750]/90 backdrop-blur-xs text-[10px] font-extrabold uppercase tracking-wider text-white px-2.5 py-1 rounded-full shadow-xs">
+                    Studio Photo
+                  </span>
+                )}
                 <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-gray-700 px-3 py-1 rounded-full border border-[#E6DBC6] shadow-xs">
                   Moulded in Daman, India
                 </span>
               </div>
+
+              {/* Multi-angle / Finish Photo Switcher if available */}
+              {activeProduct.gallery && activeProduct.gallery.length > 1 && (
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-4 p-1.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2">
+                    Angles &amp; Finishes:
+                  </span>
+                  {activeProduct.gallery.map((imgSrc, gIdx) => {
+                    const isSelected = displayImage === imgSrc;
+                    const isGalPhoto = imgSrc.startsWith('/DSC') || imgSrc.endsWith('.JPG');
+                    return (
+                      <button
+                        key={imgSrc}
+                        onClick={() => setSelectedGalleryImg(imgSrc)}
+                        className={`h-10 px-2 rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer ${
+                          isSelected
+                            ? 'border-[#b99750] bg-white text-[#b99750] shadow-sm font-bold scale-102 ring-1 ring-[#b99750]'
+                            : 'border-[#E6DBC6] bg-white/70 text-gray-600 hover:bg-white hover:border-gray-400'
+                        }`}
+                        aria-label={`View photo angle ${gIdx + 1}`}
+                      >
+                        <div className="w-6 h-6 rounded-md overflow-hidden bg-gray-100 shrink-0">
+                          <img
+                            src={imgSrc}
+                            alt=""
+                            className={`w-full h-full ${isGalPhoto ? 'object-cover' : 'object-contain'}`}
+                          />
+                        </div>
+                        <span className="text-[10px] font-semibold">
+                          {imgSrc.includes('04062') ? 'Black' : imgSrc.includes('03993') ? 'White' : imgSrc.includes('04053') ? 'Clear Tub' : 'Standard'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Thumbnail Preview Strip */}
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11 gap-2.5">
           {CAROUSEL_PRODUCTS.map((item, idx) => {
             const isActive = idx === currentIndex;
+            const itemIsPhoto = item.image.startsWith('/DSC') || item.image.endsWith('.JPG');
             return (
               <button
                 key={item.id}
@@ -309,7 +411,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="max-h-full max-w-full object-contain filter drop-shadow-xs"
+                    className={`max-h-full max-w-full ${itemIsPhoto ? 'object-cover rounded-md w-full h-full' : 'object-contain filter drop-shadow-xs'}`}
                   />
                 </div>
                 <div>
@@ -317,7 +419,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                     {item.series}
                   </span>
                   <span className="text-[11px] font-semibold text-[var(--ace-ink)] block truncate">
-                    {item.name.replace(' Series Rectangular Meal Containers', '').replace(' Series Containers', '')}
+                    {item.name.replace(' Series Rectangular Meal Containers', '').replace(' Series Containers', '').replace(' Series Round Bowls & Tubs', ' Round Bowls')}
                   </span>
                 </div>
               </button>

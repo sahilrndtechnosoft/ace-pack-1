@@ -72,7 +72,10 @@ export function buildTextReveals(scope: HTMLElement): Cleanup {
   fonts.then(() => { if (!cancelled) build(); });
 
   let timer: ReturnType<typeof setTimeout>;
+  let lastWidth = scope.clientWidth;
   const onResize = () => {
+    if (scope.clientWidth === lastWidth) return;
+    lastWidth = scope.clientWidth;
     clearTimeout(timer);
     // Mobile browsers fire resize on every address-bar show/hide during a
     // scroll; re-splitting on each one would be its own source of jank.

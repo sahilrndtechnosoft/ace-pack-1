@@ -136,6 +136,12 @@ export const productCategories: ProductCategory[] = [
     description: 'The RO Series offers heavy-duty round container geometry with tight rim locking, withstands hot oil and boiling soup filling up to 120°C.',
     heroImage: '/AcePackaging/RO-Series Containers.png',
     features: ['High Heat Tolerance', 'Microwave Reheatable', 'Zero Leakage'],
+    gallery: [
+      '/AcePackaging/RO-Series Containers.png',
+      '/DSC04062.JPG',
+      '/DSC03993.JPG',
+      '/DSC04053.JPG'
+    ],
     products: [
       {
         id: 'ro-250',
@@ -150,25 +156,25 @@ export const productCategories: ProductCategory[] = [
       },
       {
         id: 'ro-500',
-        name: 'RO-500 Round Container',
+        name: 'RO-500 Round Container (Black)',
         capacity: '500ml',
         product_slug: 'ro-500ml-round-container',
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
-        features: ['Heavy Duty Wall', 'Freezer Safe down to -20°C'],
-        image: '/AcePackaging/RO-Series Containers.png',
-        applications: ['Biryani', 'Curries', 'Ice Cream']
+        features: ['Heavy Duty Wall', 'Freezer Safe down to -20°C', 'Standard Black Finish'],
+        image: '/DSC04062.JPG',
+        applications: ['Biryani', 'Curries', 'Noodles', 'Cloud Kitchens']
       },
       {
         id: 'ro-750',
-        name: 'RO-750 Round Container',
+        name: 'RO-750 Round Container (White)',
         capacity: '750ml',
         product_slug: 'ro-750ml-round-container',
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
-        features: ['High Stacking Strength', 'Hermetic Seal'],
-        image: '/AcePackaging/RO-Series Containers.png',
-        applications: ['Family Meals', 'Curries', 'Bulk Food']
+        features: ['High Stacking Strength', 'Hermetic Seal', 'Crisp White Finish'],
+        image: '/DSC03993.JPG',
+        applications: ['Family Meals', 'Curries', 'Bulk Food', 'Rice Combos']
       }
     ]
   },
@@ -215,17 +221,21 @@ export const productCategories: ProductCategory[] = [
     description: 'High durability round tubs ideal for food storage, prep, and delivery.',
     heroImage: '/AcePackaging/Deli Series Container.png',
     features: ['Durable Wall Geometry', 'High Clarity', 'Food Contact Safe'],
+    gallery: [
+      '/AcePackaging/Deli Series Container.png',
+      '/DSC04053.JPG'
+    ],
     products: [
       {
         id: 'rc-1000',
-        name: '1000ml Round Tub',
+        name: '1000ml Round Tub (Clear Translucent)',
         capacity: '1000ml',
         product_slug: '1000ml-round-tub',
         material: 'Virgin PP 05',
         quality: 'Standard Grade',
-        features: ['Airtight Lid', 'Microwave Safe'],
-        image: '/AcePackaging/Deli Series Container.png',
-        applications: ['Soup', 'Curry', 'Gravy']
+        features: ['Airtight Lid', 'Microwave Safe', 'Clear Translucent Finish'],
+        image: '/DSC04053.JPG',
+        applications: ['Soup', 'Curry', 'Gravy', 'Food Storage']
       }
     ]
   },
