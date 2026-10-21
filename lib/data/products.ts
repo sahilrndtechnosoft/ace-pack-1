@@ -53,7 +53,7 @@ export const productCategories: ProductCategory[] = [
     ],
     faqs: [
       { question: 'Does the hinged lid detach during transport?', answer: 'No, our hinges are engineered with flexible virgin PP polymer tested for over 50 open-close cycles without tearing.' },
-      { question: 'What sizes are available in Hinge Cups?', answer: 'Available in 25ml, 50ml, and 100ml capacities, all supplied in 2,000 PCS master packaging.' }
+      { question: 'What sizes are available in Hinge Cups?', answer: 'Available in 25ml, 50ml, 2 Oz, and 100ml capacities, supplied in 2,000 PCS master packaging.' }
     ],
     products: [
       {
@@ -91,6 +91,25 @@ export const productCategories: ProductCategory[] = [
           { label: 'Top Diameter', value: '61 mm' },
           { label: 'Bottom Diameter', value: '52 mm' },
           { label: 'Height', value: '25 mm' },
+          { label: 'Pack Size', value: '2,000 PCS' }
+        ]
+      },
+      {
+        id: 'hc-2oz',
+        name: '2 Oz Hinge Cup',
+        capacity: '60ml (2 Oz)',
+        product_slug: '2oz-hinge-cup',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Export Grade Food Safe',
+        features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Attached Living Hinge'],
+        dimensions: { top: '65 mm', bottom: '52 mm', height: '30 mm' },
+        packaging: '2,000 PCS per Master Pack',
+        image: '/AcePackaging/Hinge-Cup-2oz.png',
+        applications: ['Dipping Sauces', 'Salad Dressings', 'Tartar Sauce', 'Garlic Dip'],
+        specs: [
+          { label: 'Top Diameter', value: '65 mm' },
+          { label: 'Bottom Diameter', value: '52 mm' },
+          { label: 'Height', value: '30 mm' },
           { label: 'Pack Size', value: '2,000 PCS' }
         ]
       },
@@ -232,6 +251,45 @@ export const productCategories: ProductCategory[] = [
           { label: 'Height', value: '51 mm' },
           { label: 'Pack Size', value: '1,500 Pcs/set' }
         ]
+      },
+      {
+        id: 'pc-1oz',
+        name: '1 oz Portion Container',
+        capacity: '30ml (1 oz)',
+        product_slug: '1oz-portion-container',
+        material: 'Virgin PP 05',
+        quality: 'Heavy Duty',
+        features: ['Stackable', 'Leak Proof', 'Airtight Snap Lid'],
+        dimensions: { top: '45 mm', height: '30 mm' },
+        packaging: '1,500 Pcs/set',
+        image: '/AcePackaging/Portion Cups.png',
+        applications: ['Sauces', 'Pickles', 'Sampling']
+      },
+      {
+        id: 'pc-2oz',
+        name: '2 oz Portion Container',
+        capacity: '60ml (2 oz)',
+        product_slug: '2oz-portion-container',
+        material: 'Virgin PP 05',
+        quality: 'Heavy Duty',
+        features: ['Microwave Safe', 'High Stacking Strength'],
+        dimensions: { top: '62 mm', height: '30 mm' },
+        packaging: '1,500 Pcs/set',
+        image: '/AcePackaging/Portion Cups.png',
+        applications: ['Hummus', 'Gravies', 'Dips']
+      },
+      {
+        id: 'pc-4oz',
+        name: '4 oz Portion Container',
+        capacity: '120ml (4 oz)',
+        product_slug: '4oz-portion-container',
+        material: 'Virgin PP 05',
+        quality: 'Heavy Duty',
+        features: ['Airtight Fit', 'Crystal Clarity'],
+        dimensions: { top: '75 mm', height: '43 mm' },
+        packaging: '1,500 Pcs/set',
+        image: '/AcePackaging/Portion Cups.png',
+        applications: ['Coleslaw', 'Side Gravy', 'Desserts']
       }
     ]
   },
@@ -253,11 +311,13 @@ export const productCategories: ProductCategory[] = [
       '/AcePackaging/AP-RO-16.png',
       '/AcePackaging/AP-RO-12.png',
       '/AcePackaging/AP-RO-10.png',
-      '/AcePackaging/RO-Series-Lifestyle.png'
+      '/AcePackaging/RO-Series-Lifestyle.png',
+      '/DSC04062.JPG',
+      '/DSC03993.JPG'
     ],
     faqs: [
       { question: 'Can RO-Series containers withstand boiling curries and microwave reheating?', answer: 'Yes, made of high heat-resistant virgin PP 05 withstanding temperatures up to 120°C without warping or softening.' },
-      { question: 'What sizes are available in RO-Series?', answer: 'Available in 7 models: AP-RO-10, AP-RO-12, AP-RO-16, AP-RO-24, AP-RO-32, AP-RO-40, and AP-RO-48.' }
+      { question: 'What sizes are available in RO-Series?', answer: 'Available in 7 catalogue models: AP-RO-10 through AP-RO-48, plus classic black and white delivery bowls.' }
     ],
     products: [
       {
@@ -392,6 +452,50 @@ export const productCategories: ProductCategory[] = [
           { label: 'Height', value: '61 mm' },
           { label: 'Pack Size', value: '150 Pcs/set' }
         ]
+      },
+      {
+        id: 'ro-250',
+        name: 'RO-250 Round Container',
+        capacity: '250ml',
+        product_slug: 'ro-250ml-round-container',
+        material: 'Virgin PP 05',
+        quality: 'Premium Food Grade',
+        features: ['Microwave Reheatable', 'Leak Proof Snap Rim'],
+        image: '/AcePackaging/AP-RO-10.png',
+        applications: ['Soups', 'Gravies', 'Sweets']
+      },
+      {
+        id: 'ro-500',
+        name: 'RO-500 Round Container (Black)',
+        capacity: '500ml',
+        product_slug: 'ro-500ml-round-container',
+        material: 'Virgin PP 05',
+        quality: 'Premium Food Grade',
+        features: ['Heavy Duty Wall', 'Freezer Safe down to -20°C', 'Standard Black Finish'],
+        image: '/DSC04062.JPG',
+        applications: ['Biryani', 'Curries', 'Noodles', 'Cloud Kitchens']
+      },
+      {
+        id: 'ro-750',
+        name: 'RO-750 Round Container (White)',
+        capacity: '750ml',
+        product_slug: 'ro-750ml-round-container',
+        material: 'Virgin PP 05',
+        quality: 'Premium Food Grade',
+        features: ['High Stacking Strength', 'Hermetic Seal', 'Crisp White Finish'],
+        image: '/DSC03993.JPG',
+        applications: ['Family Meals', 'Curries', 'Bulk Food', 'Rice Combos']
+      },
+      {
+        id: 'ro-1000',
+        name: 'RO-1000 Round Container',
+        capacity: '1000ml',
+        product_slug: 'ro-1000ml-round-container',
+        material: 'Virgin PP 05',
+        quality: 'Export Grade Food Safe',
+        features: ['Extra Rigid Flange', 'Full Rim Seal', 'Microwave Reheatable'],
+        image: '/AcePackaging/AP-RO-32.png',
+        applications: ['Curries', 'Gravies', 'Noodle Bowls', 'Meal Boxes']
       }
     ]
   },
@@ -419,8 +523,8 @@ export const productCategories: ProductCategory[] = [
       '/AcePackaging/RE-Series-Lifestyle.png'
     ],
     faqs: [
-      { question: 'Are RE-Series containers stackable during courier motorcycle transit?', answer: 'Yes, each lid has an engineered indentation nesting securely into the container base above to prevent slipping.' },
-      { question: 'What models are included in RE-Series?', answer: 'From AP-RE-08 (250ml) up to AP-RE-58 (1800ml), plus the AP-RE-232 2-compartment meal box.' }
+      { question: 'Are RE-Series containers stackable during courier motorcycle transit?', answer: 'Yes, each lid has an engineered indentation nesting securely into the container base below to prevent slipping.' },
+      { question: 'What models are included in RE-Series?', answer: 'From AP-RE-08 (250ml) up to AP-RE-58 (1800ml), plus 2, 3, and 4-compartment thali meal boxes.' }
     ],
     products: [
       {
@@ -503,13 +607,13 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
-        dimensions: { top: '223 × 126 mm', height: '48 mm' },
+        dimensions: { top: '223 × 126 mm', height: '47 mm' },
         packaging: '150 Pcs/set',
         image: '/AcePackaging/AP-RE-28.png',
         applications: ['Platters', 'Rolls', 'Grilled Items', 'Asian Combos'],
         specs: [
           { label: 'Top Dimensions', value: '223 × 126 mm' },
-          { label: 'Height', value: '48 mm' },
+          { label: 'Height', value: '47 mm' },
           { label: 'Pack Size', value: '150 Pcs/set' }
         ]
       },
@@ -575,13 +679,13 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
-        dimensions: { top: '290 × 200 mm', height: '50 mm' },
+        dimensions: { top: '290 × 200 mm', height: '56 mm' },
         packaging: '150 Pcs/set',
         image: '/AcePackaging/AP-RE-58.png',
         applications: ['Large Feast Boxes', 'Catering Packs', 'Corporate Buffets', 'Party Trays'],
         specs: [
           { label: 'Top Dimensions', value: '290 × 200 mm' },
-          { label: 'Height', value: '50 mm' },
+          { label: 'Height', value: '56 mm' },
           { label: 'Pack Size', value: '150 Pcs/set' }
         ]
       },
@@ -603,6 +707,45 @@ export const productCategories: ProductCategory[] = [
           { label: 'Compartments', value: '2 Chambers' },
           { label: 'Pack Size', value: '150 Pcs/set' }
         ]
+      },
+      {
+        id: 're-2comp',
+        name: '2-Compartment Bento Box',
+        capacity: '650ml',
+        product_slug: '2-compartment-bento-box',
+        material: 'Virgin PP 05',
+        quality: 'Export Grade',
+        features: ['No Flavor Transfer', 'Microwave Safe'],
+        dimensions: { top: '220 × 150 mm', height: '41 mm' },
+        packaging: '150 Pcs/set',
+        image: '/AcePackaging/AP-RE-232.png',
+        applications: ['Curry & Rice', 'Noodles & Manchurian']
+      },
+      {
+        id: 're-3comp',
+        name: '3-Compartment Thali Box',
+        capacity: '1000ml',
+        product_slug: '3-compartment-thali-box',
+        material: 'Virgin PP 05',
+        quality: 'Export Grade',
+        features: ['3 Flavor Separation', 'Ultra Clear Lid'],
+        dimensions: { top: '240 × 180 mm', height: '48 mm' },
+        packaging: '150 Pcs/set',
+        image: '/AcePackaging/RE Series Containers.png',
+        applications: ['Indian Combo Thali', 'Salad Meal']
+      },
+      {
+        id: 're-4comp',
+        name: '4-Compartment Executive Box',
+        capacity: '1200ml',
+        product_slug: '4-compartment-executive-box',
+        material: 'Virgin PP 05',
+        quality: 'Export Grade',
+        features: ['Isolated Chambers', 'Zero Leak Between Chambers', 'Anti-Fog Lid'],
+        dimensions: { top: '260 × 210 mm', height: '50 mm' },
+        packaging: '150 Pcs/set',
+        image: '/AcePackaging/RE Series Containers.png',
+        applications: ['Executive Lunch', 'Premium Thali', 'Corporate Meals']
       }
     ]
   },
@@ -623,7 +766,8 @@ export const productCategories: ProductCategory[] = [
       '/AcePackaging/Round-300ml.png',
       '/AcePackaging/Round-250ml.png',
       '/AcePackaging/Round-225ml.png',
-      '/AcePackaging/Round-Containers-Lifestyle.png'
+      '/AcePackaging/Round-Containers-Lifestyle.png',
+      '/DSC04053.JPG'
     ],
     faqs: [
       { question: 'What is the pack size for Round Containers?', answer: 'All Round Container models (225ml to 1000ml) are packed in standard 500 Pcs/set with matching lids.' },
@@ -676,14 +820,14 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
-        dimensions: { top: '120 mm', bottom: '91 mm', height: '48 mm' },
+        dimensions: { top: '120 mm', bottom: '41 mm', height: '102 mm' },
         packaging: '500 Pcs/set',
         image: '/AcePackaging/Round-300ml.png',
         applications: ['Dal', 'Curries', 'Raita', 'Rice Portions', 'Desserts'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
-          { label: 'Bottom Diameter', value: '91 mm' },
-          { label: 'Height', value: '48 mm' },
+          { label: 'Bottom Diameter', value: '41 mm' },
+          { label: 'Height', value: '102 mm' },
           { label: 'Pack Size', value: '500 Pcs/set' }
         ]
       },
@@ -743,6 +887,19 @@ export const productCategories: ProductCategory[] = [
           { label: 'Height', value: '125 mm' },
           { label: 'Pack Size', value: '500 Pcs/set' }
         ]
+      },
+      {
+        id: 'rc-1000-tub',
+        name: '1000ml Round Tub (Clear Translucent)',
+        capacity: '1000ml',
+        product_slug: '1000ml-round-tub',
+        material: 'Virgin PP 05',
+        quality: 'Standard Grade',
+        features: ['Airtight Lid', 'Microwave Safe', 'High Stacking Strength'],
+        dimensions: { top: '120 mm', bottom: '87 mm', height: '125 mm' },
+        packaging: '500 Pcs/set',
+        image: '/DSC04053.JPG',
+        applications: ['Soup', 'Curry', 'Gravy', 'Food Storage']
       }
     ]
   },
@@ -760,7 +917,8 @@ export const productCategories: ProductCategory[] = [
       '/AcePackaging/Natraj-750ml.png',
       '/AcePackaging/Natraj-500ml.png',
       '/AcePackaging/Natraj-450ml.png',
-      '/AcePackaging/Natraj-250ml.png'
+      '/AcePackaging/Natraj-250ml.png',
+      '/AcePackaging/Sweet Box Containers.png'
     ],
     faqs: [
       { question: 'Why are Natraj containers preferred for Indian sweets?', answer: 'Because of their 100% odorless virgin food grade formulation that prevents plastic taint on sensitive ghee and dairy based sweets.' },
@@ -842,6 +1000,32 @@ export const productCategories: ProductCategory[] = [
           { label: 'Height', value: '118 mm' },
           { label: 'Pack Size', value: '500 Pcs/set' }
         ]
+      },
+      {
+        id: 'nc-250g-box',
+        name: '250g Natraj Sweet Box',
+        capacity: '250g',
+        product_slug: '250g-natraj-sweet-box',
+        material: 'Food Grade Polypropylene',
+        quality: 'Confectionery Grade',
+        features: ['Odor Free', 'Airtight Freshness'],
+        dimensions: { top: '115 mm', bottom: '88 mm', height: '40 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Natraj Containers.png',
+        applications: ['Kaju Katli', 'Laddoo', 'Peda', 'Dry Fruits']
+      },
+      {
+        id: 'nc-500g-box',
+        name: '500g Natraj Sweet Box',
+        capacity: '500g',
+        product_slug: '500g-natraj-sweet-box',
+        material: 'Food Grade Polypropylene',
+        quality: 'Luxury Gift Grade',
+        features: ['High Transparency', 'Festive Packaging'],
+        dimensions: { top: '115 mm', bottom: '87 mm', height: '75 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Sweet Box Containers.png',
+        applications: ['Indian Sweets', 'Baklava', 'Chocolates']
       }
     ]
   },
@@ -965,6 +1149,19 @@ export const productCategories: ProductCategory[] = [
       { question: 'What lid options are available?', answer: 'Compatible with standard 80mm flat straw-slot lids and dome lids.' }
     ],
     products: [
+      {
+        id: 'gs80-200',
+        name: '200ml Glass Series (80-Dia)',
+        capacity: '200ml',
+        product_slug: '200ml-glass-80-dia',
+        material: 'Virgin PP 05',
+        quality: 'Food Service Grade',
+        features: ['Ultra Clear', 'Crack Resistant Rim'],
+        dimensions: { top: '80 mm', bottom: '48 mm', height: '85 mm' },
+        packaging: '1,000 PCS',
+        image: '/AcePackaging/Glass Series 80-Dia.png',
+        applications: ['Juices', 'Cold Brew', 'Chai', 'Desserts']
+      },
       {
         id: 'gs80-250',
         name: '250ml Glass Series (80-Dia)',
@@ -1110,14 +1307,14 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Café Commercial Grade',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '90mm Wide Rim'],
-        dimensions: { top: '90 mm', bottom: '55 mm', height: '146 mm' },
+        dimensions: { top: '90 mm', bottom: '55 mm', height: '166 mm' },
         packaging: '1,000 PCS',
         image: '/AcePackaging/Glass-90-600ml.png',
         applications: ['Large Boba', 'Fruit Teas', 'Slushes', 'Iced Coffee', 'Lemonades'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
           { label: 'Bottom Diameter', value: '55 mm' },
-          { label: 'Height', value: '146 mm' },
+          { label: 'Height', value: '166 mm' },
           { label: 'Pack Size', value: '1,000 PCS' }
         ]
       },
@@ -1168,6 +1365,19 @@ export const productCategories: ProductCategory[] = [
     ],
     products: [
       {
+        id: 'fc-450',
+        name: '450ml Flat Container',
+        capacity: '450ml',
+        product_slug: '450ml-flat-container',
+        material: 'Virgin PP 05',
+        quality: 'Gourmet Food Grade',
+        features: ['Wide Surface Area', 'Fresh Display Optical Lid'],
+        dimensions: { top: '148 mm', bottom: '125 mm', height: '35 mm' },
+        packaging: '300 Pcs/set',
+        image: '/AcePackaging/Flat-600ml.png',
+        applications: ['Burgers', 'Sandwiches', 'Fresh Cut Fruits', 'Sushi']
+      },
+      {
         id: 'fc-600',
         name: '600ml Flat Container',
         capacity: '600ml',
@@ -1194,14 +1404,14 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
-        dimensions: { top: '148 mm', bottom: '125 mm', height: '55 mm' },
+        dimensions: { top: '148 mm', bottom: '74 mm', height: '62 mm' },
         packaging: '300 Pcs/set',
         image: '/AcePackaging/Flat-650ml.png',
         applications: ['Gourmet Salads', 'Asian Bowls', 'Charcuterie', 'Pasta'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
-          { label: 'Bottom Diameter', value: '125 mm' },
-          { label: 'Height', value: '55 mm' },
+          { label: 'Bottom Diameter', value: '74 mm' },
+          { label: 'Height', value: '62 mm' },
           { label: 'Pack Size', value: '300 Pcs/set' }
         ]
       },
@@ -1213,14 +1423,14 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
-        dimensions: { top: '148 mm', bottom: '120 mm', height: '62 mm' },
+        dimensions: { top: '148 mm', bottom: '125 mm', height: '55 mm' },
         packaging: '300 Pcs/set',
         image: '/AcePackaging/Flat-750ml.png',
         applications: ['Meals', 'Rice Combos', 'Curries', 'Fresh Cut Fruit Platters'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
-          { label: 'Bottom Diameter', value: '120 mm' },
-          { label: 'Height', value: '62 mm' },
+          { label: 'Bottom Diameter', value: '125 mm' },
+          { label: 'Height', value: '55 mm' },
           { label: 'Pack Size', value: '300 Pcs/set' }
         ]
       },
@@ -1438,6 +1648,268 @@ export const productCategories: ProductCategory[] = [
           { label: 'Height', value: '139 mm' },
           { label: 'Pack Size', value: '240 Pcs/set' }
         ]
+      },
+      {
+        id: 'ds-500',
+        name: '500ml Deli Container',
+        capacity: '500ml',
+        product_slug: '500ml-deli-container',
+        material: 'Virgin PP 05',
+        quality: 'Commercial Deli Grade',
+        features: ['Airtight Snap Rim', 'Microwave Reheatable', 'Heavy Gauge'],
+        dimensions: { top: '120 mm', bottom: '87 mm', height: '79 mm' },
+        packaging: '240 Pcs/set',
+        image: '/AcePackaging/Deli-16oz.png',
+        applications: ['Hummus', 'Yogurt', 'Gravies', 'Pickles', 'Salads']
+      },
+      {
+        id: 'ds-750',
+        name: '750ml Deli Container',
+        capacity: '750ml',
+        product_slug: '750ml-deli-container',
+        material: 'Virgin PP 05',
+        quality: 'Commercial Deli Grade',
+        features: ['Hermetic Seal', 'Freezer Safe to -20°C', 'High Impact Wall'],
+        dimensions: { top: '120 mm', bottom: '86 mm', height: '108 mm' },
+        packaging: '240 Pcs/set',
+        image: '/AcePackaging/Deli-24oz.png',
+        applications: ['Dairy Products', 'Bulk Curries', 'Food Processing']
+      }
+    ]
+  },
+  {
+    id: 'sweet-box-containers',
+    name: 'Sweet Box Containers',
+    slug: 'sweet-box-containers',
+    subtitleName: 'Confectionery & Mithai Gift Boxes',
+    shortDescription: 'Luxury high-clarity square & rectangular containers crafted for Indian sweets, mithai, chocolates, and dry fruit gift packaging.',
+    description: 'Ace Packaging Sweet Box Containers feature crystal-clear transparency, airtight closure, and food-safe odorless virgin polypropylene formulation to keep traditional sweets, baklava, and festive dry fruits fresh and appealing.',
+    heroImage: '/AcePackaging/Sweet Box Containers.png',
+    features: ['Crystal-Clear Clarity', 'Odor-Free Food Safe', 'Airtight Freshness', 'Festive Presentation'],
+    gallery: [
+      '/AcePackaging/Sweet Box Containers.png',
+      '/AcePackaging/SweetBox-500g.png',
+      '/AcePackaging/SweetBox-250g.png',
+      '/AcePackaging/SweetBox-1000g.png'
+    ],
+    faqs: [
+      { question: 'What sizes are available in Sweet Box Containers?', answer: 'Available in 250gm, 500gms, and 1000gms capacities with matching crystal-clear lids.' },
+      { question: 'Is the material safe for ghee and dairy sweets?', answer: 'Yes, manufactured from 100% prime virgin PP 05 with zero plastic odor transfer.' }
+    ],
+    products: [
+      {
+        id: 'sb-250g',
+        name: 'Sweet Box Container 250gm',
+        capacity: '250gm',
+        product_slug: '250gm-sweet-box',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Confectionery Luxury Grade',
+        features: ['High Transparency', 'Airtight Snap Lid', 'Odor Free'],
+        dimensions: { top: '115 × 115 mm', height: '35 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/SweetBox-250g.png',
+        applications: ['Kaju Katli', 'Peda', 'Laddoo', 'Dry Fruits', 'Chocolates']
+      },
+      {
+        id: 'sb-500g',
+        name: 'Sweet Box Container 500gms',
+        capacity: '500gms',
+        product_slug: '500gms-sweet-box',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Confectionery Luxury Grade',
+        features: ['High Clarity Optical Lid', 'Rigid Wall', 'Airtight Seal'],
+        dimensions: { top: '150 × 150 mm', height: '45 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/SweetBox-500g.png',
+        applications: ['Assorted Mithai', 'Baklava', 'Dry Fruit Gift Packs', 'Festive Boxes']
+      },
+      {
+        id: 'sb-1000g',
+        name: 'Sweet Box Container 1000gms',
+        capacity: '1000gms',
+        product_slug: '1000gms-sweet-box',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Confectionery Luxury Grade',
+        features: ['Heavyweight Base', 'Stackable Ribs', 'Crystal Clear Display'],
+        dimensions: { top: '190 × 190 mm', height: '55 mm' },
+        packaging: '300 Pcs/set',
+        image: '/AcePackaging/SweetBox-1000g.png',
+        applications: ['1kg Sweet Assortments', 'Dry Fruits', 'Celebration Gift Trays']
+      }
+    ]
+  },
+  {
+    id: 'elite-containers',
+    name: 'Elite Containers',
+    slug: 'elite-containers',
+    subtitleName: 'Modern Sleek Food Delivery Boxes',
+    shortDescription: 'Modern rectangular food delivery containers with reinforced snap-locking rim and sleek contemporary aesthetic.',
+    description: 'Ace Packaging Elite Containers combine contemporary aesthetic design with heavy-duty structural rigidity. Ideal for modern cloud kitchens, executive bento delivery, and premium meal takeaway.',
+    heroImage: '/AcePackaging/Elite Containers.png',
+    features: ['Sleek Modern Profile', 'Reinforced Locking Rim', 'Microwave & Freezer Safe', 'Stackable Base'],
+    gallery: [
+      '/AcePackaging/Elite Containers.png',
+      '/AcePackaging/Elite-1000ml.png',
+      '/AcePackaging/Elite-750ml.png',
+      '/AcePackaging/Elite-650ml.png',
+      '/AcePackaging/Elite-500ml.png'
+    ],
+    faqs: [
+      { question: 'What makes Elite Containers different?', answer: 'Elite containers feature a reinforced low-profile rim and high-rigidity side ribs that offer exceptional crush-resistance during motorcycle courier transit.' },
+      { question: 'What capacities are available?', answer: 'Available in 500ml, 650ml, 750ml, and 1000ml.' }
+    ],
+    products: [
+      {
+        id: 'ec-500',
+        name: 'Elite Container 500ml',
+        capacity: '500ml',
+        product_slug: '500ml-elite-container',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Premium Commercial Grade',
+        features: ['Reinforced Snap Rim', 'Microwave Reheatable', 'Zero Leakage'],
+        dimensions: { top: '172 × 120 mm', height: '38 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Elite-500ml.png',
+        applications: ['Curry & Rice', 'Noodles', 'Appetizers', 'Starters']
+      },
+      {
+        id: 'ec-650',
+        name: 'Elite Container 650ml',
+        capacity: '650ml',
+        product_slug: '650ml-elite-container',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Premium Commercial Grade',
+        features: ['Modern Low Profile', 'Stackable Ribs', 'Airtight Closure'],
+        dimensions: { top: '172 × 120 mm', height: '48 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Elite-650ml.png',
+        applications: ['Biryani Portions', 'Fried Rice', 'Pasta Combos', 'Main Courses']
+      },
+      {
+        id: 'ec-750',
+        name: 'Elite Container 750ml',
+        capacity: '750ml',
+        product_slug: '750ml-elite-container',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Premium Commercial Grade',
+        features: ['Extra Rigid Flange', 'Thermal Safe -20°C to +120°C'],
+        dimensions: { top: '172 × 120 mm', height: '55 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Elite-750ml.png',
+        applications: ['Full Meals', 'Gravies', 'Combo Platters', 'Cloud Kitchen Orders']
+      },
+      {
+        id: 'ec-1000',
+        name: 'Elite Container 1000ml',
+        capacity: '1000ml',
+        product_slug: '1000ml-elite-container',
+        material: 'Virgin PP 05 Food Grade',
+        quality: 'Premium Commercial Grade',
+        features: ['Maximum Volume', 'Heavy Impact Resistance', 'Optical Clear Lid'],
+        dimensions: { top: '172 × 120 mm', height: '68 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Elite-1000ml.png',
+        applications: ['Family Portions', 'Bulk Curries', 'Party Meals']
+      }
+    ]
+  },
+  {
+    id: 'tamper-evident',
+    name: 'Tamper Evident Containers',
+    slug: 'tamper-evident',
+    subtitleName: 'Security Lock Food Containers',
+    shortDescription: 'Security tab lock containers assuring end consumers of untouched food integrity and zero tampering.',
+    description: 'Containers with breakable security tabs guaranteeing food freshness and anti-tamper security for dairy, delivery, and food retail.',
+    heroImage: '/AcePackaging/Deli Series Container.png',
+    features: ['Breakable Security Tab', '100% Leak Proof', 'Tamper Evident Seal'],
+    products: [
+      {
+        id: 'te-500',
+        name: '500ml Tamper Evident Tub',
+        capacity: '500ml',
+        product_slug: '500ml-tamper-evident-tub',
+        material: 'Virgin PP 05',
+        quality: 'Security Certified',
+        features: ['Lock Tab', 'Hermetic Seal'],
+        dimensions: { top: '120 mm', height: '79 mm' },
+        packaging: '240 Pcs/set',
+        image: '/AcePackaging/Deli-16oz.png',
+        applications: ['Dairy Products', 'Yogurt', 'Gravies', 'Pickles']
+      }
+    ]
+  },
+  {
+    id: 'meal-boxes',
+    name: 'Meal Boxes',
+    slug: 'meal-boxes',
+    subtitleName: 'Executive Combo Meal Packaging',
+    shortDescription: 'Sleek meal packaging boxes tailored for airlines, corporate catering, and train meals.',
+    description: 'Compact stackable combo boxes optimized for volume meal distribution and multi-item executive lunches.',
+    heroImage: '/AcePackaging/RE Series Containers.png',
+    features: ['Compact Geometry', 'Stackable Base', 'Multi-Chamber Options'],
+    products: [
+      {
+        id: 'mb-exec',
+        name: 'Executive Combo Meal Box',
+        capacity: '850ml',
+        product_slug: 'executive-combo-meal-box',
+        material: 'Virgin PP 05',
+        quality: 'Commercial Airline Grade',
+        features: ['Zero Flavor Leak', 'Space Saving'],
+        dimensions: { top: '223 × 126 mm', height: '47 mm' },
+        packaging: '150 Pcs/set',
+        image: '/AcePackaging/AP-RE-28.png',
+        applications: ['Corporate Lunches', 'Airline Meals', 'Catering Combos']
+      }
+    ]
+  },
+  {
+    id: 'ice-cream-tubs',
+    name: 'Ice Cream Tubs',
+    slug: 'ice-cream-tubs',
+    subtitleName: 'Deep-Freeze Ice Cream & Dairy Packaging',
+    shortDescription: 'Freezer-grade plastic containers resistant to low-temperature embrittlement down to -30°C.',
+    description: 'Designed specifically for ice cream manufacturers, frozen yogurts, and gelato packaging with leak-proof lids.',
+    heroImage: '/AcePackaging/Round Containers.png',
+    features: ['Deep Freeze Safe down to -30°C', 'High Moisture Barrier', 'Crack Resistant'],
+    products: [
+      {
+        id: 'ict-500',
+        name: '500ml Ice Cream Tub',
+        capacity: '500ml',
+        product_slug: '500ml-ice-cream-tub',
+        material: 'Impact Modified PP',
+        quality: 'Dairy Grade',
+        features: ['Crack Resistant', 'IML Printable', 'Deep Freeze Safe'],
+        dimensions: { top: '120 mm', bottom: '67 mm', height: '97 mm' },
+        packaging: '500 Pcs/set',
+        image: '/AcePackaging/Round-500ml.png',
+        applications: ['Ice Cream', 'Frozen Yogurt', 'Gelato', 'Kulfi']
+      }
+    ]
+  },
+  {
+    id: 'custom-iml',
+    name: 'Custom IML Packaging',
+    slug: 'custom-iml',
+    subtitleName: 'In-Mould Labelling Branded Packaging',
+    shortDescription: 'Full-color high definition IML printed containers for high brand recall.',
+    description: 'In-Mould Labelling fuses vibrant artwork directly into container walls during moulding for permanent scratch-resistant branding.',
+    heroImage: '/AcePackaging/ZEN Series Containers.png',
+    features: ['Waterproof Printing', 'Scratch Resistance', 'Full Cover Artwork', 'High Definition'],
+    products: [
+      {
+        id: 'iml-custom',
+        name: 'Custom Printed IML Tub',
+        capacity: 'Custom Capacity',
+        product_slug: 'custom-printed-iml-tub',
+        material: 'Virgin PP 05 + IML Film',
+        quality: 'Custom Branded',
+        features: ['Full HD Graphics', '100% Recyclable'],
+        dimensions: { top: 'Custom', height: 'Custom' },
+        packaging: 'Per Client Specification',
+        image: '/AcePackaging/ZEN Series Containers.png',
+        applications: ['Brand Retail Packaging', 'Butter', 'Cheese', 'Ice Cream']
       }
     ]
   }
@@ -1446,6 +1918,12 @@ export const productCategories: ProductCategory[] = [
 export const getCategoryBySlug = (slug: string): ProductCategory | undefined => {
   if (slug === 'natraj-sweets') {
     return productCategories.find((cat) => cat.slug === 'natraj-containers');
+  }
+  if (slug === 'sweet-box') {
+    return productCategories.find((cat) => cat.slug === 'sweet-box-containers');
+  }
+  if (slug === 'glass-series') {
+    return productCategories.find((cat) => cat.slug === 'glass-series-80-dia');
   }
   return productCategories.find((cat) => cat.slug === slug);
 };
@@ -1460,7 +1938,14 @@ export const getProductBySlugs = (
 ): { category: ProductCategory; product: ProductItem } | undefined => {
   const category = getCategoryBySlug(categorySlug);
   if (!category) return undefined;
-  const product = category.products.find((p) => p.product_slug === productSlug);
+  const product = category.products.find(
+    (p) =>
+      p.product_slug === productSlug ||
+      p.id === productSlug ||
+      p.product_slug.replace(/-container$/, '') === productSlug ||
+      p.product_slug.replace(/-tub$/, '') === productSlug ||
+      p.product_slug.replace(/-box$/, '') === productSlug
+  );
   if (!product) return undefined;
   return { category, product };
 };

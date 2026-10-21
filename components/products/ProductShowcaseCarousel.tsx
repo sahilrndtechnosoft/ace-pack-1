@@ -109,6 +109,30 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     tag: 'Fresh Display',
     highlights: ['Wide horizontal display surface', 'Anti-fog optical lid', '148mm and 169mm profiles'],
   },
+  {
+    id: 'elite-containers',
+    name: 'Elite Series Premium Food Containers',
+    series: 'Heavy-Duty Meal Service',
+    categorySlug: 'elite-containers',
+    image: '/AcePackaging/Elite Containers.png',
+    gallery: ['/AcePackaging/Elite Containers.png', '/AcePackaging/Elite-500ml.png', '/AcePackaging/Elite-750ml.png'],
+    capacities: '500ml · 650ml · 750ml · 1000ml',
+    bestFor: 'Hot Curries, Rice Bowls, Takeout Meals & Freezer Prep',
+    tag: 'Heavy Duty',
+    highlights: ['Reinforced base and rim', 'Microwave & freezer resistant (-20°C to +120°C)', 'Airtight snap lid'],
+  },
+  {
+    id: 'sweet-box-containers',
+    name: 'Sweet Box Confectionery Containers',
+    series: 'Mithai & Bakery Display',
+    categorySlug: 'sweet-box-containers',
+    image: '/AcePackaging/Sweet Box Containers.png',
+    gallery: ['/AcePackaging/Sweet Box Containers.png', '/AcePackaging/SweetBox-500g.png', '/AcePackaging/SweetBox-1000g.png'],
+    capacities: '250gm · 500gms · 1000gms',
+    bestFor: 'Artisan Sweets, Dry Fruits, Chocolates & Bakery Gifts',
+    tag: 'Crystal Clear',
+    highlights: ['High optical clarity', 'Odor-free 100% virgin PP 05', 'Snap-tight confectionery lid'],
+  },
 ];
 
 export const ProductShowcaseCarousel: React.FC = () => {

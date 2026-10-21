@@ -180,8 +180,8 @@ export default function ProductsExperience() {
         <div className="xpr-wrap xpr-hero-grid">
           <div>
             <span className="xp-eyebrow">The catalog · {models.length} models · {productCategories.length} lines</span>
-            <h1 aria-label="Seventeen models. Specified in hand.">
-              <span className="xpr-title-mask"><span>Seventeen models.</span></span>
+            <h1 aria-label={`${models.length} models. Specified in hand.`}>
+              <span className="xpr-title-mask"><span>{models.length} models.</span></span>
               <span className="xpr-title-mask"><span><em>Specified in hand.</em></span></span>
             </h1>
             <p className="xpr-hero-lead">Every model below is moulded from 100% prime virgin PP 05, US FDA 21 CFR 177.1520 certified and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.</p>
