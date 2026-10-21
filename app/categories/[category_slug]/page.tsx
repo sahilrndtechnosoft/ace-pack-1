@@ -113,8 +113,10 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                       {item.dimensions && (
                         <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
                           <span className="text-gray-500 font-medium">Dimensions:</span>
-                          <span className="font-semibold text-[var(--ace-ink)]">
-                            {item.dimensions.top} × {item.dimensions.height}
+                          <span className="font-semibold text-[var(--ace-ink)] text-right">
+                            {item.dimensions.bottom
+                              ? `${item.dimensions.top} × ${item.dimensions.bottom} × ${item.dimensions.height}`
+                              : `${item.dimensions.top} × ${item.dimensions.height}`}
                           </span>
                         </div>
                       )}
@@ -125,7 +127,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                       <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
                         <span className="text-gray-500 font-medium">Case Pack:</span>
                         <span className="font-semibold text-[var(--ace-ink)]">
-                          {item.packaging ? item.packaging.split(' ')[0] + ' Pcs / Box' : 'Standard Carton'}
+                          {item.packaging || 'Standard Carton'}
                         </span>
                       </div>
                     </div>

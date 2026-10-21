@@ -241,7 +241,7 @@ export default function ProductsExperience() {
                   <dl className="xpr-specs">
                     <div><dt>Material</dt><dd>{m.material}</dd></div>
                     <div><dt>Grade</dt><dd>{m.quality}</dd></div>
-                    {m.dimensions && <div><dt>Top × height</dt><dd>{m.dimensions.top} × {m.dimensions.height}</dd></div>}
+                    {m.dimensions && <div><dt>{m.dimensions.bottom ? 'Dimensions' : 'Top × height'}</dt><dd>{m.dimensions.top}{m.dimensions.bottom ? ` × ${m.dimensions.bottom}` : ''} × {m.dimensions.height}</dd></div>}
                     {m.packaging && <div><dt>Packing</dt><dd>{m.packaging}</dd></div>}
                   </dl>
                   <div className="xpr-card-actions">
