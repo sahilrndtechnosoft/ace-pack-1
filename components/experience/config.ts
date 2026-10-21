@@ -76,7 +76,7 @@ export const products = [
     capacity: '250g · 500g · 1000g Boxes',
     use: 'Traditional mithai · dry fruits · baklava · bakery gifts',
     description: 'Speciality crystal-clear confectionery boxes designed for Indian sweets, cookies, and dry fruits. Odor-free virgin food-grade polymer keeps confectionery fresh.',
-    href: '/categories/natraj-sweets',
+    href: '/categories/natraj-containers',
     link: 'Explore Sweet Boxes',
     image: '/AcePackaging/Sweet Box Containers.png',
     foodImage: '/images/food-pairings/sweets-pastry.webp',

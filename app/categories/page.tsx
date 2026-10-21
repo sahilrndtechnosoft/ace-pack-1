@@ -3,7 +3,7 @@ import CategoriesExperience from '@/components/experience/CategoriesExperience';
 
 export const metadata: Metadata = {
   title: 'All Product Categories | Ace Packaging Plastic Food Packaging',
-  description: 'Explore Ace Packaging\'s plastic food container categories including Hinge Cups, Portion Cups, RO-Series, RE Bento Boxes, Round Containers, Natraj Sweets, and Elite Containers.',
+  description: 'Explore Ace Packaging\'s official plastic food container range: Hinge Cups, Portion Cups, RO-Series, RE-Series Bento Boxes, Round Containers, Natraj Containers, ZEN Series, Glass Series 80/90-Dia, Flat Containers, and Deli Series.',
 };
 
 export default function CategoryListPage() {

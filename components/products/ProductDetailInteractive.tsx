@@ -44,7 +44,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
       ? '/models/acepack/shallow-bowl.webp'
       : category.slug === 'deli-series'
       ? '/models/acepack/deli.webp'
-      : category.slug === 'sweet-box' || category.slug === 'natraj-sweets'
+      : category.slug === 'sweet-box' || category.slug === 'natraj-sweets' || category.slug === 'natraj-containers'
       ? '/models/acepack/carton.webp'
       : '/models/acepack/clamshell.webp');
 
@@ -54,7 +54,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
       ? '/AcePackaging/ChatGPT Image Aug 26, 2026, 12_05_36 PM.png'
       : category.slug === 'ro-series' || category.slug === 'round-containers' || category.slug === 'deli-series'
       ? '/AcePackaging/ChatGPT Image Aug 26, 2026, 12_02_11 PM.png'
-      : category.slug === 'sweet-box' || category.slug === 'natraj-sweets'
+      : category.slug === 'sweet-box' || category.slug === 'natraj-sweets' || category.slug === 'natraj-containers'
       ? '/images/gallery/sweet-box.webp'
       : '/AcePackaging/ChatGPT Image Aug 26, 2026, 12_02_15 PM.png');
 

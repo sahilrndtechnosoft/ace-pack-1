@@ -140,19 +140,29 @@ export const Header: React.FC = () => {
 
                     {/* Multi-Column Category-Wise Variant Grid styled with Ace Packaging Brand Gold Theme (var(--ace-orange)) */}
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-                      {productCategories.map((category) => (
-                        <div key={category.id} className="min-w-0 rounded-2xl border border-[var(--ace-line)] bg-white p-3 sm:p-3.5">
+                      {productCategories.map((category, index) => (
+                        <div key={category.id} className="min-w-0 rounded-2xl border border-[var(--ace-line)] bg-white p-3 sm:p-3.5 hover:border-[var(--ace-orange)]/60 transition-all duration-300">
 
-                          {/* Category Heading in Brand Gold (var(--ace-orange)) */}
+                          {/* Category Heading with 01..11 Badge and Product Thumbnail */}
                           <Link
                             href={`/categories/${category.slug}`}
                             onClick={() => setMegaMenuOpen(false)}
-                            className="group flex min-h-10 items-center gap-2 border-b border-[var(--ace-line)] pb-2 hover:text-[var(--ace-orange)] transition-colors"
+                            className="group flex min-h-10 items-center justify-between gap-2 border-b border-[var(--ace-line)] pb-2 hover:text-[var(--ace-orange)] transition-colors"
                           >
-                            <PackagingIllustration slug={category.slug} className="w-8 h-8 shrink-0 text-[var(--ace-orange)]" />
-                            <h3 className="text-[13px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors leading-snug normal-case">
-                              {category.name}
-                            </h3>
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="text-[11px] font-bold text-[#968152] bg-[#FAF8F4] px-1.5 py-0.5 rounded border border-[var(--ace-line)] shrink-0">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
+                              <PackagingIllustration slug={category.slug} className="w-7 h-7 shrink-0 text-[var(--ace-orange)]" />
+                              <h3 className="text-[13px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors leading-snug normal-case truncate">
+                                {category.name}
+                              </h3>
+                            </div>
+                            <img
+                              src={category.heroImage}
+                              alt=""
+                              className="w-12 h-9 object-contain shrink-0 opacity-85 group-hover:opacity-100 transition-opacity"
+                            />
                           </Link>
 
                           {/* Variant List with Brand Gold Chevrons (›) */}
@@ -162,10 +172,10 @@ export const Header: React.FC = () => {
                                 key={product.id}
                                 href={`/categories/${category.slug}/${product.product_slug}`}
                                 onClick={() => setMegaMenuOpen(false)}
-                                className="flex min-h-9 items-center gap-2 rounded-lg px-1 text-[13px] font-medium normal-case text-[var(--ace-ink)] hover:bg-[var(--ace-paper)] hover:text-[var(--ace-orange)] transition-colors group"
+                                className="flex min-h-8 items-center gap-2 rounded-lg px-1 text-[12.5px] font-medium normal-case text-[var(--ace-ink)] hover:bg-[var(--ace-paper)] hover:text-[var(--ace-orange)] transition-colors group"
                               >
-                                <PackagingIllustration slug={category.slug} productId={product.id} className="w-6 h-6 shrink-0 text-[var(--ace-orange)]" />
-                                <span className="leading-snug">{product.name}</span>
+                                <span className="text-[var(--ace-orange)] opacity-60 group-hover:opacity-100 font-bold">›</span>
+                                <span className="leading-snug truncate">{product.name}</span>
                               </Link>
                             ))}
                           </div>
@@ -351,15 +361,21 @@ export const Header: React.FC = () => {
                         className="overflow-hidden"
                       >
                         <div className="pl-3 py-1 flex flex-col gap-1 border-l-2 border-[var(--ace-line)] normal-case font-semibold text-xs text-gray-700">
-                          {productCategories.map((category) => (
+                          {productCategories.map((category, index) => (
                             <Link
                               key={category.id}
                               href={`/categories/${category.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="py-1.5 min-h-11 flex items-center gap-1.5 hover:text-[var(--ace-orange)]"
+                              className="py-1.5 min-h-11 flex items-center justify-between gap-2 hover:text-[var(--ace-orange)]"
                             >
-                              <PackagingIllustration slug={category.slug} className="w-9 h-9 shrink-0 text-[var(--ace-orange)]" />
-                              {category.name}
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold text-[#968152] bg-[#FAF8F4] px-1.5 py-0.5 rounded border border-[var(--ace-line)] shrink-0">
+                                  {String(index + 1).padStart(2, '0')}
+                                </span>
+                                <PackagingIllustration slug={category.slug} className="w-7 h-7 shrink-0 text-[var(--ace-orange)]" />
+                                <span>{category.name}</span>
+                              </div>
+                              <img src={category.heroImage} alt="" className="w-9 h-6 object-contain opacity-75 shrink-0" />
                             </Link>
                           ))}
                           <Link
