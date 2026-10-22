@@ -75,7 +75,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
           </div>
 
           {/* Streamlined Product Listing (User Requirement 7: important required details only, avoid crowded clutter) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
             {category.products.map((item) => (
               <div
                 key={item.id}
@@ -83,14 +83,14 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
               >
                 <div>
                   {/* Clean Light Image Surface */}
-                  <div className="relative h-60 bg-gradient-to-b from-white to-[#F7F4EC] p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
+                  <div className="relative h-52 sm:h-60 bg-gradient-to-b from-white to-[#F7F4EC] p-4 sm:p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
                     <img
                       src={item.image}
                       alt={item.name}
                       loading="lazy"
                       className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_18px_rgba(0,0,0,0.1)]"
                     />
-                    <span className="absolute top-3 right-3 bg-[#b99750] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="absolute top-3 right-3 bg-[#b99750] text-white text-[11px] sm:text-xs font-extrabold px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                       {item.capacity}
                     </span>
                     <span className="absolute top-3 left-3 bg-white text-[var(--ace-ink)] border border-[#E6DBC6] text-[10px] font-bold px-2.5 py-0.5 rounded-full">
@@ -99,21 +99,21 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                   </div>
 
                   {/* Content: Only Important & Required Details */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-[var(--ace-ink)] mb-4 group-hover:text-[#b99750] transition-colors leading-snug">
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-3 sm:mb-4 group-hover:text-[#b99750] transition-colors leading-snug">
                       {item.name}
                     </h3>
 
                     {/* Compact Specs Grid */}
-                    <div className="bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-4 space-y-2 text-xs">
+                    <div className="bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-3.5 sm:p-4 space-y-2 text-xs">
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500 font-medium">Capacity:</span>
                         <span className="font-bold text-[#b99750]">{item.capacity}</span>
                       </div>
                       {item.dimensions && (
-                        <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
-                          <span className="text-gray-500 font-medium">Dimensions:</span>
-                          <span className="font-semibold text-[var(--ace-ink)] text-right">
+                        <div className="flex items-start justify-between border-t border-[#E6DBC6]/60 pt-2 gap-2">
+                          <span className="text-gray-500 font-medium shrink-0">Dimensions:</span>
+                          <span className="font-semibold text-[var(--ace-ink)] text-right break-words text-[11px] sm:text-xs">
                             {item.dimensions.bottom
                               ? `${item.dimensions.top} × ${item.dimensions.bottom} × ${item.dimensions.height}`
                               : `${item.dimensions.top} × ${item.dimensions.height}`}
@@ -135,10 +135,10 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                 </div>
 
                 {/* Single Clear Action Button */}
-                <div className="px-6 pb-6 pt-2">
+                <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1">
                   <Link
                     href={`/categories/${category.slug}/${item.product_slug}`}
-                    className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold py-3.5 rounded-xl text-center uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
+                    className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
                   >
                     <span>View Specifications &amp; 4-View Studio</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -150,7 +150,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
 
           {/* Category FAQ Section */}
           {category.faqs && category.faqs.length > 0 && (
-            <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm mb-16">
+            <div className="bg-white p-5 sm:p-8 lg:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm mb-16">
               <div className="flex items-center gap-2 text-xs font-bold text-[#b99750] uppercase tracking-wider mb-2">
                 <HelpCircle className="w-4 h-4" /> FAQ &amp; Guidance
               </div>

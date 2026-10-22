@@ -82,7 +82,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({
         )}
 
         {/* Page Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3 leading-tight">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3 leading-tight break-words">
           {title}
         </h1>
 

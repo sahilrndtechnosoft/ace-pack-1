@@ -50,7 +50,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-lg rounded-3xl bg-white border border-[#E6DBC6] shadow-2xl p-6 sm:p-8 text-[var(--ace-ink)]"
+        className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl bg-white border border-[#E6DBC6] shadow-2xl p-6 sm:p-8 text-[var(--ace-ink)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

@@ -87,7 +87,9 @@ export const Footer: React.FC = () => {
 
           {/* Product Lines Column */}
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">All 11 Product Categories</h4>
+            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">
+              All {productCategories.length} Product Collections
+            </h4>
             <ul className="space-y-2 text-xs font-semibold text-gray-600">
               {productCategories.map((cat) => (
                 <li key={cat.id}>

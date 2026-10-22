@@ -43,18 +43,18 @@ export const HeroHome: React.FC = () => {
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 mb-10">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
               <Link
                 href="/categories"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-center"
               >
-                <span>Explore All 11 Collections</span>
+                <span>Explore All 17 Collections</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 text-center"
               >
                 <PackageCheck className="w-4 h-4" />
                 <span>Request Free Sample Kit</span>

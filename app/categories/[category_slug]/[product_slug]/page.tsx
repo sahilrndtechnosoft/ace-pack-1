@@ -58,19 +58,19 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
         ]}
       />
 
-      <section className="py-8 sm:py-12 md:py-16">
+      <section className="py-6 sm:py-10 md:py-16">
         <div className="container-custom">
-          {/* Back to category button */}
-          <div className="mb-8 flex items-center justify-between">
+          {/* Back to category button & Certification status */}
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-2">
             <Link
               href={`/categories/${category.slug}`}
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b99750] hover:text-[var(--ace-ink)] transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b99750] hover:text-[var(--ace-ink)] transition-colors group"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               <span>Back to {category.name} Collection</span>
             </Link>
 
-            <span className="text-xs text-gray-500 font-medium">
+            <span className="text-[11px] sm:text-xs text-gray-500 font-medium bg-white/70 px-3 py-1 rounded-full border border-[#E6DBC6]/70">
               US FDA 21 CFR 177.1520 &amp; ISO 9001:2015 Certified
             </span>
           </div>
@@ -80,10 +80,10 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
 
           {/* Related Models in this category */}
           {relatedCategoryProducts.length > 0 && (
-            <div className="mt-20 pt-12 border-t border-[#E6DBC6]">
-              <div className="flex items-center justify-between mb-8">
+            <div className="mt-12 sm:mt-16 lg:mt-20 pt-8 sm:pt-12 border-t border-[#E6DBC6]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
                 <div>
-                  <h3 className="text-2xl font-extrabold text-[var(--ace-ink)]">
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)]">
                     Other Models in {category.name}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
@@ -92,35 +92,35 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
                 </div>
                 <Link
                   href={`/categories/${category.slug}`}
-                  className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1 self-start sm:self-auto"
                 >
-                  <span>View All {category.products.length}</span>
+                  <span>View All {category.products.length} Models</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {relatedCategoryProducts.map((rel) => (
                   <Link
                     key={rel.id}
                     href={`/categories/${category.slug}/${rel.product_slug}`}
-                    className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group text-left"
+                    className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all hover:shadow-lg group text-left"
                   >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
                       <img
                         src={rel.image}
                         alt={rel.name}
                         className="max-h-full max-w-full object-contain filter drop-shadow-xs group-hover:scale-105 transition-transform"
                       />
                     </div>
-                    <div>
-                      <span className="text-[11px] font-extrabold text-[#b99750] uppercase block">
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[10px] sm:text-[11px] font-extrabold text-[#b99750] uppercase block">
                         {rel.capacity}
                       </span>
-                      <h4 className="text-sm font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug">
+                      <h4 className="text-xs sm:text-sm font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug truncate">
                         {rel.name}
                       </h4>
-                      <p className="text-[11px] text-gray-500 mt-1">
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5 truncate">
                         {rel.packaging ? rel.packaging.split(' ')[0] + ' Pcs / Box' : '100% Virgin PP 05'}
                       </p>
                     </div>

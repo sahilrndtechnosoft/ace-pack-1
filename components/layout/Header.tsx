@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -84,6 +84,22 @@ export const Header: React.FC = () => {
   const [mobileSegment, setMobileSegment] = useState<string>('all');
   const [mobileSearch, setMobileSearch] = useState<string>('');
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+  const megaMenuContainerRef = useRef<HTMLDivElement>(null);
+
+  // Close desktop mega menu when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (megaMenuContainerRef.current && !megaMenuContainerRef.current.contains(e.target as Node)) {
+        setMegaMenuOpen(false);
+      }
+    };
+    if (megaMenuOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [megaMenuOpen]);
 
   const pathname = usePathname() ?? '/';
 
@@ -155,6 +171,13 @@ export const Header: React.FC = () => {
     return list;
   }, [mobileSegment, mobileSearch]);
 
+  // When mobile search query changes, auto-expand first matching category
+  useEffect(() => {
+    if (mobileSearch.trim() && mobileFilteredCategories.length > 0) {
+      setMobileExpandedCat(mobileFilteredCategories[0].slug);
+    }
+  }, [mobileSearch, mobileFilteredCategories]);
+
   useEffect(() => {
     let queued = false;
     const handleScroll = () => {
@@ -198,6 +221,7 @@ export const Header: React.FC = () => {
 
           {/* "Our Products" Interactive Master-Detail Mega Menu Trigger */}
           <div
+            ref={megaMenuContainerRef}
             onMouseEnter={() => setMegaMenuOpen(true)}
             onMouseLeave={() => setMegaMenuOpen(false)}
             onFocus={() => setMegaMenuOpen(true)}
@@ -211,21 +235,25 @@ export const Header: React.FC = () => {
               }
             }}
           >
-            <Link
-              href="/categories"
+            <button
+              type="button"
+              onClick={() => setMegaMenuOpen((v) => !v)}
               className={navLink(
                 '/categories',
-                `inline-flex items-center gap-1.5 ${megaMenuOpen ? 'text-[var(--ace-orange)]' : ''}`
+                `inline-flex items-center gap-1.5 cursor-pointer ${megaMenuOpen ? 'text-[var(--ace-orange)]' : ''}`
               )}
+              aria-expanded={megaMenuOpen}
+              aria-haspopup="true"
+              aria-label="Our Products Menu"
               aria-current={isActive('/categories') ? 'page' : undefined}
             >
               <span>Our Products</span>
               <ChevronRight
-                className={`w-3.5 h-3.5 rotate-90 transition-transform ${
+                className={`w-3.5 h-3.5 rotate-90 transition-transform duration-200 ${
                   megaMenuOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
                 }`}
               />
-            </Link>
+            </button>
 
             {/* Premium Master-Detail Mega Menu */}
             <AnimatePresence>
@@ -297,7 +325,7 @@ export const Header: React.FC = () => {
                     <div className="flex-1 flex overflow-hidden min-h-0">
                       {/* Left Sidebar: Categories Navigation Rail */}
                       <div
-                        className="w-72 xl:w-80 shrink-0 border-r border-[var(--ace-line)] bg-[#FAF8F4]/60 overflow-y-auto p-2.5 space-y-1"
+                        className="w-64 xl:w-80 shrink-0 border-r border-[var(--ace-line)] bg-[#FAF8F4]/60 overflow-y-auto p-2.5 space-y-1"
                         data-lenis-prevent
                       >
                         {desktopFilteredCategories.length === 0 ? (
@@ -388,7 +416,7 @@ export const Header: React.FC = () => {
                           </div>
 
                           {/* Model Grid */}
-                          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5">
+                          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 xl:gap-2.5">
                             {activeCategory.products.map((product) => (
                               <Link
                                 key={product.id}
@@ -609,12 +637,12 @@ export const Header: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setMobileProductsOpen((v) => !v)}
-                    className="w-full flex items-center justify-between font-extrabold text-sm uppercase tracking-wide text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors py-1"
+                    className="w-full flex items-center justify-between font-extrabold text-sm uppercase tracking-wide text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors py-1 cursor-pointer"
                     aria-expanded={mobileProductsOpen}
                   >
                     <div className="flex items-center gap-2">
                       <Box className="w-4 h-4 text-[var(--ace-orange)]" />
-                      <span>Product Lines ({productCategories.length})</span>
+                      <span>Product Collections ({productCategories.length} Lines)</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 text-[var(--ace-orange)] transition-transform duration-300 ${
@@ -632,7 +660,27 @@ export const Header: React.FC = () => {
                         transition={{ height: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.2 } }}
                         className="overflow-hidden pt-3 border-t border-[var(--ace-line)] mt-2"
                       >
-                        {/* Instant Search Bar */}
+                        {/* Quick Direct Catalog Shortcuts */}
+                        <div className="grid grid-cols-2 gap-2 mb-3">
+                          <Link
+                            href="/categories"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[var(--ace-line)] text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
+                          >
+                            <Layers className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
+                            <span>All 17 Lines</span>
+                          </Link>
+                          <Link
+                            href="/products"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[var(--ace-line)] text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
+                          >
+                            <Box className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
+                            <span>Full 89 Catalog</span>
+                          </Link>
+                        </div>
+
+                        {/* Instant Search Bar with Clear Button */}
                         <div className="relative mb-2.5">
                           <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                           <input
@@ -640,8 +688,18 @@ export const Header: React.FC = () => {
                             value={mobileSearch}
                             onChange={(e) => setMobileSearch(e.target.value)}
                             placeholder="Search 89 containers (e.g. 500ml, bento)..."
-                            className="w-full pl-8 pr-3 py-2 text-xs bg-[#FAF8F4] border border-[var(--ace-line)] rounded-xl text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)]"
+                            className="w-full pl-8 pr-7 py-2 text-xs bg-[#FAF8F4] border border-[var(--ace-line)] rounded-xl text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)]"
                           />
+                          {mobileSearch && (
+                            <button
+                              type="button"
+                              onClick={() => setMobileSearch('')}
+                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs p-1"
+                              aria-label="Clear search"
+                            >
+                              ✕
+                            </button>
+                          )}
                         </div>
 
                         {/* Segment Filter Pills */}
@@ -651,7 +709,7 @@ export const Header: React.FC = () => {
                               key={g.id}
                               type="button"
                               onClick={() => setMobileSegment(g.id)}
-                              className={`px-2.5 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 ${
+                              className={`px-2.5 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
                                 mobileSegment === g.id
                                   ? 'bg-[var(--ace-orange)] text-white shadow-2xs'
                                   : 'bg-[#FAF8F4] text-gray-600 hover:text-[var(--ace-ink)] border border-[var(--ace-line)]'
@@ -663,72 +721,100 @@ export const Header: React.FC = () => {
                         </div>
 
                         {/* Category List with Sub-Model Expanders */}
-                        <div className="space-y-1.5 max-h-[46vh] overflow-y-auto pr-1" data-lenis-prevent>
+                        <div className="space-y-2 max-h-[52vh] overflow-y-auto pr-1" data-lenis-prevent>
                           {mobileFilteredCategories.map((category, index) => {
                             const isExpanded = mobileExpandedCat === category.slug;
                             return (
                               <div
                                 key={category.id}
-                                className="rounded-xl border border-[var(--ace-line)] bg-[#FAF8F4]/60 overflow-hidden"
+                                className={`rounded-xl border transition-all duration-200 overflow-hidden ${
+                                  isExpanded
+                                    ? 'border-[var(--ace-orange)]/60 bg-white shadow-2xs'
+                                    : 'border-[var(--ace-line)] bg-[#FAF8F4]/70 hover:bg-white'
+                                }`}
                               >
-                                <div className="flex items-center justify-between p-2 hover:bg-white transition-colors">
-                                  <Link
-                                    href={`/categories/${category.slug}`}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center gap-2 min-w-0 flex-1"
-                                  >
-                                    <span className="text-[10px] font-bold text-[#968152] bg-white px-1.5 py-0.5 rounded border border-[var(--ace-line)] shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => setMobileExpandedCat(isExpanded ? null : category.slug)}
+                                  className="w-full flex items-center justify-between p-2.5 text-left transition-colors cursor-pointer"
+                                  aria-expanded={isExpanded}
+                                >
+                                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                                    <span
+                                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${
+                                        isExpanded
+                                          ? 'bg-[var(--ace-orange)] text-white border-transparent'
+                                          : 'bg-white text-[#968152] border-[var(--ace-line)]'
+                                      }`}
+                                    >
                                       {String(index + 1).padStart(2, '0')}
                                     </span>
-                                    <PackagingIllustration slug={category.slug} className="w-5 h-5 shrink-0 text-[var(--ace-orange)]" />
-                                    <span className="text-xs font-bold text-[var(--ace-ink)] truncate">
-                                      {category.name}
-                                    </span>
-                                    <span className="text-[10px] text-gray-500 font-semibold bg-white px-1.5 py-0.2 rounded border border-[var(--ace-line)] shrink-0">
-                                      {category.products.length}
-                                    </span>
-                                  </Link>
-
-                                  <button
-                                    type="button"
-                                    onClick={() => setMobileExpandedCat(isExpanded ? null : category.slug)}
-                                    className="p-1.5 text-gray-500 hover:text-[var(--ace-orange)]"
-                                    aria-label="Toggle models"
-                                  >
-                                    <ChevronDown
-                                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                                        isExpanded ? 'rotate-180 text-[var(--ace-orange)]' : ''
+                                    <PackagingIllustration
+                                      slug={category.slug}
+                                      className={`w-5 h-5 shrink-0 transition-colors ${
+                                        isExpanded ? 'text-[var(--ace-orange)]' : 'text-gray-500'
                                       }`}
                                     />
-                                  </button>
-                                </div>
+                                    <div className="min-w-0 flex-1">
+                                      <span className="text-xs font-bold text-[var(--ace-ink)] block truncate">
+                                        {category.name}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-1.5 shrink-0 ml-1">
+                                    <span className="text-[10px] text-gray-500 font-semibold bg-white px-1.5 py-0.5 rounded border border-[var(--ace-line)]">
+                                      {category.products.length} models
+                                    </span>
+                                    <div
+                                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
+                                        isExpanded
+                                          ? 'bg-[var(--ace-orange)] text-white'
+                                          : 'bg-white text-gray-400 border border-[var(--ace-line)]'
+                                      }`}
+                                    >
+                                      <ChevronDown
+                                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                                          isExpanded ? 'rotate-180' : ''
+                                        }`}
+                                      />
+                                    </div>
+                                  </div>
+                                </button>
 
                                 {/* Expanded Models Grid inside Category */}
                                 {isExpanded && (
-                                  <div className="p-2 pt-1 border-t border-[var(--ace-line)] bg-white space-y-1.5">
+                                  <div className="p-2.5 pt-1 border-t border-[var(--ace-line)] bg-white space-y-2 animate-fade-in">
+                                    <div className="flex items-center justify-between pt-1 pb-0.5">
+                                      <span className="text-[11px] text-gray-500 font-medium">Available Models:</span>
+                                      <Link
+                                        href={`/categories/${category.slug}`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="text-[11px] font-bold text-[var(--ace-orange)] hover:underline inline-flex items-center gap-1"
+                                      >
+                                        <span>View Collection</span>
+                                        <ArrowRight className="w-3 h-3" />
+                                      </Link>
+                                    </div>
+
                                     <div className="grid grid-cols-2 gap-1.5">
                                       {category.products.map((prod) => (
                                         <Link
                                           key={prod.id}
                                           href={`/categories/${category.slug}/${prod.product_slug}`}
                                           onClick={() => setMobileMenuOpen(false)}
-                                          className="p-1.5 rounded-lg bg-[#FAF8F4] hover:bg-[var(--ace-orange)]/10 text-left flex items-center gap-1.5 transition-colors border border-[var(--ace-line)]"
+                                          className="p-2 rounded-xl bg-[#FAF8F4] hover:bg-[var(--ace-orange)]/10 text-left flex items-center gap-2 transition-all border border-[var(--ace-line)] hover:border-[var(--ace-orange)] group"
                                         >
-                                          <img src={prod.image} alt="" className="w-6 h-6 object-contain shrink-0" />
+                                          <img src={prod.image} alt="" className="w-7 h-7 object-contain shrink-0" />
                                           <div className="min-w-0 flex-1">
-                                            <p className="text-[11px] font-bold text-[var(--ace-ink)] truncate leading-tight">{prod.name}</p>
-                                            <p className="text-[9px] text-[#968152] font-semibold">{prod.capacity}</p>
+                                            <p className="text-[11px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors truncate leading-tight">
+                                              {prod.name}
+                                            </p>
+                                            <p className="text-[9.5px] text-[#968152] font-semibold">{prod.capacity}</p>
                                           </div>
                                         </Link>
                                       ))}
                                     </div>
-                                    <Link
-                                      href={`/categories/${category.slug}`}
-                                      onClick={() => setMobileMenuOpen(false)}
-                                      className="block text-center text-[11px] font-bold text-[var(--ace-orange)] hover:underline pt-1"
-                                    >
-                                      View All {category.name} ({category.products.length} models) →
-                                    </Link>
                                   </div>
                                 )}
                               </div>

@@ -557,7 +557,7 @@ export const Hero3DStudio: React.FC = () => {
       </div>
 
       {/* Main Canvas Area */}
-      <div className="relative w-full h-[460px] sm:h-[500px] lg:h-[540px]">
+      <div className="relative w-full h-[380px] sm:h-[460px] lg:h-[540px]">
         {/* Three.js Canvas Container */}
         <div ref={mountRef} className="w-full h-full" style={{ touchAction: 'none' }} />
 
@@ -621,7 +621,7 @@ export const Hero3DStudio: React.FC = () => {
               <h3 className="text-2xl font-extrabold text-[var(--ace-ink)] mb-2">{selectedFormat.name}</h3>
               <p className="text-sm text-gray-600 mb-6">{selectedFormat.useCase}</p>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
                 <div className="bg-[#FAF8F4] p-3.5 rounded-xl border border-[#E6DBC6]">
                   <span className="text-[11px] text-gray-500 block mb-0.5">Capacity Volume</span>
                   <p className="text-sm font-bold text-[var(--ace-ink)]">{selectedFormat.capacity}</p>
