@@ -7,7 +7,17 @@ import gsap from 'gsap';
 import { Observer } from 'gsap/Observer';
 import { SplitText } from 'gsap/SplitText';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, ChevronDown, ChevronUp, Sparkles, Box, Utensils, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Box,
+  Utensils,
+  CheckCircle2,
+} from 'lucide-react';
 import { products } from './config';
 
 if (typeof window !== 'undefined') {
@@ -20,6 +30,9 @@ export function ObserverCollectionShowcase() {
   const gotoSectionRef = useRef<((index: number, direction: number) => void) | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [variantImages, setVariantImages] = useState<Record<string, string>>({});
+
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const goToSlide = useCallback((index: number) => {
     const st = pinTriggerRef.current;
@@ -34,14 +47,36 @@ export function ObserverCollectionShowcase() {
   }, [activeIdx]);
 
   const handleNext = useCallback(() => {
-    const next = Math.min(activeIdx + 1, products.length - 1);
+    const next = (activeIdx + 1) % products.length;
     goToSlide(next);
   }, [activeIdx, goToSlide]);
 
   const handlePrev = useCallback(() => {
-    const prev = Math.max(activeIdx - 1, 0);
+    const prev = (activeIdx - 1 + products.length) % products.length;
     goToSlide(prev);
   }, [activeIdx, goToSlide]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = touchStartX.current - e.changedTouches[0].clientX;
+    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
+
+    // Detect horizontal swipe if deltaX is clear and dominant over vertical scroll
+    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+      if (deltaX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   useEffect(() => {
     const root = containerRef.current;
@@ -114,8 +149,10 @@ export function ObserverCollectionShowcase() {
           },
           0
         )
-          .fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0, duration: 0.65, ease: 'power2.out' }, 0)
-          .fromTo(
+          .fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0, duration: 0.65, ease: 'power2.out' }, 0);
+
+        if (splits[index]?.chars?.length) {
+          tl.fromTo(
             splits[index].chars,
             {
               autoAlpha: 0,
@@ -133,19 +170,24 @@ export function ObserverCollectionShowcase() {
             },
             0.08
           );
+        }
 
         currentIndex = index;
+        targetIndex = index;
         setActiveIdx(index);
       }
 
       gotoSectionRef.current = gotoSection;
 
-      // PINNING: Pin the section smoothly to viewport with ScrollTrigger
-      const pinDistance = window.innerHeight * (products.length - 1) * 0.85;
+      // Pinning with ScrollTrigger: Active on ALL screens (mobile, tablet, desktop)
+      // Multiplier ensures responsive touch sensitivity on mobile and smooth wheel scrubbing on desktop.
+      const isMobile = window.innerWidth < 768;
+      const multiplier = isMobile ? 0.7 : 0.85;
+      const pinDistance = window.innerHeight * (products.length - 1) * multiplier;
 
       const getHeaderOffset = () => {
         const header = document.querySelector('header');
-        return header ? Math.round(header.getBoundingClientRect().height) : 84;
+        return header ? Math.round(header.getBoundingClientRect().height) : (isMobile ? 64 : 84);
       };
 
       pinTrigger = ScrollTrigger.create({
@@ -203,107 +245,244 @@ export function ObserverCollectionShowcase() {
     <section
       ref={containerRef}
       id="collection"
-      className="obs-carousel-wrapper relative h-[calc(100svh-var(--xp-header,84px))] min-h-[580px] w-full overflow-hidden bg-[#0C0D0E] text-white select-none touch-pan-y"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="obs-carousel-wrapper relative w-full overflow-hidden bg-[#0C0D0E] text-white select-none touch-pan-y"
     >
-      {/* Pinned Global Overlay Header */}
-      <div className="absolute top-0 inset-x-0 z-40 px-6 sm:px-12 pt-7 sm:pt-9 pb-3 sm:pb-4 flex items-center justify-between pointer-events-auto bg-gradient-to-b from-black/90 via-black/50 to-transparent">
-        <div>
-          <span className="text-[10px] sm:text-xs font-bold text-[#b99750] uppercase tracking-[0.2em] block mb-1">
+      {/* Global Overlay Header (Clean responsive clearance, no overlapping) */}
+      <div className="absolute top-0 inset-x-0 z-40 px-3 sm:px-12 pt-2.5 sm:pt-8 pb-1.5 sm:pb-4 flex items-center justify-between pointer-events-auto bg-gradient-to-b from-black/95 via-black/80 to-transparent">
+        <div className="min-w-0 pr-2">
+          {/* <span className="text-[9px] sm:text-xs font-bold text-[#b99750] uppercase tracking-[0.16em] block mb-0.5">
             02 / Plastic Food Containers
-          </span>
-          <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            High-Quality Plastic Food Containers <span className="text-[#b99750] font-serif italic text-base sm:text-xl font-normal">/ Ace Packaging</span>
-          </h2>
+          </span> */}
+          {/* <h2 className="text-xs sm:text-xl lg:text-2xl font-bold tracking-tight text-white flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span>High-Quality Food Containers</span>
+            <span className="text-[#b99750] font-serif italic text-[11px] sm:text-lg font-normal">/ Ace Packaging</span>
+          </h2> */}
         </div>
 
         {/* Dynamic Category Progress Indicator */}
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-mono font-bold tracking-widest text-white/80 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest text-white/90 bg-white/10 px-2 sm:px-3.5 py-0.5 sm:py-1.5 rounded-full border border-white/15 backdrop-blur-md">
             0{activeIdx + 1} <span className="text-[#b99750]">/ 0{products.length}</span>
           </span>
         </div>
       </div>
 
-      {/* The 6 GSAP Observer Sliding Panels */}
+      {/* The 6 Sliding Panels */}
       {products.map((p, idx) => {
         const cardImage = variantImages[p.id] || p.image;
         const isCardPhoto = cardImage.startsWith('/DSC') || cardImage.endsWith('.JPG');
         return (
-        <div
-          key={p.id}
-          className={`obs-section obs-panel-${idx} absolute inset-0 w-full h-full overflow-hidden`}
-        >
-          <div className="obs-outer w-full h-full overflow-hidden">
-            <div className="obs-inner w-full h-full overflow-hidden">
-              <div
-                className="obs-bg absolute inset-0 w-full h-full flex items-center justify-center bg-cover bg-center"
-                style={{
-                  backgroundImage: `linear-gradient(180deg, rgba(12, 13, 14, 0.85) 0%, rgba(12, 13, 14, 0.5) 45%, rgba(12, 13, 14, 0.95) 100%), url(${p.foodImage})`,
-                }}
-              >
-                <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-24 sm:pt-30 pb-6 sm:pb-8 relative z-20">
-                  {/* Category Badge & Topline */}
-                  <div className="flex items-center justify-between w-full mb-1 sm:mb-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black/60 text-[#b99750] border border-[#b99750]/40 backdrop-blur-md">
-                      <Sparkles size={11} className="text-[#b99750]" />
-                      {p.badge}
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-gray-300">
-                      Format: {p.capacity}
-                    </span>
-                  </div>
+          <div
+            key={p.id}
+            className={`obs-section obs-panel-${idx} absolute inset-0 w-full h-full overflow-hidden`}
+          >
+            <div className="obs-outer w-full h-full overflow-hidden">
+              <div className="obs-inner w-full h-full overflow-hidden">
+                <div
+                  className="obs-bg absolute inset-0 w-full h-full flex items-center justify-center bg-cover bg-center"
+                  style={{
+                    backgroundImage: `linear-gradient(180deg, rgba(12, 13, 14, 0.88) 0%, rgba(12, 13, 14, 0.55) 45%, rgba(12, 13, 14, 0.95) 100%), url(${p.foodImage})`,
+                  }}
+                >
+                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-12 sm:pt-24 lg:pt-28 pb-2.5 sm:pb-7 relative z-20">
+                    {/* Category Badge & Topline */}
+                    <div className="flex items-center justify-between gap-1.5 sm:gap-2 w-full mb-1 sm:mb-2">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-black/70 text-[#b99750] border border-[#b99750]/40 backdrop-blur-md shrink-0">
+                        <Sparkles size={10} className="text-[#b99750]" />
+                        {p.badge}
+                      </span>
+                      <span className="text-[9px] sm:text-xs font-mono uppercase tracking-wider text-gray-300 truncate text-right">
+                        Format: {p.capacity}
+                      </span>
+                    </div>
 
-                  {/* Main Content Area: Responsive 2-Column on Desktop, Flow Stack on Mobile */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-14 items-center my-auto w-full">
-                    {/* Left: Headline & Story */}
-                    <div className="lg:col-span-7 flex flex-col justify-center">
-                      <div className="overflow-hidden mb-2 sm:mb-3">
-                        <h2 className="obs-section-heading text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-extrabold uppercase tracking-tight text-white leading-[1.08]">
-                          {p.name}
-                        </h2>
+                    {/* Main Content Area: Responsive 2-Column on Desktop, Flow Stack on Mobile */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-1.5 sm:gap-4 lg:gap-14 items-center my-auto w-full">
+                      {/* Left: Headline & Story */}
+                      <div className="lg:col-span-7 flex flex-col justify-center">
+                        <div className="overflow-hidden mb-1 sm:mb-3">
+                          <h2 className="obs-section-heading text-base sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.12]">
+                            {p.name}
+                          </h2>
+                        </div>
+
+                        {/* On mobile: Compact Pedestal Card inserted right under heading */}
+                        <div className="flex lg:hidden flex-col items-center justify-center my-1 sm:my-3 w-full">
+                          <div className="relative w-full max-w-[300px] sm:max-w-[420px] rounded-xl sm:rounded-2xl bg-gradient-to-b from-white/15 to-white/5 border border-white/20 backdrop-blur-xl p-2 sm:p-4 flex flex-col items-center justify-between shadow-2xl shadow-black/80">
+                            <div className="w-full flex items-center justify-between text-[9px] sm:text-[10px] font-semibold text-gray-300 mb-0.5 sm:mb-1">
+                              <span className="flex items-center gap-1 text-[#b99750]">
+                                <Box size={11} /> Structure
+                              </span>
+                              <span className="flex items-center gap-1 text-[#4ade80]">
+                                <CheckCircle2 size={10} /> US FDA 21 CFR
+                              </span>
+                            </div>
+
+                            <div className="relative w-full h-[85px] sm:h-[135px] my-0.5">
+                              <Image
+                                src={cardImage}
+                                alt={`${p.title} structure`}
+                                fill
+                                sizes="(max-width: 640px) 280px, 420px"
+                                className={`object-contain ${isCardPhoto ? 'rounded-lg' : 'drop-shadow-[0_10px_16px_rgba(0,0,0,0.7)]'}`}
+                                priority={idx === 0}
+                              />
+                            </div>
+
+                            {/* Photos selector for RO and Deli on mobile */}
+                            {p.id === 'ro-series' && (
+                              <div className="flex flex-wrap items-center justify-center gap-1 my-0.5 sm:my-1 z-30">
+                                {[
+                                  { label: 'Clear', src: p.image },
+                                  { label: 'Black', src: '/DSC04062.JPG' },
+                                  { label: 'White', src: '/DSC03993.JPG' },
+                                  { label: 'Tub', src: '/DSC04053.JPG' },
+                                ].map((v) => (
+                                  <button
+                                    key={v.src}
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
+                                    }}
+                                    className={`px-1.5 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${cardImage === v.src
+                                      ? 'bg-[#b99750] text-black shadow-xs'
+                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                      }`}
+                                  >
+                                    {v.label}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                            {p.id === 'deli-series' && (
+                              <div className="flex flex-wrap items-center justify-center gap-1 my-0.5 sm:my-1 z-30">
+                                {[
+                                  { label: 'Graphic', src: p.image },
+                                  { label: 'Tub Photo', src: '/DSC04053.JPG' },
+                                ].map((v) => (
+                                  <button
+                                    key={v.src}
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
+                                    }}
+                                    className={`px-1.5 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${cardImage === v.src
+                                      ? 'bg-[#b99750] text-black shadow-xs'
+                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                      }`}
+                                  >
+                                    {v.label}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+
+                            <div className="w-full bg-black/50 rounded-lg sm:rounded-xl px-2 py-0.5 sm:py-1 border border-white/10 flex items-center gap-1.5 sm:gap-2">
+                              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
+                                <Utensils size={9} className="text-[#b99750]" />
+                              </div>
+                              <div className="text-left text-[8px] sm:text-[10px] leading-tight min-w-0">
+                                <span className="text-gray-400 block text-[7px] sm:text-[8px] uppercase tracking-wider">Culinary Pairing</span>
+                                <span className="text-white font-semibold truncate block">{p.foodPairing}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-[10px] sm:text-sm text-gray-300 max-w-xl leading-snug mb-1.5 sm:mb-4 font-normal line-clamp-2">
+                          {p.description}
+                        </p>
+
+                        {/* Technical Credentials Matrix */}
+                        <div className="grid grid-cols-3 gap-1 sm:gap-2 py-1 sm:py-2.5 border-y border-white/15 max-w-xl text-[8px] sm:text-xs mb-1.5 sm:mb-5">
+                          <div>
+                            <span className="text-[7px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
+                              Polymer
+                            </span>
+                            <span className="font-semibold text-white">100% Virgin PP 05</span>
+                          </div>
+                          <div>
+                            <span className="text-[7px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
+                              Thermal
+                            </span>
+                            <span className="font-semibold text-white">−20°C to +120°C</span>
+                          </div>
+                          <div>
+                            <span className="text-[7px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
+                              Rim Seal
+                            </span>
+                            <span className="font-semibold text-white">Zero-Leak Snap</span>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <Link
+                            href={p.href}
+                            className="inline-flex items-center gap-1.5 bg-[#b99750] hover:bg-white text-black font-bold px-3.5 py-1.5 sm:px-7 sm:py-3.5 rounded-full text-[9px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-lg shadow-[#b99750]/20 active:scale-95"
+                          >
+                            <span>{p.link}</span>
+                            <ArrowUpRight size={12} />
+                          </Link>
+                          <Link
+                            href="/contact"
+                            className="inline-flex items-center gap-1 text-[9px] sm:text-xs font-semibold text-gray-300 hover:text-white border-b border-gray-600 pb-0.5 transition-colors"
+                          >
+                            Request Samples
+                          </Link>
+                        </div>
                       </div>
 
-                      {/* On mobile: Compact Pedestal Card inserted right under heading */}
-                      <div className="flex lg:hidden flex-col items-center justify-center my-2 w-full">
-                        <div className="relative w-full max-w-[340px] sm:max-w-[420px] rounded-2xl bg-gradient-to-b from-white/15 to-white/5 border border-white/20 backdrop-blur-xl p-3 sm:p-4 flex flex-col items-center justify-between shadow-2xl shadow-black/80">
-                          <div className="w-full flex items-center justify-between text-[10px] font-semibold text-gray-300 mb-1">
-                            <span className="flex items-center gap-1 text-[#b99750]">
-                              <Box size={12} /> Structure
+                      {/* Right on Desktop: Floating Studio Container Pedestal */}
+                      <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center">
+                        <div className="relative w-full max-w-[400px] aspect-square rounded-[32px] bg-gradient-to-b from-white/15 to-white/5 border border-white/20 backdrop-blur-xl p-8 flex flex-col items-center justify-between shadow-2xl shadow-black/80 group">
+                          <div className="w-full flex items-center justify-between text-[11px] font-semibold text-gray-300">
+                            <span className="flex items-center gap-1.5 text-[#b99750]">
+                              <Box size={14} /> Structure
                             </span>
                             <span className="flex items-center gap-1 text-[#4ade80]">
-                              <CheckCircle2 size={11} /> US FDA 21 CFR
+                              <CheckCircle2 size={13} /> US FDA 21 CFR
                             </span>
                           </div>
 
-                          <div className="relative w-full h-[120px] sm:h-[150px] my-1">
+                          <div className="relative w-full h-[220px] my-3">
                             <Image
                               src={cardImage}
                               alt={`${p.title} structure`}
                               fill
-                              sizes="(max-width: 640px) 300px, 420px"
-                              className={`object-contain ${isCardPhoto ? 'rounded-lg' : 'drop-shadow-[0_14px_22px_rgba(0,0,0,0.7)]'}`}
+                              sizes="400px"
+                              className={`object-contain ${isCardPhoto ? 'rounded-xl' : 'drop-shadow-[0_25px_35px_rgba(0,0,0,0.8)]'} group-hover:scale-105 transition-transform duration-500`}
                               priority={idx === 0}
                             />
                           </div>
 
-                          {/* Photos selector for RO and Deli on mobile */}
+                          {/* Photos selector for RO and Deli on Desktop */}
                           {p.id === 'ro-series' && (
-                            <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
+                            <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
+                              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
+                                Real Shots:
+                              </span>
                               {[
-                                { label: 'Clear', src: p.image },
-                                { label: 'Black Photo', src: '/DSC04062.JPG' },
-                                { label: 'White Photo', src: '/DSC03993.JPG' },
-                                { label: 'Tub Photo', src: '/DSC04053.JPG' },
+                                { label: 'Standard', src: p.image },
+                                { label: 'Black Finish', src: '/DSC04062.JPG' },
+                                { label: 'White Finish', src: '/DSC03993.JPG' },
+                                { label: 'Clear Tub', src: '/DSC04053.JPG' },
                               ].map((v) => (
                                 <button
                                   key={v.src}
                                   type="button"
-                                  onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
-                                  className={`px-2 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${
-                                    cardImage === v.src
-                                      ? 'bg-[#b99750] text-black shadow-xs'
-                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                                  }`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
+                                  }}
+                                  className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${cardImage === v.src
+                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
+                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                    }`}
                                 >
                                   {v.label}
                                 </button>
@@ -311,20 +490,25 @@ export function ObserverCollectionShowcase() {
                             </div>
                           )}
                           {p.id === 'deli-series' && (
-                            <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
+                            <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
+                              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
+                                Real Shot:
+                              </span>
                               {[
-                                { label: 'Graphic', src: p.image },
-                                { label: 'Tall Tub Studio Shot', src: '/DSC04053.JPG' },
+                                { label: 'Standard', src: p.image },
+                                { label: 'Clear Deli Tub', src: '/DSC04053.JPG' },
                               ].map((v) => (
                                 <button
                                   key={v.src}
                                   type="button"
-                                  onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
-                                  className={`px-2 py-0.5 rounded-full text-[8px] font-bold transition-all cursor-pointer ${
-                                    cardImage === v.src
-                                      ? 'bg-[#b99750] text-black shadow-xs'
-                                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                                  }`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
+                                  }}
+                                  className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${cardImage === v.src
+                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
+                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                                    }`}
                                 >
                                   {v.label}
                                 </button>
@@ -332,172 +516,80 @@ export function ObserverCollectionShowcase() {
                             </div>
                           )}
 
-                          <div className="w-full bg-black/50 rounded-xl px-2.5 py-1.5 border border-white/10 flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
-                              <Utensils size={11} className="text-[#b99750]" />
+                          {/* Culinary Pairing Footnote */}
+                          <div className="w-full bg-black/40 rounded-2xl p-3 border border-white/10 flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
+                              <Utensils size={14} className="text-[#b99750]" />
                             </div>
-                            <div className="text-left text-[10px] leading-tight">
-                              <span className="text-gray-400 block text-[8px] uppercase tracking-wider">Culinary Pairing</span>
+                            <div className="text-left text-[11px] leading-tight">
+                              <span className="text-gray-400 block text-[9px] uppercase tracking-wider">Culinary Pairing</span>
                               <span className="text-white font-semibold line-clamp-1">{p.foodPairing}</span>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <p className="text-xs sm:text-base text-gray-300 max-w-xl leading-relaxed mb-3 sm:mb-5 font-normal line-clamp-2 sm:line-clamp-none">
-                        {p.description}
-                      </p>
-
-                      {/* Technical Credentials Matrix */}
-                      <div className="grid grid-cols-3 gap-2 py-2 sm:py-3.5 border-y border-white/15 max-w-xl text-[10px] sm:text-xs mb-3 sm:mb-6">
-                        <div>
-                          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
-                            Polymer
-                          </span>
-                          <span className="font-semibold text-white">100% Virgin PP 05</span>
-                        </div>
-                        <div>
-                          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
-                            Thermal
-                          </span>
-                          <span className="font-semibold text-white">−20°C to +120°C</span>
-                        </div>
-                        <div>
-                          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#b99750] block font-bold mb-0.5">
-                            Rim Seal
-                          </span>
-                          <span className="font-semibold text-white">Zero-Leak Snap</span>
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex flex-wrap items-center gap-3">
-                        <Link
-                          href={p.href}
-                          className="inline-flex items-center gap-2 bg-[#b99750] hover:bg-white text-black font-bold px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full text-[11px] sm:text-xs uppercase tracking-widest transition-all duration-300 shadow-lg shadow-[#b99750]/20 hover:scale-105"
-                        >
-                          <span>{p.link}</span>
-                          <ArrowUpRight size={14} />
-                        </Link>
-                        <Link
-                          href="/contact"
-                          className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-gray-300 hover:text-white border-b border-gray-600 pb-0.5 transition-colors"
-                        >
-                          Request Factory Samples
-                        </Link>
-                      </div>
                     </div>
 
-                    {/* Right on Desktop: Floating Studio Container Pedestal */}
-                    <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center">
-                      <div className="relative w-full max-w-[400px] aspect-square rounded-[32px] bg-gradient-to-b from-white/15 to-white/5 border border-white/20 backdrop-blur-xl p-8 flex flex-col items-center justify-between shadow-2xl shadow-black/80 group">
-                        <div className="w-full flex items-center justify-between text-[11px] font-semibold text-gray-300">
-                          <span className="flex items-center gap-1.5 text-[#b99750]">
-                            <Box size={14} /> Structure
-                          </span>
-                          <span className="flex items-center gap-1 text-[#4ade80]">
-                            <CheckCircle2 size={13} /> US FDA 21 CFR
-                          </span>
-                        </div>
-
-                        {/* Packaging Container Image with Hover Specular Glow */}
-                        <div className="relative w-full h-[220px] my-auto">
-                          <Image
-                            src={cardImage}
-                            alt={`${p.title} structure`}
-                            fill
-                            sizes="400px"
-                            className={`object-contain ${isCardPhoto ? 'rounded-2xl' : 'drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]'} group-hover:scale-105 transition-transform duration-700 ease-out`}
-                            priority={idx === 0}
+                    {/* Bottom Strip: Navigation Cue, Interactive Pagination Dots & Counter */}
+                    <div className="w-full flex items-center justify-between text-xs text-gray-400 border-t border-white/15 pt-1.5 sm:pt-3">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        {products.map((_, dotIdx) => (
+                          <button
+                            key={dotIdx}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              goToSlide(dotIdx);
+                            }}
+                            aria-label={`Jump to ${products[dotIdx].title}`}
+                            className={`transition-all duration-300 cursor-pointer ${dotIdx === activeIdx
+                              ? 'w-4 sm:w-6 h-1.5 bg-[#b99750] rounded-full'
+                              : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60 rounded-full'
+                              }`}
                           />
-                        </div>
-
-                        {/* Photos selector for RO and Deli on Desktop */}
-                        {p.id === 'ro-series' && (
-                          <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
-                            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
-                              Real Shots:
-                            </span>
-                            {[
-                              { label: 'Standard', src: p.image },
-                              { label: 'Black Finish', src: '/DSC04062.JPG' },
-                              { label: 'White Finish', src: '/DSC03993.JPG' },
-                              { label: 'Clear Tub', src: '/DSC04053.JPG' },
-                            ].map((v) => (
-                              <button
-                                key={v.src}
-                                type="button"
-                                onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
-                                className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
-                                  cardImage === v.src
-                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
-                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                                }`}
-                              >
-                                {v.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                        {p.id === 'deli-series' && (
-                          <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
-                            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
-                              Real Shot:
-                            </span>
-                            {[
-                              { label: 'Standard', src: p.image },
-                              { label: 'Clear Deli Tub', src: '/DSC04053.JPG' },
-                            ].map((v) => (
-                              <button
-                                key={v.src}
-                                type="button"
-                                onClick={() => setVariantImages((prev) => ({ ...prev, [p.id]: v.src }))}
-                                className={`px-2.5 py-1 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
-                                  cardImage === v.src
-                                    ? 'bg-[#b99750] text-black shadow-xs font-extrabold'
-                                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
-                                }`}
-                              >
-                                {v.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Culinary Pairing Footnote */}
-                        <div className="w-full bg-black/40 rounded-2xl p-3 border border-white/10 flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
-                            <Utensils size={14} className="text-[#b99750]" />
-                          </div>
-                          <div className="text-left text-[11px] leading-tight">
-                            <span className="text-gray-400 block text-[9px] uppercase tracking-wider">Culinary Pairing</span>
-                            <span className="text-white font-semibold line-clamp-1">{p.foodPairing}</span>
-                          </div>
-                        </div>
+                        ))}
+                        <span className="ml-1 text-[9px] sm:text-[10px] text-gray-400">Scroll to explore</span>
                       </div>
+
+                      <span className="text-[10px] sm:text-sm font-mono font-bold text-white tracking-widest">
+                        0{idx + 1} <span className="text-[#b99750]">/ 0{products.length}</span>
+                      </span>
                     </div>
-                  </div>
-
-                  {/* Bottom Strip: Navigation Cue & Counter */}
-                  <div className="w-full flex items-center justify-between text-xs text-gray-400 border-t border-white/15 pt-3">
-                    <span className="hidden sm:inline-block">
-                      Scroll to move through collection
-                    </span>
-                    <span className="sm:hidden text-gray-400">Swipe to explore</span>
-
-                    <span className="text-xs sm:text-sm font-mono font-bold text-white tracking-widest">
-                      0{idx + 1} <span className="text-[#b99750]">/ 0{products.length}</span>
-                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         );
       })}
 
-      {/* Floating Vertical Next/Prev Chevrons for Mouse/Touch Clicking */}
+      {/* Mobile Floating Chevrons for Tap Navigation */}
+      <div className="absolute inset-x-2 top-1/2 -translate-y-1/2 z-40 flex sm:hidden items-center justify-between pointer-events-none">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrev();
+          }}
+          aria-label="Previous product series"
+          className="w-7 h-7 rounded-full bg-black/75 hover:bg-[#b99750] text-white hover:text-black border border-white/20 flex items-center justify-center transition-all duration-200 backdrop-blur-md pointer-events-auto cursor-pointer shadow-lg active:scale-90"
+        >
+          <ChevronLeft size={14} />
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleNext();
+          }}
+          aria-label="Next product series"
+          className="w-7 h-7 rounded-full bg-black/75 hover:bg-[#b99750] text-white hover:text-black border border-white/20 flex items-center justify-center transition-all duration-200 backdrop-blur-md pointer-events-auto cursor-pointer shadow-lg active:scale-90"
+        >
+          <ChevronRight size={14} />
+        </button>
+      </div>
+
+      {/* Desktop Floating Vertical Chevrons */}
       <div className="absolute right-6 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col gap-3">
         <button
           type="button"
@@ -518,13 +610,14 @@ export function ObserverCollectionShowcase() {
       </div>
 
       {/* Global Bottom Progress Bar */}
-      <div className="absolute bottom-0 inset-x-0 h-[4px] bg-white/15 z-40">
+      <div className="absolute bottom-0 inset-x-0 h-[2.5px] sm:h-[4px] bg-white/15 z-40">
         <div
-          className="h-full bg-[#b99750] transition-all duration-700 ease-out"
+          className="h-full bg-[#b99750] transition-all duration-500 ease-out"
           style={{ width: `${((activeIdx + 1) / products.length) * 100}%` }}
         />
       </div>
     </section>
   );
 }
+
 export default ObserverCollectionShowcase;
