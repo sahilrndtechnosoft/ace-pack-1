@@ -358,6 +358,8 @@ export const ProductShowcaseCarousel: React.FC = () => {
                           <img
                             src={imgSrc}
                             alt=""
+                            loading="lazy"
+                            decoding="async"
                             className={`w-full h-full ${isGalPhoto ? 'object-cover' : 'object-contain'}`}
                           />
                         </div>
@@ -393,6 +395,8 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   <img
                     src={item.image}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
                     className={`max-h-full max-w-full ${itemIsPhoto ? 'object-cover rounded-md w-full h-full' : 'object-contain filter drop-shadow-xs'}`}
                   />
                 </div>

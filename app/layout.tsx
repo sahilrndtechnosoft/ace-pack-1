@@ -35,12 +35,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${serif.variable} ${dmSans.variable} ${sourceSerif.variable} ${spaceGrotesk.variable} ${jakarta.variable} ${outfit.variable} ${lora.variable} ${dmSerif.variable} ${cormorant.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+        />
+      </head>
       <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground">
         <ContentProtection />
         <SmoothScroll />
         <CursorTrail />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
         <ScrollToTopButton />
       </body>

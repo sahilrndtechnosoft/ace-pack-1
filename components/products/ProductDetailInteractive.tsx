@@ -170,6 +170,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <img
                     src={blankImage}
                     alt={`${product.name} Blank Empty Container Structure`}
+                    loading="lazy"
+                    decoding="async"
                     className="max-h-full max-w-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -187,6 +189,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <img
                     src={product.image}
                     alt={`${product.name} Dimensions`}
+                    loading="lazy"
+                    decoding="async"
                     className="max-h-full max-w-full object-contain filter drop-shadow-md opacity-90"
                   />
 
@@ -226,6 +230,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <img
                     src={lockingFoodImage}
                     alt={`${product.name} Locking System with Food Application`}
+                    loading="lazy"
+                    decoding="async"
                     className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent flex items-end p-3 sm:p-4">
@@ -285,7 +291,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'blank' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={blankImage} alt="Thumb blank" className="max-h-full max-w-full object-contain" />
+              <img src={blankImage} alt="Thumb blank" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
             </button>
             <button
               type="button"
@@ -295,7 +301,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'specs' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={product.image} alt="Thumb specs" className="max-h-full max-w-full object-contain" />
+              <img src={product.image} alt="Thumb specs" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
             </button>
             <button
               type="button"
@@ -305,7 +311,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'locking' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={lockingFoodImage} alt="Thumb food" className="w-full h-full object-cover rounded-lg" />
+              <img src={lockingFoodImage} alt="Thumb food" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
             </button>
             <button
               type="button"

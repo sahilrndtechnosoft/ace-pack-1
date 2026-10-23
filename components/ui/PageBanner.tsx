@@ -29,6 +29,8 @@ export const PageBanner: React.FC<PageBannerProps> = ({
         <img
           src={bgImage}
           alt={title}
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover opacity-25 filter brightness-75"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/90" />

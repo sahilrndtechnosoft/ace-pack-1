@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
+import { Reveal } from '@/components/ui/Reveal';
 import { ArrowLeft, ArrowRight, HelpCircle, Box, ShieldCheck, Ruler, Layers } from 'lucide-react';
 
 interface CategoryDetailPageProps {
@@ -74,77 +75,79 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
             </Link>
           </div>
 
-          {/* Streamlined Product Listing (User Requirement 7: important required details only, avoid crowded clutter) */}
+          {/* Streamlined Product Listing */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
-            {category.products.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div>
-                  {/* Clean Light Image Surface */}
-                  <div className="relative h-52 sm:h-60 bg-gradient-to-b from-white to-[#F7F4EC] p-4 sm:p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      loading="lazy"
-                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_18px_rgba(0,0,0,0.1)]"
-                    />
-                    <span className="absolute top-3 right-3 bg-[#b99750] text-white text-[11px] sm:text-xs font-extrabold px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                      {item.capacity}
-                    </span>
-                    <span className="absolute top-3 left-3 bg-white text-[var(--ace-ink)] border border-[#E6DBC6] text-[10px] font-bold px-2.5 py-0.5 rounded-full">
-                      Virgin PP 05
-                    </span>
-                  </div>
+            {category.products.map((item, idx) => (
+              <Reveal key={item.id} type="fade-up" delay={Math.min(idx % 3, 2) * 0.08}>
+                <div
+                  className="bg-white rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full"
+                >
+                  <div>
+                    {/* Clean Light Image Surface */}
+                    <div className="relative h-52 sm:h-60 bg-gradient-to-b from-white to-[#F7F4EC] p-4 sm:p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_18px_rgba(0,0,0,0.1)]"
+                      />
+                      <span className="absolute top-3 right-3 bg-[#b99750] text-white text-[11px] sm:text-xs font-extrabold px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                        {item.capacity}
+                      </span>
+                      <span className="absolute top-3 left-3 bg-white text-[var(--ace-ink)] border border-[#E6DBC6] text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                        Virgin PP 05
+                      </span>
+                    </div>
 
-                  {/* Content: Only Important & Required Details */}
-                  <div className="p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-3 sm:mb-4 group-hover:text-[#b99750] transition-colors leading-snug">
-                      {item.name}
-                    </h3>
+                    {/* Content: Only Important & Required Details */}
+                    <div className="p-4 sm:p-6">
+                      <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-3 sm:mb-4 group-hover:text-[#b99750] transition-colors leading-snug">
+                        {item.name}
+                      </h3>
 
-                    {/* Compact Specs Grid */}
-                    <div className="bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-3.5 sm:p-4 space-y-2 text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-500 font-medium">Capacity:</span>
-                        <span className="font-bold text-[#b99750]">{item.capacity}</span>
-                      </div>
-                      {item.dimensions && (
-                        <div className="flex items-start justify-between border-t border-[#E6DBC6]/60 pt-2 gap-2">
-                          <span className="text-gray-500 font-medium shrink-0">Dimensions:</span>
-                          <span className="font-semibold text-[var(--ace-ink)] text-right break-words text-[11px] sm:text-xs">
-                            {item.dimensions.bottom
-                              ? `${item.dimensions.top} × ${item.dimensions.bottom} × ${item.dimensions.height}`
-                              : `${item.dimensions.top} × ${item.dimensions.height}`}
+                      {/* Compact Specs Grid */}
+                      <div className="bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-3.5 sm:p-4 space-y-2 text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-500 font-medium">Capacity:</span>
+                          <span className="font-bold text-[#b99750]">{item.capacity}</span>
+                        </div>
+                        {item.dimensions && (
+                          <div className="flex items-start justify-between border-t border-[#E6DBC6]/60 pt-2 gap-2">
+                            <span className="text-gray-500 font-medium shrink-0">Dimensions:</span>
+                            <span className="font-semibold text-[var(--ace-ink)] text-right break-words text-[11px] sm:text-xs">
+                              {item.dimensions.bottom
+                                ? `${item.dimensions.top} × ${item.dimensions.bottom} × ${item.dimensions.height}`
+                                : `${item.dimensions.top} × ${item.dimensions.height}`}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
+                          <span className="text-gray-500 font-medium">Thermal Range:</span>
+                          <span className="font-semibold text-emerald-600">-20°C to +120°C</span>
+                        </div>
+                        <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
+                          <span className="text-gray-500 font-medium">Case Pack:</span>
+                          <span className="font-semibold text-[var(--ace-ink)]">
+                            {item.packaging || 'Standard Carton'}
                           </span>
                         </div>
-                      )}
-                      <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
-                        <span className="text-gray-500 font-medium">Thermal Range:</span>
-                        <span className="font-semibold text-emerald-600">-20°C to +120°C</span>
-                      </div>
-                      <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
-                        <span className="text-gray-500 font-medium">Case Pack:</span>
-                        <span className="font-semibold text-[var(--ace-ink)]">
-                          {item.packaging || 'Standard Carton'}
-                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Single Clear Action Button */}
-                <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1">
-                  <Link
-                    href={`/categories/${category.slug}/${item.product_slug}`}
-                    className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
-                  >
-                    <span>View Specifications &amp; 4-View Studio</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  {/* Single Clear Action Button */}
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1">
+                    <Link
+                      href={`/categories/${category.slug}/${item.product_slug}`}
+                      className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
+                    >
+                      <span>View Specifications &amp; 4-View Studio</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
 
@@ -173,22 +176,23 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
           <div>
             <h3 className="text-xl font-bold text-[var(--ace-ink)] mb-6">Explore Other Collections</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {otherCategories.map((other) => (
-                <Link
-                  key={other.id}
-                  href={`/categories/${other.slug}`}
-                  className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group text-left"
-                >
-                  <div className="w-16 h-16 rounded-xl bg-[#FAF8F4] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
-                    <img src={other.heroImage} alt={other.name} className="max-h-full max-w-full object-contain" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug">
-                      {other.name}
-                    </h4>
-                    <p className="text-xs text-gray-500 mt-0.5">{other.products.length} Models available</p>
-                  </div>
-                </Link>
+              {otherCategories.map((other, idx) => (
+                <Reveal key={other.id} type="fade-up" delay={idx * 0.08}>
+                  <Link
+                    href={`/categories/${other.slug}`}
+                    className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group text-left h-full"
+                  >
+                    <div className="w-16 h-16 rounded-xl bg-[#FAF8F4] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
+                      <img src={other.heroImage} alt={other.name} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug">
+                        {other.name}
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-0.5">{other.products.length} Models available</p>
+                    </div>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </div>

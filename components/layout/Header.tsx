@@ -70,6 +70,51 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   },
 ];
 
+const FEATURED_MOBILE_CATEGORIES = [
+  {
+    slug: 're-series',
+    shortTitle: 'Bento & Compartment',
+    sub: 'RE Series',
+    image: '/AcePackaging/RE Series Containers.png',
+    modelCount: 13,
+  },
+  {
+    slug: 'ro-series',
+    shortTitle: 'Round Bowls & Biryani',
+    sub: 'RO Series',
+    image: '/AcePackaging/RO-Series Containers.png',
+    modelCount: 11,
+  },
+  {
+    slug: 'zen-series',
+    shortTitle: 'Square Meal Boxes',
+    sub: 'ZEN Series',
+    image: '/AcePackaging/ZEN Series Containers.png',
+    modelCount: 4,
+  },
+  {
+    slug: 'hinge-cups',
+    shortTitle: 'Sauce & Hinge Cups',
+    sub: 'Attached Lids',
+    image: '/AcePackaging/Hinge Cups.png',
+    modelCount: 4,
+  },
+  {
+    slug: 'deli-series',
+    shortTitle: 'Clear Deli Tubs',
+    sub: 'Deli Series',
+    image: '/AcePackaging/Deli Series Container.png',
+    modelCount: 7,
+  },
+  {
+    slug: 'sweet-box-containers',
+    shortTitle: 'Sweet & Gift Boxes',
+    sub: 'Mithai Boxes',
+    image: '/AcePackaging/Sweet Box Containers.png',
+    modelCount: 3,
+  },
+];
+
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -81,9 +126,8 @@ export const Header: React.FC = () => {
   const [activeCategorySlug, setActiveCategorySlug] = useState<string>('re-series');
   const [desktopSegment, setDesktopSegment] = useState<string>('all');
   const [desktopSearch, setDesktopSearch] = useState<string>('');
-  const [mobileSegment, setMobileSegment] = useState<string>('all');
   const [mobileSearch, setMobileSearch] = useState<string>('');
-  const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+  const [mobileShowAllCats, setMobileShowAllCats] = useState<boolean>(false);
   const megaMenuContainerRef = useRef<HTMLDivElement>(null);
 
   // Close desktop mega menu when clicking outside
@@ -150,33 +194,65 @@ export const Header: React.FC = () => {
     return desktopFilteredCategories[0] || productCategories[0];
   }, [desktopFilteredCategories, activeCategorySlug]);
 
-  // Filtered categories for mobile drawer
-  const mobileFilteredCategories = useMemo(() => {
-    let list = productCategories;
-    if (mobileSegment !== 'all') {
-      const grp = CATEGORY_GROUPS.find((g) => g.id === mobileSegment);
-      if (grp) {
-        list = list.filter((c) => grp.categorySlugs.includes(c.slug));
+  // Sorted categories for the mobile drawer full A-Z directory
+  const sortedAllCategories = useMemo(() => {
+    return [...productCategories].sort((a, b) => a.name.localeCompare(b.name));
+  }, []);
+
+  // Instant smart search results for mobile menu
+  const mobileSearchResults = useMemo(() => {
+    const q = mobileSearch.trim().toLowerCase();
+    if (!q) return [];
+
+    const results: {
+      type: 'category' | 'product';
+      title: string;
+      subtitle: string;
+      href: string;
+      image?: string;
+    }[] = [];
+
+    // Match categories first
+    for (const cat of productCategories) {
+      if (
+        cat.name.toLowerCase().includes(q) ||
+        cat.subtitleName.toLowerCase().includes(q) ||
+        cat.slug.toLowerCase().includes(q)
+      ) {
+        results.push({
+          type: 'category',
+          title: cat.name,
+          subtitle: `${cat.products.length} models • Series`,
+          href: `/categories/${cat.slug}`,
+          image: cat.heroImage,
+        });
       }
     }
-    if (mobileSearch.trim()) {
-      const q = mobileSearch.toLowerCase().trim();
-      list = list.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.subtitleName.toLowerCase().includes(q) ||
-          c.products.some((p) => p.name.toLowerCase().includes(q) || p.capacity.toLowerCase().includes(q))
-      );
-    }
-    return list;
-  }, [mobileSegment, mobileSearch]);
 
-  // When mobile search query changes, auto-expand first matching category
-  useEffect(() => {
-    if (mobileSearch.trim() && mobileFilteredCategories.length > 0) {
-      setMobileExpandedCat(mobileFilteredCategories[0].slug);
+    // Match individual products
+    for (const cat of productCategories) {
+      for (const prod of cat.products) {
+        if (
+          prod.name.toLowerCase().includes(q) ||
+          prod.capacity.toLowerCase().includes(q) ||
+          prod.material.toLowerCase().includes(q) ||
+          prod.product_slug.toLowerCase().includes(q)
+        ) {
+          results.push({
+            type: 'product',
+            title: prod.name,
+            subtitle: `${prod.capacity} • ${cat.name}`,
+            href: `/categories/${cat.slug}/${prod.product_slug}`,
+            image: prod.image,
+          });
+        }
+        if (results.length >= 8) break;
+      }
+      if (results.length >= 8) break;
     }
-  }, [mobileSearch, mobileFilteredCategories]);
+
+    return results.slice(0, 6);
+  }, [mobileSearch]);
 
   useEffect(() => {
     let queued = false;
@@ -632,8 +708,8 @@ export const Header: React.FC = () => {
           >
             <div className="px-4 py-5 sm:px-6 space-y-4 max-h-[calc(100dvh-80px)] overflow-y-auto" data-lenis-prevent>
               <nav className="flex flex-col gap-2">
-                {/* Interactive Product Lines Accordion in Mobile */}
-                <div className="rounded-2xl border border-[var(--ace-line)] bg-white p-3 shadow-2xs">
+                {/* Compact, High-Impact Product Collections Drawer for Mobile */}
+                <div className="rounded-2xl border border-[var(--ace-line)] bg-white p-3.5 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setMobileProductsOpen((v) => !v)}
@@ -658,43 +734,23 @@ export const Header: React.FC = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ height: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.2 } }}
-                        className="overflow-hidden pt-3 border-t border-[var(--ace-line)] mt-2"
+                        className="overflow-hidden pt-3 border-t border-[var(--ace-line)] mt-2.5 space-y-3"
                       >
-                        {/* Quick Direct Catalog Shortcuts */}
-                        <div className="grid grid-cols-2 gap-2 mb-3">
-                          <Link
-                            href="/categories"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[var(--ace-line)] text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
-                          >
-                            <Layers className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-                            <span>All 17 Lines</span>
-                          </Link>
-                          <Link
-                            href="/products"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[var(--ace-line)] text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
-                          >
-                            <Box className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-                            <span>Full 89 Catalog</span>
-                          </Link>
-                        </div>
-
-                        {/* Instant Search Bar with Clear Button */}
-                        <div className="relative mb-2.5">
-                          <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        {/* Instant Search Bar */}
+                        <div className="relative">
+                          <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <input
                             type="text"
                             value={mobileSearch}
                             onChange={(e) => setMobileSearch(e.target.value)}
-                            placeholder="Search 89 containers (e.g. 500ml, bento)..."
-                            className="w-full pl-8 pr-7 py-2 text-xs bg-[#FAF8F4] border border-[var(--ace-line)] rounded-xl text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)]"
+                            placeholder="Search models or sizes (e.g. 500ml, bento)..."
+                            className="w-full pl-8 pr-7 py-2 text-xs bg-[#FAF8F4] border border-[var(--ace-line)] rounded-xl text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)] focus:bg-white transition-all"
                           />
                           {mobileSearch && (
                             <button
                               type="button"
                               onClick={() => setMobileSearch('')}
-                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs p-1"
+                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs p-1 cursor-pointer"
                               aria-label="Clear search"
                             >
                               ✕
@@ -702,144 +758,175 @@ export const Header: React.FC = () => {
                           )}
                         </div>
 
-                        {/* Segment Filter Pills */}
-                        <div className="flex gap-1.5 overflow-x-auto pb-2 mb-2 no-scrollbar text-[11px] font-bold">
-                          {CATEGORY_GROUPS.map((g) => (
-                            <button
-                              key={g.id}
-                              type="button"
-                              onClick={() => setMobileSegment(g.id)}
-                              className={`px-2.5 py-1 rounded-full whitespace-nowrap transition-colors shrink-0 cursor-pointer ${
-                                mobileSegment === g.id
-                                  ? 'bg-[var(--ace-orange)] text-white shadow-2xs'
-                                  : 'bg-[#FAF8F4] text-gray-600 hover:text-[var(--ace-ink)] border border-[var(--ace-line)]'
-                              }`}
-                            >
-                              <span>{g.icon} {g.shortLabel}</span>
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Category List with Sub-Model Expanders */}
-                        <div className="space-y-2 max-h-[52vh] overflow-y-auto pr-1" data-lenis-prevent>
-                          {mobileFilteredCategories.map((category, index) => {
-                            const isExpanded = mobileExpandedCat === category.slug;
-                            return (
-                              <div
-                                key={category.id}
-                                className={`rounded-xl border transition-all duration-200 overflow-hidden ${
-                                  isExpanded
-                                    ? 'border-[var(--ace-orange)]/60 bg-white shadow-2xs'
-                                    : 'border-[var(--ace-line)] bg-[#FAF8F4]/70 hover:bg-white'
-                                }`}
+                        {/* Live Search Results (When user types) */}
+                        {mobileSearch.trim() ? (
+                          <div className="space-y-1.5 pt-1">
+                            <div className="flex items-center justify-between text-[11px] px-1 text-gray-500">
+                              <span className="font-semibold">Matching packaging ({mobileSearchResults.length})</span>
+                              <button
+                                type="button"
+                                onClick={() => setMobileSearch('')}
+                                className="text-[var(--ace-orange)] hover:underline font-bold"
                               >
-                                <button
-                                  type="button"
-                                  onClick={() => setMobileExpandedCat(isExpanded ? null : category.slug)}
-                                  className="w-full flex items-center justify-between p-2.5 text-left transition-colors cursor-pointer"
-                                  aria-expanded={isExpanded}
-                                >
-                                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                                    <span
-                                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${
-                                        isExpanded
-                                          ? 'bg-[var(--ace-orange)] text-white border-transparent'
-                                          : 'bg-white text-[#968152] border-[var(--ace-line)]'
-                                      }`}
-                                    >
-                                      {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    <PackagingIllustration
-                                      slug={category.slug}
-                                      className={`w-5 h-5 shrink-0 transition-colors ${
-                                        isExpanded ? 'text-[var(--ace-orange)]' : 'text-gray-500'
-                                      }`}
-                                    />
+                                Clear
+                              </button>
+                            </div>
+
+                            {mobileSearchResults.length === 0 ? (
+                              <div className="text-center py-6 px-4 bg-[#FAF8F4] rounded-xl border border-[var(--ace-line)]">
+                                <p className="text-xs font-bold text-[var(--ace-ink)]">No packaging matches found</p>
+                                <p className="text-[11px] text-gray-500 mt-1">Try searching for &quot;bento&quot;, &quot;500ml&quot;, or &quot;round&quot;.</p>
+                              </div>
+                            ) : (
+                              <div className="space-y-1.5 max-h-[48vh] overflow-y-auto pr-0.5" data-lenis-prevent>
+                                {mobileSearchResults.map((res, idx) => (
+                                  <Link
+                                    key={`${res.href}-${idx}`}
+                                    href={res.href}
+                                    onClick={() => {
+                                      setMobileMenuOpen(false);
+                                      setMobileSearch('');
+                                    }}
+                                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF8F4] hover:bg-white border border-[var(--ace-line)] hover:border-[var(--ace-orange)]/60 transition-colors group"
+                                  >
+                                    {res.image ? (
+                                      <div className="w-9 h-9 rounded-lg bg-white border border-[var(--ace-line)] flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                                        <img src={res.image} alt="" className="w-full h-full object-contain" />
+                                      </div>
+                                    ) : (
+                                      <div className="w-9 h-9 rounded-lg bg-white border border-[var(--ace-line)] flex items-center justify-center shrink-0">
+                                        <Box className="w-4 h-4 text-[var(--ace-orange)]" />
+                                      </div>
+                                    )}
                                     <div className="min-w-0 flex-1">
-                                      <span className="text-xs font-bold text-[var(--ace-ink)] block truncate">
-                                        {category.name}
+                                      <p className="text-xs font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors truncate">
+                                        {res.title}
+                                      </p>
+                                      <p className="text-[10px] text-[#968152] font-medium truncate">
+                                        {res.subtitle}
+                                      </p>
+                                    </div>
+                                    <ArrowRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[var(--ace-orange)] group-hover:translate-x-0.5 transition-all shrink-0" />
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          /* Normal State: Dual Direct Actions + 6 Popular Lines + Full 17 A-Z Directory */
+                          <div className="space-y-3">
+                            {/* Quick Direct Catalog Shortcuts */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <Link
+                                href="/categories"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center gap-2 p-2.5 rounded-xl bg-gradient-to-br from-[#FAF8F4] to-[#F5EFE6] border border-[var(--ace-line)] hover:border-[var(--ace-orange)] text-left transition-colors group"
+                              >
+                                <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shadow-2xs shrink-0 text-[var(--ace-orange)]">
+                                  <Layers className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-[11px] font-extrabold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] block leading-tight truncate">
+                                    All 17 Series
+                                  </span>
+                                  <span className="text-[9.5px] text-gray-500 font-medium block truncate">
+                                    Browse Categories
+                                  </span>
+                                </div>
+                              </Link>
+
+                              <Link
+                                href="/products"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center gap-2 p-2.5 rounded-xl bg-gradient-to-br from-[#FAF8F4] to-[#F5EFE6] border border-[var(--ace-line)] hover:border-[var(--ace-orange)] text-left transition-colors group"
+                              >
+                                <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shadow-2xs shrink-0 text-[var(--ace-orange)]">
+                                  <Box className="w-4 h-4" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <span className="text-[11px] font-extrabold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] block leading-tight truncate">
+                                    Full 89 Catalog
+                                  </span>
+                                  <span className="text-[9.5px] text-gray-500 font-medium block truncate">
+                                    Filter by Capacity
+                                  </span>
+                                </div>
+                              </Link>
+                            </div>
+
+                            {/* Popular Packaging Series (6 Curated Commercial Lines) */}
+                            <div>
+                              <div className="flex items-center justify-between mb-2 px-0.5">
+                                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#968152]">
+                                  Popular Packaging Series
+                                </span>
+                                <span className="text-[10px] font-semibold text-gray-500">
+                                  Top Commercial Lines
+                                </span>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2">
+                                {FEATURED_MOBILE_CATEGORIES.map((item) => (
+                                  <Link
+                                    key={item.slug}
+                                    href={`/categories/${item.slug}`}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="p-2 rounded-xl bg-[#FAF8F4] hover:bg-white border border-[var(--ace-line)] hover:border-[var(--ace-orange)]/60 text-left transition-all group flex items-center gap-2"
+                                  >
+                                    <div className="w-10 h-10 rounded-lg bg-white border border-black/5 p-1 shrink-0 flex items-center justify-center">
+                                      <img src={item.image} alt="" className="w-full h-full object-contain" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <p className="text-[11px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors leading-snug truncate">
+                                        {item.shortTitle}
+                                      </p>
+                                      <span className="text-[9.5px] font-semibold text-[#968152] block">
+                                        {item.modelCount} models
                                       </span>
                                     </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-1.5 shrink-0 ml-1">
-                                    <span className="text-[10px] text-gray-500 font-semibold bg-white px-1.5 py-0.5 rounded border border-[var(--ace-line)]">
-                                      {category.products.length} models
-                                    </span>
-                                    <div
-                                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
-                                        isExpanded
-                                          ? 'bg-[var(--ace-orange)] text-white'
-                                          : 'bg-white text-gray-400 border border-[var(--ace-line)]'
-                                      }`}
-                                    >
-                                      <ChevronDown
-                                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                                          isExpanded ? 'rotate-180' : ''
-                                        }`}
-                                      />
-                                    </div>
-                                  </div>
-                                </button>
-
-                                {/* Expanded Models Grid inside Category */}
-                                {isExpanded && (
-                                  <div className="p-2.5 pt-1 border-t border-[var(--ace-line)] bg-white space-y-2 animate-fade-in">
-                                    <div className="flex items-center justify-between pt-1 pb-0.5">
-                                      <span className="text-[11px] text-gray-500 font-medium">Available Models:</span>
-                                      <Link
-                                        href={`/categories/${category.slug}`}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="text-[11px] font-bold text-[var(--ace-orange)] hover:underline inline-flex items-center gap-1"
-                                      >
-                                        <span>View Collection</span>
-                                        <ArrowRight className="w-3 h-3" />
-                                      </Link>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-1.5">
-                                      {category.products.map((prod) => (
-                                        <Link
-                                          key={prod.id}
-                                          href={`/categories/${category.slug}/${prod.product_slug}`}
-                                          onClick={() => setMobileMenuOpen(false)}
-                                          className="p-2 rounded-xl bg-[#FAF8F4] hover:bg-[var(--ace-orange)]/10 text-left flex items-center gap-2 transition-all border border-[var(--ace-line)] hover:border-[var(--ace-orange)] group"
-                                        >
-                                          <img src={prod.image} alt="" className="w-7 h-7 object-contain shrink-0" />
-                                          <div className="min-w-0 flex-1">
-                                            <p className="text-[11px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors truncate leading-tight">
-                                              {prod.name}
-                                            </p>
-                                            <p className="text-[9.5px] text-[#968152] font-semibold">{prod.capacity}</p>
-                                          </div>
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
+                                  </Link>
+                                ))}
                               </div>
-                            );
-                          })}
-                        </div>
+                            </div>
 
-                        {/* Quick Footers inside Products Drawer */}
-                        <div className="pt-2.5 mt-2 border-t border-[var(--ace-line)] flex items-center justify-between text-xs">
-                          <Link
-                            href="/categories"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)]"
-                          >
-                            All 17 Categories →
-                          </Link>
-                          <Link
-                            href="/products"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="font-extrabold text-[var(--ace-orange)] hover:underline flex items-center gap-1"
-                          >
-                            <span>Full 89-Model Catalog</span>
-                            <ArrowRight className="w-3 h-3" />
-                          </Link>
-                        </div>
+                            {/* Browse All 17 Series (A-Z) Flat Toggle */}
+                            <div className="pt-2 border-t border-[var(--ace-line)]">
+                              <button
+                                type="button"
+                                onClick={() => setMobileShowAllCats((v) => !v)}
+                                className="w-full flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-[#FAF8F4] hover:bg-white text-left text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors cursor-pointer"
+                              >
+                                <div className="flex items-center gap-1.5">
+                                  <UtensilsCrossed className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
+                                  <span>Browse All 17 Series (A–Z)</span>
+                                </div>
+                                <ChevronDown
+                                  className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${
+                                    mobileShowAllCats ? 'rotate-180' : ''
+                                  }`}
+                                />
+                              </button>
+
+                              {mobileShowAllCats && (
+                                <div className="grid grid-cols-2 gap-1.5 pt-2 max-h-[36vh] overflow-y-auto pr-0.5 animate-fade-in" data-lenis-prevent>
+                                  {sortedAllCategories.map((cat) => (
+                                    <Link
+                                      key={cat.id}
+                                      href={`/categories/${cat.slug}`}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                      className="py-1.5 px-2 rounded-lg bg-white hover:bg-[#FAF8F4] border border-[var(--ace-line)] text-left flex items-center justify-between text-[11px] font-semibold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors group"
+                                    >
+                                      <span className="truncate flex-1 pr-1">{cat.name.replace(' Containers', '')}</span>
+                                      <span className="text-[9.5px] text-gray-500 font-medium shrink-0">
+                                        {cat.products.length}m
+                                      </span>
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
