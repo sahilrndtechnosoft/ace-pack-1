@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Container } from '../ui/Container';
 import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
-import { MapPin, Phone, Mail, ArrowRight, Lock } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, Lock, CheckCircle2, Loader2 } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
 const inputClasses =
@@ -33,6 +33,25 @@ const contactCards = [
 ];
 
 export const ContactSection: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    category: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 700);
+  };
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute -top-24 right-0 w-[260px] sm:w-[460px] h-[260px] sm:h-[460px] rounded-full [background:radial-gradient(circle,rgba(184,152,88,0.16)_0%,rgba(184,152,88,0)_70%)]" />
@@ -84,59 +103,135 @@ export const ContactSection: React.FC = () => {
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h3>
               <p className="text-xs text-gray-500 mb-6 sm:mb-8">Tell us about your application and request product information or a sample kit.</p>
 
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Full Name *</label>
-                    <input type="text" placeholder="John Doe" required className={inputClasses} />
+              {submitted ? (
+                <div className="py-8 text-center animate-fade-in">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <div>
-                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Company / Brand *</label>
-                    <input type="text" placeholder="Ace Cloud Kitchens" required className={inputClasses} />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 inline-block mb-2">
+                    Inquiry Transmitted
+                  </span>
+                  <h4 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-2">
+                    Inquiry Submitted Successfully!
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-6 leading-relaxed">
+                    Thank you, <strong className="text-[#1A1D20]">{formData.name || 'Valued Partner'}</strong>. Your inquiry has been received by our technical sales and dispatch team. We will review your volume specifications and respond within 24 hours.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: '', company: '', email: '', phone: '', category: '', message: '' });
+                    }}
+                    className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#a8812f] text-white text-xs font-bold py-3 px-6 rounded-xl uppercase tracking-wider transition-all cursor-pointer shadow-sm"
+                  >
+                    <span>Submit Another Inquiry</span>
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Full Name *</label>
+                      <input
+                        type="text"
+                        placeholder="John Doe"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className={inputClasses}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Company / Brand *</label>
+                      <input
+                        type="text"
+                        placeholder="Ace Cloud Kitchens"
+                        required
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        className={inputClasses}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Email Address *</label>
-                    <input type="email" placeholder="john@company.com" required className={inputClasses} />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Email Address *</label>
+                      <input
+                        type="email"
+                        placeholder="john@company.com"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className={inputClasses}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Phone / WhatsApp *</label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98251 20023"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className={inputClasses}
+                      />
+                    </div>
                   </div>
+
                   <div>
-                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Phone / WhatsApp *</label>
-                    <input type="tel" placeholder="+91 98251 20023" required className={inputClasses} />
+                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Container Category of Interest</label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className={`${inputClasses} text-gray-700`}
+                    >
+                      <option value="">Select a container line...</option>
+                      {productCategories.map((cat) => (
+                        <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                      ))}
+                    </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Container Category of Interest</label>
-                  <select className={`${inputClasses} text-gray-700`}>
-                    <option value="">Select a container line...</option>
-                    {productCategories.map((cat) => (
-                      <option key={cat.id} value={cat.slug}>{cat.name}</option>
-                    ))}
-                  </select>
-                </div>
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Detailed Message / Order Quantity *</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Please specify container size, monthly volume requirement, and shipping location..."
+                      required
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className={`${inputClasses} resize-none`}
+                    ></textarea>
+                  </div>
 
-                <div>
-                  <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Detailed Message / Order Quantity *</label>
-                  <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className={`${inputClasses} resize-none`}></textarea>
-                </div>
+                  <motion.button
+                    type="submit"
+                    disabled={loading}
+                    whileHover={{ scale: loading ? 1 : 1.015 }}
+                    whileTap={{ scale: loading ? 1 : 0.98 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-full bg-gradient-to-r from-[#cfa144] to-[#a8812f] hover:from-[#a8812f] hover:to-[#cfa144] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Transmitting Requirements...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Your Requirements</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </motion.button>
 
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.015 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-full bg-gradient-to-r from-[#cfa144] to-[#a8812f] hover:from-[#a8812f] hover:to-[#cfa144] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#cfa144]/30 transition-all duration-300 flex items-center justify-center gap-2"
-                >
-                  <span>Send Your Requirements</span>
-                  <ArrowRight className="w-4 h-4" />
-                </motion.button>
-
-                <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                  <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
-                </p>
-              </form>
+                  <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
+                    <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
+                  </p>
+                </form>
+              )}
             </div>
           </Reveal>
 

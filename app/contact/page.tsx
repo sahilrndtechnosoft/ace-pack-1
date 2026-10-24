@@ -2,8 +2,8 @@ import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { Reveal } from '@/components/ui/Reveal';
-import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck, Lock, MessageCircle, ExternalLink } from 'lucide-react';
-import { productCategories } from '@/lib/data/products';
+import { MapPin, Phone, Mail, ArrowRight, ShieldCheck, MessageCircle, ExternalLink, Navigation } from 'lucide-react';
+import { FactoryInquiryForm } from '@/components/sections/FactoryInquiryForm';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
@@ -100,53 +100,7 @@ export default function ContactPage() {
                   <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h2>
                   <p className="text-xs text-gray-500 mb-8">Tell us about your application and request product information or a sample kit.</p>
 
-                  <form className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Full Name *</label>
-                        <input type="text" placeholder="John Doe" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Company / Brand *</label>
-                        <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Email Address *</label>
-                        <input type="email" placeholder="john@company.com" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Phone / WhatsApp *</label>
-                        <input type="tel" placeholder="+91 98251 20023" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#cfa144]" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Container Category of Interest</label>
-                      <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-gray-700 focus:outline-none focus:border-[#cfa144]">
-                        <option value="">Select a container line...</option>
-                        {productCategories.map((cat) => (
-                          <option key={cat.id} value={cat.slug}>{cat.name}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Detailed Message / Order Quantity *</label>
-                      <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-4 text-xs focus:outline-none focus:border-[#cfa144]"></textarea>
-                    </div>
-
-                    <button type="submit" className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-4 rounded-xl text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2">
-                      <span>Send Your Requirements</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-
-                    <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                      <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is 100% confidential & protected
-                    </p>
-                  </form>
+                  <FactoryInquiryForm />
                 </div>
               </Reveal>
             </div>
@@ -157,29 +111,50 @@ export default function ContactPage() {
             <div className="mt-12 md:mt-16">
               <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
                 <div>
-                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Find Us</span>
-                  <h2 className="text-2xl font-extrabold text-[#1A1D20]">Daman Manufacturing Units (Unit 1 & Unit 2)</h2>
+                  <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Find Us & Navigation</span>
+                  <h2 className="text-2xl font-extrabold text-[#1A1D20]">Daman Manufacturing Units (Unit 1 &amp; Unit 2)</h2>
+                  <p className="text-xs text-gray-500 mt-1">Exact pinned location for factory visits, logistics dispatch, and audits.</p>
                 </div>
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=Survey+No.+42%2F1%2C+Dori+Kadaiya+Road%2C+Kadaiya%2C+Nani+Daman+396210"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#cfa144] transition-colors"
-                >
-                  Open in Google Maps <ExternalLink className="w-3.5 h-3.5 text-[#a8812f]" />
-                </a>
+                <div className="flex flex-wrap items-center gap-3">
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=20.4519,72.8590"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#cfa144] hover:bg-[#a8812f] rounded-xl px-4 py-2.5 transition-colors shadow-sm"
+                  >
+                    <Navigation className="w-3.5 h-3.5" /> Get Directions (Unit 1)
+                  </a>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=20.4519,72.8590"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#cfa144] transition-colors"
+                  >
+                    Open in Google Maps <ExternalLink className="w-3.5 h-3.5 text-[#a8812f]" />
+                  </a>
+                </div>
               </div>
-              <div className="rounded-3xl overflow-hidden border border-[#E6DBC6] shadow-sm bg-white">
+              <div className="rounded-3xl overflow-hidden border border-[#E6DBC6] shadow-sm bg-white relative">
                 <iframe
-                  title="Ace Packaging Daman plant location"
-                  src="https://www.google.com/maps?q=Survey+No.+42%2F1%2C+Dori+Kadaiya+Road%2C+Kadaiya%2C+Nani+Daman+396210&output=embed"
+                  title="Ace Packaging Daman Manufacturing Unit 1 & 2 Location Pin"
+                  src="https://maps.google.com/maps?q=20.4519,72.8590+(Ace+Packaging+Manufacturing+Unit+1)&t=&z=15&ie=UTF8&iwloc=B&output=embed"
                   width="100%"
-                  height="420"
+                  height="440"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   allowFullScreen
-                  className="block w-full h-[320px] sm:h-[420px]"
+                  className="block w-full h-[340px] sm:h-[440px]"
                 />
+                <div className="p-4 bg-[#FAF8F4] border-t border-[#E6DBC6] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                    <span><strong>Unit 1 Pinned:</strong> Survey No. 42/1, Dori Kadaiya Road, Kadaiya, Nani Daman - 396210</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                    <span><strong>Unit 2:</strong> Survey No. 191/1, Somnath Road, Dabhel, Daman - 396210</span>
+                  </div>
+                </div>
               </div>
             </div>
           </Reveal>

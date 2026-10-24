@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, FileDown, CheckCircle2, ShieldCheck, Building2, User, Mail, Phone, Globe2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, FileDown, CheckCircle2, ShieldCheck, Building2, User, Mail, Phone } from 'lucide-react';
 
 interface CatalogueDownloadModalProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   isOpen,
   onClose,
   documentTitle = 'Ace Packaging Full Product Catalog 2026',
-  downloadUrl = '/b9d572a7-af59-4e63-92e8-2971440edffe.png',
+  downloadUrl = '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -26,21 +26,46 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Close on Escape key and lock background scroll
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
+  const isDatasheet = documentTitle.toLowerCase().includes('datasheet');
+  const modalHeading = isDatasheet ? 'Download Technical Datasheet' : 'Download Product Catalogue';
+  const targetPdf = downloadUrl || (isDatasheet ? '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf' : '/downloads/Ace_Packaging_Full_Product_Catalog.pdf');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate immediate lead submission
+    // Simulate immediate lead submission and trigger real PDF download
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
 
-      // Trigger actual download
+      // Trigger actual PDF download
       const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = `${documentTitle.replace(/\s+/g, '_')}.pdf`;
+      link.href = targetPdf;
+      const cleanTitle = documentTitle.endsWith('.pdf') ? documentTitle : `${documentTitle.replace(/\s+/g, '_')}.pdf`;
+      link.download = cleanTitle;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -48,16 +73,23 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="catalogue-modal-title"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200 overflow-y-auto cursor-pointer"
+      onClick={onClose}
+    >
       <div
-        className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl bg-white border border-[#E6DBC6] shadow-2xl p-6 sm:p-8 text-[var(--ace-ink)]"
+        className="relative w-full max-w-lg my-auto rounded-3xl bg-white border border-[#E6DBC6] shadow-2xl p-6 sm:p-8 pt-8 sm:pt-9 text-[var(--ace-ink)] cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
+          type="button"
           onClick={onClose}
           aria-label="Close modal"
-          className="absolute top-5 right-5 p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-[var(--ace-ink)] transition-colors z-20 cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -65,7 +97,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
         {!submitted ? (
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-[#b99750]/15 text-[#b99750] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[#b99750]/15 text-[#b99750] flex items-center justify-center shrink-0">
                 <FileDown className="w-4 h-4" />
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#b99750]">
@@ -73,8 +105,8 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               </span>
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-2">
-              Download Product Catalogue
+            <h3 id="catalogue-modal-title" className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-2 leading-snug">
+              {modalHeading}
             </h3>
             <p className="text-xs sm:text-sm text-gray-600 mb-6 leading-relaxed">
               Please enter your business details to download <strong className="text-[var(--ace-ink)]">{documentTitle}</strong>.
@@ -174,10 +206,10 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-6 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="w-full py-3.5 px-6 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                 >
                   {loading ? (
-                    <span>Preparing Download...</span>
+                    <span>Preparing Document...</span>
                   ) : (
                     <>
                       <FileDown className="w-4 h-4" />
@@ -199,14 +231,14 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-2xl font-extrabold text-[var(--ace-ink)] mb-2">
-              Download Started!
+              Download Initiated!
             </h3>
             <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-6 leading-relaxed">
-              Your copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> is now downloading. Our packaging team will also send a digital copy to {formData.email}.
+              Your official copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> is downloading now. Our technical sales team will also email a copy to {formData.email}.
             </p>
             <button
               onClick={onClose}
-              className="px-8 py-3 rounded-full bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] transition-colors"
+              className="px-8 py-3 rounded-full bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] transition-colors cursor-pointer"
             >
               Close Window
             </button>

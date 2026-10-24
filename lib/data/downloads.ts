@@ -27,7 +27,7 @@ export const downloadGroups: DownloadGroup[] = [
     title: 'Catalogs & Brochures',
     intro: 'The full range across our container lines, with capacities, materials and carton packing.',
     items: [
-      { id: 'product-catalog', title: 'Ace Packaging Product Catalog', description: 'All product categories — hinge cups to custom IML — with capacities, dimensions and carton quantities.', type: 'Catalog' },
+      { id: 'product-catalog', title: 'Ace Packaging Product Catalog', description: 'All product categories — hinge cups to custom IML — with capacities, dimensions and carton quantities.', type: 'Catalog', file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf' },
       { id: 'company-brochure', title: 'Company Brochure', description: 'Daman plant, robotic moulding line, in-house toolroom and export reach at a glance.', type: 'Brochure' },
       { id: 'iml-guide', title: 'Custom IML Branding Guide', description: 'Artwork specifications and colour guidance for in-mould labelled containers.', type: 'Brochure' },
     ],
@@ -42,6 +42,7 @@ export const downloadGroups: DownloadGroup[] = [
       title: `${category.name} — Datasheet`,
       description: category.products.length ? `${category.subtitleName}. ${category.products.length} model${category.products.length === 1 ? '' : 's'}: ${category.products.map((p) => p.capacity).join(', ')}.` : `${category.subtitleName}. Request available sizes and material specifications from our team.`,
       type: 'Datasheet' as const,
+      file: '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf',
     })),
   },
   {

@@ -7,6 +7,7 @@ import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
 import { ChevronDown, HelpCircle, ArrowRight, Lock, PhoneCall, Mail } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
+import { FactoryInquiryForm } from './FactoryInquiryForm';
 
 export const FaqSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -116,53 +117,7 @@ export const FaqSection: React.FC = () => {
             <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h3>
             <p className="text-xs text-gray-500 mb-8">Tell us about your application and request product specifications or a custom sample kit.</p>
 
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Full Name *</label>
-                  <input type="text" placeholder="John Doe" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
-                </div>
-                <div>
-                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Company / Brand *</label>
-                  <input type="text" placeholder="Ace Cloud Kitchens" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Email Address *</label>
-                  <input type="email" placeholder="john@company.com" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
-                </div>
-                <div>
-                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Phone / WhatsApp *</label>
-                  <input type="tel" placeholder="+91 99250 15906" required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200" />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Container Category of Interest</label>
-                <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200">
-                  <option value="">Select a container line...</option>
-                  {productCategories.map((cat) => (
-                    <option key={cat.id} value={cat.slug} className="bg-white text-[#1A1D20]">{cat.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Detailed Message / Order Volume *</label>
-                <textarea rows={4} placeholder="Please specify container size, monthly volume requirement, and shipping location..." required className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-4 text-xs text-[#1A1D20] focus:outline-none focus:border-[#b99750] transition-colors duration-200"></textarea>
-              </div>
-
-              <button type="submit" className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b99750]/30 hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
-                <span>Send Your Requirements</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <p className="text-[10px] text-gray-500 text-center flex items-center justify-center gap-1 mt-2">
-                <Lock className="w-3 h-3 text-[#b99750]" /> Your information is 100% confidential &amp; protected
-              </p>
-            </form>
+            <FactoryInquiryForm />
           </div>
           </Reveal>
 

@@ -42,7 +42,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'One-Piece Attached Snap Lids',
     shortDescription: 'Leak-proof one-piece hinged lids for chutneys, dips, dressings, and condiments. Attached lid eliminates lost cap inventory in busy kitchens.',
     description: 'Ace Packaging Hinge Cups feature a built-in snap-tight hinged lid engineered from 100% virgin polypropylene (PP 05). Designed for high-speed QSR assembly, zero-leak motorcycle delivery, and crystal-clear product presentation.',
-    heroImage: '/AcePackaging/Hinge Cups.png',
+    heroImage: '/ace-official/hinge-containers.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Attached Hinged Snap-Lid', '100% Virgin PP 05'],
     gallery: [
       '/AcePackaging/Hinge Cups.png',
@@ -141,7 +141,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Separate Snap Lid Portion Containers',
     shortDescription: 'Crystal-clarity round portion containers with precision matching snap-lids for dips, sauces, dressings, and condiments.',
     description: 'Ace Packaging Portion Cups are manufactured from 100% virgin polypropylene (PP 05). Designed with leak-proof rim locking, high optical clarity, and rigid structural ribs. Ideal for QSR dips, catering sides, chutneys, and food sampling.',
-    heroImage: '/AcePackaging/Portion Cups.png',
+    heroImage: '/ace-official/portion-cups.png',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Matching Snap Lids', '100% Virgin PP 05'],
     gallery: [
       '/AcePackaging/Portion Cups.png',
@@ -300,7 +300,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Round Food Bowls & Containers',
     shortDescription: 'Heavy-duty injection-moulded round food containers engineered for hot soups, biryani, curries, and QSR takeaway delivery.',
     description: 'Ace Packaging RO-Series Containers feature heavy-duty round geometry with airtight rim locking that withstands hot oil and boiling soup filling up to 120°C. Engineered from 100% virgin food-grade polypropylene (PP 05), completely microwave and deep-freeze safe.',
-    heroImage: '/AcePackaging/RO-Series Containers.png',
+    heroImage: '/ace-official/ro-series-container.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Microwave & Freezer Safe', 'Leak-Proof Snap Lid'],
     gallery: [
       '/AcePackaging/RO-Series Containers.png',
@@ -506,7 +506,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Rectangular Food & Bento Meal Boxes',
     shortDescription: 'Rectangular takeaway and bento multi-compartment containers designed for cloud kitchens, meal deliveries, and restaurant takeaway.',
     description: 'Ace Packaging RE-Series Containers feature reinforced rectangular geometry, stackable locking lids, and optional compartment partitions preventing cross-contamination during transit. Built for QSR delivery, thali packaging, and executive lunch combos.',
-    heroImage: '/AcePackaging/RE Series Containers.png',
+    heroImage: '/ace-official/re-series-containers.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Stackable Rigid Flange', '100% Virgin PP 05'],
     gallery: [
       '/AcePackaging/RE Series Containers.png',
@@ -756,7 +756,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep Round Food Tubs & Containers',
     shortDescription: 'Standard injection-moulded round food tubs with tight snap-fit lids for curries, soups, dairy, and confectionery.',
     description: 'Ace Packaging Round Containers deliver high durability and optical clarity for restaurant takeaway, cloud kitchen orders, dairy items, and food packaging. Engineered with precision snap-fit lids that prevent accidental openings.',
-    heroImage: '/AcePackaging/Round Containers.png',
+    heroImage: '/ace-official/round-containers.png',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '100% Virgin PP 05', 'Microwave Reheatable'],
     gallery: [
       '/AcePackaging/Round Containers.png',
@@ -910,7 +910,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Confectionery & Sweets Round Packaging',
     shortDescription: 'Rigid round containers custom designed for Indian sweets, confectionery, dry fruits, and mithai packaging.',
     description: 'Ace Packaging Natraj Containers are crafted from pure virgin polypropylene, completely odor-free and chemically inert to preserve the delicate aroma and freshness of traditional ghee sweets, mithai, peda, laddoo, and premium dry fruits.',
-    heroImage: '/AcePackaging/Natraj Containers.png',
+    heroImage: '/ace-official/natraj-containers.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Odor-Free Virgin Polymer', 'Airtight Freshness'],
     gallery: [
       '/AcePackaging/Natraj Containers.png',
@@ -1011,7 +1011,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Odor Free', 'Airtight Freshness'],
         dimensions: { top: '115 mm', bottom: '88 mm', height: '40 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Natraj Containers.png',
+        image: '/ace-official/natraj-250.png',
         applications: ['Kaju Katli', 'Laddoo', 'Peda', 'Dry Fruits']
       },
       {
@@ -1024,7 +1024,7 @@ export const productCategories: ProductCategory[] = [
         features: ['High Transparency', 'Festive Packaging'],
         dimensions: { top: '115 mm', bottom: '87 mm', height: '75 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Sweet Box Containers.png',
+        image: '/ace-official/natraj-500g.png',
         applications: ['Indian Sweets', 'Baklava', 'Chocolates']
       }
     ]
@@ -1036,7 +1036,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep Rectangular Takeaway Containers',
     shortDescription: 'High-capacity rectangular takeaway containers with universal 117×170mm rim and leak-proof snap lids.',
     description: 'Ace Packaging ZEN Series Containers feature a uniform 117×170mm top profile across all depths, allowing kitchens to use a single universal lid for multiple capacities (500ml, 650ml, 750ml, 1000ml). Optimizes inventory while delivering zero-leak transit.',
-    heroImage: '/AcePackaging/ZEN Series Containers.png',
+    heroImage: '/ace-official/zen-containers.png',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Single Universal Lid', 'Microwave Reheatable'],
     gallery: [
       '/AcePackaging/ZEN Series Containers.png',
@@ -1135,7 +1135,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: '80mm Rim Diameter Beverage Cups',
     shortDescription: 'Crystal-clarity disposable beverage and dessert cups with standard 80mm rim diameter for juices, teas, and desserts.',
     description: 'Ace Packaging Glass Series 80-Dia cups are manufactured from optically clear virgin food-grade PP polymer. Standard 80mm rim diameter ensures compatibility with universal 80mm flat and dome lids, as well as automatic cup sealing films.',
-    heroImage: '/AcePackaging/Glass Series 80-Dia.png',
+    heroImage: '/ace-official/glass-80dia-300.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '80mm Universal Rim', 'Heat Seal Ready'],
     gallery: [
       '/AcePackaging/Glass Series 80-Dia.png',
@@ -1247,7 +1247,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: '90mm Wide-Mouth Beverage Cups',
     shortDescription: 'Wide-mouth 90mm diameter transparent cups for boba tea, smoothies, shakes, frappes, and iced coffee.',
     description: 'Ace Packaging Glass Series 90-Dia cups feature a 90mm wide opening ideal for chunky boba, whipped cream toppings, and thick smoothies. Precision rolled rim provides drinking comfort and hermetic film sealing compatibility.',
-    heroImage: '/AcePackaging/Glass Series 90-Dia.png',
+    heroImage: '/ace-official/glass-90dia-cat.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '90mm Wide Opening', 'Film Sealing Compatible'],
     gallery: [
       '/AcePackaging/Glass Series 90-Dia.png',
@@ -1346,7 +1346,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Shallow & Wide Food Prep Containers',
     shortDescription: 'Wide presentation surface containers with snap-fit lids for salads, gourmet preparations, sushi, and bulk food packaging.',
     description: 'Ace Packaging Flat Containers offer maximum horizontal presentation surface and rigid stacking strength. Available with 148mm and 169mm top profiles with tight leak-proof snap lids.',
-    heroImage: '/AcePackaging/Flat Containers.png',
+    heroImage: '/ace-official/flat-containers.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Wide Display Profile', 'Crush-Resistant Stacking'],
     gallery: [
       '/AcePackaging/Flat Containers.png',
@@ -1538,7 +1538,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Heavy-Duty Round Deli Tubs',
     shortDescription: 'Heavy-duty thick-wall containers with universal 120mm rim diameter for soups, gravies, dairy, and cold salads.',
     description: 'Ace Packaging Deli Series Containers feature uniform 120mm rim diameter across all volumes (8oz to 32oz), allowing high efficiency in kitchen lid inventory. Thick impact-resistant walls provide superior thermal insulation for boiling hot curries or deep freeze storage.',
-    heroImage: '/AcePackaging/Deli Series Container.png',
+    heroImage: '/ace-official/deli-container.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '120mm Universal Rim', 'Microwave & Freezer Safe'],
     gallery: [
       '/AcePackaging/Deli Series Container.png',
@@ -1684,7 +1684,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Confectionery & Mithai Gift Boxes',
     shortDescription: 'Luxury high-clarity square & rectangular containers crafted for Indian sweets, mithai, chocolates, and dry fruit gift packaging.',
     description: 'Ace Packaging Sweet Box Containers feature crystal-clear transparency, airtight closure, and food-safe odorless virgin polypropylene formulation to keep traditional sweets, baklava, and festive dry fruits fresh and appealing.',
-    heroImage: '/AcePackaging/Sweet Box Containers.png',
+    heroImage: '/ace-official/sweet-box-containers.webp',
     features: ['Crystal-Clear Clarity', 'Odor-Free Food Safe', 'Airtight Freshness', 'Festive Presentation'],
     gallery: [
       '/AcePackaging/Sweet Box Containers.png',
@@ -1820,7 +1820,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Security Lock Food Containers',
     shortDescription: 'Security tab lock containers assuring end consumers of untouched food integrity and zero tampering.',
     description: 'Containers with breakable security tabs guaranteeing food freshness and anti-tamper security for dairy, delivery, and food retail.',
-    heroImage: '/AcePackaging/Deli Series Container.png',
+    heroImage: '/ace-official/deli-container.webp',
     features: ['Breakable Security Tab', '100% Leak Proof', 'Tamper Evident Seal'],
     products: [
       {
@@ -1845,7 +1845,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Executive Combo Meal Packaging',
     shortDescription: 'Sleek meal packaging boxes tailored for airlines, corporate catering, and train meals.',
     description: 'Compact stackable combo boxes optimized for volume meal distribution and multi-item executive lunches.',
-    heroImage: '/AcePackaging/RE Series Containers.png',
+    heroImage: '/ace-official/re-series-containers.webp',
     features: ['Compact Geometry', 'Stackable Base', 'Multi-Chamber Options'],
     products: [
       {
@@ -1870,7 +1870,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep-Freeze Ice Cream & Dairy Packaging',
     shortDescription: 'Freezer-grade plastic containers resistant to low-temperature embrittlement down to -30°C.',
     description: 'Designed specifically for ice cream manufacturers, frozen yogurts, and gelato packaging with leak-proof lids.',
-    heroImage: '/AcePackaging/Round Containers.png',
+    heroImage: '/ace-official/round-containers.png',
     features: ['Deep Freeze Safe down to -30°C', 'High Moisture Barrier', 'Crack Resistant'],
     products: [
       {
@@ -1895,7 +1895,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'In-Mould Labelling Branded Packaging',
     shortDescription: 'Full-color high definition IML printed containers for high brand recall.',
     description: 'In-Mould Labelling fuses vibrant artwork directly into container walls during moulding for permanent scratch-resistant branding.',
-    heroImage: '/AcePackaging/ZEN Series Containers.png',
+    heroImage: '/ace-official/zen-containers.png',
     features: ['Waterproof Printing', 'Scratch Resistance', 'Full Cover Artwork', 'High Definition'],
     products: [
       {

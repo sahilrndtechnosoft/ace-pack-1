@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { User, Calendar, Clock, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
+import { BlogInquiryForm } from '@/components/sections/BlogInquiryForm';
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -189,80 +190,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   <p className="text-xs text-gray-500 mt-0.5">Get in touch for container specifications and samples</p>
                 </div>
 
-                <form className="space-y-3.5">
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. John Smith"
-                      required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="your@company.com"
-                      required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="10-digit mobile number"
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
-                      Product of Interest
-                    </label>
-                    <select className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#cfa144]">
-                      <option value="">Choose a product line...</option>
-                      {productCategories.map((cat) => (
-                        <option key={cat.id} value={cat.slug}>
-                          {cat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider block mb-1">
-                      Your Message *
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="Describe your container requirements..."
-                      required
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl p-3.5 text-xs text-[#1A1D20] focus:outline-none focus:border-[#cfa144]"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <span>Send Enquiry</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <p className="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2">
-                    <Lock className="w-3 h-3 text-[#a8812f]" /> Your information is secure & confidential
-                  </p>
-                </form>
+                <BlogInquiryForm />
               </div>
 
             </div>

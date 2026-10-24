@@ -250,27 +250,49 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
             {/* View 4: Category/Product Related Manufacturing Video */}
             {activeView === 'video' && (
-              <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in">
-                <div className="relative w-full max-w-[440px] aspect-16/9 rounded-2xl overflow-hidden bg-slate-900 shadow-md">
-                  <img
-                    src="https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop"
-                    alt="Precision Injection Moulding Line"
-                    className="w-full h-full object-cover filter brightness-75"
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center text-white bg-black/40">
-                    <button
-                      type="button"
-                      onClick={() => setIsVideoPlaying(!isVideoPlaying)}
-                      aria-label="Play moulding process video"
-                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white flex items-center justify-center shadow-lg mb-2 sm:mb-3 hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                    >
-                      <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5 fill-white" />
-                    </button>
-                    <h4 className="text-xs sm:text-sm font-bold mb-1">Cleanroom Robotic Moulding</h4>
-                    <p className="text-[10px] sm:text-[11px] text-gray-200 max-w-xs leading-relaxed">
-                      High-speed 2.8s cycle time, zero-defect optical camera inspection, and dust-free conveyor handling in Daman.
-                    </p>
-                  </div>
+              <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in p-1">
+                <div className="relative w-full max-w-[480px] aspect-16/9 rounded-2xl overflow-hidden bg-slate-900 shadow-md">
+                  {isVideoPlaying ? (
+                    <div className="relative w-full h-full">
+                      <iframe
+                        src="https://www.youtube-nocookie.com/embed/dqwNPJ1ZWeU?autoplay=1&rel=0&modestbranding=1"
+                        title={`${product.name} Cleanroom Injection Moulding Process Video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full border-0 rounded-2xl"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsVideoPlaying(false)}
+                        aria-label="Stop video and return to preview"
+                        className="absolute top-2 right-2 bg-black/75 hover:bg-black text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 transition-colors cursor-pointer shadow-sm border border-white/20"
+                      >
+                        ✕ Stop Video
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="relative w-full h-full">
+                      <img
+                        src="https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop"
+                        alt="Precision Injection Moulding Line"
+                        className="w-full h-full object-cover filter brightness-75"
+                      />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center text-white bg-black/40">
+                        <button
+                          type="button"
+                          onClick={() => setIsVideoPlaying(true)}
+                          aria-label="Play moulding process video"
+                          className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white flex items-center justify-center shadow-lg mb-2 sm:mb-3 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-white/20"
+                        >
+                          <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5 fill-white" />
+                        </button>
+                        <h4 className="text-xs sm:text-sm font-bold mb-1">Cleanroom Robotic Moulding</h4>
+                        <p className="text-[10px] sm:text-[11px] text-gray-200 max-w-xs leading-relaxed">
+                          Click to play precision high-speed 2.8s cycle time moulding, zero-defect optical inspection, and cleanroom handling.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -625,6 +647,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
       <CatalogueDownloadModal
         isOpen={catalogueOpen}
         onClose={() => setCatalogueOpen(false)}
+        documentTitle={`${product.name} — Technical Datasheet`}
+        downloadUrl="/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf"
       />
     </>
   );
