@@ -15,16 +15,10 @@ html {
 }
 
 :root {
-  /* Premium Site Typography Definitions */
-  --font-sans: 'Plus Jakarta Sans', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Instrument Serif', 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
-  --font-display: 'Instrument Serif', 'Playfair Display', Georgia, serif;
-  --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-jakarta: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-instrument: 'Instrument Serif', 'Playfair Display', Georgia, serif;
-
-  --heading-tracking: -0.025em;
-  --heading-leading: 1.12;
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-instrument);
+  --heading-tracking: -.02em;
+  --heading-leading: 1.1;
   --ace-paper: #faf8f4;
   --ace-white: #ffffff;
   --ace-ink: #14171a;
@@ -55,12 +49,10 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.7;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.012em;
   overflow-x: hidden;
   -webkit-user-select: none;
   -moz-user-select: none;
