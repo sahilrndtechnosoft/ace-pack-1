@@ -5,7 +5,7 @@ import { Palette, RotateCcw, X } from 'lucide-react';
 import './style-preview.css';
 
 const palettes = [
-  { name: 'Petrol / terracotta', paper: '#fafbf7', ink: '#123b40', accent: '#b74725', secondary: '#17665e' },
+  { name: 'Ace gold / ivory', paper: '#faf8f4', ink: '#1a1d20', accent: '#b99750', secondary: '#8c6f2a' },
   { name: 'Cobalt / copper', paper: '#f5f7fc', ink: '#172d4e', accent: '#a24614', secondary: '#1f5aa6' },
   { name: 'Navy / coral', paper: '#fff8f2', ink: '#1d3045', accent: '#af3e37', secondary: '#3a7184' },
   { name: 'Plum / sage', paper: '#fbf9f5', ink: '#353047', accent: '#7c3e67', secondary: '#536646' },

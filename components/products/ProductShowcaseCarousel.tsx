@@ -23,7 +23,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'RE Series Rectangular Meal Containers',
     series: 'Bento & Meal Delivery',
     categorySlug: 're-series',
-    image: '/ace-official/re-series-containers.webp',
+    image: '/images/products/re-series/re-series-hero.webp',
+    gallery: [
+      '/images/products/re-series/re-series-hero.webp',
+      '/images/products/re-series/ap-re-38.webp',
+      '/images/products/re-series/ap-re-32.webp',
+      '/images/products/re-series/ap-re-24.webp',
+    ],
     capacities: '250ml to 1800ml (10 Models)',
     bestFor: 'Cloud Kitchens, Biryanis, Rice Combos & Bento Meals',
     tag: 'Best Seller',
@@ -34,8 +40,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'RO Series Round Food Bowls & Containers',
     series: 'Soup & Curry Bowls',
     categorySlug: 'ro-series',
-    image: '/ace-official/ro-series-container.webp',
-    gallery: ['/ace-official/ro-series-container.webp', '/AcePackaging/AP-RO-48.png', '/AcePackaging/RO-Series-Lifestyle.png'],
+    image: '/images/products/ro-series/ro-series-hero.webp',
+    gallery: [
+      '/images/products/ro-series/ro-series-hero.webp',
+      '/images/products/ro-series/ap-ro-48.webp',
+      '/images/products/ro-series/ap-ro-32.webp',
+      '/images/products/ro-series/ap-ro-24.webp',
+    ],
     capacities: 'AP-RO-10 to AP-RO-48 (250ml - 1500ml)',
     bestFor: 'Hot Soups, Biryanis, Dal Makhani & Noodle Bowls',
     tag: 'Heavy Duty',
@@ -46,7 +57,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'ZEN Series Deep Rectangular Containers',
     series: 'Universal Lid Efficiency',
     categorySlug: 'zen-series',
-    image: '/ace-official/zen-containers.png',
+    image: '/images/products/zen/zen-series-hero.webp',
+    gallery: [
+      '/images/products/zen/zen-series-hero.webp',
+      '/images/products/zen/zen-1000ml.webp',
+      '/images/products/zen/zen-black-1000ml.webp',
+      '/images/products/zen/zen-750ml.webp',
+    ],
     capacities: '500ml · 650ml · 750ml · 1000ml',
     bestFor: 'Noodles, Fried Rice, Curries & Executive Combos',
     tag: 'Universal Lid',
@@ -57,8 +74,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Deli Series Heavy-Duty Round Containers',
     series: '120mm Universal Rim',
     categorySlug: 'deli-series',
-    image: '/ace-official/deli-container.webp',
-    gallery: ['/ace-official/deli-container.webp', '/AcePackaging/Deli-Series-Lifestyle.png'],
+    image: '/images/products/deli/deli-series-hero.webp',
+    gallery: [
+      '/images/products/deli/deli-series-hero.webp',
+      '/images/products/deli/deli-32oz.webp',
+      '/images/products/deli/deli-24oz.webp',
+      '/images/products/deli/deli-16oz.webp',
+    ],
     capacities: '8oz · 12oz · 16oz · 24oz · 32oz',
     bestFor: 'Dairy, Yogurts, Wet Curries, Salads & Food Storage',
     tag: 'Airtight Lock',
@@ -69,7 +91,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'One-Piece Attached Hinge Cups',
     series: 'Condiment & Sauce',
     categorySlug: 'hinge-cups',
-    image: '/ace-official/hinge-containers.webp',
+    image: '/images/products/hinge/hinge-cups-hero.webp',
+    gallery: [
+      '/images/products/hinge/hinge-cups-hero.webp',
+      '/images/products/hinge/hinge-100ml.webp',
+      '/images/products/hinge/hinge-50ml.webp',
+      '/images/products/hinge/hinge-25ml.webp',
+    ],
     capacities: '25ml · 50ml · 100ml',
     bestFor: 'Chutneys, Salsas, Dips, Dressings & Sauces',
     tag: 'Never-Lost Lid',
@@ -80,7 +108,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Natraj Confectionery & Sweet Containers',
     series: 'Mithai & Bakery',
     categorySlug: 'natraj-containers',
-    image: '/ace-official/natraj-containers.webp',
+    image: '/images/products/natraj/natraj-containers-hero.webp',
+    gallery: [
+      '/images/products/natraj/natraj-containers-hero.webp',
+      '/images/products/natraj/natraj-750ml.webp',
+      '/images/products/natraj/natraj-500ml.webp',
+      '/images/products/natraj/natraj-250ml.webp',
+    ],
     capacities: '250ml · 450ml · 500ml · 750ml',
     bestFor: 'Traditional Mithai, Kaju Katli, Gulab Jamun & Dry Fruits',
     tag: 'Export Grade',
@@ -91,7 +125,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Portion Cups with Separate Snap Lids',
     series: 'Precision Dips & Sides',
     categorySlug: 'portion-cups',
-    image: '/ace-official/portion-cups.png',
+    image: '/images/products/portion/portion-cups-hero.webp',
+    gallery: [
+      '/images/products/portion/portion-cups-hero.webp',
+      '/images/products/portion/portion-250ml.webp',
+      '/images/products/portion/portion-150ml.webp',
+      '/images/products/portion/portion-100ml.webp',
+    ],
     capacities: '50ml · 100ml · 125ml · 150ml · 250ml',
     bestFor: 'Mayonnaise, Raita, Wasabi, Dips & Side Sauces',
     tag: 'Compact Utility',
@@ -102,7 +142,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Flat Cold Prep & Salad Containers',
     series: 'Gourmet Wide Showcase',
     categorySlug: 'flat-containers',
-    image: '/ace-official/flat-containers.webp',
+    image: '/images/products/flat/flat-containers-hero.webp',
+    gallery: [
+      '/images/products/flat/flat-containers-hero.webp',
+      '/images/products/flat/flat-1200ml.webp',
+      '/images/products/flat/flat-1000ml.webp',
+      '/images/products/flat/flat-750ml.webp',
+    ],
     capacities: '600ml to 2500ml (8 Models)',
     bestFor: 'Gourmet Salads, Sandwiches, Cold Prep & Batch Storage',
     tag: 'Fresh Display',
@@ -113,8 +159,12 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Elite Series Premium Food Containers',
     series: 'Heavy-Duty Meal Service',
     categorySlug: 'elite-containers',
-    image: '/AcePackaging/Elite Containers.png',
-    gallery: ['/AcePackaging/Elite Containers.png', '/AcePackaging/Elite-500ml.png', '/AcePackaging/Elite-750ml.png'],
+    image: '/images/products/re-series/ap-re-32.webp',
+    gallery: [
+      '/images/products/re-series/ap-re-32.webp',
+      '/images/products/re-series/ap-re-28.webp',
+      '/images/products/re-series/ap-re-24.webp',
+    ],
     capacities: '500ml · 650ml · 750ml · 1000ml',
     bestFor: 'Hot Curries, Rice Bowls, Takeout Meals & Freezer Prep',
     tag: 'Heavy Duty',
@@ -125,8 +175,13 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     name: 'Sweet Box Confectionery Containers',
     series: 'Mithai & Bakery Display',
     categorySlug: 'sweet-box-containers',
-    image: '/ace-official/sweet-box-containers.webp',
-    gallery: ['/ace-official/sweet-box-containers.webp', '/AcePackaging/SweetBox-500g.png', '/AcePackaging/SweetBox-1000g.png'],
+    image: '/images/products/sweet-box/sweet-box-hero.webp',
+    gallery: [
+      '/images/products/sweet-box/sweet-box-hero.webp',
+      '/images/products/sweet-box/sweetbox-1000g.webp',
+      '/images/products/sweet-box/sweetbox-500g.webp',
+      '/images/products/sweet-box/sweetbox-250g.webp',
+    ],
     capacities: '250gm · 500gms · 1000gms',
     bestFor: 'Artisan Sweets, Dry Fruits, Chocolates & Bakery Gifts',
     tag: 'Crystal Clear',
@@ -187,7 +242,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
 
   const activeProduct = CAROUSEL_PRODUCTS[currentIndex];
   const displayImage = selectedGalleryImg || activeProduct.image;
-  const isPhoto = displayImage.startsWith('/DSC') || displayImage.endsWith('.JPG');
+  const isPhoto = displayImage.startsWith('/DSC') || displayImage.endsWith('.JPG') || displayImage.startsWith('/images/products/');
 
   return (
     <section className="relative py-12 sm:py-20 bg-[#FAF8F4] text-[var(--ace-ink)] border-t border-b border-[#E6DBC6] overflow-hidden">
@@ -342,7 +397,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   </span>
                   {activeProduct.gallery.map((imgSrc, gIdx) => {
                     const isSelected = displayImage === imgSrc;
-                    const isGalPhoto = imgSrc.startsWith('/DSC') || imgSrc.endsWith('.JPG');
+                    const isGalPhoto = imgSrc.startsWith('/DSC') || imgSrc.endsWith('.JPG') || imgSrc.startsWith('/images/products/');
                     return (
                       <button
                         key={imgSrc}
@@ -364,7 +419,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                           />
                         </div>
                         <span className="text-[9px] font-semibold">
-                          {imgSrc.includes('04062') ? 'Black' : imgSrc.includes('03993') ? 'White' : imgSrc.includes('04053') ? 'Tub' : 'Standard'}
+                          {imgSrc.includes('black') ? 'Black' : imgSrc.includes('hero') ? 'Hero' : imgSrc.includes('48') || imgSrc.includes('1000') || imgSrc.includes('32') ? 'Deep' : `Angle ${gIdx + 1}`}
                         </span>
                       </button>
                     );
@@ -379,7 +434,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
         <div className="mt-6 sm:mt-8 flex sm:grid overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 gap-2 sm:gap-2.5 snap-x scrollbar-thin sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-10">
           {CAROUSEL_PRODUCTS.map((item, idx) => {
             const isActive = idx === currentIndex;
-            const itemIsPhoto = item.image.startsWith('/DSC') || item.image.endsWith('.JPG');
+            const itemIsPhoto = item.image.startsWith('/DSC') || item.image.endsWith('.JPG') || item.image.startsWith('/images/products/');
             return (
               <button
                 key={item.id}
@@ -391,13 +446,13 @@ export const ProductShowcaseCarousel: React.FC = () => {
                     : 'border-[#E6DBC6] bg-white/90 hover:border-gray-400 opacity-90 hover:opacity-100'
                 }`}
               >
-                <div className="h-14 sm:h-16 w-full flex items-center justify-center overflow-hidden mb-1.5 p-1 bg-[#FAF8F4]/60 rounded-lg">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center overflow-hidden mb-1.5 p-0.5 bg-white rounded-lg border border-[#E6DBC6]/60">
                   <img
                     src={item.image}
                     alt={item.name}
                     loading="lazy"
                     decoding="async"
-                    className={`max-h-full max-w-full ${itemIsPhoto ? 'object-cover rounded-md w-full h-full' : 'object-contain filter drop-shadow-xs'}`}
+                    className={`w-full h-full ${itemIsPhoto ? 'object-cover rounded-md' : 'object-contain filter drop-shadow-xs'}`}
                   />
                 </div>
                 <div>

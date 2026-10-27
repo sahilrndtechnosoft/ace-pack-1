@@ -48,7 +48,7 @@ export const AboutSection: React.FC = () => {
                 >
                   {/* TEMP: hidden while testing the 3D container landing here. */}
                   {/* <img
-                    src="https://ik.imagekit.io/mikbqwyy0/AcePackaging/Flat%20Containers.png?tr=w-350,q-78,f-webp"
+                    src="/images/products/flat/flat-containers-hero.webp"
                     alt="Ace Packaging Precision Container Series"
                     width={350}
                     height={307}

@@ -14,15 +14,16 @@ const config: Config = {
         brand: { ivory: "var(--ace-paper)", charcoal: "var(--ace-ink)", gold: "var(--ace-orange)", "gold-deep": "var(--ace-orange)" },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "Plus Jakarta Sans", "Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Instrument Serif", "Playfair Display", "Georgia", "serif"],
+        display: ["var(--font-display)", "Instrument Serif", "Playfair Display", "Georgia", "serif"],
       },
       letterSpacing: { tight: "var(--heading-tracking)", tighter: "var(--heading-tracking)" },
-      // The template pages set most body copy in text-xs / text-sm. Lifting the
-      // two smallest steps a notch fixes readability everywhere at once.
+      // Lifted font size scale for an elegant, readable, and prestigious presence
       fontSize: {
-        xs: ["0.9375rem", { lineHeight: "1.65" }],
-        sm: ["1rem", { lineHeight: "1.7" }],
+        xs: ["0.95rem", { lineHeight: "1.65" }],
+        sm: ["1.0625rem", { lineHeight: "1.7" }],
+        base: ["1.125rem", { lineHeight: "1.75" }],
       },
     },
   },

@@ -42,14 +42,14 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'One-Piece Attached Snap Lids',
     shortDescription: 'Leak-proof one-piece hinged lids for chutneys, dips, dressings, and condiments. Attached lid eliminates lost cap inventory in busy kitchens.',
     description: 'Ace Packaging Hinge Cups feature a built-in snap-tight hinged lid engineered from 100% virgin polypropylene (PP 05). Designed for high-speed QSR assembly, zero-leak motorcycle delivery, and crystal-clear product presentation.',
-    heroImage: '/ace-official/hinge-containers.webp',
+    heroImage: '/images/products/hinge/hinge-cups-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Attached Hinged Snap-Lid', '100% Virgin PP 05'],
     gallery: [
-      '/AcePackaging/Hinge Cups.png',
-      '/AcePackaging/Hinge-Cup-100ml.png',
-      '/AcePackaging/Hinge-Cup-50ml.png',
-      '/AcePackaging/Hinge-Cup-25ml.png',
-      '/AcePackaging/Hinge-Cups-Lifestyle.png'
+      '/images/products/hinge/hinge-cups-hero.webp',
+      '/images/products/hinge/hinge-100ml.webp',
+      '/images/products/hinge/hinge-50ml.webp',
+      '/images/products/hinge/hinge-25ml.webp',
+      '/images/products/hinge/hinge-100ml.webp'
     ],
     faqs: [
       { question: 'Does the hinged lid detach during transport?', answer: 'No, our hinges are engineered with flexible virgin PP polymer tested for over 50 open-close cycles without tearing.' },
@@ -66,7 +66,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Attached Snap Lid'],
         dimensions: { top: '40 mm', bottom: '29 mm', height: '33 mm' },
         packaging: '2,000 PCS per Master Pack',
-        image: '/AcePackaging/Hinge-Cup-25ml.png',
+        image: '/images/products/hinge/hinge-25ml.webp',
         applications: ['Sauces', 'Chutneys', 'Dips', 'Ketchup', 'Salad Dressings'],
         specs: [
           { label: 'Top Diameter', value: '40 mm' },
@@ -85,7 +85,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Microwave Reheatable'],
         dimensions: { top: '61 mm', bottom: '52 mm', height: '25 mm' },
         packaging: '2,000 PCS per Master Pack',
-        image: '/AcePackaging/Hinge-Cup-50ml.png',
+        image: '/images/products/hinge/hinge-50ml.webp',
         applications: ['Gravies', 'Mayonnaise', 'Raita', 'Soy Sauce', 'Butter Ghee'],
         specs: [
           { label: 'Top Diameter', value: '61 mm' },
@@ -104,7 +104,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Attached Living Hinge'],
         dimensions: { top: '65 mm', bottom: '52 mm', height: '30 mm' },
         packaging: '2,000 PCS per Master Pack',
-        image: '/AcePackaging/Hinge-Cup-2oz.png',
+        image: '/images/products/hinge/hinge-2oz.webp',
         applications: ['Dipping Sauces', 'Salad Dressings', 'Tartar Sauce', 'Garlic Dip'],
         specs: [
           { label: 'Top Diameter', value: '65 mm' },
@@ -123,7 +123,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Attached Snap Lid'],
         dimensions: { top: '70 mm', bottom: '57 mm', height: '36 mm' },
         packaging: '2,000 PCS per Master Pack',
-        image: '/AcePackaging/Hinge-Cup-100ml.png',
+        image: '/images/products/hinge/hinge-100ml.webp',
         applications: ['Desserts', 'Gulab Jamun', 'Dahi Raita', 'Sambar', 'Side Portions'],
         specs: [
           { label: 'Top Diameter', value: '70 mm' },
@@ -141,16 +141,16 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Separate Snap Lid Portion Containers',
     shortDescription: 'Crystal-clarity round portion containers with precision matching snap-lids for dips, sauces, dressings, and condiments.',
     description: 'Ace Packaging Portion Cups are manufactured from 100% virgin polypropylene (PP 05). Designed with leak-proof rim locking, high optical clarity, and rigid structural ribs. Ideal for QSR dips, catering sides, chutneys, and food sampling.',
-    heroImage: '/ace-official/portion-cups.png',
+    heroImage: '/images/products/portion/portion-cups-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Matching Snap Lids', '100% Virgin PP 05'],
     gallery: [
-      '/AcePackaging/Portion Cups.png',
-      '/AcePackaging/Portion-Cup-250ml.png',
-      '/AcePackaging/Portion-Cup-150ml.png',
-      '/AcePackaging/Portion-Cup-125ml.png',
-      '/AcePackaging/Portion-Cup-100ml.png',
-      '/AcePackaging/Portion-Cup-50ml.png',
-      '/AcePackaging/Portion-Cups-Lifestyle.png'
+      '/images/products/portion/portion-cups-hero.webp',
+      '/images/products/portion/portion-250ml.webp',
+      '/images/products/portion/portion-150ml.webp',
+      '/images/products/portion/portion-125ml.webp',
+      '/images/products/portion/portion-100ml.webp',
+      '/images/products/portion/portion-50ml.webp',
+      '/images/products/portion/portion-150ml.webp'
     ],
     faqs: [
       { question: 'Do Portion Cups include matching snap-on lids?', answer: 'Yes, all Portion Cups come packed with matching tight-sealing snap lids in standard carton quantities of 1,500 Pcs/set.' },
@@ -167,7 +167,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '62 mm', bottom: '43 mm', height: '30 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion-Cup-50ml.png',
+        image: '/images/products/portion/portion-50ml.webp',
         applications: ['Sauces', 'Chutneys', 'Pickles', 'Butter & Ghee', 'Salad Dressing'],
         specs: [
           { label: 'Top Diameter', value: '62 mm' },
@@ -186,7 +186,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '80 mm', bottom: '57 mm', height: '37 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion-Cup-100ml.png',
+        image: '/images/products/portion/portion-100ml.webp',
         applications: ['Mayonnaise', 'Raita', 'Dipping Sauces', 'Gravy Samples', 'Condiments'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -205,7 +205,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '80 mm', bottom: '59 mm', height: '43 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion-Cup-125ml.png',
+        image: '/images/products/portion/portion-125ml.webp',
         applications: ['Pudding', 'Dips', 'Dessert Samples', 'Coleslaw', 'Side Gravy'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -224,7 +224,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '90 mm', bottom: '78 mm', height: '43 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion-Cup-150ml.png',
+        image: '/images/products/portion/portion-150ml.webp',
         applications: ['Side Dishes', 'Raita', 'Curd', 'Fruit Custard', 'Sambar'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
@@ -243,7 +243,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '98 mm', bottom: '73 mm', height: '51 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion-Cup-250ml.png',
+        image: '/images/products/portion/portion-250ml.webp',
         applications: ['Single-Serve Soups', 'Desserts', 'Curries', 'Dal', 'Ice Cream'],
         specs: [
           { label: 'Top Diameter', value: '98 mm' },
@@ -262,7 +262,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Stackable', 'Leak Proof', 'Airtight Snap Lid'],
         dimensions: { top: '45 mm', height: '30 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion Cups.png',
+        image: '/images/products/portion/portion-cups-hero.webp',
         applications: ['Sauces', 'Pickles', 'Sampling']
       },
       {
@@ -275,7 +275,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Microwave Safe', 'High Stacking Strength'],
         dimensions: { top: '62 mm', height: '30 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion Cups.png',
+        image: '/images/products/portion/portion-cups-hero.webp',
         applications: ['Hummus', 'Gravies', 'Dips']
       },
       {
@@ -288,7 +288,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Airtight Fit', 'Crystal Clarity'],
         dimensions: { top: '75 mm', height: '43 mm' },
         packaging: '1,500 Pcs/set',
-        image: '/AcePackaging/Portion Cups.png',
+        image: '/images/products/portion/portion-cups-hero.webp',
         applications: ['Coleslaw', 'Side Gravy', 'Desserts']
       }
     ]
@@ -300,20 +300,20 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Round Food Bowls & Containers',
     shortDescription: 'Heavy-duty injection-moulded round food containers engineered for hot soups, biryani, curries, and QSR takeaway delivery.',
     description: 'Ace Packaging RO-Series Containers feature heavy-duty round geometry with airtight rim locking that withstands hot oil and boiling soup filling up to 120°C. Engineered from 100% virgin food-grade polypropylene (PP 05), completely microwave and deep-freeze safe.',
-    heroImage: '/ace-official/ro-series-container.webp',
+    heroImage: '/images/products/ro-series/ro-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Microwave & Freezer Safe', 'Leak-Proof Snap Lid'],
     gallery: [
-      '/AcePackaging/RO-Series Containers.png',
-      '/AcePackaging/AP-RO-48.png',
-      '/AcePackaging/AP-RO-40.png',
-      '/AcePackaging/AP-RO-32.png',
-      '/AcePackaging/AP-RO-24.png',
-      '/AcePackaging/AP-RO-16.png',
-      '/AcePackaging/AP-RO-12.png',
-      '/AcePackaging/AP-RO-10.png',
-      '/AcePackaging/RO-Series-Lifestyle.png',
-      '/DSC04062.JPG',
-      '/DSC03993.JPG'
+      '/images/products/ro-series/ro-series-hero.webp',
+      '/images/products/ro-series/ap-ro-48.webp',
+      '/images/products/ro-series/ap-ro-40.webp',
+      '/images/products/ro-series/ap-ro-32.webp',
+      '/images/products/ro-series/ap-ro-24.webp',
+      '/images/products/ro-series/ap-ro-16.webp',
+      '/images/products/ro-series/ap-ro-12.webp',
+      '/images/products/ro-series/ap-ro-10.webp',
+      '/images/products/ro-series/ro-series-hero.webp',
+      '/images/products/ro-series/ap-ro-16.webp',
+      '/images/products/ro-series/ap-ro-24.webp'
     ],
     faqs: [
       { question: 'Can RO-Series containers withstand boiling curries and microwave reheating?', answer: 'Yes, made of high heat-resistant virgin PP 05 withstanding temperatures up to 120°C without warping or softening.' },
@@ -330,7 +330,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '125 mm', bottom: '90 mm', height: '55 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/AP-RO-10.png',
+        image: '/images/products/ro-series/ap-ro-10.webp',
         applications: ['Soups', 'Gravy Portions', 'Sweets', 'Dal', 'Side Dishes'],
         specs: [
           { label: 'Top Diameter', value: '125 mm' },
@@ -349,7 +349,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '125 mm', bottom: '87 mm', height: '64 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/AP-RO-12.png',
+        image: '/images/products/ro-series/ap-ro-12.webp',
         applications: ['Hot Soups', 'Curries', 'Raita', 'Rice Bowls', 'Desserts'],
         specs: [
           { label: 'Top Diameter', value: '125 mm' },
@@ -368,7 +368,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '160 mm', bottom: '117 mm', height: '52 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RO-16.png',
+        image: '/images/products/ro-series/ap-ro-16.webp',
         applications: ['Noodle Bowls', 'Biryani', 'Curries', 'Pasta', 'Gravies'],
         specs: [
           { label: 'Top Diameter', value: '160 mm' },
@@ -387,7 +387,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '185 mm', bottom: '142 mm', height: '52 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RO-24.png',
+        image: '/images/products/ro-series/ap-ro-24.webp',
         applications: ['Main Course Rice', 'Biryani Portions', 'Large Curries', 'Noodles'],
         specs: [
           { label: 'Top Diameter', value: '185 mm' },
@@ -406,7 +406,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '185 mm', bottom: '136 mm', height: '67 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RO-32.png',
+        image: '/images/products/ro-series/ap-ro-32.webp',
         applications: ['Family Curries', 'Combo Meals', 'Fried Rice', 'Salad Bowls'],
         specs: [
           { label: 'Top Diameter', value: '185 mm' },
@@ -425,7 +425,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '185 mm', bottom: '136 mm', height: '78 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RO-40.png',
+        image: '/images/products/ro-series/ap-ro-40.webp',
         applications: ['Bulk Takeaway', 'Family Meals', 'Cloud Kitchen Curries', 'Party Packs'],
         specs: [
           { label: 'Top Diameter', value: '185 mm' },
@@ -444,7 +444,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '233 mm', bottom: '180 mm', height: '61 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RO-48.png',
+        image: '/images/products/ro-series/ap-ro-48.webp',
         applications: ['Jumbo Biryani Portions', 'Catering Takeaway', 'Family Packs', 'Bulk Food Storage'],
         specs: [
           { label: 'Top Diameter', value: '233 mm' },
@@ -461,7 +461,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['Microwave Reheatable', 'Leak Proof Snap Rim'],
-        image: '/AcePackaging/AP-RO-10.png',
+        image: '/images/products/ro-series/ap-ro-10.webp',
         applications: ['Soups', 'Gravies', 'Sweets']
       },
       {
@@ -472,7 +472,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['Heavy Duty Wall', 'Freezer Safe down to -20°C', 'Standard Black Finish'],
-        image: '/DSC04062.JPG',
+        image: '/images/products/ro-series/ap-ro-16.webp',
         applications: ['Biryani', 'Curries', 'Noodles', 'Cloud Kitchens']
       },
       {
@@ -483,7 +483,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Premium Food Grade',
         features: ['High Stacking Strength', 'Hermetic Seal', 'Crisp White Finish'],
-        image: '/DSC03993.JPG',
+        image: '/images/products/ro-series/ap-ro-24.webp',
         applications: ['Family Meals', 'Curries', 'Bulk Food', 'Rice Combos']
       },
       {
@@ -494,7 +494,7 @@ export const productCategories: ProductCategory[] = [
         material: 'Virgin PP 05',
         quality: 'Export Grade Food Safe',
         features: ['Extra Rigid Flange', 'Full Rim Seal', 'Microwave Reheatable'],
-        image: '/AcePackaging/AP-RO-32.png',
+        image: '/images/products/ro-series/ap-ro-32.webp',
         applications: ['Curries', 'Gravies', 'Noodle Bowls', 'Meal Boxes']
       }
     ]
@@ -506,21 +506,21 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Rectangular Food & Bento Meal Boxes',
     shortDescription: 'Rectangular takeaway and bento multi-compartment containers designed for cloud kitchens, meal deliveries, and restaurant takeaway.',
     description: 'Ace Packaging RE-Series Containers feature reinforced rectangular geometry, stackable locking lids, and optional compartment partitions preventing cross-contamination during transit. Built for QSR delivery, thali packaging, and executive lunch combos.',
-    heroImage: '/ace-official/re-series-containers.webp',
+    heroImage: '/images/products/re-series/re-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Stackable Rigid Flange', '100% Virgin PP 05'],
     gallery: [
-      '/AcePackaging/RE Series Containers.png',
-      '/AcePackaging/AP-RE-232.png',
-      '/AcePackaging/AP-RE-58.png',
-      '/AcePackaging/AP-RE-48.png',
-      '/AcePackaging/AP-RE-38.png',
-      '/AcePackaging/AP-RE-32.png',
-      '/AcePackaging/AP-RE-28.png',
-      '/AcePackaging/AP-RE-24.png',
-      '/AcePackaging/AP-RE-16.png',
-      '/AcePackaging/AP-RE-12.png',
-      '/AcePackaging/AP-RE-08.png',
-      '/AcePackaging/RE-Series-Lifestyle.png'
+      '/images/products/re-series/re-series-hero.webp',
+      '/images/products/re-series/ap-re-232.webp',
+      '/images/products/re-series/ap-re-58.webp',
+      '/images/products/re-series/ap-re-48.webp',
+      '/images/products/re-series/ap-re-38.webp',
+      '/images/products/re-series/ap-re-32.webp',
+      '/images/products/re-series/ap-re-28.webp',
+      '/images/products/re-series/ap-re-24.webp',
+      '/images/products/re-series/ap-re-16.webp',
+      '/images/products/re-series/ap-re-12.webp',
+      '/images/products/re-series/ap-re-08.webp',
+      '/images/products/re-series/re-series-hero.webp'
     ],
     faqs: [
       { question: 'Are RE-Series containers stackable during courier motorcycle transit?', answer: 'Yes, each lid has an engineered indentation nesting securely into the container base below to prevent slipping.' },
@@ -537,7 +537,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '90 × 135 mm', height: '40 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-08.png',
+        image: '/images/products/re-series/ap-re-08.webp',
         applications: ['Appetizers', 'Starters', 'Snacks', 'Desserts', 'Sauce Portions'],
         specs: [
           { label: 'Top Dimensions', value: '90 × 135 mm' },
@@ -555,7 +555,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '140 × 115 mm', height: '47 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-12.png',
+        image: '/images/products/re-series/ap-re-12.webp',
         applications: ['Side Dishes', 'Salads', 'Rice Dishes', 'Starters'],
         specs: [
           { label: 'Top Dimensions', value: '140 × 115 mm' },
@@ -573,7 +573,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '185 × 126 mm', height: '43 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-16.png',
+        image: '/images/products/re-series/ap-re-16.webp',
         applications: ['Meals', 'Curries', 'Noodles', 'Pasta', 'Rice Dishes'],
         specs: [
           { label: 'Top Dimensions', value: '185 × 126 mm' },
@@ -591,7 +591,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '185 × 126 mm', height: '59 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-24.png',
+        image: '/images/products/re-series/ap-re-24.webp',
         applications: ['Executive Lunch', 'Curry & Rice Combos', 'Biryani', 'Noodles'],
         specs: [
           { label: 'Top Dimensions', value: '185 × 126 mm' },
@@ -609,7 +609,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '223 × 126 mm', height: '47 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-28.png',
+        image: '/images/products/re-series/ap-re-28.webp',
         applications: ['Platters', 'Rolls', 'Grilled Items', 'Asian Combos'],
         specs: [
           { label: 'Top Dimensions', value: '223 × 126 mm' },
@@ -627,7 +627,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '223 × 152 mm', height: '57 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-32.png',
+        image: '/images/products/re-series/ap-re-32.webp',
         applications: ['Standard Takeaway Meal', 'Rice Combos', 'Pasta', 'Chinese Takeaway'],
         specs: [
           { label: 'Top Dimensions', value: '223 × 152 mm' },
@@ -645,7 +645,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '223 × 152 mm', height: '63 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-38.png',
+        image: '/images/products/re-series/ap-re-38.webp',
         applications: ['High Capacity Meals', 'Curry + Naan', 'Biryani Combos', 'Family Meals'],
         specs: [
           { label: 'Top Dimensions', value: '223 × 152 mm' },
@@ -663,7 +663,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '220 × 220 mm', height: '59 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-48.png',
+        image: '/images/products/re-series/ap-re-48.webp',
         applications: ['Square Platter', 'Sharing Meals', 'Bulk Curries', 'Appetizer Assortment'],
         specs: [
           { label: 'Top Dimensions', value: '220 × 220 mm' },
@@ -681,7 +681,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '290 × 200 mm', height: '56 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-58.png',
+        image: '/images/products/re-series/ap-re-58.webp',
         applications: ['Large Feast Boxes', 'Catering Packs', 'Corporate Buffets', 'Party Trays'],
         specs: [
           { label: 'Top Dimensions', value: '290 × 200 mm' },
@@ -699,7 +699,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '2-Compartment Partition'],
         dimensions: { top: '220 × 150 mm', height: '41 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-232.png',
+        image: '/images/products/re-series/ap-re-232.webp',
         applications: ['2-Compartment Bento', 'Curry & Rice Combos', 'Noodles & Gravy', 'Executive Thali'],
         specs: [
           { label: 'Top Dimensions', value: '220 × 150 mm' },
@@ -718,7 +718,7 @@ export const productCategories: ProductCategory[] = [
         features: ['No Flavor Transfer', 'Microwave Safe'],
         dimensions: { top: '220 × 150 mm', height: '41 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-232.png',
+        image: '/images/products/re-series/ap-re-232.webp',
         applications: ['Curry & Rice', 'Noodles & Manchurian']
       },
       {
@@ -731,7 +731,7 @@ export const productCategories: ProductCategory[] = [
         features: ['3 Flavor Separation', 'Ultra Clear Lid'],
         dimensions: { top: '240 × 180 mm', height: '48 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/RE Series Containers.png',
+        image: '/images/products/re-series/re-series-hero.webp',
         applications: ['Indian Combo Thali', 'Salad Meal']
       },
       {
@@ -744,7 +744,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Isolated Chambers', 'Zero Leak Between Chambers', 'Anti-Fog Lid'],
         dimensions: { top: '260 × 210 mm', height: '50 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/RE Series Containers.png',
+        image: '/images/products/re-series/re-series-hero.webp',
         applications: ['Executive Lunch', 'Premium Thali', 'Corporate Meals']
       }
     ]
@@ -756,18 +756,15 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep Round Food Tubs & Containers',
     shortDescription: 'Standard injection-moulded round food tubs with tight snap-fit lids for curries, soups, dairy, and confectionery.',
     description: 'Ace Packaging Round Containers deliver high durability and optical clarity for restaurant takeaway, cloud kitchen orders, dairy items, and food packaging. Engineered with precision snap-fit lids that prevent accidental openings.',
-    heroImage: '/ace-official/round-containers.png',
+    heroImage: '/images/products/ro-series/ro-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '100% Virgin PP 05', 'Microwave Reheatable'],
     gallery: [
-      '/AcePackaging/Round Containers.png',
-      '/AcePackaging/Round-1000ml.png',
-      '/AcePackaging/Round-500ml.png',
-      '/AcePackaging/Round-450ml.png',
-      '/AcePackaging/Round-300ml.png',
-      '/AcePackaging/Round-250ml.png',
-      '/AcePackaging/Round-225ml.png',
-      '/AcePackaging/Round-Containers-Lifestyle.png',
-      '/DSC04053.JPG'
+      '/images/products/ro-series/ro-series-hero.webp',
+      '/images/products/ro-series/ap-ro-48.webp',
+      '/images/products/ro-series/ap-ro-40.webp',
+      '/images/products/ro-series/ap-ro-24.webp',
+      '/images/products/ro-series/ap-ro-16.webp',
+      '/images/products/ro-series/ap-ro-10.webp',
     ],
     faqs: [
       { question: 'What is the pack size for Round Containers?', answer: 'All Round Container models (225ml to 1000ml) are packed in standard 500 Pcs/set with matching lids.' },
@@ -784,7 +781,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '98 mm', height: '31 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-225ml.png',
+        image: '/images/products/ro-series/ap-ro-10.webp',
         applications: ['Chutneys', 'Curries', 'Dips', 'Ice Cream', 'Snacks'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -803,7 +800,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '97 mm', height: '38 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-250ml.png',
+        image: '/images/products/ro-series/ap-ro-10.webp',
         applications: ['Soups', 'Gravy Portions', 'Sweets', 'Dairy', 'Dahi'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -822,7 +819,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '41 mm', height: '102 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-300ml.png',
+        image: '/images/products/ro-series/ap-ro-12.webp',
         applications: ['Dal', 'Curries', 'Raita', 'Rice Portions', 'Desserts'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -841,7 +838,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '60 mm', height: '98 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-450ml.png',
+        image: '/images/products/ro-series/ap-ro-16.webp',
         applications: ['Hot Soups', 'Tall Dessert Tubs', 'Curries', 'Noodles'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -860,7 +857,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '67 mm', height: '97 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-500ml.png',
+        image: '/images/products/ro-series/ap-ro-24.webp',
         applications: ['Biryani Portions', 'Gravies', 'Takeaway Curries', 'Pasta'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -879,7 +876,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '120 mm', bottom: '87 mm', height: '125 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-1000ml.png',
+        image: '/images/products/ro-series/ap-ro-40.webp',
         applications: ['Family Curries', 'Bulk Gravies', 'Food Storage', 'Dairy Tubs'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -898,7 +895,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Airtight Lid', 'Microwave Safe', 'High Stacking Strength'],
         dimensions: { top: '120 mm', bottom: '87 mm', height: '125 mm' },
         packaging: '500 Pcs/set',
-        image: '/DSC04053.JPG',
+        image: '/images/products/ro-series/ap-ro-40.webp',
         applications: ['Soup', 'Curry', 'Gravy', 'Food Storage']
       }
     ]
@@ -910,15 +907,15 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Confectionery & Sweets Round Packaging',
     shortDescription: 'Rigid round containers custom designed for Indian sweets, confectionery, dry fruits, and mithai packaging.',
     description: 'Ace Packaging Natraj Containers are crafted from pure virgin polypropylene, completely odor-free and chemically inert to preserve the delicate aroma and freshness of traditional ghee sweets, mithai, peda, laddoo, and premium dry fruits.',
-    heroImage: '/ace-official/natraj-containers.webp',
+    heroImage: '/images/products/natraj/natraj-containers-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Odor-Free Virgin Polymer', 'Airtight Freshness'],
     gallery: [
-      '/AcePackaging/Natraj Containers.png',
-      '/AcePackaging/Natraj-750ml.png',
-      '/AcePackaging/Natraj-500ml.png',
-      '/AcePackaging/Natraj-450ml.png',
-      '/AcePackaging/Natraj-250ml.png',
-      '/AcePackaging/Sweet Box Containers.png'
+      '/images/products/natraj/natraj-containers-hero.webp',
+      '/images/products/natraj/natraj-750ml.webp',
+      '/images/products/natraj/natraj-500ml.webp',
+      '/images/products/natraj/natraj-450ml.webp',
+      '/images/products/natraj/natraj-250ml.webp',
+      '/images/products/sweet-box/sweet-box-hero.webp'
     ],
     faqs: [
       { question: 'Why are Natraj containers preferred for Indian sweets?', answer: 'Because of their 100% odorless virgin food grade formulation that prevents plastic taint on sensitive ghee and dairy based sweets.' },
@@ -935,7 +932,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Odor Free'],
         dimensions: { top: '115 mm', bottom: '88 mm', height: '40 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Natraj-250ml.png',
+        image: '/images/products/natraj/natraj-250ml.webp',
         applications: ['Kaju Katli', 'Peda', 'Laddoo', 'Dry Fruits', 'Mithai'],
         specs: [
           { label: 'Top Diameter', value: '115 mm' },
@@ -954,7 +951,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Odor Free'],
         dimensions: { top: '115 mm', bottom: '88 mm', height: '63 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Natraj-450ml.png',
+        image: '/images/products/natraj/natraj-450ml.webp',
         applications: ['Gulab Jamun', 'Rasgulla', 'Halwa', 'Barfi Boxes'],
         specs: [
           { label: 'Top Diameter', value: '115 mm' },
@@ -973,7 +970,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Odor Free'],
         dimensions: { top: '115 mm', bottom: '87 mm', height: '75 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Natraj-500ml.png',
+        image: '/images/products/natraj/natraj-500ml.webp',
         applications: ['Assorted Mithai', 'Confectionery', 'Dry Fruits', 'Namkeen'],
         specs: [
           { label: 'Top Diameter', value: '115 mm' },
@@ -992,7 +989,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', 'Odor Free'],
         dimensions: { top: '115 mm', bottom: '82 mm', height: '118 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Natraj-750ml.png',
+        image: '/images/products/natraj/natraj-750ml.webp',
         applications: ['Bulk Sweets', 'Syrup Desserts', 'Festive Gift Boxes', 'Dry Fruit Packs'],
         specs: [
           { label: 'Top Diameter', value: '115 mm' },
@@ -1011,7 +1008,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Odor Free', 'Airtight Freshness'],
         dimensions: { top: '115 mm', bottom: '88 mm', height: '40 mm' },
         packaging: '500 Pcs/set',
-        image: '/ace-official/natraj-250.png',
+        image: '/images/products/natraj/natraj-250ml.webp',
         applications: ['Kaju Katli', 'Laddoo', 'Peda', 'Dry Fruits']
       },
       {
@@ -1024,7 +1021,7 @@ export const productCategories: ProductCategory[] = [
         features: ['High Transparency', 'Festive Packaging'],
         dimensions: { top: '115 mm', bottom: '87 mm', height: '75 mm' },
         packaging: '500 Pcs/set',
-        image: '/ace-official/natraj-500g.png',
+        image: '/images/products/natraj/natraj-500ml.webp',
         applications: ['Indian Sweets', 'Baklava', 'Chocolates']
       }
     ]
@@ -1036,14 +1033,14 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep Rectangular Takeaway Containers',
     shortDescription: 'High-capacity rectangular takeaway containers with universal 117×170mm rim and leak-proof snap lids.',
     description: 'Ace Packaging ZEN Series Containers feature a uniform 117×170mm top profile across all depths, allowing kitchens to use a single universal lid for multiple capacities (500ml, 650ml, 750ml, 1000ml). Optimizes inventory while delivering zero-leak transit.',
-    heroImage: '/ace-official/zen-containers.png',
+    heroImage: '/images/products/zen/zen-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Single Universal Lid', 'Microwave Reheatable'],
     gallery: [
-      '/AcePackaging/ZEN Series Containers.png',
-      '/AcePackaging/ZEN-1000ml.png',
-      '/AcePackaging/ZEN-750ml.png',
-      '/AcePackaging/ZEN-650ml.png',
-      '/AcePackaging/ZEN-500ml.png'
+      '/images/products/zen/zen-series-hero.webp',
+      '/images/products/zen/zen-1000ml.webp',
+      '/images/products/zen/zen-750ml.webp',
+      '/images/products/zen/zen-650ml.webp',
+      '/images/products/zen/zen-500ml.webp'
     ],
     faqs: [
       { question: 'Do all ZEN Series capacities share the same lid?', answer: 'Yes, all 500ml, 650ml, 750ml, and 1000ml ZEN containers share the identical 117×170mm rim profile, requiring only one lid size in stock.' },
@@ -1060,7 +1057,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '117 × 170 mm', bottom: '146 × 96 mm', height: '39 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/ZEN-500ml.png',
+        image: '/images/products/zen/zen-500ml.webp',
         applications: ['Curry & Rice', 'Noodles', 'Pasta', 'Starters', 'Salads'],
         specs: [
           { label: 'Top Dimensions', value: '117 × 170 mm' },
@@ -1079,7 +1076,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '117 × 170 mm', bottom: '142 × 90 mm', height: '50 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/ZEN-650ml.png',
+        image: '/images/products/zen/zen-650ml.webp',
         applications: ['Biryani Portions', 'Chinese Takeaway', 'Fried Rice', 'Pasta Combos'],
         specs: [
           { label: 'Top Dimensions', value: '117 × 170 mm' },
@@ -1098,7 +1095,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '117 × 170 mm', bottom: '140 × 87 mm', height: '57 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/ZEN-750ml.png',
+        image: '/images/products/zen/zen-750ml.webp',
         applications: ['Full Meals', 'Gravies', 'Combo Platters', 'Cloud Kitchen Orders'],
         specs: [
           { label: 'Top Dimensions', value: '117 × 170 mm' },
@@ -1117,7 +1114,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '117 × 170 mm', bottom: '132 × 88 mm', height: '75 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/ZEN-1000ml.png',
+        image: '/images/products/zen/zen-1000ml.webp',
         applications: ['Family Portions', 'Bulk Curries', 'Large Biryani', 'Party Orders'],
         specs: [
           { label: 'Top Dimensions', value: '117 × 170 mm' },
@@ -1135,14 +1132,13 @@ export const productCategories: ProductCategory[] = [
     subtitleName: '80mm Rim Diameter Beverage Cups',
     shortDescription: 'Crystal-clarity disposable beverage and dessert cups with standard 80mm rim diameter for juices, teas, and desserts.',
     description: 'Ace Packaging Glass Series 80-Dia cups are manufactured from optically clear virgin food-grade PP polymer. Standard 80mm rim diameter ensures compatibility with universal 80mm flat and dome lids, as well as automatic cup sealing films.',
-    heroImage: '/ace-official/glass-80dia-300.webp',
+    heroImage: '/images/products/cups/glass-80dia-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '80mm Universal Rim', 'Heat Seal Ready'],
     gallery: [
-      '/AcePackaging/Glass Series 80-Dia.png',
-      '/AcePackaging/Glass-80-500ml.png',
-      '/AcePackaging/Glass-80-350ml.png',
-      '/AcePackaging/Glass-80-300ml.png',
-      '/AcePackaging/Glass-80-250ml.png'
+      '/images/products/cups/glass-80dia-hero.webp',
+      '/images/products/portion/portion-200ml.webp',
+      '/images/products/portion/portion-150ml.webp',
+      '/images/products/portion/portion-100ml.webp'
     ],
     faqs: [
       { question: 'Are these cups compatible with automatic sealing machines?', answer: 'Yes, the precision flat 80mm rim creates a hermetic seal with standard cup sealing films.' },
@@ -1159,7 +1155,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Ultra Clear', 'Crack Resistant Rim'],
         dimensions: { top: '80 mm', bottom: '48 mm', height: '85 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass Series 80-Dia.png',
+        image: '/images/products/cups/glass-80dia-hero.webp',
         applications: ['Juices', 'Cold Brew', 'Chai', 'Desserts']
       },
       {
@@ -1172,7 +1168,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '80mm Rim'],
         dimensions: { top: '80 mm', bottom: '48 mm', height: '95 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-80-250ml.png',
+        image: '/images/products/cups/glass-80dia-hero.webp',
         applications: ['Cold Beverages', 'Fresh Juices', 'Chai', 'Iced Drinks', 'Desserts'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -1191,7 +1187,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '80mm Rim'],
         dimensions: { top: '80 mm', bottom: '49 mm', height: '111 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-80-300ml.png',
+        image: '/images/products/cups/glass-80dia-hero.webp',
         applications: ['Smoothies', 'Cold Brew', 'Soft Drinks', 'Lassi', 'Milkshakes'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -1210,7 +1206,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '80mm Rim'],
         dimensions: { top: '80 mm', bottom: '51 mm', height: '128 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-80-350ml.png',
+        image: '/images/products/cups/glass-80dia-hero.webp',
         applications: ['Bubble Tea', 'Shakes', 'Iced Coffee', 'Fruit Slush', 'Dessert Parfait'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -1229,7 +1225,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '80mm Rim'],
         dimensions: { top: '80 mm', bottom: '54 mm', height: '165 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-80-500ml.png',
+        image: '/images/products/cups/glass-80dia-hero.webp',
         applications: ['Large Juices', 'Mega Shakes', 'Iced Teas', 'Summer Coolers'],
         specs: [
           { label: 'Top Diameter', value: '80 mm' },
@@ -1247,14 +1243,13 @@ export const productCategories: ProductCategory[] = [
     subtitleName: '90mm Wide-Mouth Beverage Cups',
     shortDescription: 'Wide-mouth 90mm diameter transparent cups for boba tea, smoothies, shakes, frappes, and iced coffee.',
     description: 'Ace Packaging Glass Series 90-Dia cups feature a 90mm wide opening ideal for chunky boba, whipped cream toppings, and thick smoothies. Precision rolled rim provides drinking comfort and hermetic film sealing compatibility.',
-    heroImage: '/ace-official/glass-90dia-cat.webp',
+    heroImage: '/images/products/cups/glass-90dia-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '90mm Wide Opening', 'Film Sealing Compatible'],
     gallery: [
-      '/AcePackaging/Glass Series 90-Dia.png',
-      '/AcePackaging/Glass-90-700ml.png',
-      '/AcePackaging/Glass-90-600ml.png',
-      '/AcePackaging/Glass-90-500ml.png',
-      '/AcePackaging/Glass-90-350ml.png'
+      '/images/products/cups/glass-90dia-hero.webp',
+      '/images/products/portion/portion-250ml.webp',
+      '/images/products/portion/portion-200ml.webp',
+      '/images/products/portion/portion-150ml.webp'
     ],
     faqs: [
       { question: 'Can these 90mm cups be sealed with Boba film sealing machines?', answer: 'Yes, standard 90mm sealing film rolls fit perfectly with clean edges.' },
@@ -1271,7 +1266,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '90mm Wide Rim'],
         dimensions: { top: '90 mm', bottom: '54 mm', height: '108 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-90-350ml.png',
+        image: '/images/products/cups/glass-90dia-hero.webp',
         applications: ['Boba Tea', 'Iced Latte', 'Cold Brew', 'Thick Shakes', 'Juices'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
@@ -1290,7 +1285,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '90mm Wide Rim'],
         dimensions: { top: '90 mm', bottom: '58 mm', height: '130 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-90-500ml.png',
+        image: '/images/products/cups/glass-90dia-hero.webp',
         applications: ['Bubble Tea', 'Frappuccinos', 'Milkshakes', 'Cold Beverages', 'Smoothies'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
@@ -1309,7 +1304,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '90mm Wide Rim'],
         dimensions: { top: '90 mm', bottom: '55 mm', height: '166 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-90-600ml.png',
+        image: '/images/products/cups/glass-90dia-hero.webp',
         applications: ['Large Boba', 'Fruit Teas', 'Slushes', 'Iced Coffee', 'Lemonades'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
@@ -1328,7 +1323,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '90mm Wide Rim'],
         dimensions: { top: '90 mm', bottom: '55 mm', height: '187 mm' },
         packaging: '1,000 PCS',
-        image: '/AcePackaging/Glass-90-700ml.png',
+        image: '/images/products/cups/glass-90dia-hero.webp',
         applications: ['Jumbo Drinks', 'Super-Size Boba', 'Mega Shakes', 'Iced Beverage Takeaway'],
         specs: [
           { label: 'Top Diameter', value: '90 mm' },
@@ -1346,18 +1341,18 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Shallow & Wide Food Prep Containers',
     shortDescription: 'Wide presentation surface containers with snap-fit lids for salads, gourmet preparations, sushi, and bulk food packaging.',
     description: 'Ace Packaging Flat Containers offer maximum horizontal presentation surface and rigid stacking strength. Available with 148mm and 169mm top profiles with tight leak-proof snap lids.',
-    heroImage: '/ace-official/flat-containers.webp',
+    heroImage: '/images/products/flat/flat-containers-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Wide Display Profile', 'Crush-Resistant Stacking'],
     gallery: [
-      '/AcePackaging/Flat Containers.png',
-      '/AcePackaging/Flat-2500ml.png',
-      '/AcePackaging/Flat-2000ml.png',
-      '/AcePackaging/Flat-1500ml.png',
-      '/AcePackaging/Flat-1200ml.png',
-      '/AcePackaging/Flat-1000ml.png',
-      '/AcePackaging/Flat-750ml.png',
-      '/AcePackaging/Flat-650ml.png',
-      '/AcePackaging/Flat-600ml.png'
+      '/images/products/flat/flat-containers-hero.webp',
+      '/images/products/flat/flat-2500ml.webp',
+      '/images/products/flat/flat-2000ml.webp',
+      '/images/products/flat/flat-1500ml.webp',
+      '/images/products/flat/flat-1200ml.webp',
+      '/images/products/flat/flat-1000ml.webp',
+      '/images/products/flat/flat-750ml.webp',
+      '/images/products/flat/flat-650ml.webp',
+      '/images/products/flat/flat-600ml.webp'
     ],
     faqs: [
       { question: 'What rim diameters are available in Flat Containers?', answer: '600ml to 1500ml models feature a 148mm top diameter. 2000ml and 2500ml models feature a 169mm diameter.' },
@@ -1374,7 +1369,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Wide Surface Area', 'Fresh Display Optical Lid'],
         dimensions: { top: '148 mm', bottom: '125 mm', height: '35 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-600ml.png',
+        image: '/images/products/flat/flat-600ml.webp',
         applications: ['Burgers', 'Sandwiches', 'Fresh Cut Fruits', 'Sushi']
       },
       {
@@ -1387,7 +1382,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '125 mm', height: '46 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-600ml.png',
+        image: '/images/products/flat/flat-600ml.webp',
         applications: ['Salads', 'Sandwiches', 'Starters', 'Pastries', 'Cut Fruits'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1406,7 +1401,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '74 mm', height: '62 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-650ml.png',
+        image: '/images/products/flat/flat-650ml.webp',
         applications: ['Gourmet Salads', 'Asian Bowls', 'Charcuterie', 'Pasta'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1425,7 +1420,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '125 mm', height: '55 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-750ml.png',
+        image: '/images/products/flat/flat-750ml.webp',
         applications: ['Meals', 'Rice Combos', 'Curries', 'Fresh Cut Fruit Platters'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1444,7 +1439,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '116 mm', height: '91 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-1000ml.png',
+        image: '/images/products/flat/flat-1000ml.webp',
         applications: ['Family Salads', 'Bulk Rice', 'Curry Tubs', 'Meal Prep'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1463,7 +1458,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '116 mm', height: '98 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-1200ml.png',
+        image: '/images/products/flat/flat-1200ml.webp',
         applications: ['Deep Food Storage', 'Bulk Curries', 'Biryani', 'Commercial Prep'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1482,7 +1477,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '148 mm', bottom: '113 mm', height: '126 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/Flat-1500ml.png',
+        image: '/images/products/flat/flat-1500ml.webp',
         applications: ['Family Feast Meals', 'Catering Prep', 'Commercial Food Storage'],
         specs: [
           { label: 'Top Diameter', value: '148 mm' },
@@ -1501,7 +1496,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '169 mm', bottom: '139 mm', height: '120 mm' },
         packaging: '100 Pcs/set',
-        image: '/AcePackaging/Flat-2000ml.png',
+        image: '/images/products/flat/flat-2000ml.webp',
         applications: ['Jumbo Bulk Tub', 'Restaurant Batch Storage', 'Bakery Prep', 'Catering'],
         specs: [
           { label: 'Top Diameter', value: '169 mm' },
@@ -1520,7 +1515,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use'],
         dimensions: { top: '169 mm', bottom: '133 mm', height: '154 mm' },
         packaging: '100 Pcs/set',
-        image: '/AcePackaging/Flat-2500ml.png',
+        image: '/images/products/flat/flat-2500ml.webp',
         applications: ['Extra-Large Storage', 'Bulk Batter / Gravies', 'Commercial Catering'],
         specs: [
           { label: 'Top Diameter', value: '169 mm' },
@@ -1538,16 +1533,16 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Heavy-Duty Round Deli Tubs',
     shortDescription: 'Heavy-duty thick-wall containers with universal 120mm rim diameter for soups, gravies, dairy, and cold salads.',
     description: 'Ace Packaging Deli Series Containers feature uniform 120mm rim diameter across all volumes (8oz to 32oz), allowing high efficiency in kitchen lid inventory. Thick impact-resistant walls provide superior thermal insulation for boiling hot curries or deep freeze storage.',
-    heroImage: '/ace-official/deli-container.webp',
+    heroImage: '/images/products/deli/deli-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '120mm Universal Rim', 'Microwave & Freezer Safe'],
     gallery: [
-      '/AcePackaging/Deli Series Container.png',
-      '/AcePackaging/Deli-32oz.png',
-      '/AcePackaging/Deli-24oz.png',
-      '/AcePackaging/Deli-16oz.png',
-      '/AcePackaging/Deli-12oz.png',
-      '/AcePackaging/Deli-8oz.png',
-      '/AcePackaging/Deli-Series-Lifestyle.png'
+      '/images/products/deli/deli-series-hero.webp',
+      '/images/products/deli/deli-32oz.webp',
+      '/images/products/deli/deli-24oz.webp',
+      '/images/products/deli/deli-16oz.webp',
+      '/images/products/deli/deli-12oz.webp',
+      '/images/products/deli/deli-8oz.webp',
+      '/images/products/deli/deli-series-hero.webp'
     ],
     faqs: [
       { question: 'Do all Deli Series sizes use the same lid?', answer: 'Yes! All 5 sizes (8oz, 12oz, 16oz, 24oz, and 32oz) share the same 120mm diameter lid, greatly reducing packaging inventory.' },
@@ -1564,7 +1559,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '120mm Rim'],
         dimensions: { top: '120 mm', bottom: '98 mm', height: '42 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-8oz.png',
+        image: '/images/products/deli/deli-8oz.webp',
         applications: ['Dips', 'Coleslaw', 'Side Gravy', 'Hummus', 'Pickles'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -1583,7 +1578,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '120mm Rim'],
         dimensions: { top: '120 mm', bottom: '91 mm', height: '63 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-12oz.png',
+        image: '/images/products/deli/deli-12oz.webp',
         applications: ['Hot Soups', 'Side Curries', 'Raita', 'Pasta Salad', 'Desserts'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -1602,7 +1597,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '120mm Rim'],
         dimensions: { top: '120 mm', bottom: '87 mm', height: '79 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-16oz.png',
+        image: '/images/products/deli/deli-16oz.webp',
         applications: ['Dal', 'Curries', 'Biryani Portions', 'Yogurt', 'Gravies'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -1621,7 +1616,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '120mm Rim'],
         dimensions: { top: '120 mm', bottom: '86 mm', height: '108 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-24oz.png',
+        image: '/images/products/deli/deli-24oz.webp',
         applications: ['Full Curries', 'Soup Takeaway', 'Salads', 'Rice Dishes', 'Noodles'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -1640,7 +1635,7 @@ export const productCategories: ProductCategory[] = [
         features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '120mm Rim'],
         dimensions: { top: '120 mm', bottom: '86 mm', height: '139 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-32oz.png',
+        image: '/images/products/deli/deli-32oz.webp',
         applications: ['Family Curries', 'Bulk Soup', 'Food Storage', 'Dairy Tubs', 'Meal Prep'],
         specs: [
           { label: 'Top Diameter', value: '120 mm' },
@@ -1659,7 +1654,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Airtight Snap Rim', 'Microwave Reheatable', 'Heavy Gauge'],
         dimensions: { top: '120 mm', bottom: '87 mm', height: '79 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-16oz.png',
+        image: '/images/products/deli/deli-16oz.webp',
         applications: ['Hummus', 'Yogurt', 'Gravies', 'Pickles', 'Salads']
       },
       {
@@ -1672,7 +1667,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Hermetic Seal', 'Freezer Safe to -20°C', 'High Impact Wall'],
         dimensions: { top: '120 mm', bottom: '86 mm', height: '108 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-24oz.png',
+        image: '/images/products/deli/deli-24oz.webp',
         applications: ['Dairy Products', 'Bulk Curries', 'Food Processing']
       }
     ]
@@ -1684,13 +1679,13 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Confectionery & Mithai Gift Boxes',
     shortDescription: 'Luxury high-clarity square & rectangular containers crafted for Indian sweets, mithai, chocolates, and dry fruit gift packaging.',
     description: 'Ace Packaging Sweet Box Containers feature crystal-clear transparency, airtight closure, and food-safe odorless virgin polypropylene formulation to keep traditional sweets, baklava, and festive dry fruits fresh and appealing.',
-    heroImage: '/ace-official/sweet-box-containers.webp',
+    heroImage: '/images/products/sweet-box/sweet-box-hero.webp',
     features: ['Crystal-Clear Clarity', 'Odor-Free Food Safe', 'Airtight Freshness', 'Festive Presentation'],
     gallery: [
-      '/AcePackaging/Sweet Box Containers.png',
-      '/AcePackaging/SweetBox-500g.png',
-      '/AcePackaging/SweetBox-250g.png',
-      '/AcePackaging/SweetBox-1000g.png'
+      '/images/products/sweet-box/sweet-box-hero.webp',
+      '/images/products/sweet-box/sweetbox-500g.webp',
+      '/images/products/sweet-box/sweetbox-250g.webp',
+      '/images/products/sweet-box/sweetbox-1000g.webp'
     ],
     faqs: [
       { question: 'What sizes are available in Sweet Box Containers?', answer: 'Available in 250gm, 500gms, and 1000gms capacities with matching crystal-clear lids.' },
@@ -1707,7 +1702,7 @@ export const productCategories: ProductCategory[] = [
         features: ['High Transparency', 'Airtight Snap Lid', 'Odor Free'],
         dimensions: { top: '115 × 115 mm', height: '35 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/SweetBox-250g.png',
+        image: '/images/products/sweet-box/sweetbox-250g.webp',
         applications: ['Kaju Katli', 'Peda', 'Laddoo', 'Dry Fruits', 'Chocolates']
       },
       {
@@ -1720,7 +1715,7 @@ export const productCategories: ProductCategory[] = [
         features: ['High Clarity Optical Lid', 'Rigid Wall', 'Airtight Seal'],
         dimensions: { top: '150 × 150 mm', height: '45 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/SweetBox-500g.png',
+        image: '/images/products/sweet-box/sweetbox-500g.webp',
         applications: ['Assorted Mithai', 'Baklava', 'Dry Fruit Gift Packs', 'Festive Boxes']
       },
       {
@@ -1733,7 +1728,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Heavyweight Base', 'Stackable Ribs', 'Crystal Clear Display'],
         dimensions: { top: '190 × 190 mm', height: '55 mm' },
         packaging: '300 Pcs/set',
-        image: '/AcePackaging/SweetBox-1000g.png',
+        image: '/images/products/sweet-box/sweetbox-1000g.webp',
         applications: ['1kg Sweet Assortments', 'Dry Fruits', 'Celebration Gift Trays']
       }
     ]
@@ -1745,14 +1740,13 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Modern Sleek Food Delivery Boxes',
     shortDescription: 'Modern rectangular food delivery containers with reinforced snap-locking rim and sleek contemporary aesthetic.',
     description: 'Ace Packaging Elite Containers combine contemporary aesthetic design with heavy-duty structural rigidity. Ideal for modern cloud kitchens, executive bento delivery, and premium meal takeaway.',
-    heroImage: '/AcePackaging/Elite Containers.png',
+    heroImage: '/images/products/re-series/ap-re-32.webp',
     features: ['Sleek Modern Profile', 'Reinforced Locking Rim', 'Microwave & Freezer Safe', 'Stackable Base'],
     gallery: [
-      '/AcePackaging/Elite Containers.png',
-      '/AcePackaging/Elite-1000ml.png',
-      '/AcePackaging/Elite-750ml.png',
-      '/AcePackaging/Elite-650ml.png',
-      '/AcePackaging/Elite-500ml.png'
+      '/images/products/re-series/ap-re-32.webp',
+      '/images/products/re-series/ap-re-28.webp',
+      '/images/products/re-series/ap-re-24.webp',
+      '/images/products/re-series/ap-re-16.webp'
     ],
     faqs: [
       { question: 'What makes Elite Containers different?', answer: 'Elite containers feature a reinforced low-profile rim and high-rigidity side ribs that offer exceptional crush-resistance during motorcycle courier transit.' },
@@ -1769,7 +1763,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Reinforced Snap Rim', 'Microwave Reheatable', 'Zero Leakage'],
         dimensions: { top: '172 × 120 mm', height: '38 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Elite-500ml.png',
+        image: '/images/products/re-series/ap-re-16.webp',
         applications: ['Curry & Rice', 'Noodles', 'Appetizers', 'Starters']
       },
       {
@@ -1782,7 +1776,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Modern Low Profile', 'Stackable Ribs', 'Airtight Closure'],
         dimensions: { top: '172 × 120 mm', height: '48 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Elite-650ml.png',
+        image: '/images/products/re-series/ap-re-24.webp',
         applications: ['Biryani Portions', 'Fried Rice', 'Pasta Combos', 'Main Courses']
       },
       {
@@ -1795,7 +1789,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Extra Rigid Flange', 'Thermal Safe -20°C to +120°C'],
         dimensions: { top: '172 × 120 mm', height: '55 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Elite-750ml.png',
+        image: '/images/products/re-series/ap-re-28.webp',
         applications: ['Full Meals', 'Gravies', 'Combo Platters', 'Cloud Kitchen Orders']
       },
       {
@@ -1808,7 +1802,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Maximum Volume', 'Heavy Impact Resistance', 'Optical Clear Lid'],
         dimensions: { top: '172 × 120 mm', height: '68 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Elite-1000ml.png',
+        image: '/images/products/re-series/ap-re-32.webp',
         applications: ['Family Portions', 'Bulk Curries', 'Party Meals']
       }
     ]
@@ -1820,7 +1814,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Security Lock Food Containers',
     shortDescription: 'Security tab lock containers assuring end consumers of untouched food integrity and zero tampering.',
     description: 'Containers with breakable security tabs guaranteeing food freshness and anti-tamper security for dairy, delivery, and food retail.',
-    heroImage: '/ace-official/deli-container.webp',
+    heroImage: '/images/products/deli/deli-series-hero.webp',
     features: ['Breakable Security Tab', '100% Leak Proof', 'Tamper Evident Seal'],
     products: [
       {
@@ -1833,7 +1827,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Lock Tab', 'Hermetic Seal'],
         dimensions: { top: '120 mm', height: '79 mm' },
         packaging: '240 Pcs/set',
-        image: '/AcePackaging/Deli-16oz.png',
+        image: '/images/products/deli/deli-16oz.webp',
         applications: ['Dairy Products', 'Yogurt', 'Gravies', 'Pickles']
       }
     ]
@@ -1845,7 +1839,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Executive Combo Meal Packaging',
     shortDescription: 'Sleek meal packaging boxes tailored for airlines, corporate catering, and train meals.',
     description: 'Compact stackable combo boxes optimized for volume meal distribution and multi-item executive lunches.',
-    heroImage: '/ace-official/re-series-containers.webp',
+    heroImage: '/images/products/re-series/re-series-hero.webp',
     features: ['Compact Geometry', 'Stackable Base', 'Multi-Chamber Options'],
     products: [
       {
@@ -1858,7 +1852,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Zero Flavor Leak', 'Space Saving'],
         dimensions: { top: '223 × 126 mm', height: '47 mm' },
         packaging: '150 Pcs/set',
-        image: '/AcePackaging/AP-RE-28.png',
+        image: '/images/products/re-series/ap-re-28.webp',
         applications: ['Corporate Lunches', 'Airline Meals', 'Catering Combos']
       }
     ]
@@ -1870,7 +1864,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'Deep-Freeze Ice Cream & Dairy Packaging',
     shortDescription: 'Freezer-grade plastic containers resistant to low-temperature embrittlement down to -30°C.',
     description: 'Designed specifically for ice cream manufacturers, frozen yogurts, and gelato packaging with leak-proof lids.',
-    heroImage: '/ace-official/round-containers.png',
+    heroImage: '/images/products/deli/deli-series-hero.webp',
     features: ['Deep Freeze Safe down to -30°C', 'High Moisture Barrier', 'Crack Resistant'],
     products: [
       {
@@ -1883,7 +1877,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Crack Resistant', 'IML Printable', 'Deep Freeze Safe'],
         dimensions: { top: '120 mm', bottom: '67 mm', height: '97 mm' },
         packaging: '500 Pcs/set',
-        image: '/AcePackaging/Round-500ml.png',
+        image: '/images/products/deli/deli-16oz.webp',
         applications: ['Ice Cream', 'Frozen Yogurt', 'Gelato', 'Kulfi']
       }
     ]
@@ -1895,7 +1889,7 @@ export const productCategories: ProductCategory[] = [
     subtitleName: 'In-Mould Labelling Branded Packaging',
     shortDescription: 'Full-color high definition IML printed containers for high brand recall.',
     description: 'In-Mould Labelling fuses vibrant artwork directly into container walls during moulding for permanent scratch-resistant branding.',
-    heroImage: '/ace-official/zen-containers.png',
+    heroImage: '/images/products/zen/zen-series-hero.webp',
     features: ['Waterproof Printing', 'Scratch Resistance', 'Full Cover Artwork', 'High Definition'],
     products: [
       {
@@ -1908,7 +1902,7 @@ export const productCategories: ProductCategory[] = [
         features: ['Full HD Graphics', '100% Recyclable'],
         dimensions: { top: 'Custom', height: 'Custom' },
         packaging: 'Per Client Specification',
-        image: '/AcePackaging/ZEN Series Containers.png',
+        image: '/images/products/zen/zen-series-hero.webp',
         applications: ['Brand Retail Packaging', 'Butter', 'Cheese', 'Ice Cream']
       }
     ]

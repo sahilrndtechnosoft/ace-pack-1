@@ -1983,7 +1983,7 @@ export const ModelBanner: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[70vh] sm:h-[calc(100vh-85px)] sm:max-h-[920px] sm:min-h-[520px] bg-[#FDFCF9] border-b border-[#E6DBC6]"
+      className="relative h-[70vh] sm:h-[calc(100vh-85px)] sm:max-h-[920px] sm:min-h-[520px] bg-[var(--ace-paper)] border-b border-[var(--ace-line)]"
     >
       {/* Gold-wave backdrop. A plain background layer rather than an <img>:
           nothing needs to read its intrinsic size, and the near-white centre
@@ -1996,19 +1996,20 @@ export const ModelBanner: React.FC = () => {
         style={{ backgroundImage: "url('/images/hero-gold-wave-bg.webp')" }}
       />
       <div
-        className={`absolute inset-0 z-50 flex items-end justify-center bg-[#FDFCF9]/92 px-5 pb-10 transition-opacity duration-700 sm:items-center sm:pb-0 ${
+        className={`absolute inset-0 z-50 flex items-end justify-center px-5 pb-10 transition-opacity duration-700 sm:items-center sm:pb-0 ${
           assetsReady ? 'pointer-events-none opacity-0' : 'opacity-100'
         }`}
+        style={{ backgroundColor: 'var(--ace-paper)' }}
         aria-hidden={assetsReady}
       >
-        <div className="w-full max-w-[340px] text-[#1A1D20]">
-          <div className="mb-3 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6E6250]">
+        <div className="w-full max-w-[340px] text-[var(--ace-ink)]">
+          <div className="mb-3 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ace-muted)]">
             <span>Loading product film</span>
             <span>{loadProgress}%</span>
           </div>
-          <div className="h-1 overflow-hidden rounded-full bg-[#E6DBC6]">
+          <div className="h-1 overflow-hidden rounded-full bg-[var(--ace-line)]">
             <div
-              className="h-full bg-[#cfa144] transition-[width] duration-300 ease-out"
+              className="h-full bg-[var(--brand-gold)] transition-[width] duration-300 ease-out"
               style={{ width: `${loadProgress}%` }}
             />
           </div>

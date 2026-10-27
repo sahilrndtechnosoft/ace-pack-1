@@ -209,7 +209,43 @@ export default function HomeExperience() {
   return <MotionConfig reducedMotion="user"><div ref={root} className={`xp-home ${live?'xp-live':'xp-static'}`} data-render-reason={fallbackReason}>
     <a href="#main-content" className="xp-skip">Skip to content</a>
     {live&&<div className="xp-scene-layer" aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
-    {live&&!ready&&<div className="xp-loader" role="status"><span className="xp-loader-logo">Ace Packaging</span><span className="xp-eyebrow">Good things are taking shape</span><div role="progressbar" aria-label="Loading 3D packaging" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} className="xp-loader-track"><span style={{width:`${progress}%`}}/></div><span>{Math.round(progress)}%</span><button onClick={onFailure}>Continue with still images <ArrowRight size={14}/></button></div>}
+    {live && !ready && (
+      <div className="xp-loader" role="status">
+        <div className="xp-loader-brand">
+          <div className="xp-loader-icon" aria-hidden="true">
+            <img
+              src="/images/ACE_Pack_Logo-01.png"
+              alt="Ace Packaging"
+              width={140}
+              height={72}
+              className="xp-loader-img"
+            />
+          </div>
+          <span className="xp-loader-logo">
+            Ace <span className="xp-serif-gold">Packaging</span>
+          </span>
+          <span className="xp-eyebrow">
+            <span className="xp-loader-dot" aria-hidden="true" />
+            Good things are taking shape
+          </span>
+        </div>
+        <div
+          role="progressbar"
+          aria-label="Loading 3D packaging"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress)}
+          className="xp-loader-track"
+        >
+          <span style={{ width: `${progress}%` }} />
+        </div>
+        <span className="xp-loader-pct">{Math.round(progress)}%</span>
+        <button type="button" onClick={onFailure} className="xp-loader-skip">
+          <span>Continue with still images</span>
+          <ArrowRight size={14} aria-hidden="true" />
+        </button>
+      </div>
+    )}
     <div className="xp-scroll-line" aria-hidden="true"/>
     <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['products-showcase','Products'],['manufacturing','Our thinking'],['closing','Sample kit']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
     <section id="main-content" className="xp-hero">

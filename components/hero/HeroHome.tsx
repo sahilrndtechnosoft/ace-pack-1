@@ -7,7 +7,7 @@ import { Hero3DStudio } from './Hero3DStudio';
 
 export const HeroHome: React.FC = () => {
   return (
-    <section className="relative pt-6 pb-16 lg:pt-10 lg:pb-20 overflow-hidden bg-gradient-to-b from-[#fafbf7] via-[#f8f9f5] to-[#f4f5f0] text-[var(--ace-ink)] border-b border-[#E6DBC6]/60">
+    <section className="relative pt-6 pb-16 lg:pt-10 lg:pb-20 overflow-hidden bg-gradient-to-b from-[var(--ace-paper)] via-[var(--ace-aqua-soft)] to-[var(--ace-image-surface)] text-[var(--ace-ink)] border-b border-[#E6DBC6]/60">
       {/* Subtle warm gold ambient gradients matching the brand logo */}
       <div
         aria-hidden="true"

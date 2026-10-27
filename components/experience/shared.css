@@ -5,10 +5,10 @@
    sheets only tint or resize these; they never redefine them. */
 
 .xp-eyebrow {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.6;
-  font-weight: 500;
-  letter-spacing: .13em;
+  font-weight: 600;
+  letter-spacing: .14em;
   text-transform: uppercase
 }
 

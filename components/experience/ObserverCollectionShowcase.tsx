@@ -272,7 +272,7 @@ export function ObserverCollectionShowcase() {
       {/* The 6 Sliding Panels */}
       {products.map((p, idx) => {
         const cardImage = variantImages[p.id] || p.image;
-        const isCardPhoto = cardImage.startsWith('/DSC') || cardImage.endsWith('.JPG');
+        const isCardPhoto = cardImage.startsWith('/DSC') || cardImage.endsWith('.JPG') || cardImage.startsWith('/images/products/');
         return (
           <div
             key={p.id}
@@ -335,10 +335,10 @@ export function ObserverCollectionShowcase() {
                             {p.id === 'ro-series' && (
                               <div className="flex flex-wrap items-center justify-center gap-1 my-0.5 sm:my-1 z-30">
                                 {[
-                                  { label: 'Clear', src: p.image },
-                                  { label: 'Black', src: '/DSC04062.JPG' },
-                                  { label: 'White', src: '/DSC03993.JPG' },
-                                  { label: 'Tub', src: '/DSC04053.JPG' },
+                                  { label: 'Hero', src: p.image },
+                                  { label: '48oz', src: '/images/products/ro-series/ap-ro-48.webp' },
+                                  { label: '32oz', src: '/images/products/ro-series/ap-ro-32.webp' },
+                                  { label: '24oz', src: '/images/products/ro-series/ap-ro-24.webp' },
                                 ].map((v) => (
                                   <button
                                     key={v.src}
@@ -360,8 +360,9 @@ export function ObserverCollectionShowcase() {
                             {p.id === 'deli-series' && (
                               <div className="flex flex-wrap items-center justify-center gap-1 my-0.5 sm:my-1 z-30">
                                 {[
-                                  { label: 'Graphic', src: p.image },
-                                  { label: 'Tub Photo', src: '/DSC04053.JPG' },
+                                  { label: 'Hero', src: p.image },
+                                  { label: '32oz', src: '/images/products/deli/deli-32oz.webp' },
+                                  { label: '16oz', src: '/images/products/deli/deli-16oz.webp' },
                                 ].map((v) => (
                                   <button
                                     key={v.src}
@@ -464,13 +465,13 @@ export function ObserverCollectionShowcase() {
                           {p.id === 'ro-series' && (
                             <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
                               <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
-                                Real Shots:
+                                Sizes:
                               </span>
                               {[
-                                { label: 'Standard', src: p.image },
-                                { label: 'Black Finish', src: '/DSC04062.JPG' },
-                                { label: 'White Finish', src: '/DSC03993.JPG' },
-                                { label: 'Clear Tub', src: '/DSC04053.JPG' },
+                                { label: 'Hero View', src: p.image },
+                                { label: 'AP-RO-48', src: '/images/products/ro-series/ap-ro-48.webp' },
+                                { label: 'AP-RO-32', src: '/images/products/ro-series/ap-ro-32.webp' },
+                                { label: 'AP-RO-24', src: '/images/products/ro-series/ap-ro-24.webp' },
                               ].map((v) => (
                                 <button
                                   key={v.src}
@@ -492,11 +493,12 @@ export function ObserverCollectionShowcase() {
                           {p.id === 'deli-series' && (
                             <div className="flex flex-wrap items-center justify-center gap-1.5 my-2 z-30">
                               <span className="text-[9px] uppercase tracking-wider text-gray-400 font-bold mr-1">
-                                Real Shot:
+                                Sizes:
                               </span>
                               {[
-                                { label: 'Standard', src: p.image },
-                                { label: 'Clear Deli Tub', src: '/DSC04053.JPG' },
+                                { label: 'Hero View', src: p.image },
+                                { label: '32oz Tub', src: '/images/products/deli/deli-32oz.webp' },
+                                { label: '16oz Tub', src: '/images/products/deli/deli-16oz.webp' },
                               ].map((v) => (
                                 <button
                                   key={v.src}
