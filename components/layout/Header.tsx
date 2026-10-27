@@ -151,19 +151,17 @@ export const Header: React.FC = () => {
   const isActive = (href: string) => {
     const roots =
       href === '/categories' ? ['/categories', '/products']
-      : href === '/resources' ? resourceLinks.map((l) => l.href)
-      : [href];
+        : href === '/resources' ? resourceLinks.map((l) => l.href)
+          : [href];
     return roots.some((root) => pathname === root || pathname.startsWith(`${root}/`));
   };
 
   const navLink = (href: string, extra = '') =>
-    `relative py-3 transition-colors hover:text-[var(--ace-orange)] after:absolute after:left-0 after:right-0 after:bottom-1 after:h-[2px] after:rounded-full after:bg-[var(--ace-orange)] after:origin-left after:transition-transform after:duration-300 ${
-      isActive(href) ? 'text-[var(--ace-orange)] after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+    `relative py-3 transition-colors hover:text-[var(--ace-orange)] after:absolute after:left-0 after:right-0 after:bottom-1 after:h-[2px] after:rounded-full after:bg-[var(--ace-orange)] after:origin-left after:transition-transform after:duration-300 ${isActive(href) ? 'text-[var(--ace-orange)] after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
     } ${extra}`;
 
   const mobileLink = (href: string) =>
-    `py-2.5 px-3 rounded-xl flex items-center justify-between font-bold text-sm transition-colors hover:bg-white hover:text-[var(--ace-orange)] ${
-      isActive(href) ? 'bg-white text-[var(--ace-orange)] font-extrabold shadow-2xs' : 'text-[var(--ace-ink)]'
+    `py-2.5 px-3 rounded-xl flex items-center justify-between font-bold text-sm transition-colors hover:bg-white hover:text-[var(--ace-orange)] ${isActive(href) ? 'bg-white text-[var(--ace-orange)] font-extrabold shadow-2xs' : 'text-[var(--ace-ink)]'
     }`;
 
   // Filtered categories for desktop mega menu
@@ -270,9 +268,8 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${
-        isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
-      }`}
+      className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
+        }`}
     >
       <div className="container-custom max-w-[1600px] flex items-center justify-between gap-3">
         {/* Brand Logo - Official Ace Packaging Logo */}
@@ -325,9 +322,8 @@ export const Header: React.FC = () => {
             >
               <span>Our Products</span>
               <ChevronRight
-                className={`w-3.5 h-3.5 rotate-90 transition-transform duration-200 ${
-                  megaMenuOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
-                }`}
+                className={`w-3.5 h-3.5 rotate-90 transition-transform duration-200 ${megaMenuOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
+                  }`}
               />
             </button>
 
@@ -351,11 +347,10 @@ export const Header: React.FC = () => {
                             key={grp.id}
                             type="button"
                             onClick={() => setDesktopSegment(grp.id)}
-                            className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all shrink-0 cursor-pointer ${
-                              desktopSegment === grp.id
+                            className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all shrink-0 cursor-pointer ${desktopSegment === grp.id
                                 ? 'bg-[var(--ace-orange)] text-white shadow-xs'
                                 : 'bg-white/90 text-gray-700 hover:text-[var(--ace-ink)] border border-[var(--ace-line)] hover:border-gray-300'
-                            }`}
+                              }`}
                           >
                             <span>{grp.label}</span>
                           </button>
@@ -415,18 +410,16 @@ export const Header: React.FC = () => {
                                 type="button"
                                 onMouseEnter={() => setActiveCategorySlug(category.slug)}
                                 onClick={() => setActiveCategorySlug(category.slug)}
-                                className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-center justify-between gap-3 group cursor-pointer ${
-                                  isSelected
+                                className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-center justify-between gap-3 group cursor-pointer ${isSelected
                                     ? 'bg-white text-[var(--ace-orange)] shadow-xs font-bold border border-[var(--ace-orange)]/40 ring-1 ring-[var(--ace-orange)]/15'
                                     : 'text-[var(--ace-ink)] hover:bg-white/80 hover:text-[var(--ace-orange)] border border-transparent'
-                                }`}
+                                  }`}
                               >
                                 <div className="flex items-center gap-2.5 min-w-0">
                                   <PackagingIllustration
                                     slug={category.slug}
-                                    className={`w-5 h-5 shrink-0 transition-colors ${
-                                      isSelected ? 'text-[var(--ace-orange)]' : 'text-gray-500 group-hover:text-[var(--ace-orange)]'
-                                    }`}
+                                    className={`w-5 h-5 shrink-0 transition-colors ${isSelected ? 'text-[var(--ace-orange)]' : 'text-gray-500 group-hover:text-[var(--ace-orange)]'
+                                      }`}
                                   />
                                   <span className="text-[13.5px] truncate font-medium">{category.name}</span>
                                 </div>
@@ -436,9 +429,8 @@ export const Header: React.FC = () => {
                                     {category.products.length}
                                   </span>
                                   <ChevronRight
-                                    className={`w-3.5 h-3.5 transition-transform ${
-                                      isSelected ? 'text-[var(--ace-orange)] translate-x-0.5' : 'text-gray-400 group-hover:text-gray-600'
-                                    }`}
+                                    className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-[var(--ace-orange)] translate-x-0.5' : 'text-gray-400 group-hover:text-gray-600'
+                                      }`}
                                   />
                                 </div>
                               </button>
@@ -561,9 +553,8 @@ export const Header: React.FC = () => {
             >
               <span>Resources</span>
               <ChevronRight
-                className={`w-3.5 h-3.5 rotate-90 transition-transform ${
-                  resourcesOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
-                }`}
+                className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
+                  }`}
               />
             </button>
             <AnimatePresence>
@@ -583,9 +574,8 @@ export const Header: React.FC = () => {
                         href={item.href}
                         onClick={() => setResourcesOpen(false)}
                         aria-current={isActive(item.href) ? 'page' : undefined}
-                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[var(--ace-paper)] ${
-                          isActive(item.href) ? 'bg-[var(--ace-paper)]' : ''
-                        }`}
+                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[var(--ace-paper)] ${isActive(item.href) ? 'bg-[var(--ace-paper)]' : ''
+                          }`}
                       >
                         <span className={`block text-[15px] font-bold ${isActive(item.href) ? 'text-[var(--ace-orange)]' : 'text-[var(--ace-ink)]'}`}>
                           {item.label}
@@ -683,12 +673,11 @@ export const Header: React.FC = () => {
                   >
                     <div className="flex items-center gap-2">
                       <Box className="w-4 h-4 text-[var(--ace-orange)]" />
-                      <span>Product Collections ({productCategories.length} Lines)</span>
+                      <span>Product </span>
                     </div>
                     <ChevronDown
-                      className={`w-4 h-4 text-[var(--ace-orange)] transition-transform duration-300 ${
-                        mobileProductsOpen ? 'rotate-180' : ''
-                      }`}
+                      className={`w-4 h-4 text-[var(--ace-orange)] transition-transform duration-300 ${mobileProductsOpen ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
 
@@ -866,9 +855,8 @@ export const Header: React.FC = () => {
                                   <span>Browse All 17 Series (A–Z)</span>
                                 </div>
                                 <ChevronDown
-                                  className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${
-                                    mobileShowAllCats ? 'rotate-180' : ''
-                                  }`}
+                                  className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${mobileShowAllCats ? 'rotate-180' : ''
+                                    }`}
                                 />
                               </button>
 
@@ -959,9 +947,8 @@ export const Header: React.FC = () => {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`p-2 rounded-xl bg-white border border-[var(--ace-line)] transition-colors hover:text-[var(--ace-orange)] flex flex-col justify-between ${
-                        isActive(item.href) ? 'text-[var(--ace-orange)] border-[var(--ace-orange)]/60' : ''
-                      }`}
+                      className={`p-2 rounded-xl bg-white border border-[var(--ace-line)] transition-colors hover:text-[var(--ace-orange)] flex flex-col justify-between ${isActive(item.href) ? 'text-[var(--ace-orange)] border-[var(--ace-orange)]/60' : ''
+                        }`}
                     >
                       <span className="font-bold truncate">{item.label}</span>
                       <span className="text-[10px] text-gray-500 font-normal truncate">{item.hint}</span>

@@ -25,22 +25,6 @@ function Progress({onProgress}:Pick<Props,'onProgress'>) {
   const progress=useProgress(s=>s.progress);
   useEffect(()=>onProgress(progress),[progress,onProgress]);return null;
 }
-function FoodFilling({compact}:{compact:boolean}) {
-  const {scene}=useGLTF(compact?'/models/food/pasta-scan-mobile.glb':'/models/food/pasta-scan.glb','/draco/',true);
-  const filling=useMemo(()=>{
-    const copy=scene.clone(true);
-    copy.traverse(object=>{
-      if(object instanceof THREE.Mesh){
-        object.material=object.material.clone();
-        (object.material as THREE.MeshStandardMaterial).envMapIntensity=.12;
-        object.castShadow=true;object.receiveShadow=true;
-      }
-    });
-    return copy;
-  },[scene]);
-  useEffect(()=>()=>{filling.traverse(object=>{if(object instanceof THREE.Mesh)(object.material as THREE.Material).dispose();});},[filling]);
-  return <primitive object={filling}/>;
-}
 function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'];compact:boolean;onReady?:()=>void}) {
   const id=['takeaway','shallow-bowl','round-tub'][kind];
   const gltf=useGLTF(`/models/acepack/${id}.glb`,'/draco/',true);
@@ -108,7 +92,7 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
       if (lid) lid.position.y = THREE.MathUtils.lerp(lid.position.y, lidY + pose.lidLift, damping);
     }
   },-2);
-  return <group ref={group}><primitive object={scene}/>{kind===0&&<FoodFilling compact={compact}/>}</group>;
+  return <group ref={group}><primitive object={scene}/></group>;
 }
 function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembly:React.RefObject<THREE.Group|null>}) {
   const {gl,camera,setFrameloop,invalidate}=useThree();const light=useRef<THREE.PointLight>(null);const last=useRef(0);
@@ -153,7 +137,7 @@ export default function PackagingScene(props:Props) {
   const assembly=useRef<THREE.Group>(null);
   const compact=useCompactViewport();
   const [quality,setQuality]=useState(1.5);
-  return <><Progress onProgress={props.onProgress}/><Canvas title="Food scan: Pasta Bowl - Polycam by Moshe Caine (CC BY 4.0), adapted. Credits: /models/food/CREDITS.md" shadows="percentage" frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
+  return <><Progress onProgress={props.onProgress}/><Canvas shadows="percentage" frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
     <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd" castShadow shadow-mapSize-width={compact?512:1024} shadow-mapSize-height={compact?512:1024} shadow-bias={-.0001} shadow-normalBias={.003}/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
     <PerformanceMonitor flipflops={2} onDecline={()=>setQuality(1)} onIncline={()=>setQuality(1.5)} onFallback={()=>setQuality(1)}/>
     <Rig state={props.state} onFailure={props.onFailure} assembly={assembly}/>

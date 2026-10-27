@@ -49,7 +49,7 @@ export const productCategories: ProductCategory[] = [
       '/images/products/hinge/hinge-100ml.webp',
       '/images/products/hinge/hinge-50ml.webp',
       '/images/products/hinge/hinge-25ml.webp',
-      '/images/products/hinge/hinge-100ml.webp'
+      '/images/products/hinge/hinge-2oz.webp'
     ],
     faqs: [
       { question: 'Does the hinged lid detach during transport?', answer: 'No, our hinges are engineered with flexible virgin PP polymer tested for over 50 open-close cycles without tearing.' },
