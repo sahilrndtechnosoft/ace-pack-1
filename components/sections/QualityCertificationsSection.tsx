@@ -10,30 +10,30 @@ import { SplitHeading } from '../ui/SplitHeading';
 export const QualityCertificationsSection: React.FC = () => {
   const credentials = [
     {
-      badge: 'US FDA COMPLIANT',
-      title: 'US FDA 21 CFR 177.1520',
-      description: 'Approved for direct contact with all food categories including hot oils, gravies, dairy, and acidic foods. 100% BPA-free and non-toxic.',
-      standard: 'Federal Food Drug & Cosmetic Act',
-      icon: ShieldCheck,
-    },
-    {
-      badge: 'ISO CERTIFIED FACILITY',
-      title: 'ISO 9001:2015 Manufacturing',
-      description: 'Standardized cleanroom manufacturing, automated optical defect inspection, and batch traceability across Daman Unit 1 & Unit 2.',
-      standard: 'Cleanroom Production Standards',
+      badge: 'ISO 9001:2015 CERTIFIED',
+      title: 'ISO 9001:2015 Plant Certification',
+      description: 'Certified Quality Management System covering precision injection moulding, tooling calibration, and rigorous quality control protocols.',
+      standard: 'ISO 9001:2015 Standards',
       icon: Award,
     },
     {
-      badge: 'THIRD-PARTY VERIFIED',
-      title: 'Migration Testing (SGS & Intertek)',
-      description: 'Tested against global overall migration limits (OML) and specific migration limits (SML) under extreme microwave and freezing cycles.',
-      standard: 'Zero Chemical Migration',
+      badge: 'ISO CERTIFIED FACILITY',
+      title: 'Cleanroom Production Standards',
+      description: 'Standardized cleanroom manufacturing, automated optical defect inspection, and complete batch traceability across Daman Unit 1 & Unit 2.',
+      standard: 'Zero-Defect Quality Protocol',
+      icon: ShieldCheck,
+    },
+    {
+      badge: 'PRECISION TOLERANCE',
+      title: 'Optical Inspection (±0.02mm)',
+      description: 'Every mould and lid undergoes continuous optical inspection and zero-leak pressure testing under ISO quality management guidelines.',
+      standard: 'Continuous Line Auditing',
       icon: FlaskConical,
     },
     {
       badge: 'VIRGIN POLYMER ASSURANCE',
       title: '100% Prime Virgin PP 05',
-      description: 'Exclusively virgin polypropylene polymer sourced directly from prime petrochemical refiners. Zero regrind, zero recycled filler.',
+      description: 'Exclusively virgin polypropylene polymer sourced directly from prime petrochemical refiners. Completely BPA-free, odorless, and non-toxic.',
       standard: 'Zero Contaminant Purity',
       icon: FileCheck2,
     },
@@ -57,11 +57,11 @@ export const QualityCertificationsSection: React.FC = () => {
               </div>
               <SplitHeading>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight">
-                  Qualified &amp; Certified for Global Food Safety
+                  ISO 9001:2015 Certified Manufacturing
                 </h2>
               </SplitHeading>
               <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
-                Ace Packaging adheres to stringent international food contact clearances, laboratory migration audits, and cleanroom quality management protocols.
+                Ace Packaging operates under a certified ISO 9001:2015 Quality Management System across Daman Unit 1 and Unit 2, ensuring rigorous quality controls from virgin polymer to final delivery.
               </p>
             </div>
 

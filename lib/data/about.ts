@@ -34,7 +34,7 @@ export const aboutOverview = {
 
 export const milestones = [
   { year: '2011', title: 'Factory established', body: 'Founded Unit 1 in Daman with state-of-the-art injection moulding machinery.' },
-  { year: '2015', title: 'FDA & ISO certified', body: 'Achieved ISO 9001:2015 certification and US FDA food-contact clearance.' },
+  { year: '2015', title: 'ISO 9001:2015 certified', body: 'Achieved ISO 9001:2015 Quality Management System certification.' },
   { year: '2019', title: 'Automated packaging', body: 'Commissioned automated packaging systems and precision high-cavity tooling.' },
   { year: '2023', title: 'Unit 2 launched', body: 'Expanded manufacturing capacity to over 1.5 million containers daily across 2 plant units.' },
   { year: '2026', title: 'Global footprint', body: 'Exporting premium food containers to 12+ countries including Australia, UAE, UK, Oman, Europe, Canada, and USA.' },
@@ -71,6 +71,6 @@ export const plant = {
 export const leadership = [
   { role: 'Managing Director', remit: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.', name: 'Rohan Mehta', portrait: '', linkedin: 'https://www.linkedin.com/' },
   { role: 'Head of Operations', remit: 'Runs day-to-day production scheduling, robotic press uptime and dispatch reliability.', name: 'Anika Shah', portrait: '', linkedin: 'https://www.linkedin.com/' },
-  { role: 'Head of Quality & R&D', remit: 'Owns mould CAD development, material testing and ISO/FDA compliance across every batch.', name: 'Dev Patel', portrait: '', linkedin: 'https://www.linkedin.com/' },
+  { role: 'Head of Quality & R&D', remit: 'Owns mould CAD development, material testing and ISO 9001:2015 quality standards across every batch.', name: 'Dev Patel', portrait: '', linkedin: 'https://www.linkedin.com/' },
   { role: 'Head of Supply Chain', remit: 'Manages raw material sourcing, export logistics and on-time dispatch.', name: 'Priya Desai', portrait: '', linkedin: 'https://www.linkedin.com/' },
 ];

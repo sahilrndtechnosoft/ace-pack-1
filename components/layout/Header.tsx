@@ -276,12 +276,12 @@ export const Header: React.FC = () => {
         <Link href="/" className="flex shrink-0 items-center gap-3 group">
           <div className="flex items-center justify-center">
             <img
-              src="/images/ACE_Pack_Logo-01.png"
+              src="/images/Ace_New_Update_Logo-01.png"
               alt="Ace Packaging"
-              width={320}
-              height={165}
+              width={340}
+              height={152}
               decoding="async"
-              className="h-12 sm:h-16 lg:h-18 w-auto max-w-[110px] sm:max-w-[160px] object-contain group-hover:scale-105 transition-transform"
+              className="h-11 sm:h-14 lg:h-16 w-auto max-w-[130px] sm:max-w-[170px] lg:max-w-[190px] object-contain group-hover:scale-105 transition-transform"
             />
           </div>
         </Link>
@@ -512,7 +512,7 @@ export const Header: React.FC = () => {
                         <div className="mt-4 pt-3 border-t border-[var(--ace-line)] flex items-center justify-between text-xs text-[var(--ace-muted)]">
                           <div className="flex items-center gap-1.5">
                             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                            <span>US FDA 21 CFR 177.1520 & ISO 9001:2015 · Deep Freeze (−20°C) to Microwave (+120°C) Safe</span>
+                            <span>ISO 9001:2015 Certified · Deep Freeze (−20°C) to Microwave (+120°C) Safe</span>
                           </div>
                           <Link
                             href="/downloads"

@@ -13,6 +13,9 @@ interface SpecificProductPageProps {
     category_slug: string;
     product_slug: string;
   }>;
+  searchParams?: Promise<{
+    variety?: string;
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -34,8 +37,9 @@ export async function generateMetadata({ params }: SpecificProductPageProps): Pr
   };
 }
 
-export default async function SpecificProductPage({ params }: SpecificProductPageProps) {
+export default async function SpecificProductPage({ params, searchParams }: SpecificProductPageProps) {
   const { category_slug, product_slug } = await params;
+  const { variety } = (await searchParams) || {};
   const result = getProductBySlugs(category_slug, product_slug);
 
   if (!result) {
@@ -72,12 +76,12 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
             </Link>
 
             <span className="text-[11px] sm:text-xs text-gray-500 font-medium bg-white/70 px-3 py-1 rounded-full border border-[#E6DBC6]/70">
-              US FDA 21 CFR 177.1520 &amp; ISO 9001:2015 Certified
+              ISO 9001:2015 Certified
             </span>
           </div>
 
           {/* Interactive 4-View Showcase (Blank, Specs, Food Locking, Video) */}
-          <ProductDetailInteractive category={category} product={product} />
+          <ProductDetailInteractive category={category} product={product} initialVariety={variety} />
 
           {/* Related Models in this category */}
           {relatedCategoryProducts.length > 0 && (

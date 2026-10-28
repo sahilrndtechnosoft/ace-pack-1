@@ -184,7 +184,7 @@ export default function ProductsExperience() {
               <span className="xpr-title-mask"><span>{models.length} models.</span></span>
               <span className="xpr-title-mask"><span><em>Specified in hand.</em></span></span>
             </h1>
-            <p className="xpr-hero-lead">Every model below is moulded from 100% prime virgin PP 05, US FDA 21 CFR 177.1520 certified and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.</p>
+            <p className="xpr-hero-lead">Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.</p>
           </div>
           <div className="xpr-glance">
             <div><b>{models.length}</b><span>Models</span></div>

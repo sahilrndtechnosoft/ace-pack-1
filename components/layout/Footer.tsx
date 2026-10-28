@@ -39,12 +39,12 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
               <Link href="/" className="inline-block mb-6 group">
-                <div className="bg-white px-4 py-2 rounded-2xl border border-[#b99750]/40 shadow-xs inline-flex items-center group-hover:border-[#b99750] transition-colors">
+                <div className="bg-white px-4 py-2.5 rounded-2xl border border-[#b99750]/40 shadow-xs inline-flex items-center group-hover:border-[#b99750] transition-colors">
                   <img
-                    src="/images/ACE_Pack_Logo-01.png"
+                    src="/images/Ace_New_Update_Logo-01.png"
                     alt="Ace Packaging"
                     width={400}
-                    height={174}
+                    height={178}
                     loading="lazy"
                     decoding="async"
                     className="h-10 sm:h-12 w-auto max-w-[150px] sm:max-w-[180px] object-contain group-hover:scale-105 transition-transform duration-300"
@@ -58,7 +58,7 @@ export const Footer: React.FC = () => {
 
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#b99750]/40 text-xs font-semibold text-[#8c6f2a] shadow-2xs">
                 <ShieldCheck className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>ISO 9001:2015 &amp; US FDA 21 CFR Food-Grade</span>
+                <span>ISO 9001:2015 Certified Facility</span>
               </div>
             </div>
 

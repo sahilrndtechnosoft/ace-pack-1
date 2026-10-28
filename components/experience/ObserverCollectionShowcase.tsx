@@ -367,7 +367,7 @@ export function ObserverCollectionShowcase() {
                                 <Box size={12} className="text-[#b99750]" /> Container Architecture
                               </span>
                               <span className="flex items-center gap-1 text-emerald-800 text-[10px] font-medium bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
-                                <CheckCircle2 size={10} /> US FDA 21 CFR
+                                <CheckCircle2 size={10} /> ISO 9001:2015
                               </span>
                             </div>
 
@@ -469,7 +469,7 @@ export function ObserverCollectionShowcase() {
                               <Box size={14} className="text-[#b99750]" /> Container Architecture
                             </span>
                             <span className="flex items-center gap-1 text-emerald-800 text-[11px] font-medium bg-emerald-50/90 border border-emerald-200/80 px-2.5 py-0.5 rounded-full">
-                              <CheckCircle2 size={12} /> US FDA 21 CFR
+                              <CheckCircle2 size={12} /> ISO 9001:2015
                             </span>
                           </div>
 

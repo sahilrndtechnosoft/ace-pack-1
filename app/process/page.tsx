@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ProcessPage() {
   const steps = [
-    { num: '01', title: 'Raw Material Procurement', description: '100% prime virgin polypropylene (PP 05) resin, food-contact certified to US FDA 21 CFR 177.1520. No regrind, no recycled content enters the line.' },
+    { num: '01', title: 'Raw Material Procurement', description: '100% prime virgin polypropylene (PP 05) resin processed in our ISO 9001:2015 certified facility. No regrind, no recycled content enters the line.' },
     { num: '02', title: 'Polymer Resin Drying & Plastifying', description: 'Virgin PP 05 resins are dehumidified and melted under digital temperature control.' },
     { num: '03', title: 'High-Speed Multi-Cavity Injection', description: 'Injection under 180T–450T hydraulic clamp force with 2.8s cycle speed.' },
     { num: '04', title: 'In-Mould Labelling (IML) Fusion', description: 'Robotic label insertion fuses vibrant full-color artwork directly into container walls.' },

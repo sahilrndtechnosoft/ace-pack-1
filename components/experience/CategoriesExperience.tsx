@@ -15,7 +15,7 @@ const modelCount = productCategories.reduce((n, c) => n + c.products.length, 0);
 
 const standard = [
   '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
-  'US FDA 21 CFR 177.1520 certified food-contact material',
+  'Manufactured in an ISO 9001:2015 certified facility in Daman',
   'Rated −20°C deep freeze to +120°C microwave reheating',
   'Zero-leak snap-rim geometry across every lidded format',
   'BPA-free and heavy-metal free',
@@ -255,7 +255,7 @@ export default function CategoriesExperience() {
               <span className="xc-title-mask"><span><em>food service needs.</em></span></span>
             </h1>
             <p className="xc-hero-lead">
-              {productCategories.length} commercial container lines, one material standard: 100% prime virgin PP 05, US FDA 21 CFR 177.1520 certified, rated from deep freeze to microwave reheating.
+              {productCategories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.
             </p>
           </div>
           <div className="xc-glance">

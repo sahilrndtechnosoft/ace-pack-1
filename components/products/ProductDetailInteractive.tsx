@@ -17,7 +17,8 @@ import {
   Video,
   FileDown,
   Sparkles,
-  Maximize2
+  Maximize2,
+  Palette
 } from 'lucide-react';
 import { type ProductCategory, type ProductItem } from '@/lib/data/products';
 import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
@@ -25,11 +26,13 @@ import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 interface ProductDetailInteractiveProps {
   category: ProductCategory;
   product: ProductItem;
+  initialVariety?: string;
 }
 
 export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> = ({
   category,
   product,
+  initialVariety,
 }) => {
   const [activeView, setActiveView] = useState<'blank' | 'specs' | 'locking' | 'video'>('blank');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -44,17 +47,18 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
     notes: '',
   });
 
-  const handleSampleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSampleLoading(true);
-    setTimeout(() => {
-      setSampleLoading(false);
-      setSampleSubmitted(true);
-    }, 600);
-  };
+  const [selectedVarietySlug, setSelectedVarietySlug] = useState<string>(() => {
+    if (initialVariety && product.varieties?.some((v) => v.slug === initialVariety)) {
+      return initialVariety;
+    }
+    return product.varieties?.[0]?.slug || '';
+  });
 
-  // Derive visuals - always prioritize authentic original product images
-  const blankImage = product.blankImage || product.image || category.heroImage;
+  const activeVariety = product.varieties?.find((v) => v.slug === selectedVarietySlug) || product.varieties?.[0];
+
+  // Derive visuals - always prioritize authentic original product images with variety awareness
+  const blankImage = activeVariety?.image || product.blankImage || product.image || category.heroImage;
+  const currentProductImage = activeVariety?.image || product.image;
 
   const lockingFoodImage =
     product.lockingFoodImage ||
@@ -67,12 +71,77 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
     ? product.applications
     : ['Cloud Kitchen Combos', 'Hot Gravy & Curry Delivery', 'Salads & Cold Meals', 'Microwave Reheating'];
 
+  const handleSampleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSampleLoading(true);
+    setTimeout(() => {
+      setSampleLoading(false);
+      setSampleSubmitted(true);
+    }, 600);
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Left Column: 4-View Visual Studio */}
         <div className="lg:col-span-6 flex flex-col gap-4 lg:sticky lg:top-24 self-start">
           
+          {/* Color Variety Selector Panel (if product has multiple varieties) */}
+          {product.varieties && product.varieties.length > 0 && (
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E6DBC6] shadow-xs flex flex-col gap-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-[#FAF8F4] border border-[#E6DBC6] flex items-center justify-center text-[#b99750] shrink-0">
+                    <Palette className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Color Finish:</span>
+                  <span className="text-xs font-extrabold text-[var(--ace-ink)]">
+                    {activeVariety?.name || 'Selected Finish'}
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold text-[#b99750] bg-[#FAF8F4] px-2.5 py-0.5 rounded-full border border-[#E6DBC6]">
+                  {product.varieties.length} Options
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                {product.varieties.map((v) => {
+                  const isSelected = (activeVariety?.slug || product.varieties![0].slug) === v.slug;
+                  return (
+                    <button
+                      key={v.slug}
+                      type="button"
+                      onClick={() => {
+                        setSelectedVarietySlug(v.slug);
+                        if (activeView === 'video') setActiveView('blank');
+                      }}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-[var(--ace-ink)] text-white shadow-xs ring-2 ring-[#b99750]'
+                          : 'bg-[#FAF8F4] text-gray-700 hover:bg-[#F3EFE6] border border-[#E6DBC6]'
+                      }`}
+                    >
+                      <span
+                        className="w-3.5 h-3.5 rounded-full border inline-block shrink-0 shadow-2xs"
+                        style={{
+                          backgroundColor: v.colorHex,
+                          borderColor: v.borderHex || '#cbd5e1',
+                        }}
+                      />
+                      <span>{v.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {activeVariety?.description && (
+                <p className="text-[11px] text-gray-500 italic mt-0.5">
+                  {activeVariety.description}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* View Selector Tabs - Fully Responsive Across All Breakpoints */}
           <div
             role="tablist"
@@ -187,7 +256,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in relative">
                 <div className="relative w-full max-w-[320px] sm:max-w-[360px] aspect-4/3 flex items-center justify-center bg-[#FAF8F4] rounded-2xl border border-dashed border-[#b99750]/50 p-4 sm:p-6">
                   <img
-                    src={product.image}
+                    src={currentProductImage}
                     alt={`${product.name} Dimensions`}
                     loading="lazy"
                     decoding="async"
@@ -323,7 +392,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'specs' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={product.image} alt="Thumb specs" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+              <img src={currentProductImage} alt="Thumb specs" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
             </button>
             <button
               type="button"
@@ -388,7 +457,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 <Layers className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
                   <span className="text-[10px] text-gray-500 uppercase block font-semibold">Food Contact</span>
-                  <span className="text-xs font-bold text-emerald-600">US FDA 21 CFR</span>
+                  <span className="text-xs font-bold text-emerald-600">ISO 9001:2015</span>
                 </div>
               </div>
             </div>
@@ -416,6 +485,14 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                           {product.dimensions.top} (Top)
                           {product.dimensions.bottom ? ` × ${product.dimensions.bottom} (Bottom)` : ''}
                           {` × ${product.dimensions.height} (Height)`}
+                        </td>
+                      </tr>
+                    )}
+                    {product.varieties && product.varieties.length > 0 && (
+                      <tr className="border-b border-[#E6DBC6]">
+                        <td className="p-3 font-bold text-gray-600">Color / Finish Varieties</td>
+                        <td className="p-3 font-bold text-[var(--ace-ink)]">
+                          {product.varieties.map((v) => v.name).join(' · ')}
                         </td>
                       </tr>
                     )}

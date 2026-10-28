@@ -36,6 +36,23 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
     highlights: ['Zero-leak snap fit', 'Microwave safe up to 120°C', 'Interlocking stacking base'],
   },
   {
+    id: 'round-containers',
+    name: 'Round Food Containers (3 Color Varieties)',
+    series: 'Transparent · Black · White',
+    categorySlug: 'round-containers',
+    image: '/images/products/round/round-containers-hero.webp',
+    gallery: [
+      '/images/products/round/round-containers-hero.webp',
+      '/images/products/round/round-500ml-transparent.webp',
+      '/images/products/round/round-500ml-black.webp',
+      '/images/products/round/round-500ml-white.webp',
+    ],
+    capacities: '250ml · 300ml · 450ml · 500ml · 750ml · 1000ml',
+    bestFor: 'Curries, Soups, Cloud Kitchens, Sweets & Dairy',
+    tag: '3 Varieties',
+    highlights: ['Available in Clear, Deep Black & White', '100% Virgin PP 05 food-grade', 'Microwave & freezer ready'],
+  },
+  {
     id: 'ro-series',
     name: 'RO Series Round Food Bowls & Containers',
     series: 'Soup & Curry Bowls',
@@ -139,20 +156,56 @@ export const CAROUSEL_PRODUCTS: ProductCarouselItem[] = [
   },
   {
     id: 'flat-containers',
-    name: 'Flat Cold Prep & Salad Containers',
-    series: 'Gourmet Wide Showcase',
+    name: 'Flat Food Containers (Transparent & Black)',
+    series: 'Clear Transparent · Deep Black',
     categorySlug: 'flat-containers',
     image: '/images/products/flat/flat-containers-hero.webp',
     gallery: [
       '/images/products/flat/flat-containers-hero.webp',
-      '/images/products/flat/flat-1200ml.webp',
-      '/images/products/flat/flat-1000ml.webp',
-      '/images/products/flat/flat-750ml.webp',
+      '/images/products/flat/flat-1000ml-transparent.webp',
+      '/images/products/flat/flat-1000ml-black.webp',
+      '/images/products/flat/flat-1500ml-transparent.webp',
+      '/images/products/flat/flat-1500ml-black.webp',
     ],
-    capacities: '600ml to 2500ml (8 Models)',
-    bestFor: 'Gourmet Salads, Sandwiches, Cold Prep & Batch Storage',
-    tag: 'Fresh Display',
-    highlights: ['Wide horizontal display surface', 'Anti-fog optical lid', '148mm and 169mm profiles'],
+    capacities: '600ml · 650ml · 750ml · 1000ml · 1200ml · 1500ml',
+    bestFor: 'Gourmet Salads, Sandwiches, Cold Prep, Curries & Cloud Kitchens',
+    tag: '2 Varieties',
+    highlights: ['Available in Clear Transparent and Deep Black', 'Wide horizontal display surface', 'Anti-fog optical lid & microwave ready'],
+  },
+  {
+    id: 'glass-series-90-dia',
+    name: 'Glass Series 90 Dia (Plain & Frost)',
+    series: 'Clear Gloss · Frosted Matte',
+    categorySlug: 'glass-series-90-dia',
+    image: '/images/products/glass-90/glass-90-hero.webp',
+    gallery: [
+      '/images/products/glass-90/glass-90-hero.webp',
+      '/images/products/glass-90/glass-90-500ml-plain.webp',
+      '/images/products/glass-90/glass-90-500ml-frost.webp',
+      '/images/products/glass-90/glass-90-700ml-plain.webp',
+      '/images/products/glass-90/glass-90-700ml-frost.webp',
+    ],
+    capacities: '350ml · 500ml · 600ml · 700ml',
+    bestFor: 'Iced Coffees, Boba Teas, Mocktails, Smoothies & Frappes',
+    tag: '2 Finishes',
+    highlights: ['Dual finishes: Ultra-clear gloss and frosted matte', '90mm universal cup rim', 'Crack-resistant virgin PP'],
+  },
+  {
+    id: 'glass-series-80-dia',
+    name: 'Glass Series 80 Dia Cold Beverage Cups',
+    series: '80mm Sleek Beverage',
+    categorySlug: 'glass-series-80-dia',
+    image: '/images/products/glass-80/glass-80-hero.webp',
+    gallery: [
+      '/images/products/glass-80/glass-80-hero.webp',
+      '/images/products/glass-80/glass-80-500ml.webp',
+      '/images/products/glass-80/glass-80-350ml.webp',
+      '/images/products/glass-80/glass-80-250ml.webp',
+    ],
+    capacities: '200ml · 250ml · 300ml · 350ml · 500ml',
+    bestFor: 'Espresso Tonic, Cold Brews, Juices, Slushies & Shakes',
+    tag: '80mm Rim',
+    highlights: ['Slim ergonomic handheld grip', 'Flawless clarity & rigidity', 'Spill-resistant sipper & dome lids'],
   },
   {
     id: 'elite-containers',
@@ -331,7 +384,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm border-b border-[#E6DBC6]/80 pb-2">
                     <span className="text-gray-500">Polymer Grade:</span>
-                    <span className="font-semibold text-[var(--ace-ink)]">100% Prime Virgin PP 05 (US FDA Compliant)</span>
+                    <span className="font-semibold text-[var(--ace-ink)]">100% Prime Virgin PP 05 (ISO 9001:2015 Certified)</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm">
                     <span className="text-gray-500">Thermal Resistance:</span>

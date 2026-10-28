@@ -14,8 +14,8 @@ const config: Config = {
         brand: { ivory: "var(--ace-paper)", charcoal: "var(--ace-ink)", gold: "var(--ace-orange)", "gold-deep": "var(--ace-orange)" },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "'Manrope'", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+        serif: ["var(--font-serif)", "'Instrument Serif'", "Georgia", "serif"],
       },
       letterSpacing: { tight: "var(--heading-tracking)", tighter: "var(--heading-tracking)" },
       fontSize: {

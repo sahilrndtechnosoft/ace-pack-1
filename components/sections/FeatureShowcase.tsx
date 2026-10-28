@@ -12,7 +12,7 @@ export const FeatureShowcase: React.FC = () => {
     {
       icon: ShieldCheck,
       title: '100% Virgin PP 05 Material',
-      description: 'US FDA 21 CFR 177.1520 certified food-grade polymer. Completely BPA-free, non-toxic, and odorless.',
+      description: '100% prime virgin food-grade polymer manufactured under ISO 9001:2015 standards. Completely BPA-free, non-toxic, and odorless.',
     },
     {
       icon: Flame,

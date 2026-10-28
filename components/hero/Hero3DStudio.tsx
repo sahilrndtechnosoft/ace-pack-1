@@ -35,7 +35,7 @@ const CONTAINER_FORMATS: ContainerFormat[] = [
     specs: {
       wall: '0.68mm precision wall',
       temp: '-20°C to +120°C',
-      cert: 'US FDA 21 CFR 177.1520',
+      cert: 'ISO 9001:2015 Certified',
       pack: '500 Pcs / Master Box',
     },
   },

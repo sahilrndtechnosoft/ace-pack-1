@@ -22,7 +22,7 @@ export const ExportMarketingSection: React.FC = () => {
     {
       num: '03',
       title: 'Regulatory & Customs Clearance',
-      description: 'Preparation of international certificates of origin, US FDA compliance documentation, food-contact migration test reports, and customs export filings.',
+      description: 'Preparation of international certificates of origin, ISO 9001:2015 plant quality documentation, food-contact test reports, and customs export filings.',
     },
     {
       num: '04',

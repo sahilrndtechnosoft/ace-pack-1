@@ -8,7 +8,7 @@ import { ShieldCheck, CheckCircle2, FileDown, ArrowRight, ClipboardCheck } from 
 
 export const metadata: Metadata = {
   title: 'Quality Assurance & Certifications | Ace Packaging',
-  description: 'ISO 9001:2015 facility, US FDA 21 CFR 177.1520 certified virgin PP 05, 100% leak testing and ±0.02 mm wall tolerance. How every Ace Packaging container is inspected before dispatch.',
+  description: 'ISO 9001:2015 facility, 100% prime virgin PP 05, 100% leak testing and ±0.02 mm wall tolerance. How every Ace Packaging container is inspected before dispatch.',
 };
 
 export default function QualityPage() {
@@ -92,7 +92,7 @@ export default function QualityPage() {
             <div className="lg:col-span-5 bg-[#1A1D20] text-white p-8 rounded-3xl shadow-lg">
               <span className="text-[10px] font-bold text-[#D6BC83] uppercase tracking-wider block mb-2">Documentation</span>
               <h3 className="text-xl font-extrabold mb-3">Certificates for your audit file</h3>
-              <p className="text-xs text-gray-300 leading-relaxed mb-6">ISO 9001:2015 and FDA compliance documents, plus per-line datasheets, are available through the download centre for buyer and export audits.</p>
+              <p className="text-xs text-gray-300 leading-relaxed mb-6">ISO 9001:2015 compliance documents, plus per-line datasheets, are available through the download centre for buyer and export audits.</p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/downloads#certifications" className="inline-flex items-center justify-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider transition-all">
                   <FileDown className="w-4 h-4" /> Download centre

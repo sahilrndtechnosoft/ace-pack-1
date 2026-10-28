@@ -23,7 +23,7 @@ export const CapabilitiesSection: React.FC = () => {
       title: 'Cleanroom Quality Inspection',
       image: 'https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop',
       badge: 'ISO 9001:2015 TESTED',
-      description: 'Dust-free manufacturing bays adhering strictly to US FDA direct food contact compliance and zero-leak pressure testing.'
+      description: 'Dust-free manufacturing bays adhering strictly to ISO 9001:2015 quality standards and zero-leak pressure testing.'
     }
   ];
 

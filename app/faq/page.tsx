@@ -13,7 +13,7 @@ export default function FaqPage() {
   const faqs = [
     {
       question: 'What material resins are used in Ace Packaging containers?',
-      answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) certified under US FDA 21 CFR 177.1520 regulations. They are 100% BPA-free, heavy metal free, and food-contact safe.'
+      answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) in our ISO 9001:2015 certified facilities. They are 100% BPA-free, heavy metal free, and food-contact safe.'
     },
     {
       question: 'Are your plastic containers microwave and freezer safe?',

@@ -13,7 +13,7 @@ export const ManufacturingPillars: React.FC = () => {
     },
     {
       title: 'Cleanroom Hygiene Standards',
-      description: 'Dust-free manufacturing bays adhering to strict ISO & US FDA food contact protocols.',
+      description: 'Dust-free manufacturing bays adhering to strict ISO 9001:2015 cleanroom quality protocols.',
       icon: Award
     },
     {

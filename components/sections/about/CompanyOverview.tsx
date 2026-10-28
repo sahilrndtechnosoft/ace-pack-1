@@ -5,7 +5,7 @@ import { ShieldCheck, Factory, Globe2 } from 'lucide-react';
 
 const highlights = [
   { icon: Factory, text: '2 manufacturing units in Daman (Dori Kadaiya & Dabhel)' },
-  { icon: ShieldCheck, text: '100% virgin PP 05 food-grade polymer (ISO & FDA certified)' },
+  { icon: ShieldCheck, text: '100% virgin PP 05 food-grade polymer (ISO 9001:2015 certified)' },
   { icon: Globe2, text: '12+ global footprints across Australia, UAE, UK, Europe, Canada & USA' }
 ];
 

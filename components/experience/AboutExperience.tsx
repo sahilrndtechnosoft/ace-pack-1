@@ -73,7 +73,7 @@ export default function AboutExperience() {
           </div>
           <div className="xa-hero-bottom">
             <a href="#about-stats" className="xa-scroll-cue"><span><ArrowDown size={15} /></span>Scroll to discover</a>
-            <span><i />ISO 9001:2015 · US FDA 21 CFR 177.1520</span>
+            <span><i />ISO 9001:2015 Certified Plant</span>
           </div>
         </div>
       </section>

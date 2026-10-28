@@ -26,7 +26,7 @@ export const HeroHome: React.FC = () => {
             {/* Trust Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#b99750]/15 border border-[#b99750]/30 text-[#b99750] text-xs font-extrabold uppercase tracking-wider mb-5 w-fit">
               <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <span>US FDA 21 CFR 177.1520 · ISO 9001:2015 · 1.5M+ DAILY</span>
+              <span>ISO 9001:2015 CERTIFIED · 1.5M+ DAILY</span>
             </div>
 
             {/* Main Headline */}

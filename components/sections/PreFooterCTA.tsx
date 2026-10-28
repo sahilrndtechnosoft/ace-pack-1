@@ -61,7 +61,7 @@ export const PreFooterCTA: React.FC = () => {
               </div>
               <div className="flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>US FDA &amp; ISO 9001 Certified</span>
+                <span>ISO 9001:2015 Certified Facility</span>
               </div>
             </div>
           </div>

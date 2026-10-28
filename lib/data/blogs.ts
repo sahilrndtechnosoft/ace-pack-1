@@ -66,7 +66,7 @@ export const blogPosts: BlogPost[] = [
     ],
     takeaways: [
       'Resists thermal deformation up to +120°C for direct hot food pouring.',
-      'BPA-free & non-toxic food contact certified by US FDA 21 CFR.',
+      'BPA-free & non-toxic food contact safe manufactured in an ISO 9001:2015 certified facility.',
       'Freezer safe down to -20°C without embrittlement or cracking.',
       'Airtight lid locks preserve internal moisture and freshness.'
     ],
