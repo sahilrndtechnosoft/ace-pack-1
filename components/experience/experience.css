@@ -9,7 +9,9 @@
    color: var(--xp-ink);
    isolation: isolate;
    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-   overflow-x: clip;
+   overflow-x: hidden;
+   max-width: 100vw;
+   width: 100%;
 }
 
 .xp-home * {
@@ -755,10 +757,12 @@
     height: calc(100svh - 60px);
     min-height: 520px;
     max-height: none;
+    overflow: hidden;
   }
   .obs-outer,
   .obs-inner {
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }

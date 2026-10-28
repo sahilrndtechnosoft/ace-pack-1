@@ -319,14 +319,14 @@ export const ProductShowcaseCarousel: React.FC = () => {
   const isPhoto = displayImage.startsWith('/DSC') || displayImage.endsWith('.JPG') || displayImage.startsWith('/images/products/');
 
   return (
-    <section className="relative py-12 sm:py-20 bg-[#FAF8F4] text-[var(--ace-ink)] border-t border-b border-[#E6DBC6] overflow-hidden">
+    <section className="relative py-12 sm:py-20 bg-[#FAF8F4] text-[var(--ace-ink)] border-t border-b border-[#E6DBC6] overflow-hidden w-full max-w-full">
       {/* Background radial gold glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] rounded-full [background:radial-gradient(ellipse,rgba(185,151,80,0.12)_0%,transparent_70%)]"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[650px] h-[450px] rounded-full [background:radial-gradient(ellipse,rgba(185,151,80,0.12)_0%,transparent_70%)]"
       />
 
-      <div className="container-custom relative z-10 max-w-[1400px]">
+      <div className="container-custom relative z-10 max-w-[1400px] w-full">
         {/* Header Title with Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
           <div>
@@ -444,14 +444,14 @@ export const ProductShowcaseCarousel: React.FC = () => {
             </div>
 
             {/* Right: High-Res Product Image Frame (Shows prominently on desktop and mobile) */}
-            <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 w-full">
-              <div className={`relative w-full max-w-[380px] sm:max-w-[480px] aspect-[16/11] sm:aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] ${isPhoto ? 'p-0' : 'p-4 sm:p-8'} flex items-center justify-center shadow-sm group`}>
+            <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 w-full max-w-full">
+              <div className="relative w-full max-w-[380px] sm:max-w-[480px] aspect-[16/11] sm:aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] p-2 sm:p-4 flex items-center justify-center shadow-sm group">
                 <img
                   src={displayImage}
                   alt={activeProduct.name}
                   loading="lazy"
                   decoding="async"
-                  className={`w-full h-full ${isPhoto ? 'object-cover' : 'object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)]'} group-hover:scale-105 transition-transform duration-700 ease-out`}
+                  className="w-full h-full object-contain filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.08)] group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 {isPhoto && (
                   <span className="absolute top-2.5 left-2.5 bg-[#b99750]/90 backdrop-blur-xs text-[9px] font-extrabold uppercase tracking-wider text-white px-2 py-0.5 rounded-full shadow-xs">
@@ -538,10 +538,10 @@ export const ProductShowcaseCarousel: React.FC = () => {
           </div>
 
           {/* Full Width Horizontal Scrolling Carousel Track (Never wraps to multi-row on desktop) */}
-          <div className="relative group/rail">
+          <div className="relative group/rail w-full max-w-full overflow-hidden">
             <div
               ref={thumbScrollRef}
-              className="flex flex-nowrap overflow-x-auto pb-4 pt-1 px-1 gap-2.5 sm:gap-3.5 snap-x snap-mandatory scroll-smooth"
+              className="flex flex-nowrap overflow-x-auto pb-4 pt-1 px-1 gap-2.5 sm:gap-3.5 snap-x snap-mandatory scroll-smooth w-full max-w-full"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {CAROUSEL_PRODUCTS.map((item, idx) => {
@@ -567,7 +567,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                         alt={item.name}
                         loading="lazy"
                         decoding="async"
-                        className={`w-full h-full ${itemIsPhoto ? 'object-cover rounded-lg' : 'object-contain filter drop-shadow-xs'}`}
+                        className="w-full h-full object-contain filter drop-shadow-xs p-1"
                       />
                       {isActive && (
                         <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#b99750] ring-3 ring-white" />

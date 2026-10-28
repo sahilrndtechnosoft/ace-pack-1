@@ -319,18 +319,14 @@ export function ObserverCollectionShowcase() {
                     background: 'radial-gradient(ellipse 95% 75% at 50% 25%, #FFFFFF 0%, #FAF8F4 55%, #F4EFE6 100%)',
                   }}
                 >
-                  {/* Warm champagne & gold luxury ambient lighting */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -top-20 right-1/4 w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(185,151,80,0.14)_0%,transparent_70%)] blur-3xl"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -bottom-28 left-10 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle,rgba(230,219,198,0.55)_0%,transparent_70%)] blur-3xl"
-                  />
-                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-10 sm:pt-20 lg:pt-28 pb-2 sm:pb-6 relative z-20">
+                  {/* Warm champagne & gold luxury ambient lighting (Strictly bounded to avoid horizontal layout shift) */}
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+                    <div className="absolute -top-20 right-1/4 w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(185,151,80,0.14)_0%,transparent_70%)] blur-3xl" />
+                    <div className="absolute -bottom-28 left-10 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle,rgba(230,219,198,0.55)_0%,transparent_70%)] blur-3xl" />
+                  </div>
+                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-12 sm:pt-20 lg:pt-28 pb-3 sm:pb-6 relative z-20">
                     {/* Category Badge & Topline */}
-                    <div className="flex items-center justify-between gap-2 sm:gap-4 w-full mb-1.5 sm:mb-3">
+                    <div className="flex items-center justify-between gap-2 sm:gap-4 w-full mb-1 sm:mb-2">
                       <div className="flex items-center gap-2">
                         <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-semibold tracking-wide bg-white/90 text-[#9e7f3b] border border-[#E6DBC6] shadow-xs backdrop-blur-md shrink-0">
                           <Sparkles size={11} className="text-[#b99750]" />
@@ -347,7 +343,7 @@ export function ObserverCollectionShowcase() {
                     </div>
 
                     {/* Main Content Area: Responsive 2-Column on Desktop, Flow Stack on Mobile */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-1 sm:gap-4 lg:gap-14 items-center my-auto w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-1.5 sm:gap-4 lg:gap-14 items-center my-auto w-full">
                       {/* Left: Headline & Story */}
                       <div className="lg:col-span-7 flex flex-col justify-center">
                         <div className="overflow-hidden mb-1 sm:mb-4">
@@ -359,32 +355,27 @@ export function ObserverCollectionShowcase() {
                           </h2>
                         </div>
 
-                        {/* On mobile: Compact Pedestal Card inserted right under heading */}
-                        <div className="flex lg:hidden flex-col items-center justify-center my-1 sm:my-2 w-full">
-                          <div className="relative w-full max-w-[320px] sm:max-w-[420px] rounded-2xl bg-white/95 border border-[#E6DBC6] backdrop-blur-xl p-2 sm:p-4 flex flex-col items-center justify-between shadow-lg shadow-black/5">
-                            <div className="w-full flex items-center justify-between text-[9px] sm:text-xs font-semibold text-gray-600 mb-1 pb-1 border-b border-[#E6DBC6]">
-                              <span className="flex items-center gap-1 text-[#9e7f3b] uppercase tracking-wider font-semibold text-[9px] sm:text-[10px]">
-                                <Box size={11} className="text-[#b99750]" /> Container Architecture
-                              </span>
-                              <span className="flex items-center gap-1 text-emerald-800 text-[9px] sm:text-[10px] font-medium bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-full">
-                                <CheckCircle2 size={10} /> ISO 9001:2015
-                              </span>
-                            </div>
-
-                            <div className="relative w-full h-[85px] sm:h-[130px] my-1 rounded-xl overflow-hidden border border-[#E6DBC6]/60">
+                        {/* On mobile: Prominent, Crystal-Clear Container Showcase Pedestal (Aspect 4:3 matching photo, NEVER cropped) */}
+                        <div className="flex lg:hidden flex-col items-center justify-center my-2 w-full">
+                          <div className="relative w-full max-w-[360px] sm:max-w-[440px] rounded-2xl bg-white/95 border border-[#E6DBC6] p-2.5 sm:p-3.5 flex flex-col items-center shadow-lg shadow-[#14171A]/5">
+                            {/* Full-view uncropped Container Image with ISO badge */}
+                            <div className="relative w-full aspect-[4/3] max-h-[190px] xs:max-h-[220px] sm:max-h-[260px] rounded-xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6]/60 p-2 flex items-center justify-center">
                               <Image
                                 src={cardImage}
                                 alt={`${p.title} structure`}
                                 fill
-                                sizes="(max-width: 640px) 300px, 420px"
-                                className="object-cover"
+                                sizes="(max-width: 640px) 360px, 440px"
+                                className="object-contain p-2"
                                 priority={idx === 0}
                               />
+                              <span className="absolute top-2 right-2 flex items-center gap-1 text-emerald-800 text-[9px] font-medium bg-emerald-50/95 border border-emerald-200/80 px-2 py-0.5 rounded-full shadow-xs">
+                                <CheckCircle2 size={10} /> ISO 9001:2015
+                              </span>
                             </div>
 
                             {/* Variant selector on mobile */}
                             {productVariants[p.id] && (
-                              <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
+                              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-2 mb-1 z-30">
                                 {productVariants[p.id].map((v) => (
                                   <button
                                     key={v.src}
@@ -393,7 +384,7 @@ export function ObserverCollectionShowcase() {
                                       e.stopPropagation();
                                       setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
                                     }}
-                                    className={`px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-semibold transition-all cursor-pointer ${cardImage === v.src
+                                    className={`px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold transition-all cursor-pointer ${cardImage === v.src
                                       ? 'bg-[#14171A] text-white shadow-xs font-bold'
                                       : 'bg-white/80 text-gray-700 hover:bg-white border border-[#E6DBC6]'
                                       }`}
@@ -404,56 +395,53 @@ export function ObserverCollectionShowcase() {
                               </div>
                             )}
 
-                            <div className="w-full bg-[#FAF8F4]/90 rounded-lg sm:rounded-xl px-2 py-1 border border-[#E6DBC6] flex items-center gap-1.5">
-                              <div className="w-4 h-4 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
-                                <Utensils size={9} className="text-[#b99750]" />
-                              </div>
-                              <div className="text-left text-[8px] sm:text-[11px] leading-tight min-w-0">
-                                <span className="text-gray-400 block text-[7px] sm:text-[8px] uppercase tracking-wider font-semibold">Culinary Pairing</span>
-                                <span className="text-[#14171A] font-semibold truncate block">{p.foodPairing}</span>
-                              </div>
+                            {/* Compact culinary pairing */}
+                            <div className="w-full text-left text-[9px] sm:text-[10px] text-gray-600 truncate px-1 mt-1 flex items-center gap-1 border-t border-[#E6DBC6]/40 pt-1.5">
+                              <span className="text-[#9e7f3b] font-bold shrink-0">Best For:</span>
+                              <span className="truncate text-gray-700">{p.foodPairing}</span>
                             </div>
                           </div>
                         </div>
 
-                        <p className="text-[11px] sm:text-sm lg:text-base text-gray-600 max-w-xl leading-relaxed mb-1.5 sm:mb-4 font-normal line-clamp-2 sm:line-clamp-none">
+                        {/* Description on mobile */}
+                        <p className="text-[11px] sm:text-sm text-gray-600 max-w-xl leading-relaxed mb-1.5 sm:mb-3 font-normal line-clamp-2">
                           {p.description}
                         </p>
 
-                        {/* Technical Credentials Matrix */}
-                        <div className="grid grid-cols-3 gap-2 sm:gap-6 py-1 sm:py-3 border-y border-[#E6DBC6] max-w-xl text-[10px] sm:text-xs mb-2 sm:mb-5">
+                        {/* Streamlined Technical Credentials Matrix */}
+                        <div className="grid grid-cols-3 gap-1.5 py-1 sm:py-2 border-y border-[#E6DBC6] max-w-xl text-[9px] sm:text-xs mb-2">
                           <div>
-                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#9e7f3b] block font-semibold">
                               Polymer
                             </span>
-                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">100% Virgin PP 05</span>
+                            <span className="font-semibold text-[10px] sm:text-xs text-[#14171A] block">100% Virgin PP</span>
                           </div>
                           <div>
-                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#9e7f3b] block font-semibold">
                               Thermal
                             </span>
-                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">−20°C to +120°C</span>
+                            <span className="font-semibold text-[10px] sm:text-xs text-[#14171A] block">−20°C to +120°C</span>
                           </div>
                           <div>
-                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#9e7f3b] block font-semibold">
                               Rim Seal
                             </span>
-                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">Zero-Leak Snap</span>
+                            <span className="font-semibold text-[10px] sm:text-xs text-[#14171A] block">Zero-Leak Snap</span>
                           </div>
                         </div>
 
-                        {/* Actions */}
-                        <div className="flex items-center gap-2.5 sm:gap-5">
+                        {/* Actions (Always visibly present on mobile) */}
+                        <div className="flex items-center gap-2.5 sm:gap-4 pt-0.5">
                           <Link
                             href={p.href}
-                            className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-3.5 py-1.5 sm:px-7 sm:py-3.5 rounded-full text-[11px] sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
+                            className="inline-flex items-center gap-1.5 bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-4 py-2 sm:px-7 sm:py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
                           >
                             <span>{p.link}</span>
                             <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </Link>
                           <Link
                             href="/contact"
-                            className="inline-flex items-center gap-1 text-[11px] sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
+                            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
                           >
                             <span>Request Samples</span>
                             <ArrowUpRight size={12} className="text-gray-400 group-hover:text-[#b99750] transition-colors" />
@@ -473,13 +461,13 @@ export function ObserverCollectionShowcase() {
                             </span>
                           </div>
 
-                          <div className="relative w-full h-[240px] sm:h-[260px] my-3 rounded-2xl overflow-hidden border border-[#E6DBC6]/60">
+                          <div className="relative w-full h-[240px] sm:h-[260px] my-3 rounded-2xl overflow-hidden border border-[#E6DBC6]/60 bg-gradient-to-b from-white to-[#FAF8F4] flex items-center justify-center p-2">
                             <Image
                               src={cardImage}
                               alt={`${p.title} structure`}
                               fill
                               sizes="440px"
-                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                               priority={idx === 0}
                             />
                           </div>
