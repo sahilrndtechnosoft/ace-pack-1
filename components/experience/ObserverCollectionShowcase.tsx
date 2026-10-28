@@ -328,11 +328,11 @@ export function ObserverCollectionShowcase() {
                     aria-hidden="true"
                     className="pointer-events-none absolute -bottom-28 left-10 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle,rgba(230,219,198,0.55)_0%,transparent_70%)] blur-3xl"
                   />
-                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-12 sm:pt-24 lg:pt-28 pb-2.5 sm:pb-7 relative z-20">
+                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-10 sm:pt-20 lg:pt-28 pb-2 sm:pb-6 relative z-20">
                     {/* Category Badge & Topline */}
-                    <div className="flex items-center justify-between gap-2 sm:gap-4 w-full mb-2 sm:mb-3">
+                    <div className="flex items-center justify-between gap-2 sm:gap-4 w-full mb-1.5 sm:mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide bg-white/90 text-[#9e7f3b] border border-[#E6DBC6] shadow-xs backdrop-blur-md shrink-0">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-semibold tracking-wide bg-white/90 text-[#9e7f3b] border border-[#E6DBC6] shadow-xs backdrop-blur-md shrink-0">
                           <Sparkles size={11} className="text-[#b99750]" />
                           <span>{p.badge}</span>
                         </span>
@@ -341,37 +341,37 @@ export function ObserverCollectionShowcase() {
                         </span>
                       </div>
                       <div className="text-[10px] sm:text-xs text-gray-500 font-medium truncate text-right">
-                        <span className="text-gray-400 uppercase tracking-wider text-[9px] sm:text-[10px] mr-1.5 font-semibold">Formats</span>
+                        <span className="text-gray-400 uppercase tracking-wider text-[8px] sm:text-[10px] mr-1.5 font-semibold">Formats</span>
                         <span className="text-[#14171A] font-semibold">{p.capacity}</span>
                       </div>
                     </div>
 
                     {/* Main Content Area: Responsive 2-Column on Desktop, Flow Stack on Mobile */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-1.5 sm:gap-4 lg:gap-14 items-center my-auto w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-1 sm:gap-4 lg:gap-14 items-center my-auto w-full">
                       {/* Left: Headline & Story */}
                       <div className="lg:col-span-7 flex flex-col justify-center">
-                        <div className="overflow-hidden mb-2 sm:mb-4">
-                          <h2 className="obs-section-heading text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#14171A] leading-[1.12]">
+                        <div className="overflow-hidden mb-1 sm:mb-4">
+                          <h2 className="obs-section-heading text-xl sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#14171A] leading-[1.12]">
                             <span className="block font-sans">{p.title}</span>
-                            <span className="block font-serif italic font-normal text-[#b99750] mt-1 sm:mt-1.5 tracking-normal">
+                            <span className="block font-serif italic font-normal text-[#b99750] mt-0.5 sm:mt-1.5 tracking-normal">
                               {p.tagline}
                             </span>
                           </h2>
                         </div>
 
                         {/* On mobile: Compact Pedestal Card inserted right under heading */}
-                        <div className="flex lg:hidden flex-col items-center justify-center my-1.5 sm:my-3 w-full">
-                          <div className="relative w-full max-w-[320px] sm:max-w-[420px] rounded-2xl bg-white/90 border border-[#E6DBC6] backdrop-blur-xl p-3 sm:p-4 flex flex-col items-center justify-between shadow-xl shadow-black/5">
-                            <div className="w-full flex items-center justify-between text-[10px] sm:text-xs font-semibold text-gray-600 mb-1.5 pb-1.5 border-b border-[#E6DBC6]">
-                              <span className="flex items-center gap-1 text-[#9e7f3b] uppercase tracking-wider font-semibold text-[10px]">
-                                <Box size={12} className="text-[#b99750]" /> Container Architecture
+                        <div className="flex lg:hidden flex-col items-center justify-center my-1 sm:my-2 w-full">
+                          <div className="relative w-full max-w-[320px] sm:max-w-[420px] rounded-2xl bg-white/95 border border-[#E6DBC6] backdrop-blur-xl p-2 sm:p-4 flex flex-col items-center justify-between shadow-lg shadow-black/5">
+                            <div className="w-full flex items-center justify-between text-[9px] sm:text-xs font-semibold text-gray-600 mb-1 pb-1 border-b border-[#E6DBC6]">
+                              <span className="flex items-center gap-1 text-[#9e7f3b] uppercase tracking-wider font-semibold text-[9px] sm:text-[10px]">
+                                <Box size={11} className="text-[#b99750]" /> Container Architecture
                               </span>
-                              <span className="flex items-center gap-1 text-emerald-800 text-[10px] font-medium bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+                              <span className="flex items-center gap-1 text-emerald-800 text-[9px] sm:text-[10px] font-medium bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-full">
                                 <CheckCircle2 size={10} /> ISO 9001:2015
                               </span>
                             </div>
 
-                            <div className="relative w-full h-[110px] sm:h-[150px] my-1 rounded-xl overflow-hidden border border-[#E6DBC6]/60">
+                            <div className="relative w-full h-[85px] sm:h-[130px] my-1 rounded-xl overflow-hidden border border-[#E6DBC6]/60">
                               <Image
                                 src={cardImage}
                                 alt={`${p.title} structure`}
@@ -384,7 +384,7 @@ export function ObserverCollectionShowcase() {
 
                             {/* Variant selector on mobile */}
                             {productVariants[p.id] && (
-                              <div className="flex flex-wrap items-center justify-center gap-1 my-1.5 z-30">
+                              <div className="flex flex-wrap items-center justify-center gap-1 my-1 z-30">
                                 {productVariants[p.id].map((v) => (
                                   <button
                                     key={v.src}
@@ -393,7 +393,7 @@ export function ObserverCollectionShowcase() {
                                       e.stopPropagation();
                                       setVariantImages((prev) => ({ ...prev, [p.id]: v.src }));
                                     }}
-                                    className={`px-2.5 py-0.5 rounded-full text-[9px] font-semibold transition-all cursor-pointer ${cardImage === v.src
+                                    className={`px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-semibold transition-all cursor-pointer ${cardImage === v.src
                                       ? 'bg-[#14171A] text-white shadow-xs font-bold'
                                       : 'bg-white/80 text-gray-700 hover:bg-white border border-[#E6DBC6]'
                                       }`}
@@ -404,59 +404,59 @@ export function ObserverCollectionShowcase() {
                               </div>
                             )}
 
-                            <div className="w-full bg-[#FAF8F4]/90 rounded-lg sm:rounded-xl px-2.5 py-1.5 border border-[#E6DBC6] flex items-center gap-2">
-                              <div className="w-5 h-5 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
-                                <Utensils size={10} className="text-[#b99750]" />
+                            <div className="w-full bg-[#FAF8F4]/90 rounded-lg sm:rounded-xl px-2 py-1 border border-[#E6DBC6] flex items-center gap-1.5">
+                              <div className="w-4 h-4 rounded-full bg-[#b99750]/20 flex items-center justify-center shrink-0">
+                                <Utensils size={9} className="text-[#b99750]" />
                               </div>
-                              <div className="text-left text-[9px] sm:text-[11px] leading-tight min-w-0">
-                                <span className="text-gray-400 block text-[8px] uppercase tracking-wider font-semibold">Culinary Pairing</span>
+                              <div className="text-left text-[8px] sm:text-[11px] leading-tight min-w-0">
+                                <span className="text-gray-400 block text-[7px] sm:text-[8px] uppercase tracking-wider font-semibold">Culinary Pairing</span>
                                 <span className="text-[#14171A] font-semibold truncate block">{p.foodPairing}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <p className="text-xs sm:text-sm lg:text-base text-gray-600 max-w-xl leading-relaxed mb-3 sm:mb-5 font-normal">
+                        <p className="text-[11px] sm:text-sm lg:text-base text-gray-600 max-w-xl leading-relaxed mb-1.5 sm:mb-4 font-normal line-clamp-2 sm:line-clamp-none">
                           {p.description}
                         </p>
 
                         {/* Technical Credentials Matrix */}
-                        <div className="grid grid-cols-3 gap-3 sm:gap-6 py-2.5 sm:py-3.5 border-y border-[#E6DBC6] max-w-xl text-xs mb-3 sm:mb-6">
+                        <div className="grid grid-cols-3 gap-2 sm:gap-6 py-1 sm:py-3 border-y border-[#E6DBC6] max-w-xl text-[10px] sm:text-xs mb-2 sm:mb-5">
                           <div>
-                            <span className="text-[10px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
                               Polymer
                             </span>
-                            <span className="font-semibold text-xs sm:text-sm text-[#14171A] block">100% Virgin PP 05</span>
+                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">100% Virgin PP 05</span>
                           </div>
                           <div>
-                            <span className="text-[10px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
                               Thermal
                             </span>
-                            <span className="font-semibold text-xs sm:text-sm text-[#14171A] block">−20°C to +120°C</span>
+                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">−20°C to +120°C</span>
                           </div>
                           <div>
-                            <span className="text-[10px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
+                            <span className="text-[9px] sm:text-xs uppercase tracking-wider text-[#9e7f3b] block font-semibold mb-0.5">
                               Rim Seal
                             </span>
-                            <span className="font-semibold text-xs sm:text-sm text-[#14171A] block">Zero-Leak Snap</span>
+                            <span className="font-semibold text-[10px] sm:text-sm text-[#14171A] block">Zero-Leak Snap</span>
                           </div>
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center gap-3 sm:gap-5">
+                        <div className="flex items-center gap-2.5 sm:gap-5">
                           <Link
                             href={p.href}
-                            className="inline-flex items-center gap-2 bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-4 py-2 sm:px-7 sm:py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-3.5 py-1.5 sm:px-7 sm:py-3.5 rounded-full text-[11px] sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
                           >
                             <span>{p.link}</span>
-                            <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </Link>
                           <Link
                             href="/contact"
-                            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
+                            className="inline-flex items-center gap-1 text-[11px] sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
                           >
                             <span>Request Samples</span>
-                            <ArrowUpRight size={13} className="text-gray-400 group-hover:text-[#b99750] transition-colors" />
+                            <ArrowUpRight size={12} className="text-gray-400 group-hover:text-[#b99750] transition-colors" />
                           </Link>
                         </div>
                       </div>

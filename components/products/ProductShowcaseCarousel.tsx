@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles, CheckCircle2, PackageCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles, CheckCircle2, PackageCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface ProductCarouselItem {
   id: string;
@@ -248,6 +248,8 @@ export const ProductShowcaseCarousel: React.FC = () => {
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const thumbScrollRef = useRef<HTMLDivElement>(null);
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const total = CAROUSEL_PRODUCTS.length;
 
   const nextSlide = useCallback(() => {
@@ -258,6 +260,13 @@ export const ProductShowcaseCarousel: React.FC = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
+  const scrollThumbnails = useCallback((direction: 'left' | 'right') => {
+    if (thumbScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340;
+      thumbScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }, []);
+
   // Autoplay timer
   useEffect(() => {
     if (isPaused) return;
@@ -266,6 +275,18 @@ export const ProductShowcaseCarousel: React.FC = () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
   }, [isPaused, nextSlide]);
+
+  // Center the active thumbnail item in the carousel rail
+  useEffect(() => {
+    const activeEl = thumbRefs.current[currentIndex];
+    if (activeEl && thumbScrollRef.current) {
+      activeEl.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
+    }
+  }, [currentIndex]);
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -422,9 +443,9 @@ export const ProductShowcaseCarousel: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: High-Res Product Image Frame */}
+            {/* Right: High-Res Product Image Frame (Shows prominently on desktop and mobile) */}
             <div className="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 w-full">
-              <div className={`relative w-full max-w-[480px] aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] ${isPhoto ? 'p-0' : 'p-4 sm:p-8'} flex items-center justify-center shadow-xs group`}>
+              <div className={`relative w-full max-w-[380px] sm:max-w-[480px] aspect-[16/11] sm:aspect-4/3 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6] ${isPhoto ? 'p-0' : 'p-4 sm:p-8'} flex items-center justify-center shadow-sm group`}>
                 <img
                   src={displayImage}
                   alt={activeProduct.name}
@@ -483,42 +504,106 @@ export const ProductShowcaseCarousel: React.FC = () => {
           </div>
         </div>
 
-        {/* Thumbnail Preview Strip: Smooth horizontal scrollable rail on mobile, responsive grid on desktop */}
-        <div className="mt-6 sm:mt-8 flex sm:grid overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 gap-2 sm:gap-2.5 snap-x scrollbar-thin sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-10">
-          {CAROUSEL_PRODUCTS.map((item, idx) => {
-            const isActive = idx === currentIndex;
-            const itemIsPhoto = item.image.startsWith('/DSC') || item.image.endsWith('.JPG') || item.image.startsWith('/images/products/');
-            return (
+        {/* Product Selection Carousel Strip (Full Horizontal Carousel on Desktop & Mobile) */}
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-[#E6DBC6]">
+          {/* Carousel Header with Navigation Arrows */}
+          <div className="flex items-center justify-between mb-3.5 px-1">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#b99750] animate-pulse" />
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--ace-ink)]">
+                Browse All 13 Product Formats
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline-block text-xs text-gray-500 font-medium mr-1">
+                Format <span className="text-[#b99750] font-bold">{String(currentIndex + 1).padStart(2, '0')}</span> of {String(total).padStart(2, '0')}
+              </span>
               <button
-                key={item.id}
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`View ${item.name}`}
-                className={`shrink-0 w-[125px] sm:w-auto snap-start relative rounded-xl p-2 sm:p-2.5 text-left transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
-                  isActive
-                    ? 'border-[#b99750] bg-white shadow-md shadow-[#b99750]/15 scale-102 ring-2 ring-[#b99750]'
-                    : 'border-[#E6DBC6] bg-white/90 hover:border-gray-400 opacity-90 hover:opacity-100'
-                }`}
+                type="button"
+                onClick={() => scrollThumbnails('left')}
+                aria-label="Scroll formats left"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-200 active:scale-95 shadow-xs cursor-pointer"
               >
-                <div className="h-14 sm:h-16 w-full flex items-center justify-center overflow-hidden mb-1.5 p-0.5 bg-white rounded-lg border border-[#E6DBC6]/60">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full h-full ${itemIsPhoto ? 'object-cover rounded-md' : 'object-contain filter drop-shadow-xs'}`}
-                  />
-                </div>
-                <div>
-                  <span className={`text-[9px] sm:text-[10px] font-bold block truncate ${isActive ? 'text-[#b99750]' : 'text-gray-500'}`}>
-                    {item.series}
-                  </span>
-                  <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--ace-ink)] block truncate">
-                    {item.name.replace(' Series Rectangular Meal Containers', '').replace(' Series Containers', '').replace(' Series Round Bowls & Tubs', ' Round Bowls')}
-                  </span>
-                </div>
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
-            );
-          })}
+              <button
+                type="button"
+                onClick={() => scrollThumbnails('right')}
+                aria-label="Scroll formats right"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#E6DBC6] bg-white hover:border-[#b99750] hover:bg-[#b99750] hover:text-white text-gray-700 flex items-center justify-center transition-all duration-200 active:scale-95 shadow-xs cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Full Width Horizontal Scrolling Carousel Track (Never wraps to multi-row on desktop) */}
+          <div className="relative group/rail">
+            <div
+              ref={thumbScrollRef}
+              className="flex flex-nowrap overflow-x-auto pb-4 pt-1 px-1 gap-2.5 sm:gap-3.5 snap-x snap-mandatory scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {CAROUSEL_PRODUCTS.map((item, idx) => {
+                const isActive = idx === currentIndex;
+                const itemIsPhoto = item.image.startsWith('/DSC') || item.image.endsWith('.JPG') || item.image.startsWith('/images/products/');
+                return (
+                  <button
+                    key={item.id}
+                    ref={(el) => {
+                      thumbRefs.current[idx] = el;
+                    }}
+                    onClick={() => setCurrentIndex(idx)}
+                    aria-label={`Select ${item.name}`}
+                    className={`shrink-0 w-[155px] sm:w-[190px] lg:w-[210px] snap-start relative rounded-2xl p-2.5 sm:p-3 text-left transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
+                      isActive
+                        ? 'border-[#b99750] bg-white shadow-xl shadow-[#b99750]/20 scale-[1.02] ring-2 ring-[#b99750]'
+                        : 'border-[#E6DBC6] bg-white/90 hover:bg-white hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-md'
+                    }`}
+                  >
+                    <div className="h-16 sm:h-20 w-full flex items-center justify-center overflow-hidden mb-2 p-1 bg-gradient-to-b from-white to-[#F7F4EC] rounded-xl border border-[#E6DBC6]/60 relative">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        loading="lazy"
+                        decoding="async"
+                        className={`w-full h-full ${itemIsPhoto ? 'object-cover rounded-lg' : 'object-contain filter drop-shadow-xs'}`}
+                      />
+                      {isActive && (
+                        <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#b99750] ring-3 ring-white" />
+                      )}
+                    </div>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider block truncate ${isActive ? 'text-[#b99750]' : 'text-gray-500'}`}>
+                          {item.series}
+                        </span>
+                        <span className="text-[9px] font-bold text-gray-400">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                      <h4 className="text-[11px] sm:text-xs font-bold text-[var(--ace-ink)] line-clamp-1">
+                        {item.name.replace(' Series Rectangular Meal Containers', '').replace(' Series Containers', '').replace(' Series Round Bowls & Tubs', ' Round Bowls')}
+                      </h4>
+                      <span className="text-[10px] text-gray-500 line-clamp-1 block">
+                        {item.capacities.split('(')[0].trim()}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Carousel Position Progress Bar */}
+            <div className="w-full h-1 bg-[#E6DBC6]/50 rounded-full mt-2 overflow-hidden">
+              <div
+                className="h-full bg-[#b99750] rounded-full transition-all duration-300"
+                style={{
+                  width: `${((currentIndex + 1) / total) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

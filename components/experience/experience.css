@@ -752,9 +752,19 @@
 
 @media (max-width: 1023px) {
   .obs-carousel-wrapper {
-    height: calc(100dvh - 64px);
-    min-height: 480px;
-    max-height: 800px;
+    height: calc(100svh - 60px);
+    min-height: 520px;
+    max-height: none;
+  }
+  .obs-outer,
+  .obs-inner {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .obs-outer::-webkit-scrollbar,
+  .obs-inner::-webkit-scrollbar {
+    display: none;
   }
 }
 
