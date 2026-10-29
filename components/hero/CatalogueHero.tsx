@@ -199,10 +199,10 @@ export function CatalogueHero() {
               Crystal-clear fruit boxes, salad bowls, leak-proof boba cups, and living-hinge portion tubs moulded in Daman for 1,000+ global brands.
             </p>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2.5">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#14171A] hover:bg-black text-white font-semibold text-xs tracking-wide shadow-lg active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 whitespace-nowrap px-4 py-2 rounded-full bg-[#14171A] hover:bg-black text-white font-semibold text-xs tracking-wide shadow-lg active:scale-95 transition-all"
               >
                 <span>Explore Products</span>
                 <ArrowUpRight size={14} />

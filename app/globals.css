@@ -6,7 +6,10 @@ html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   text-rendering: optimizeLegibility;
+  /* clip, not hidden: hidden turns html/body into scroll containers, which
+     breaks the sticky header. hidden stays as the pre-Safari-16 fallback. */
   overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   width: 100%;
 }
@@ -60,6 +63,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   width: 100%;
   position: relative;

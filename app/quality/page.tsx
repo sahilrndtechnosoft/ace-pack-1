@@ -77,7 +77,7 @@ export default function QualityPage() {
       <section className="py-12 md:py-16">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
+            <div className="lg:col-span-7 bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
               <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-2">Compliance</span>
               <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-5">What every Ace Packaging container is</h2>
               <ul className="space-y-3">
@@ -89,15 +89,15 @@ export default function QualityPage() {
                 ))}
               </ul>
             </div>
-            <div className="lg:col-span-5 bg-[#1A1D20] text-white p-8 rounded-3xl shadow-lg">
+            <div className="lg:col-span-5 bg-[#1A1D20] text-white p-5 sm:p-8 rounded-3xl shadow-lg">
               <span className="text-[10px] font-bold text-[#D6BC83] uppercase tracking-wider block mb-2">Documentation</span>
               <h3 className="text-xl font-extrabold mb-3">Certificates for your audit file</h3>
               <p className="text-xs text-gray-300 leading-relaxed mb-6">ISO 9001:2015 compliance documents, plus per-line datasheets, are available through the download centre for buyer and export audits.</p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link href="/downloads#certifications" className="inline-flex items-center justify-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider transition-all">
+                <Link href="/downloads#certifications" className="inline-flex items-center justify-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] font-bold py-3 px-5 sm:py-3.5 sm:px-6 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all">
                   <FileDown className="w-4 h-4" /> Download centre
                 </Link>
-                <Link href="/contact" className="inline-flex items-center justify-center gap-2 border border-white/25 hover:border-[#D6BC83] text-white font-bold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider transition-all">
+                <Link href="/contact" className="inline-flex items-center justify-center gap-2 border border-white/25 hover:border-[#D6BC83] text-white font-bold py-3 px-5 sm:py-3.5 sm:px-6 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all">
                   Request a sample kit <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

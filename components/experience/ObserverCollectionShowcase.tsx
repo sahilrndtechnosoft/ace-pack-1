@@ -284,7 +284,7 @@ export function ObserverCollectionShowcase() {
       className="obs-carousel-wrapper relative w-full overflow-hidden bg-[#FAF8F4] text-[#14171A] select-none touch-pan-y"
     >
       {/* Global Overlay Header (Clean responsive clearance, no overlapping) */}
-      <div className="absolute top-0 inset-x-0 z-40 px-3 sm:px-12 pt-2.5 sm:pt-8 pb-1.5 sm:pb-4 flex items-center justify-between pointer-events-auto bg-gradient-to-b from-[#FAF8F4]/95 via-[#FAF8F4]/80 to-transparent">
+      <div className="absolute top-0 inset-x-0 z-40 px-3 sm:px-12 pt-2.5 sm:pt-8 pb-1.5 sm:pb-4 hidden sm:flex items-center justify-between pointer-events-auto bg-gradient-to-b from-[#FAF8F4]/95 via-[#FAF8F4]/80 to-transparent">
         <div className="min-w-0 pr-2">
           {/* <span className="text-[9px] sm:text-xs font-bold text-[#b99750] uppercase tracking-[0.16em] block mb-0.5">
             02 / Plastic Food Containers
@@ -324,7 +324,7 @@ export function ObserverCollectionShowcase() {
                     <div className="absolute -top-20 right-1/4 w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(185,151,80,0.14)_0%,transparent_70%)] blur-3xl" />
                     <div className="absolute -bottom-28 left-10 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle,rgba(230,219,198,0.55)_0%,transparent_70%)] blur-3xl" />
                   </div>
-                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-12 sm:pt-20 lg:pt-28 pb-3 sm:pb-6 relative z-20">
+                  <div className="container-custom w-full max-w-7xl h-full flex flex-col justify-between pt-4 sm:pt-20 lg:pt-28 pb-3 sm:pb-6 relative z-20">
                     {/* Category Badge & Topline */}
                     <div className="flex items-center justify-between gap-2 sm:gap-4 w-full mb-1 sm:mb-2">
                       <div className="flex items-center gap-2">
@@ -357,15 +357,15 @@ export function ObserverCollectionShowcase() {
 
                         {/* On mobile: Prominent, Crystal-Clear Container Showcase Pedestal (Aspect 4:3 matching photo, NEVER cropped) */}
                         <div className="flex lg:hidden flex-col items-center justify-center my-2 w-full">
-                          <div className="relative w-full max-w-[360px] sm:max-w-[440px] rounded-2xl bg-white/95 border border-[#E6DBC6] p-2.5 sm:p-3.5 flex flex-col items-center shadow-lg shadow-[#14171A]/5">
+                          <div className="relative w-full max-w-[420px] sm:max-w-[440px] rounded-2xl bg-white/95 border border-[#E6DBC6] p-2.5 sm:p-3.5 flex flex-col items-center shadow-lg shadow-[#14171A]/5">
                             {/* Full-view uncropped Container Image with ISO badge */}
-                            <div className="relative w-full aspect-[4/3] max-h-[190px] xs:max-h-[220px] sm:max-h-[260px] rounded-xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6]/60 p-2 flex items-center justify-center">
+                            <div className="relative w-full aspect-[4/3] max-h-[min(34svh,300px)] rounded-xl overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] border border-[#E6DBC6]/60 flex items-center justify-center">
                               <Image
                                 src={cardImage}
                                 alt={`${p.title} structure`}
                                 fill
                                 sizes="(max-width: 640px) 360px, 440px"
-                                className="object-contain p-2"
+                                className="object-cover"
                                 priority={idx === 0}
                               />
                               <span className="absolute top-2 right-2 flex items-center gap-1 text-emerald-800 text-[9px] font-medium bg-emerald-50/95 border border-emerald-200/80 px-2 py-0.5 rounded-full shadow-xs">
@@ -404,7 +404,7 @@ export function ObserverCollectionShowcase() {
                         </div>
 
                         {/* Description on mobile */}
-                        <p className="text-[11px] sm:text-sm text-gray-600 max-w-xl leading-relaxed mb-1.5 sm:mb-3 font-normal line-clamp-2">
+                        <p className="text-xs sm:text-sm text-gray-600 max-w-xl leading-relaxed mb-1.5 sm:mb-3 font-normal line-clamp-2">
                           {p.description}
                         </p>
 
@@ -431,17 +431,17 @@ export function ObserverCollectionShowcase() {
                         </div>
 
                         {/* Actions (Always visibly present on mobile) */}
-                        <div className="flex items-center gap-2.5 sm:gap-4 pt-0.5">
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2 sm:gap-x-4 pt-0.5">
                           <Link
                             href={p.href}
-                            className="inline-flex items-center gap-1.5 bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-4 py-2 sm:px-7 sm:py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
+                            className="inline-flex items-center gap-1.5 whitespace-nowrap bg-[#b99750] hover:bg-[#14171A] text-white font-semibold px-4 py-2 sm:px-7 sm:py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-md shadow-[#b99750]/20 hover:shadow-lg active:scale-95 group"
                           >
                             <span>{p.link}</span>
                             <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </Link>
                           <Link
                             href="/contact"
-                            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
+                            className="inline-flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-semibold text-[#14171A] hover:text-[#b99750] border-b border-[#14171A]/30 hover:border-[#b99750] pb-0.5 transition-colors group"
                           >
                             <span>Request Samples</span>
                             <ArrowUpRight size={12} className="text-gray-400 group-hover:text-[#b99750] transition-colors" />
@@ -461,13 +461,13 @@ export function ObserverCollectionShowcase() {
                             </span>
                           </div>
 
-                          <div className="relative w-full h-[240px] sm:h-[260px] my-3 rounded-2xl overflow-hidden border border-[#E6DBC6]/60 bg-gradient-to-b from-white to-[#FAF8F4] flex items-center justify-center p-2">
+                          <div className="relative w-full h-[240px] sm:h-[260px] my-3 rounded-2xl overflow-hidden border border-[#E6DBC6]/60 bg-gradient-to-b from-white to-[#FAF8F4] flex items-center justify-center">
                             <Image
                               src={cardImage}
                               alt={`${p.title} structure`}
                               fill
                               sizes="440px"
-                              className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
                               priority={idx === 0}
                             />
                           </div>

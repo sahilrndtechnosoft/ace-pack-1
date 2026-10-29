@@ -18,7 +18,7 @@ export const PreFooterCTA: React.FC = () => {
         />
 
         <Container className="relative z-10">
-          <div className="max-w-4xl mx-auto bg-white rounded-3xl border-2 border-[#E6DBC6] p-8 sm:p-12 shadow-xl text-center">
+          <div className="max-w-4xl mx-auto bg-white rounded-3xl border-2 border-[#E6DBC6] p-6 sm:p-12 shadow-xl text-center">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#b99750]/15 border border-[#b99750]/30 text-[#b99750] text-xs font-extrabold uppercase tracking-wider mb-4">
               <PackageCheck className="w-3.5 h-3.5 shrink-0" />
               <span>Complimentary Factory Samples</span>
@@ -35,7 +35,7 @@ export const PreFooterCTA: React.FC = () => {
             <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
               >
                 <span>Request Free Sample Kit</span>
                 <ArrowRight className="w-4 h-4" />
@@ -43,7 +43,7 @@ export const PreFooterCTA: React.FC = () => {
 
               <button
                 onClick={() => setCatalogueOpen(true)}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center transition-all duration-300 cursor-pointer"
               >
                 <FileDown className="w-4 h-4" />
                 <span>Download Product Catalogue</span>

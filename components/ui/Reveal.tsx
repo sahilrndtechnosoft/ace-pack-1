@@ -92,10 +92,16 @@ export const Reveal: React.FC<RevealProps> = ({
     // memory and was part of what made scrolling feel choppy.
     gsap.set(el, { force3D: true, backfaceVisibility: 'hidden' });
 
+    // Columns stack below lg, so a sideways entrance just pushes the
+    // element past the viewport edge (horizontal scroll on mobile). Slide up instead.
+    const isSideways = type === 'fade-left' || type === 'fade-right';
+    const fromVars =
+      isSideways && window.matchMedia('(max-width: 1023px)').matches ? FROM_VARS['fade-up'] : FROM_VARS[type];
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         el,
-        FROM_VARS[type],
+        fromVars,
         {
           y: 0,
           x: 0,

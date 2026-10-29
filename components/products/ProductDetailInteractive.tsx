@@ -235,13 +235,13 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             {/* View 1: Blank / Empty Container (Clear view of shape and structure) */}
             {activeView === 'blank' && (
               <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in">
-                <div className="relative w-full max-w-[320px] sm:max-w-[380px] aspect-4/3 flex items-center justify-center">
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] aspect-4/3 rounded-2xl overflow-hidden flex items-center justify-center">
                   <img
                     src={blankImage}
                     alt={`${product.name} Blank Empty Container Structure`}
                     loading="lazy"
                     decoding="async"
-                    className="max-h-full max-w-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="mt-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] text-[11px] sm:text-xs font-semibold text-gray-700 flex items-center gap-2 text-center">
@@ -254,13 +254,13 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             {/* View 2: Dimensions & Specifications Blueprint */}
             {activeView === 'specs' && (
               <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in relative">
-                <div className="relative w-full max-w-[320px] sm:max-w-[360px] aspect-4/3 flex items-center justify-center bg-[#FAF8F4] rounded-2xl border border-dashed border-[#b99750]/50 p-4 sm:p-6">
+                <div className="relative w-full max-w-[320px] sm:max-w-[360px] aspect-4/3 flex items-center justify-center bg-[#FAF8F4] rounded-2xl overflow-hidden border border-dashed border-[#b99750]/50">
                   <img
                     src={currentProductImage}
                     alt={`${product.name} Dimensions`}
                     loading="lazy"
                     decoding="async"
-                    className="max-h-full max-w-full object-contain filter drop-shadow-md opacity-90"
+                    className="w-full h-full object-cover opacity-90"
                   />
 
                   {/* Dimension Overlay Callouts */}
@@ -301,7 +301,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     alt={`${product.name} Locking System with Food Application`}
                     loading="lazy"
                     decoding="async"
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent flex items-end p-3 sm:p-4">
                     <div className="text-white text-left">
@@ -382,7 +382,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'blank' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={blankImage} alt="Thumb blank" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+              <img src={blankImage} alt="Thumb blank" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
             </button>
             <button
               type="button"
@@ -392,7 +392,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 activeView === 'specs' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
               }`}
             >
-              <img src={currentProductImage} alt="Thumb specs" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+              <img src={currentProductImage} alt="Thumb specs" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
             </button>
             <button
               type="button"

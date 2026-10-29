@@ -135,14 +135,14 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
               <div className="bg-white rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full">
                 <div>
                   {/* Clean Light Image Surface */}
-                  <div className="relative h-56 sm:h-64 bg-gradient-to-b from-white to-[#F7F4EC] p-4 sm:p-6 flex items-center justify-center border-b border-[#E6DBC6]/60">
+                  <div className="relative h-56 sm:h-64 bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center border-b border-[#E6DBC6]/60">
                     <img
                       key={activeImage}
                       src={activeImage}
                       alt={`${item.name} ${activeVarietyObj ? `- ${activeVarietyObj.name}` : ''}`}
                       loading="lazy"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_18px_rgba(0,0,0,0.1)]"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
 
                     {/* Capacity badge */}
@@ -253,7 +253,7 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
                     href={`/categories/${categorySlug}/${item.product_slug}${
                       currentVarietySlug ? `?variety=${currentVarietySlug}` : ''
                     }`}
-                    className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
+                    className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold px-3 py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wide sm:tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
                   >
                     <span>View Specifications &amp; 4-View Studio</span>
                     <ArrowRight className="w-3.5 h-3.5" />

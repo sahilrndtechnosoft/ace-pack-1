@@ -63,14 +63,14 @@ export default function GalleryPage() {
             <div className="flex flex-wrap items-center gap-3 shrink-0">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-5 py-3 sm:px-7 sm:py-4 rounded-full uppercase tracking-wide sm:tracking-[0.14em] transition-colors"
               >
                 <span>Request Samples</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/categories"
-                className="inline-flex items-center gap-2 border border-white/25 hover:border-[#cfa144] hover:text-[#a8812f] text-white text-xs font-bold px-7 py-4 rounded-full uppercase tracking-[0.14em] transition-colors"
+                className="inline-flex items-center gap-2 border border-white/25 hover:border-[#cfa144] hover:text-[#a8812f] text-white text-xs font-bold px-5 py-3 sm:px-7 sm:py-4 rounded-full uppercase tracking-wide sm:tracking-[0.14em] transition-colors"
               >
                 <span>All Categories</span>
               </Link>

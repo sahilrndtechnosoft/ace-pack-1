@@ -34,7 +34,7 @@ export default function ProcessPage() {
           
           <div className="max-w-4xl mx-auto space-y-6">
             {steps.map((step, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-6">
+              <div key={idx} className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4 sm:gap-6">
                 <span className="text-3xl font-extrabold text-[#a8812f] shrink-0">{step.num}</span>
                 <div>
                   <h3 className="text-xl font-bold text-[#1A1D20] mb-2">{step.title}</h3>

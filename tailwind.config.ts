@@ -19,8 +19,9 @@ const config: Config = {
       },
       letterSpacing: { tight: "var(--heading-tracking)", tighter: "var(--heading-tracking)" },
       fontSize: {
-        xs: ["0.9375rem", { lineHeight: "1.65" }],
-        sm: ["1rem", { lineHeight: "1.7" }],
+        // Fluid: ~13/14px on phones, reaching the 15/16px desktop size by ~1024px.
+        xs: ["clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem)", { lineHeight: "1.65" }],
+        sm: ["clamp(0.875rem, 0.8rem + 0.3vw, 1rem)", { lineHeight: "1.7" }],
       },
     },
   },

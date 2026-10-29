@@ -110,8 +110,8 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
                     href={`/categories/${other.slug}`}
                     className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-5 flex items-center gap-4 transition-all hover:shadow-lg group text-left h-full"
                   >
-                    <div className="w-16 h-16 rounded-xl bg-[#FAF8F4] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
-                      <img src={other.heroImage} alt={other.name} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+                    <div className="w-16 h-16 rounded-xl bg-[#FAF8F4] overflow-hidden flex items-center justify-center shrink-0 border border-[#E6DBC6]">
+                      <img src={other.heroImage} alt={other.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <h4 className="text-base font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug">

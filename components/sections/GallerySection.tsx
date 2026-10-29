@@ -42,12 +42,12 @@ export const GallerySection: React.FC = () => {
           {galleryItems.map((item, idx) => (
             <div
               key={idx}
-              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#cfa144]/60 hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 relative group h-64 flex items-center justify-center p-4"
+              className="bg-[#050505] rounded-3xl overflow-hidden border-2 border-[#cfa144]/60 hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 relative group h-64 flex items-center justify-center"
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
                 <span className="text-xs font-bold text-white leading-tight">{item.title}</span>

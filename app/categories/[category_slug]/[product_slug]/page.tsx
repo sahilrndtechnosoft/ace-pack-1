@@ -111,13 +111,13 @@ export default async function SpecificProductPage({ params, searchParams }: Spec
                       href={`/categories/${category.slug}/${rel.product_slug}`}
                       className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all hover:shadow-lg group text-left h-full"
                     >
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] p-2 flex items-center justify-center shrink-0 border border-[#E6DBC6]">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center shrink-0 border border-[#E6DBC6]">
                         <img
                           src={rel.image}
                           alt={rel.name}
                           loading="lazy"
                           decoding="async"
-                          className="max-h-full max-w-full object-contain filter drop-shadow-xs group-hover:scale-105 transition-transform"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                         />
                       </div>
                       <div className="min-w-0 flex-1">

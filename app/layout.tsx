@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className="font-sans overflow-x-hidden max-w-full w-full">
+    <html lang="en" data-scroll-behavior="smooth" className="font-sans max-w-full w-full">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -31,7 +31,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap"
         />
       </head>
-      <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground font-sans overflow-x-hidden max-w-full w-full relative">
+      <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground font-sans max-w-full w-full relative">
         <ContentProtection />
         <SmoothScroll />
         <CursorTrail />

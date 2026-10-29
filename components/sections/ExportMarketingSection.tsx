@@ -81,7 +81,7 @@ export const ExportMarketingSection: React.FC = () => {
         </div>
 
         {/* Global Export Hubs & Action Bar */}
-        <div className="rounded-3xl bg-[#FAF8F4] border-2 border-[#b99750]/30 p-8 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm">
+        <div className="rounded-3xl bg-[#FAF8F4] border-2 border-[#b99750]/30 p-5 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm">
           <div className="flex-1 text-left">
             <div className="flex items-center gap-2 text-xs font-bold text-[#b99750] uppercase tracking-wider mb-2">
               <Anchor className="w-4 h-4" />
@@ -104,7 +104,7 @@ export const ExportMarketingSection: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               <span>Plan Your Export Shipment</span>
               <ArrowRight className="w-4 h-4" />

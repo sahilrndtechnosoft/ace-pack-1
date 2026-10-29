@@ -81,7 +81,8 @@ function Container({kind,state,compact,onReady}:{kind:number;state:Props['state'
       wasVisible.current = true;
     } else {
       // Smooth exponential damping prevents wheel-notch jitter and abrupt jumps
-      const damping = 1 - Math.exp(-22 * Math.min(delta, 0.05));
+      // ~150ms glide: absorbs wheel-notch steps without feeling laggy.
+      const damping = 1 - Math.exp(-10 * Math.min(delta, 0.05));
       g.position.x = THREE.MathUtils.lerp(g.position.x, pose.position[0], damping);
       g.position.y = THREE.MathUtils.lerp(g.position.y, pose.position[1], damping);
       g.position.z = THREE.MathUtils.lerp(g.position.z, pose.position[2], damping);
@@ -108,7 +109,7 @@ function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembl
   useFrame(({clock,size},delta)=>{
     const s=state.current;const pose=getModelPose(0,s,clock.elapsedTime,size.width/size.height,size.height);
     targetCam.set(...pose.camera);
-    const camDamping = 1 - Math.exp(-20 * Math.min(delta, 0.05));
+    const camDamping = 1 - Math.exp(-8 * Math.min(delta, 0.05));
     camera.position.lerp(targetCam, camDamping);
     lookAt.current=THREE.MathUtils.lerp(lookAt.current,pose.lookAt,camDamping);
     camera.lookAt(0,lookAt.current,0);

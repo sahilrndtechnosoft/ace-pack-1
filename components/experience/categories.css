@@ -7,7 +7,7 @@
   --xp-gold: var(--brand-gold);
   --xp-gold-deep: var(--brand-gold-deep);
   --xp-line: var(--ace-line);
-  --xp-header: 84px;
+  --xp-header:var(--site-header,84px);
   --xc-dark: var(--ace-ink);
   position: relative;
   background: var(--xp-ivory);
@@ -295,8 +295,7 @@
 .xc-row-thumb {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 4px;
+  object-fit: cover;
 }
 
 /* Main: Category Title & Subtitle */
@@ -535,8 +534,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 16px;
+  object-fit: cover;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -689,7 +687,7 @@
 /* ---------- Mobile (< 768px) ---------- */
 @media (max-width: 767px) {
   .xc {
-    --xp-header: 64px;
+    --xp-header:var(--site-header,64px);
   }
   .xc-preview {
     display: none !important;

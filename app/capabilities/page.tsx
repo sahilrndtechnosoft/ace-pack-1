@@ -42,7 +42,7 @@ export default function CapabilitiesPage() {
           {/* Infrastructure Sections Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
 
-            <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
+            <div className="bg-white p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
               <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6">
                 <Cpu className="w-6 h-6" />
               </div>
@@ -57,7 +57,7 @@ export default function CapabilitiesPage() {
               </ul>
             </div>
 
-            <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
+            <div className="bg-white p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm">
               <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6">
                 <Wrench className="w-6 h-6" />
               </div>

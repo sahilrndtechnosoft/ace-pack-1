@@ -8,7 +8,7 @@
    --xp-gold: var(--brand-gold);
    --xp-gold-soft: #cdb77c;
    --xp-line: var(--ace-line);
-   --xp-header: 84px;
+   --xp-header:var(--site-header,84px);
    --xa-dark: var(--ace-ink);
    --xa-dark-2: var(--ace-ink);
    position: relative;
@@ -1071,7 +1071,7 @@
 /* ---------- Phone ---------- */
 @media(max-width:767px) {
    .xa {
-      --xp-header: 62px
+      --xp-header:var(--site-header,62px)
    }
 
    .xa-hero {

@@ -30,7 +30,7 @@ export default function ContactPage() {
             <div className="lg:col-span-5">
               <Reveal type="fade-right">
                 <div className="flex flex-col gap-6">
-                  <div className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
+                  <div className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0 border border-[#cfa144]/30">
                       <MapPin className="w-6 h-6" />
                     </div>
@@ -44,7 +44,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
+                  <div className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0 border border-[#cfa144]/30">
                       <Phone className="w-6 h-6" />
                     </div>
@@ -55,7 +55,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
+                  <div className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0 border border-[#cfa144]/30">
                       <Mail className="w-6 h-6" />
                     </div>
@@ -66,7 +66,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
+                  <div className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-[#25D366]/15 text-[#128C7E] flex items-center justify-center shrink-0 border border-[#25D366]/30">
                       <MessageCircle className="w-6 h-6" />
                     </div>
@@ -96,7 +96,7 @@ export default function ContactPage() {
             {/* Inquiry Form */}
             <div className="lg:col-span-7">
               <Reveal type="fade-left">
-                <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#cfa144]/70 shadow-lg h-full">
+                <div className="bg-white p-5 sm:p-10 rounded-3xl border-2 border-[#cfa144]/70 shadow-lg h-full">
                   <h2 className="text-2xl font-extrabold text-[#1A1D20] mb-2">Send Factory Inquiry</h2>
                   <p className="text-xs text-gray-500 mb-8">Tell us about your application and request product information or a sample kit.</p>
 

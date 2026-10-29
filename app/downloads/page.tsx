@@ -91,13 +91,13 @@ export default function DownloadsPage() {
             ))}
           </div>
 
-          <div className="mt-14 bg-white text-[var(--ace-ink)] p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-md flex flex-col md:flex-row md:items-center gap-6">
+          <div className="mt-14 bg-white text-[var(--ace-ink)] p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-md flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
               <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block mb-2">Need a physical sample?</span>
               <h3 className="text-xl font-extrabold mb-2">Sample kits ship with the printed catalog</h3>
               <p className="text-xs text-gray-600 leading-relaxed">Request a sample kit of the lines you are evaluating, so specifications can be checked in hand.</p>
             </div>
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3.5 px-7 rounded-xl text-xs uppercase tracking-wider transition-all">
+            <Link href="/contact" className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3 px-5 sm:py-3.5 sm:px-7 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all">
               Request a sample kit <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

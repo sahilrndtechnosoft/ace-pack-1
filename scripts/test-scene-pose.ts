@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { initialSceneState } from '../components/experience/config';
-import { getModelPose } from '../components/experience/scene-pose';
+import { getModelPose, CRAFT_TURN } from '../components/experience/scene-pose';
 import * as THREE from 'three';
 import { fitSceneFrame } from '../components/experience/scene-framing';
 const initial=initialSceneState();
@@ -9,7 +9,12 @@ for (const aspect of [.5, 1.6, 2.1]) {
 }
 const before=getModelPose(0,{...initial,hero:1},0);
 const opened=getModelPose(0,{...initial,hero:1,craft:1},0);
-assert.ok(Math.abs(opened.rotation[1]-before.rotation[1]-Math.PI*2)<1e-8,'Craft scroll must rotate exactly 360 degrees');
+assert.ok(Math.abs(opened.rotation[1]-before.rotation[1]-CRAFT_TURN)<1e-8,'Craft scroll must finish its full turn');
+// Holds: the model barely moves while a fact is being read, and turns across changeovers.
+const yaw=(craft:number)=>getModelPose(0,{...initial,hero:1,craft},0).rotation[1];
+assert.ok(Math.abs(yaw(.2)-yaw(.05))<.1,'The container holds still through the first fact');
+assert.ok(yaw(.42)-yaw(.25)>1,'The container turns across the first changeover');
+for(let i=1;i<=100;i++)assert.ok(yaw(i/100)>=yaw((i-1)/100)-1e-9,'The craft turn never reverses');
 assert.ok(opened.lidLift > .05,'The snap-fit lid must lift far enough to expose the interior');
 assert.equal(getModelPose(0,initial,0).lidLift,0,'The lid sits seated until something opens it');
 assert.ok(getModelPose(0,{...initial,inspect:1},0).lidLift>getModelPose(0,initial,0).lidLift,'Inspect button opens the lid');

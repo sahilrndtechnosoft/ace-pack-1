@@ -42,7 +42,7 @@ export const ManufacturingPillars: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="bg-[#FAF8F4] p-8 rounded-3xl border border-[#E6DBC6] hover:border-[#cfa144] transition-all hover:shadow-lg text-center flex flex-col items-center"
+                className="bg-[#FAF8F4] p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] hover:border-[#cfa144] transition-all hover:shadow-lg text-center flex flex-col items-center"
               >
                 <div className="w-14 h-14 rounded-2xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center mb-6 border border-[#cfa144]/30">
                   <Icon className="w-7 h-7" />

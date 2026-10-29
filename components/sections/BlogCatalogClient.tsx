@@ -146,7 +146,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                     </span>
                   </div>
 
-                  <div className="lg:col-span-5 p-8 lg:p-10 flex flex-col justify-between">
+                  <div className="lg:col-span-5 p-5 sm:p-8 lg:p-10 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
                         <span className="inline-flex items-center gap-1 font-bold text-[#a8812f] uppercase tracking-wider">
@@ -169,7 +169,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-[#E6DBC6] flex items-center justify-between">
+                    <div className="pt-4 border-t border-[#E6DBC6] flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5">
                         <img
                           src={featuredPost.author.avatar}
@@ -186,7 +186,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
 
                       <Link
                         href={`/blog/${featuredPost.slug}`}
-                        className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-5 py-2.5 rounded-full transition-colors uppercase tracking-wider shadow-sm"
+                        className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-5 py-2.5 rounded-full transition-colors uppercase tracking-wider whitespace-nowrap shadow-sm"
                       >
                         <span>Read Article</span>
                         <ArrowRight className="w-3.5 h-3.5" />

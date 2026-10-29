@@ -52,13 +52,13 @@ export const CategoryShowcase: React.FC = () => {
                 className="bg-white rounded-2xl overflow-hidden border border-[var(--ace-line)] hover:border-[var(--ace-orange)] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--ace-orange)]/20 flex flex-col justify-between group text-left min-h-[460px] h-full"
               >
                 <div>
-                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] p-6 flex items-center justify-center">
+                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-gradient-to-b from-white to-[#F7F4EC] flex items-center justify-center">
                     <img
                       src={category.heroImage}
                       alt={category.name}
                       loading="lazy"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.1)] group-hover:scale-108 transition-transform duration-700 ease-out"
+                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                     />
                     <span className="absolute top-4 left-4 bg-black/85 text-[var(--ace-orange)] text-[12px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow">
                       {category.subtitleName}

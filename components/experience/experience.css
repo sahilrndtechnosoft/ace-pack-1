@@ -3,13 +3,15 @@
    --xp-ink: var(--foreground);
    --xp-gold: theme(colors.brand.gold);
    --xp-line: var(--ace-line);
-   --xp-header: 84px;
+   --xp-header:var(--site-header,84px);
    position: relative;
    background: var(--xp-ivory);
    color: var(--xp-ink);
    isolation: isolate;
    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-   overflow-x: hidden;
+   /* clip, not hidden: hidden makes .xp-home a scroll container, which
+      silently disables the sticky craft stage inside it. */
+   overflow-x: clip;
    max-width: 100vw;
    width: 100%;
 }
@@ -567,7 +569,9 @@
 }
 
 .xp-craft {
-   height: 300svh;
+   /* One screen of stage plus ~1.3 screens of scroll: enough for three fact
+      holds and two turns without dead scrolling between them. */
+   height: 230svh;
    position: relative;
    background: var(--ace-aqua-soft)
 }
@@ -754,7 +758,7 @@
 
 @media (max-width: 1023px) {
   .obs-carousel-wrapper {
-    height: calc(100svh - 60px);
+    height: calc(100svh - var(--xp-header, 64px));
     min-height: 520px;
     max-height: none;
     overflow: hidden;
@@ -1919,7 +1923,7 @@
 
 @media(max-width:767px) {
    .xp-home {
-      --xp-header: 62px
+      --xp-header:var(--site-header,62px)
    }
 
    .xp-hero {
@@ -2407,6 +2411,12 @@
       font-size: 44px
    }
 
+   /* The 44px heading wraps to two lines here (~190px from the stage top), so a
+    percentage top slid the facts underneath it on short phones. */
+   .xp-live .xp-craft-facts {
+      top: 205px
+   }
+
    .xp-live .xp-fact h3 {
       font-size: 34px;
       margin: 12px 0
@@ -2609,7 +2619,7 @@
    flex-wrap: wrap
 }
 /* Keep the refreshed visual styling on the original page structure. */
-.xp-home { --xp-ivory:var(--ace-paper); --xp-ink:var(--ace-ink); --xp-gold:var(--ace-orange); --xp-line:var(--ace-line); --xp-header:104px; }
+.xp-home { --xp-ivory:var(--ace-paper); --xp-ink:var(--ace-ink); --xp-gold:var(--ace-orange); --xp-line:var(--ace-line); --xp-header:var(--site-header,104px); }
 .xp-hero { background:var(--ace-paper); color:var(--ace-ink); }
 .xp-hero:before { background:radial-gradient(ellipse at 76% 43%,var(--ace-aqua),transparent 58%); }
 .xp-hero-topline,.xp-hero-copy>.xp-eyebrow,.xp-hero-description,.xp-hero-material,.xp-hero-material b,.xp-hero-caption,.xp-hero-caption .xp-eyebrow,.xp-hero-bottom,.xp-live-label,.xp-story-top,.xp-fact p,.xp-fact>span,.xp-story-bottom,.xp-turn-label,.xp-product-copy>span,.xp-product-copy p,.xp-product-copy dt,.xp-product-tabs>a,.xp-collection-bottom>span,.xp-closing-note { color:var(--ace-muted); }
@@ -2635,7 +2645,7 @@
 .xp-hero .xp-button--gold { background:var(--ace-orange); border-color:var(--ace-orange); color:white; }
 .xp-hero .xp-button--gold:hover { background:var(--ace-ink); border-color:var(--ace-ink); color:white; }
 @media(max-width:767px) {
- .xp-home { --xp-header:80px; }
+ .xp-home { --xp-header:var(--site-header,80px); }
  .xp-hero-description { font-size:16px; }
  .xp-hero-topline,.xp-hero-copy>.xp-eyebrow,.xp-hero-caption .xp-eyebrow { font-size:13px; }
  .xp-craft-stage,.xp-collection-stage { padding-inline:20px!important; }

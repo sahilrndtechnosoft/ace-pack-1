@@ -109,7 +109,7 @@ export const FaqSection: React.FC = () => {
 
           {/* Right Column: Contact Inquiry Form (lg:col-span-6) */}
           <Reveal type="fade-left" duration={0.8}>
-          <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-xl text-left">
+          <div className="lg:col-span-6 bg-white p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-xl text-left">
 
             <span className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider block mb-2">
               Get in touch with Ace Packaging

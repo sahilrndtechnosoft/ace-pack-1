@@ -67,7 +67,7 @@ export const QualityCertificationsSection: React.FC = () => {
 
             <Link
               href="/quality"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shrink-0 self-start md:self-auto"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shrink-0 self-start md:self-auto"
             >
               <span>Quality &amp; Certificates Page</span>
               <ArrowRight className="w-4 h-4" />
@@ -138,7 +138,7 @@ export const QualityCertificationsSection: React.FC = () => {
 
           <Link
             href="/quality"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wider transition-colors shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wide sm:tracking-wider text-center transition-colors shrink-0"
           >
             <span>Review Full Documentation</span>
             <ArrowRight className="w-4 h-4" />

@@ -129,6 +129,18 @@ export const Header: React.FC = () => {
   const [mobileSearch, setMobileSearch] = useState<string>('');
   const [mobileShowAllCats, setMobileShowAllCats] = useState<boolean>(false);
   const megaMenuContainerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+
+  // Publish the live header height so sticky/pinned sections sit flush under it
+  // (it varies by breakpoint and shrinks once the page scrolls).
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() => root.style.setProperty('--site-header', `${el.offsetHeight}px`));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Close desktop mega menu when clicking outside
   useEffect(() => {
@@ -268,6 +280,7 @@ export const Header: React.FC = () => {
 
   return (
     <header
+      ref={headerRef}
       className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
         }`}
     >
@@ -481,11 +494,11 @@ export const Header: React.FC = () => {
                                 onClick={() => setMegaMenuOpen(false)}
                                 className="group relative flex flex-col justify-between rounded-xl border border-[var(--ace-line)] bg-white p-3 hover:border-[var(--brand-gold)] hover:shadow-md transition-all text-left"
                               >
-                                <div className="relative h-24 w-full flex items-center justify-center bg-[#FAF8F4] rounded-lg p-2 mb-2 overflow-hidden group-hover:bg-[#f6f2e8] transition-colors">
+                                <div className="relative h-24 w-full flex items-center justify-center bg-[#FAF8F4] rounded-lg mb-2 overflow-hidden group-hover:bg-[#f6f2e8] transition-colors">
                                   <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                   />
                                   <span className="absolute top-1.5 right-1.5 bg-white/95 text-[var(--brand-gold)] text-[10px] font-bold px-1.5 py-0.5 rounded border border-[var(--ace-line)] shadow-2xs">
@@ -744,8 +757,8 @@ export const Header: React.FC = () => {
                                     className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF8F4] hover:bg-white border border-[var(--ace-line)] hover:border-[var(--ace-orange)]/60 transition-colors group"
                                   >
                                     {res.image ? (
-                                      <div className="w-9 h-9 rounded-lg bg-white border border-[var(--ace-line)] flex items-center justify-center p-1 shrink-0 overflow-hidden">
-                                        <img src={res.image} alt="" className="w-full h-full object-contain" />
+                                      <div className="w-9 h-9 rounded-lg bg-white border border-[var(--ace-line)] flex items-center justify-center shrink-0 overflow-hidden">
+                                        <img src={res.image} alt="" className="w-full h-full object-cover" />
                                       </div>
                                     ) : (
                                       <div className="w-9 h-9 rounded-lg bg-white border border-[var(--ace-line)] flex items-center justify-center shrink-0">
@@ -827,8 +840,8 @@ export const Header: React.FC = () => {
                                     onClick={() => setMobileMenuOpen(false)}
                                     className="p-2 rounded-xl bg-[#FAF8F4] hover:bg-white border border-[var(--ace-line)] hover:border-[var(--ace-orange)]/60 text-left transition-all group flex items-center gap-2"
                                   >
-                                    <div className="w-10 h-10 rounded-lg bg-white border border-black/5 p-1 shrink-0 flex items-center justify-center">
-                                      <img src={item.image} alt="" className="w-full h-full object-contain" />
+                                    <div className="w-10 h-10 rounded-lg bg-white border border-black/5 overflow-hidden shrink-0 flex items-center justify-center">
+                                      <img src={item.image} alt="" className="w-full h-full object-cover" />
                                     </div>
                                     <div className="min-w-0 flex-1">
                                       <p className="text-[11px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] transition-colors leading-snug truncate">

@@ -4,7 +4,7 @@
    needs swap to whichever segment is passing the middle of the screen. On touch
    layouts the panel goes and each row carries its own cover instead. */
 
-.xin{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:var(--ace-line);--xp-header:84px;--xin-dark:var(--xp-ivory);position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
+.xin{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:var(--ace-line);--xp-header:var(--site-header,84px);--xin-dark:var(--xp-ivory);position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
 .xin *{box-sizing:border-box}
 .xin a{text-decoration:none;color:inherit}
 .xin :focus-visible{outline:2px solid var(--xp-gold);outline-offset:4px}
@@ -123,7 +123,7 @@
 
 /* ---------- Phone ---------- */
 @media(max-width:767px){
- .xin{--xp-header:62px}
+ .xin{--xp-header:var(--site-header,62px)}
  .xin-hero{padding:56px 0 48px}
  .xin-hero h1{font-size:clamp(46px,12.5vw,72px)}
  .xin-hero-lead{font-size:14.5px}

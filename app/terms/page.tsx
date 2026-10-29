@@ -21,7 +21,7 @@ export default function TermsAndConditionsPage() {
 
       <section className="py-12 md:py-16">
         <div className="container-custom max-w-4xl">
-          <div className="bg-white p-8 sm:p-12 rounded-3xl border border-[#E6DBC6] shadow-sm space-y-8 text-xs sm:text-sm text-gray-700 leading-relaxed">
+          <div className="bg-white p-5 sm:p-12 rounded-3xl border border-[#E6DBC6] shadow-sm space-y-8 text-xs sm:text-sm text-gray-700 leading-relaxed">
             
             <div className="border-b border-[#E6DBC6] pb-6">
               <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block mb-1">Effective Date: October 2026</span>
@@ -86,7 +86,7 @@ export default function TermsAndConditionsPage() {
                 <h4 className="text-sm font-bold text-[#1A1D20]">Need Commercial Clarifications?</h4>
                 <p className="text-xs text-gray-500">Our export documentation and sales managers are available.</p>
               </div>
-              <div className="flex items-center gap-4 text-xs font-semibold">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold">
                 <a href="mailto:sales@acepack.co.in" className="text-[#8c6f2a] hover:underline flex items-center gap-1">
                   <Mail className="w-3.5 h-3.5" /> sales@acepack.co.in
                 </a>

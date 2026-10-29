@@ -3,7 +3,7 @@
    when a line or sort is chosen — every card is rendered once and shown, hidden
    or reordered in place, so filtering never re-renders or refetches anything. */
 
-.xpr{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:var(--ace-line);--xp-header:84px;--xpr-dark:var(--xp-ivory);--xpr-tile:#ffffff;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
+.xpr{--xp-ivory:var(--background);--xp-ink:var(--foreground);--xp-gold:var(--brand-gold);--xp-line:var(--ace-line);--xp-header:var(--site-header,84px);--xpr-dark:var(--xp-ivory);--xpr-tile:#ffffff;position:relative;background:var(--xp-ivory);color:var(--xp-ink);isolation:isolate;font-family:var(--font-sans),ui-sans-serif,system-ui,sans-serif;overflow-x:clip}
 .xpr *{box-sizing:border-box}
 .xpr a{text-decoration:none;color:inherit}
 .xpr button,.xpr a{-webkit-tap-highlight-color:transparent}
@@ -101,7 +101,7 @@
 
 /* ---------- Phone ---------- */
 @media(max-width:767px){
- .xpr{--xp-header:62px}
+ .xpr{--xp-header:var(--site-header,62px)}
  .xpr-hero{padding:56px 0 44px}
  .xpr-hero h1{font-size:clamp(46px,12.5vw,72px)}
  .xpr-hero-lead{font-size:14.5px}
@@ -123,7 +123,7 @@
  /* Two-up compact cards: a catalog is scanned, not read. */
  .xpr-grid{grid-template-columns:repeat(2,1fr);gap:26px 14px}
  .xpr-card{padding-top:12px;contain-intrinsic-height:auto 380px}
- .xpr-card-cap{left:12px;bottom:10px;font-size:22px}
+ .xpr-card-cap{left:10px;bottom:10px;font-size:clamp(13px,4vw,18px);padding:5px 9px;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
  .xpr-card-cap small{font-size:9px;margin-bottom:4px}
  .xpr-card-line{top:8px;left:8px;font-size:9px;padding:6px 8px;max-width:calc(100% - 64px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .xpr-card-num{font-size:30px;top:6px;right:10px}
@@ -140,7 +140,7 @@
 }
 @media(max-width:360px){
  .xpr-grid{grid-template-columns:1fr}
- .xpr-card-cap{font-size:28px}
+ .xpr-card-cap{font-size:22px}
  .xpr-card h3{font-size:18px}
 }
 
@@ -159,7 +159,7 @@
 .xpl-proxy{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
 .xpl-card{position:absolute;left:50%;top:50%;width:300px;height:380px;border-radius:20px;overflow:hidden;background:radial-gradient(ellipse 95% 85% at 50% 25%,#ffffff 0%,#faf8f4 60%,#f4efe6 100%);border:1px solid var(--xp-line);padding:0;cursor:pointer;will-change:transform,opacity;text-align:left;color:var(--xp-ink);font:inherit;transform-origin:center;box-shadow:0 20px 45px -15px rgba(20,23,26,0.1);transition:border-color .4s,box-shadow .4s}
 .xpl-card.is-centre{border-color:#d6bc83;box-shadow:0 25px 60px -15px rgba(185,151,80,0.2)}
-.xpl-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:24px 20px 90px;filter:drop-shadow(0 14px 20px rgba(20,23,26,0.12));transform:scale(1.02);transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.xpl-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .7s cubic-bezier(.22,1,.36,1)}
 .xpl-card.is-centre img{transform:scale(1.08)}
 .xpl-card:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,248,244,0) 40%,rgba(250,248,244,0.95) 100%);pointer-events:none}
 .xpl-card-num{position:absolute;top:14px;left:16px;z-index:1;font-size:11px;font-weight:600;letter-spacing:.13em;color:#9e7f3b}
@@ -180,7 +180,7 @@
  .xpl{margin-top:40px}
  .xpl-stage{height:310px;perspective:1000px}
  .xpl-card{width:220px;height:280px;border-radius:14px}
- .xpl-card img{padding:16px 14px 60px}
+
  .xpl-card-name{font-size:20px}
  .xpl-card-sub{display:none}
  .xpl-card-cta{margin-top:10px;font-size:10px}
