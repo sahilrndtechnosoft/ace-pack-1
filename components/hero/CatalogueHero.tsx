@@ -13,8 +13,13 @@ export function CatalogueHero() {
     <>
       <section
         id="main-content"
-        className="relative w-full overflow-hidden bg-gradient-to-b from-[#ad8d4e] via-[#b59155] to-[#ba965a] text-[#14171A] select-none"
+        className="relative w-full overflow-hidden bg-gradient-to-b from-[#957033] via-[#89632b] via-[38%] via-[#b5904d] via-[48%] via-[#eec983] via-[62%] via-[#e5bd75] via-[75%] via-[#c5a162] via-[92%] to-[#bf9c5a] text-[#14171A] select-none"
       >
+        {/* Subtle ambient studio lighting accents for seamless visual depth */}
+        <div
+          className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_75%_65%_at_72%_50%,rgba(255,240,200,0.18)_0%,transparent_70%)]"
+          aria-hidden="true"
+        />
 
         {/* =========================================================================
             DESKTOP & TABLET LANDSCAPE VIEW (lg+): Full Side-by-Side Showcase Stage
@@ -130,13 +135,13 @@ export function CatalogueHero() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="col-span-7 flex items-center justify-center relative"
               >
-                <div className="relative w-full">
+                <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_90%_at_50%_50%,black_75%,transparent_100%)]">
                   <picture>
                     <source srcSet="/images/golden-gourmet-takeaway-spread.webp" type="image/webp" />
                     <img
                       src="/images/golden-gourmet-takeaway-spread.png"
                       alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
-                      className="w-full h-auto max-h-[78vh] object-contain block"
+                      className="w-full h-auto max-h-[78vh] object-contain block select-none pointer-events-none"
                       loading="eager"
                       fetchPriority="high"
                     />
@@ -218,15 +223,15 @@ export function CatalogueHero() {
             </div>
           </div>
 
-          {/* Showcase Photography (Full Image, No Shadow, No Border) */}
+          {/* Showcase Photography (Full Image, Seamlessly Merged) */}
           <div className="px-3 sm:px-4 py-2">
-            <div className="relative w-full">
+            <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_92%_at_50%_50%,black_75%,transparent_100%)]">
               <picture>
                 <source srcSet="/images/golden-gourmet-takeaway-spread.webp" type="image/webp" />
                 <img
                   src="/images/golden-gourmet-takeaway-spread.png"
                   alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
-                  className="w-full h-auto object-contain block"
+                  className="w-full h-auto object-contain block select-none pointer-events-none"
                   loading="eager"
                   fetchPriority="high"
                 />
