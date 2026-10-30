@@ -13,7 +13,7 @@ export function CatalogueHero() {
     <>
       <section
         id="main-content"
-        className="relative w-full overflow-hidden bg-gradient-to-b from-[#957033] via-[#89632b] via-[38%] via-[#b5904d] via-[48%] via-[#eec983] via-[62%] via-[#e5bd75] via-[75%] via-[#c5a162] via-[92%] to-[#bf9c5a] text-[#14171A] select-none"
+        className="relative z-10 w-full overflow-hidden bg-gradient-to-b from-[#957033] via-[#89632b] via-[38%] via-[#b5904d] via-[48%] via-[#eec983] via-[62%] via-[#e5bd75] via-[75%] via-[#c5a162] via-[92%] to-[#bf9c5a] text-[#14171A] select-none"
       >
         {/* Subtle ambient studio lighting accents for seamless visual depth */}
         <div
@@ -135,7 +135,7 @@ export function CatalogueHero() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="col-span-7 flex items-center justify-center relative"
               >
-                <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_90%_at_50%_50%,black_75%,transparent_100%)]">
+                <div className="relative w-full">
                   <picture>
                     <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
                     <img
@@ -173,7 +173,7 @@ export function CatalogueHero() {
         {/* =========================================================================
             MOBILE & TABLET PORTRAIT VIEW (< lg): Full Uncropped Photography Flow
            ========================================================================= */}
-        <div className="lg:hidden flex flex-col justify-between min-h-[calc(100svh-64px)] text-white">
+        <div className="lg:hidden flex flex-col justify-between min-h-[calc(100svh-64px)] text-white relative z-20">
           {/* Top Badges & Plant Certification */}
           <div className="px-4 pt-3.5 pb-1 flex items-center justify-between text-[10px] font-semibold text-white/90">
             <div className="flex items-center gap-1.5">
@@ -225,7 +225,7 @@ export function CatalogueHero() {
 
           {/* Showcase Photography (Full Image, Seamlessly Merged) */}
           <div className="px-3 sm:px-4 py-2">
-            <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_92%_at_50%_50%,black_75%,transparent_100%)]">
+            <div className="relative w-full">
               <picture>
                 <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
                 <img
