@@ -137,9 +137,9 @@ export function CatalogueHero() {
               >
                 <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_90%_at_50%_50%,black_75%,transparent_100%)]">
                   <picture>
-                    <source srcSet="/images/golden-gourmet-takeaway-spread.webp" type="image/webp" />
+                    <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
                     <img
-                      src="/images/golden-gourmet-takeaway-spread.png"
+                      src="/images/takeaway-spread-transparent.png"
                       alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
                       className="w-full h-auto max-h-[78vh] object-contain block select-none pointer-events-none"
                       loading="eager"
@@ -227,9 +227,9 @@ export function CatalogueHero() {
           <div className="px-3 sm:px-4 py-2">
             <div className="relative w-full [mask-image:radial-gradient(ellipse_96%_92%_at_50%_50%,black_75%,transparent_100%)]">
               <picture>
-                <source srcSet="/images/golden-gourmet-takeaway-spread.webp" type="image/webp" />
+                <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
                 <img
-                  src="/images/golden-gourmet-takeaway-spread.png"
+                  src="/images/takeaway-spread-transparent.png"
                   alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
                   className="w-full h-auto object-contain block select-none pointer-events-none"
                   loading="eager"
