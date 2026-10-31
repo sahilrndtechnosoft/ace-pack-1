@@ -154,21 +154,21 @@
    value in LinesCarousel.tsx; this only styles them. */
 .xpl{position:relative;margin-top:64px;outline:none;user-select:none;-webkit-user-select:none}
 .xpl:focus-visible .xpl-stage{outline:2px solid var(--xp-gold);outline-offset:8px;border-radius:24px}
-.xpl-stage{position:relative;height:420px;perspective:1400px;transform-style:preserve-3d;cursor:grab;touch-action:pan-y}
+.xpl-stage{position:relative;height:500px;perspective:1400px;transform-style:preserve-3d;cursor:grab;touch-action:pan-y}
 .xpl-stage:active{cursor:grabbing}
 .xpl-proxy{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
-.xpl-card{position:absolute;left:50%;top:50%;width:300px;height:380px;border-radius:20px;overflow:hidden;background:radial-gradient(ellipse 95% 85% at 50% 25%,#ffffff 0%,#faf8f4 60%,#f4efe6 100%);border:1px solid var(--xp-line);padding:0;cursor:pointer;will-change:transform,opacity;text-align:left;color:var(--xp-ink);font:inherit;transform-origin:center;box-shadow:0 20px 45px -15px rgba(20,23,26,0.1);transition:border-color .4s,box-shadow .4s}
-.xpl-card.is-centre{border-color:#d6bc83;box-shadow:0 25px 60px -15px rgba(185,151,80,0.2)}
+.xpl-card{position:absolute;left:50%;top:50%;width:360px;height:460px;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse 95% 85% at 50% 25%,#ffffff 0%,#faf8f4 60%,#f4efe6 100%);border:1px solid var(--xp-line);padding:0;cursor:pointer;will-change:transform,opacity;text-align:left;color:var(--xp-ink);font:inherit;transform-origin:center;box-shadow:0 24px 55px -15px rgba(20,23,26,0.12);transition:border-color .4s,box-shadow .4s}
+.xpl-card.is-centre{border-color:#d6bc83;box-shadow:0 30px 70px -15px rgba(185,151,80,0.25)}
 .xpl-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .7s cubic-bezier(.22,1,.36,1)}
 .xpl-card.is-centre img{transform:scale(1.08)}
-.xpl-card:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,248,244,0) 40%,rgba(250,248,244,0.95) 100%);pointer-events:none}
-.xpl-card-num{position:absolute;top:14px;left:16px;z-index:1;font-size:11px;font-weight:600;letter-spacing:.13em;color:#9e7f3b}
-.xpl-card-body{position:absolute;left:20px;right:20px;bottom:20px;z-index:1;display:block}
-.xpl-card-name{display:block;font-size:24px;font-weight:600;letter-spacing:var(--heading-tracking);line-height:1.1;margin-bottom:6px;color:var(--xp-ink)}
-.xpl-card-sub{display:block;font-size:11.5px;letter-spacing:.02em;color:#605748;line-height:1.5}
+.xpl-card:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,248,244,0) 52%,rgba(250,248,244,0.65) 76%,rgba(250,248,244,0.96) 100%);pointer-events:none}
+.xpl-card-num{position:absolute;top:16px;left:18px;z-index:1;font-size:11px;font-weight:600;letter-spacing:.13em;color:#9e7f3b}
+.xpl-card-body{position:absolute;left:24px;right:24px;bottom:24px;z-index:1;display:block}
+.xpl-card-name{display:block;font-size:26px;font-weight:600;letter-spacing:var(--heading-tracking);line-height:1.1;margin-bottom:6px;color:var(--xp-ink)}
+.xpl-card-sub{display:block;font-size:12px;letter-spacing:.02em;color:#605748;line-height:1.5}
 .xpl-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#9e7f3b;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
 .xpl-card.is-centre .xpl-card-cta{opacity:1;transform:none}
-.xpl-controls{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:22px}
+.xpl-controls{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:24px}
 .xpl-progress{flex:1;height:1px;background:var(--xp-line)}
 .xpl-progress>span{display:block;height:100%;background:var(--xp-gold);transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
 .xpl-nav{display:flex;align-items:center;gap:10px}
@@ -176,12 +176,16 @@
 .xpl-count b{font-weight:600;color:var(--xp-ink);font-size:20px;letter-spacing:var(--heading-tracking);margin-right:4px}
 .xpl-nav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--xp-line);background:#ffffff;color:var(--xp-ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:background .3s,border-color .3s,color .3s}
 .xpl-nav button:hover{background:var(--xp-ink);border-color:var(--xp-ink);color:#ffffff}
+@media(min-width:768px) and (max-width:1024px){
+ .xpl-stage{height:460px}
+ .xpl-card{width:320px;height:420px}
+}
 @media(max-width:767px){
  .xpl{margin-top:40px}
- .xpl-stage{height:310px;perspective:1000px}
- .xpl-card{width:220px;height:280px;border-radius:14px}
+ .xpl-stage{height:380px;perspective:1000px}
+ .xpl-card{width:260px;height:340px;border-radius:18px}
 
- .xpl-card-name{font-size:20px}
+ .xpl-card-name{font-size:22px}
  .xpl-card-sub{display:none}
  .xpl-card-cta{margin-top:10px;font-size:10px}
  .xpl-controls{margin-top:14px}

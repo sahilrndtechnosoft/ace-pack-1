@@ -62,9 +62,9 @@ export default function LinesCarousel({ cards, onSelect }: Props) {
       const abs = Math.abs(d);
       if (abs < best) { best = abs; centre = i; }
       const shown = abs <= VISIBLE + 0.5;
-      const scale = Math.max(0.6, 1 - abs * 0.14);
-      const opacity = shown ? Math.max(0, 1 - abs * 0.26) : 0;
-      el.style.transform = `translate(-50%, -50%) translateX(${d * spacing}px) translateZ(${-abs * 80}px) rotateY(${d * -9}deg) scale(${scale})`;
+      const scale = Math.max(0.72, 1 - abs * 0.09);
+      const opacity = shown ? Math.max(0.35, 1 - abs * 0.16) : 0;
+      el.style.transform = `translate(-50%, -50%) translateX(${d * spacing}px) translateZ(${-abs * 45}px) rotateY(${d * -7}deg) scale(${scale})`;
       el.style.opacity = String(opacity);
       el.style.zIndex = String(100 - Math.round(abs * 10));
       el.style.pointerEvents = shown ? 'auto' : 'none';
@@ -93,7 +93,7 @@ export default function LinesCarousel({ cards, onSelect }: Props) {
 
     const measure = () => {
       const card = refs.current[0];
-      state.current.spacing = card ? Math.round(card.offsetWidth * 0.78) : 240;
+      state.current.spacing = card ? Math.round(card.offsetWidth * 0.76) : 260;
       render();
     };
     measure();
