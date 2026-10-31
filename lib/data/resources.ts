@@ -1,18 +1,87 @@
 export const resourceLinks = [
     { href: '/gallery', label: 'Gallery', hint: 'Products, finishes and manufacturing' },
-    { href: '/oem', label: 'OEM', hint: 'Manufacturing for your brand' },
-    { href: '/customization', label: 'Customization', hint: 'Formats, colours and IML artwork' },
-    // { href: '/tools', label: 'Tools', hint: 'Capacity and carton planning' },
+    { href: '/customization', label: 'OEM & Customization', hint: 'Custom tooling, IML branding & private label' },
     { href: '/quality', label: 'Quality & Certifications', hint: 'Material and manufacturing standards' },
     { href: '/process', label: 'Manufacturing Process', hint: 'From resin to dispatch' },
     { href: '/capabilities', label: 'Capabilities', hint: 'Presses, tooling and capacity' },
     { href: '/downloads', label: 'Download Center', hint: 'Catalogues and datasheets' },
-    //  { href:'/faq',label:'FAQ',hint:'Answers before you enquire' },
 ];
+
 export const resourcePages = {
-    oem: { title: 'Your brand. Our manufacturing.', eyebrow: 'OEM partnerships', intro: 'Build your packaging programme with a manufacturing partner who understands the product, the application and the delivery plan.', steps: [['A clear product brief', 'Share the food application, format, capacity and material requirements.'], ['Sample and specification review', 'Review the proposed container and lid combination before confirming the production brief.'], ['Production alignment', 'Discuss tooling, branding, quality checks and the manufacturing schedule.'], ['Prepared for dispatch', 'Agree carton configuration, identification and delivery requirements with our team.']], action: 'Discuss an OEM project' },
-    customization: { title: 'Packaging with your signature.', eyebrow: 'Customization', intro: 'A considered format, a distinctive finish and artwork that belongs to your brand. Explore the possibilities with our team.', steps: [['Format and capacity', 'Discuss dimensions, serving sizes, compartments and lid compatibility.'], ['Colour and finish', 'Review available material and colour options for the selected container.'], ['In-mould labelling', 'Explore IML artwork, label placement and the information your packaging needs to carry.'], ['From brief to sample', 'Align artwork, tooling and production requirements through a specification and sample review.']], action: 'Discuss a custom project' },
+    oem_customization: {
+        title: 'OEM & Custom Packaging Solutions.',
+        eyebrow: 'OEM & Customization',
+        intro: 'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML) and bespoke colour formulations, build your custom packaging programme under one roof at our ISO 9001:2015 Daman facility.',
+        steps: [
+            [
+                'Custom Tooling & Container Geometry',
+                'Collaborate with our in-house toolroom engineers on proprietary container shapes, volume capacities, multi-cavity moulds, and hermetic leak-proof snap lids tailored specifically for your brand.'
+            ],
+            [
+                'Colour, Resin & Polymer Formulations',
+                'Select from 100% prime virgin PP 05 food-grade polymer in ultra-clear transparent, deep gloss black, milky white, or bespoke pantone corporate shades with glossy or frosted matte finishes.'
+            ],
+            [
+                'In-Mould Labelling (IML) Branding',
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+            ],
+            [
+                'Sample Prototyping to Volume Dispatch',
+                'Review pre-production physical samples, audit dimensional accuracy (±0.02mm), verify zero-leak rim performance, and scale into automated robotic manufacturing with palletized export dispatch.'
+            ]
+        ],
+        action: 'Discuss an OEM & Custom Project'
+    },
+    oem: {
+        title: 'OEM & Custom Packaging Solutions.',
+        eyebrow: 'OEM & Customization',
+        intro: 'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML) and bespoke colour formulations, build your custom packaging programme under one roof at our ISO 9001:2015 Daman facility.',
+        steps: [
+            [
+                'Custom Tooling & Container Geometry',
+                'Collaborate with our in-house toolroom engineers on proprietary container shapes, volume capacities, multi-cavity moulds, and hermetic leak-proof snap lids tailored specifically for your brand.'
+            ],
+            [
+                'Colour, Resin & Polymer Formulations',
+                'Select from 100% prime virgin PP 05 food-grade polymer in ultra-clear transparent, deep gloss black, milky white, or bespoke pantone corporate shades with glossy or frosted matte finishes.'
+            ],
+            [
+                'In-Mould Labelling (IML) Branding',
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+            ],
+            [
+                'Sample Prototyping to Volume Dispatch',
+                'Review pre-production physical samples, audit dimensional accuracy (±0.02mm), verify zero-leak rim performance, and scale into automated robotic manufacturing with palletized export dispatch.'
+            ]
+        ],
+        action: 'Discuss an OEM & Custom Project'
+    },
+    customization: {
+        title: 'OEM & Custom Packaging Solutions.',
+        eyebrow: 'OEM & Customization',
+        intro: 'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML) and bespoke colour formulations, build your custom packaging programme under one roof at our ISO 9001:2015 Daman facility.',
+        steps: [
+            [
+                'Custom Tooling & Container Geometry',
+                'Collaborate with our in-house toolroom engineers on proprietary container shapes, volume capacities, multi-cavity moulds, and hermetic leak-proof snap lids tailored specifically for your brand.'
+            ],
+            [
+                'Colour, Resin & Polymer Formulations',
+                'Select from 100% prime virgin PP 05 food-grade polymer in ultra-clear transparent, deep gloss black, milky white, or bespoke pantone corporate shades with glossy or frosted matte finishes.'
+            ],
+            [
+                'In-Mould Labelling (IML) Branding',
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+            ],
+            [
+                'Sample Prototyping to Volume Dispatch',
+                'Review pre-production physical samples, audit dimensional accuracy (±0.02mm), verify zero-leak rim performance, and scale into automated robotic manufacturing with palletized export dispatch.'
+            ]
+        ],
+        action: 'Discuss an OEM & Custom Project'
+    }
 };
+
 export function cartonPlan(quantity: number, unitsPerCarton: number) {
     if (!Number.isSafeInteger(quantity) || !Number.isSafeInteger(unitsPerCarton) || quantity < 1 || unitsPerCarton < 1) return null;
     const cartons = Math.ceil(quantity / unitsPerCarton);

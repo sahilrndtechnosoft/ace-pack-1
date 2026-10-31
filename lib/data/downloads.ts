@@ -1,10 +1,4 @@
-import { productCategories } from './products';
 import { certifications } from './quality';
-
-// Download centre inventory. `file` is a path under /public — when it is set
-// the entry renders as a direct download; while it is absent the entry offers
-// a request-by-email link instead, so the page is honest about what exists.
-// Drop PDFs into public/downloads/ and fill in `file` to make them live.
 
 export interface DownloadItem {
   id: string;
@@ -12,6 +6,7 @@ export interface DownloadItem {
   description: string;
   type: 'Catalog' | 'Brochure' | 'Datasheet' | 'Certificate';
   file?: string;
+  image?: string;
 }
 
 export interface DownloadGroup {
@@ -27,34 +22,51 @@ export const downloadGroups: DownloadGroup[] = [
     title: 'Catalogs & Brochures',
     intro: 'The full range across our container lines, with capacities, materials and carton packing.',
     items: [
-      { id: 'product-catalog', title: 'Ace Packaging Product Catalog', description: 'All product categories — hinge cups to custom IML — with capacities, dimensions and carton quantities.', type: 'Catalog', file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf' },
-      { id: 'company-brochure', title: 'Company Brochure', description: 'Daman plant, robotic moulding line, in-house toolroom and export reach at a glance.', type: 'Brochure' },
-      { id: 'iml-guide', title: 'Custom IML Branding Guide', description: 'Artwork specifications and colour guidance for in-mould labelled containers.', type: 'Brochure' },
+      {
+        id: 'product-catalog',
+        title: 'Ace Packaging Product Catalog 2026',
+        description: 'Comprehensive product catalog — hinge cups to custom IML containers — with complete volume capacities, dimensions and carton quantities.',
+        type: 'Catalog',
+        file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
+      },
+      {
+        id: 'company-brochure',
+        title: 'Ace Packaging Corporate & Plant Brochure',
+        description: 'Daman manufacturing units, robotic moulding line, cleanroom production, in-house toolroom and export reach at a glance.',
+        type: 'Brochure',
+        file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
+      },
+      {
+        id: 'iml-guide',
+        title: 'Custom In-Mould Labelling (IML) Branding Guide',
+        description: 'Artwork specifications, die-lines, label placement and 5-sided full-color graphics guidance for in-mould labelled containers.',
+        type: 'Brochure',
+        file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
+      },
     ],
-  },
-  {
-    id: 'datasheets',
-    title: 'Product Datasheets',
-    intro: 'Per-line technical sheets: model sizes, dimensions, material grade, thermal rating and packaging.',
-    // Generated from the category data so a new line appears here automatically.
-    items: productCategories.map((category) => ({
-      id: category.slug,
-      title: `${category.name} — Datasheet`,
-      description: category.products.length ? `${category.subtitleName}. ${category.products.length} model${category.products.length === 1 ? '' : 's'}: ${category.products.map((p) => p.capacity).join(', ')}.` : `${category.subtitleName}. Request available sizes and material specifications from our team.`,
-      type: 'Datasheet' as const,
-      file: '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf',
-    })),
   },
   {
     id: 'certifications',
     title: 'Certifications & Compliance',
-    intro: 'Documents for buyer, retailer and export audits.',
-    items: certifications.map((cert) => ({
-      id: cert.id,
-      title: cert.title,
-      description: cert.body,
-      type: 'Certificate' as const,
-    })),
+    intro: 'Official accreditation certificates and compliance documents for buyer, retailer and international export audits.',
+    items: [
+      {
+        id: 'iso-9001-certificate',
+        title: 'ISO 9001:2015 Management System Certificate',
+        description: 'Official SGS Certificate (Certificate IN25/00000652) assessing and certifying Ace Packaging for Manufacturing & Supply of Injection Moulded Food Packaging Articles under ISO 9001:2015. Valid from August 2025 until August 2028.',
+        type: 'Certificate',
+        file: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
+        image: '/images/certifications/ace-packaging-iso-9001-certificate.jpg',
+      },
+      ...certifications
+        .filter((c) => c.id !== 'iso-9001')
+        .map((cert) => ({
+          id: cert.id,
+          title: cert.title,
+          description: cert.body,
+          type: 'Certificate' as const,
+        })),
+    ],
   },
 ];
 

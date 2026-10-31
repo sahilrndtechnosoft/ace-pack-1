@@ -1,20 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Award, FileCheck2, ArrowRight, CheckCircle2, FlaskConical, Sparkles } from 'lucide-react';
+import { ShieldCheck, Award, FileCheck2, ArrowRight, CheckCircle2, FlaskConical, Sparkles, FileDown, Eye } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
+import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 
 export const QualityCertificationsSection: React.FC = () => {
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+
   const credentials = [
     {
       badge: 'ISO 9001:2015 CERTIFIED',
       title: 'ISO 9001:2015 Plant Certification',
       description: 'Certified Quality Management System covering precision injection moulding, tooling calibration, and rigorous quality control protocols.',
-      standard: 'ISO 9001:2015 Standards',
+      standard: 'SGS Certificate IN25/00000652',
       icon: Award,
+      hasCertificateThumb: true,
     },
     {
       badge: 'ISO CERTIFIED FACILITY',
@@ -61,17 +65,28 @@ export const QualityCertificationsSection: React.FC = () => {
                 </h2>
               </SplitHeading>
               <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
-                Ace Packaging operates under a certified ISO 9001:2015 Quality Management System across Daman Unit 1 and Unit 2, ensuring rigorous quality controls from virgin polymer to final delivery.
+                Ace Packaging operates under an externally audited and certified ISO 9001:2015 Quality Management System (Certificate IN25/00000652 by SGS) across Daman Unit 1 and Unit 2.
               </p>
             </div>
 
-            <Link
-              href="/quality"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shrink-0 self-start md:self-auto"
-            >
-              <span>Quality &amp; Certificates Page</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
+              <button
+                type="button"
+                onClick={() => setDownloadModalOpen(true)}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+              >
+                <FileDown className="w-4 h-4" />
+                <span>Download ISO Certificate</span>
+              </button>
+
+              <Link
+                href="/quality"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 sm:py-3.5 rounded-full border border-[#E6DBC6] hover:border-[#b99750] bg-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wide transition-colors"
+              >
+                <span>View Quality Specs</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
         </Reveal>
 
@@ -108,6 +123,26 @@ export const QualityCertificationsSection: React.FC = () => {
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
                       {item.description}
                     </p>
+
+                    {item.hasCertificateThumb && (
+                      <div
+                        onClick={() => setDownloadModalOpen(true)}
+                        className="mb-4 p-2 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] transition-colors flex items-center gap-3 cursor-pointer group/thumb"
+                      >
+                        <div className="w-10 h-14 rounded-md bg-white border border-gray-200 overflow-hidden shrink-0">
+                          <img
+                            src="/images/certifications/ace-packaging-iso-9001-certificate.jpg"
+                            alt="SGS ISO 9001 Certificate"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[10px] font-bold text-[#a8812f] uppercase block">Official SGS Certificate</span>
+                          <span className="text-[11px] font-semibold text-[var(--ace-ink)] block truncate">Click to Download &amp; Email</span>
+                        </div>
+                        <FileDown className="w-4 h-4 text-[#b99750] group-hover/thumb:translate-y-0.5 transition-transform" />
+                      </div>
+                    )}
                   </div>
 
                   <div className="pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-gray-500">
@@ -131,21 +166,39 @@ export const QualityCertificationsSection: React.FC = () => {
                 Export &amp; Institutional Audit Reports Available
               </h4>
               <p className="text-xs text-gray-600 mt-0.5">
-                Download formal certificate copies or request batch-specific migration test laboratory reports for institutional vendor clearance.
+                Download formal SGS ISO 9001 certificate copies or request batch-specific migration test laboratory reports for institutional vendor clearance.
               </p>
             </div>
           </div>
 
-          <Link
-            href="/quality"
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wide sm:tracking-wider text-center transition-colors shrink-0"
-          >
-            <span>Review Full Documentation</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => setDownloadModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer shadow-sm"
+            >
+              <FileDown className="w-4 h-4" />
+              <span>Get Certificate Emailed</span>
+            </button>
+            <Link
+              href="/quality"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wide sm:tracking-wider text-center transition-colors"
+            >
+              <span>Full Quality Page</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
 
       </Container>
+
+      {/* Catalogue & Certificate Download / Email Modal */}
+      <CatalogueDownloadModal
+        isOpen={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
+        documentTitle="ISO 9001:2015 Management System Certificate"
+        downloadUrl="/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg"
+      />
     </section>
   );
 };

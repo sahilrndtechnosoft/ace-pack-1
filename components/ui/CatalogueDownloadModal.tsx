@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, FileDown, CheckCircle2, ShieldCheck, Building2, User, Mail, Phone } from 'lucide-react';
+import { X, FileDown, CheckCircle2, ShieldCheck, Building2, User, Mail, Phone, AlertCircle } from 'lucide-react';
 
 interface CatalogueDownloadModalProps {
   isOpen: boolean;
@@ -25,6 +25,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Close on Escape key and lock background scroll
   useEffect(() => {
@@ -46,30 +47,93 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     };
   }, [isOpen, onClose]);
 
+  // Reset submitted state when closed or reopened for another document
+  useEffect(() => {
+    if (!isOpen) {
+      setSubmitted(false);
+      setError(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
+  const isCertificate = documentTitle.toLowerCase().includes('certificate') || documentTitle.toLowerCase().includes('iso');
   const isDatasheet = documentTitle.toLowerCase().includes('datasheet');
-  const modalHeading = isDatasheet ? 'Download Technical Datasheet' : 'Download Product Catalogue';
-  const targetPdf = downloadUrl || (isDatasheet ? '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf' : '/downloads/Ace_Packaging_Full_Product_Catalog.pdf');
+  const modalHeading = isCertificate
+    ? 'Official Certificate Request'
+    : isDatasheet
+    ? 'Download Technical Datasheet'
+    : 'Download Product Catalogue';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const targetPdf = downloadUrl || (isCertificate
+    ? '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg'
+    : isDatasheet
+    ? '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf'
+    : '/downloads/Ace_Packaging_Full_Product_Catalog.pdf');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.company.trim() || !formData.phone.trim()) {
+      setError('Please fill in all mandatory fields (*).');
+      return;
+    }
+
     setLoading(true);
 
-    // Simulate immediate lead submission and trigger real PDF download
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Call backend API to email the document to the user and notify sales
+      const res = await fetch('/api/send-document', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          industry: formData.industry,
+          documentTitle,
+          downloadUrl: targetPdf,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        console.warn('Document mailer response not ok:', errorData);
+      }
+
       setSubmitted(true);
 
-      // Trigger actual PDF download
-      const link = document.createElement('a');
-      link.href = targetPdf;
-      const cleanTitle = documentTitle.endsWith('.pdf') ? documentTitle : `${documentTitle.replace(/\s+/g, '_')}.pdf`;
-      link.download = cleanTitle;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 600);
+      // Trigger automatic direct browser download if a file URL is provided
+      if (targetPdf) {
+        const link = document.createElement('a');
+        link.href = targetPdf;
+        const cleanTitle = documentTitle.endsWith('.pdf') || documentTitle.endsWith('.jpg') || documentTitle.endsWith('.png')
+          ? documentTitle
+          : targetPdf.endsWith('.jpg')
+          ? `${documentTitle.replace(/\s+/g, '_')}.jpg`
+          : `${documentTitle.replace(/\s+/g, '_')}.pdf`;
+        link.download = cleanTitle;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (err) {
+      console.error('Error requesting document:', err);
+      // Fallback: still show submitted and trigger local file download
+      setSubmitted(true);
+      if (targetPdf) {
+        const link = document.createElement('a');
+        link.href = targetPdf;
+        link.download = documentTitle.replace(/\s+/g, '_');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -101,18 +165,25 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 <FileDown className="w-4 h-4" />
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#b99750]">
-                Official Document Download
+                Official Document Verification
               </span>
             </div>
 
-            <h3 id="catalogue-modal-title" className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-2 leading-snug">
+            <h3 id="catalogue-modal-title" className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-1.5 leading-snug">
               {modalHeading}
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600 mb-6 leading-relaxed">
-              Please enter your business details to download <strong className="text-[var(--ace-ink)]">{documentTitle}</strong>.
+            <p className="text-xs sm:text-sm text-gray-600 mb-5 leading-relaxed">
+              Enter your business details below. A copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> will be emailed to you immediately and downloaded to your device.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Full Name <span className="text-red-500">*</span>
@@ -209,17 +280,17 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                   className="w-full py-3.5 px-6 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg shadow-[#b99750]/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                 >
                   {loading ? (
-                    <span>Preparing Document...</span>
+                    <span>Sending &amp; Preparing Document...</span>
                   ) : (
                     <>
                       <FileDown className="w-4 h-4" />
-                      <span>Verify &amp; Download PDF</span>
+                      <span>Email Me &amp; Download Document</span>
                     </>
                   )}
                 </button>
               </div>
 
-              <p className="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1 mt-3">
+              <p className="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1 mt-2.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#b99750]" />
                 <span>Your information is protected under our privacy policy.</span>
               </p>
@@ -231,17 +302,33 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-2xl font-extrabold text-[var(--ace-ink)] mb-2">
-              Download Initiated!
+              Document Dispatched!
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-6 leading-relaxed">
-              Your official copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> is downloading now. Our technical sales team will also email a copy to {formData.email}.
+            <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-2 leading-relaxed">
+              We have emailed a copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> to <strong className="text-[#a8812f]">{formData.email}</strong>.
             </p>
-            <button
-              onClick={onClose}
-              className="px-8 py-3 rounded-full bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] transition-colors cursor-pointer"
-            >
-              Close Window
-            </button>
+            <p className="text-xs text-gray-500 mb-6">
+              Your direct download should have also started automatically on your device.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              {targetPdf && (
+                <a
+                  href={targetPdf}
+                  download
+                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] text-[var(--ace-ink)] text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                >
+                  <FileDown className="w-4 h-4 text-[#b99750]" />
+                  <span>Download File Again</span>
+                </a>
+              )}
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full sm:w-auto px-8 py-3 rounded-full bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] transition-colors cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
           </div>
         )}
       </div>

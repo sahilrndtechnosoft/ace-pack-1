@@ -8,9 +8,9 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   { id: 'iso-9001', title: 'ISO 9001:2015', body: 'Certified Quality Management System covering precision injection moulding, tooling calibration, and quality control.', scope: 'Plant-wide quality certification' },
-  { id: 'bpa-free', title: '100% Virgin PP 05', body: 'Non-toxic, heavy-metal-free virgin polymer. No regrind or recycled filler enters the line.', scope: 'Material purity' },
-  { id: 'cleanroom', title: 'Cleanroom Manufacturing', body: 'Dust-free hygienic moulding hall with robotic pick-and-place, so finished containers are never handled.', scope: 'Hygiene standard' },
-  { id: 'traceability', title: 'Batch Traceability', body: 'Full batch serialization and process parameter recording across Daman Unit 1 and Unit 2.', scope: 'Quality assurance' },
+  // { id: 'bpa-free', title: '100% Virgin PP 05', body: 'Non-toxic, heavy-metal-free virgin polymer. No regrind or recycled filler enters the line.', scope: 'Material purity' },
+  // { id: 'cleanroom', title: 'Cleanroom Manufacturing', body: 'Dust-free hygienic moulding hall with robotic pick-and-place, so finished containers are never handled.', scope: 'Hygiene standard' },
+  // { id: 'traceability', title: 'Batch Traceability', body: 'Full batch serialization and process parameter recording across Daman Unit 1 and Unit 2.', scope: 'Quality assurance' },
 ];
 
 export interface QualityCheck {

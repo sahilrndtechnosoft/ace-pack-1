@@ -18,6 +18,8 @@ import {
   FileDown,
   UtensilsCrossed,
   Layers,
+  Factory,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { productCategories, type ProductCategory } from '@/lib/data/products';
 import { resourceLinks } from '@/lib/data/resources';
@@ -115,6 +117,26 @@ const FEATURED_MOBILE_CATEGORIES = [
   },
 ];
 
+const getResourceIcon = (href: string) => {
+  switch (href) {
+    case '/gallery':
+      return ImageIcon;
+    case '/customization':
+    case '/oem':
+      return Sparkles;
+    case '/quality':
+      return ShieldCheck;
+    case '/process':
+      return Factory;
+    case '/capabilities':
+      return Layers;
+    case '/downloads':
+      return FileDown;
+    default:
+      return FileDown;
+  }
+};
+
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -129,6 +151,7 @@ export const Header: React.FC = () => {
   const [mobileSearch, setMobileSearch] = useState<string>('');
   const [mobileShowAllCats, setMobileShowAllCats] = useState<boolean>(false);
   const megaMenuContainerRef = useRef<HTMLDivElement>(null);
+  const resourcesContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
 
   // Publish the live header height so sticky/pinned sections sit flush under it
@@ -142,20 +165,24 @@ export const Header: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Close desktop mega menu when clicking outside
+  // Close desktop dropdowns when clicking outside
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (megaMenuContainerRef.current && !megaMenuContainerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (megaMenuContainerRef.current && !megaMenuContainerRef.current.contains(target)) {
         setMegaMenuOpen(false);
       }
+      if (resourcesContainerRef.current && !resourcesContainerRef.current.contains(target)) {
+        setResourcesOpen(false);
+      }
     };
-    if (megaMenuOpen) {
+    if (megaMenuOpen || resourcesOpen) {
       document.addEventListener('mousedown', handleOutsideClick);
     }
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, [megaMenuOpen]);
+  }, [megaMenuOpen, resourcesOpen]);
 
   const pathname = usePathname() ?? '/';
 
@@ -349,7 +376,7 @@ export const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.99 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white/98 backdrop-blur-xl border border-[var(--ace-line)] rounded-2xl shadow-[0_24px_70px_rgba(20,23,26,0.14)] overflow-hidden flex flex-col tracking-normal normal-case whitespace-normal origin-top"
+                    className="bg-white border border-[#E6DBC6] rounded-2xl shadow-[0_24px_70px_rgba(20,23,26,0.18)] overflow-hidden flex flex-col tracking-normal normal-case whitespace-normal origin-top"
                   >
                     {/* Mega-Menu Top Navigation Bar */}
                     <div className="px-6 py-3.5 border-b border-[var(--ace-line)] bg-[#FAF8F4] flex items-center justify-between gap-4 shrink-0">
@@ -547,7 +574,11 @@ export const Header: React.FC = () => {
 
           {/* Resources Dropdown */}
           <div
+            ref={resourcesContainerRef}
             className="relative"
+            onMouseEnter={() => setResourcesOpen(true)}
+            onMouseLeave={() => setResourcesOpen(false)}
+            onFocus={() => setResourcesOpen(true)}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget)) setResourcesOpen(false);
             }}
@@ -559,40 +590,97 @@ export const Header: React.FC = () => {
               type="button"
               onClick={() => setResourcesOpen((v) => !v)}
               aria-expanded={resourcesOpen}
-              className={navLink('/resources', `inline-flex items-center gap-1 ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`)}
+              className={navLink(
+                '/resources',
+                `inline-flex items-center gap-1.5 cursor-pointer ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`
+              )}
             >
               <span>Resources</span>
-              <ChevronRight
-                className={`w-3.5 h-3.5 rotate-90 transition-transform ${resourcesOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
-                  }`}
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  resourcesOpen ? 'rotate-180 text-[var(--ace-orange)]' : 'opacity-60'
+                }`}
               />
             </button>
             <AnimatePresence>
               {resourcesOpen && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50">
                   <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-[300px] bg-white border border-[var(--ace-line)] rounded-2xl shadow-2xl p-2 normal-case tracking-normal max-h-[70vh] overflow-y-auto"
+                    className="w-[580px] max-w-[94vw] bg-white border border-[#E6DBC6] rounded-2xl shadow-[0_24px_60px_rgba(20,23,26,0.18)] p-3.5 normal-case tracking-normal origin-top"
                     data-lenis-prevent
                   >
-                    {resourceLinks.map((item) => (
+                    <div className="px-2 pb-2.5 mb-2 border-b border-[#E6DBC6]/70 flex items-center justify-between">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750]">
+                        Technical &amp; Commercial Resources
+                      </span>
+                      <span className="text-[10px] font-semibold text-gray-500 bg-[#FAF7EE] px-2 py-0.5 rounded-full border border-[#E6DBC6]">
+                        Manufacturing · QA · Audits
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2.5">
+                      {resourceLinks.map((item) => {
+                        const Icon = getResourceIcon(item.href);
+                        const isCurrent = isActive(item.href);
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setResourcesOpen(false)}
+                            aria-current={isCurrent ? 'page' : undefined}
+                            className={`group flex items-start gap-2.5 p-2.5 rounded-xl transition-all duration-200 border ${
+                              isCurrent
+                                ? 'bg-[#FAF7EE] border-[#b99750] shadow-xs'
+                                : 'bg-[#FAF8F5]/60 hover:bg-[#FAF7EE] border-[#EAE4D7] hover:border-[#b99750] hover:shadow-xs'
+                            }`}
+                          >
+                            <div
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all ${
+                                isCurrent
+                                  ? 'bg-[#b99750] text-white shadow-xs'
+                                  : 'bg-white group-hover:bg-[#b99750] group-hover:text-white text-[#b99750] border border-[#E6DBC6] group-hover:border-[#b99750] shadow-xs'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center justify-between gap-1">
+                                <span
+                                  className={`text-[12.5px] font-bold transition-colors truncate ${
+                                    isCurrent ? 'text-[#b99750]' : 'text-[var(--ace-ink)] group-hover:text-[#b99750]'
+                                  }`}
+                                >
+                                  {item.label}
+                                </span>
+                                <ArrowRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#b99750] group-hover:translate-x-0.5 opacity-0 group-hover:opacity-100 transition-all shrink-0" />
+                              </div>
+                              <p className="text-[11px] text-gray-500 group-hover:text-gray-700 leading-snug line-clamp-1 mt-0.5">
+                                {item.hint}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+
+                    <div className="mt-3 pt-2.5 border-t border-[#E6DBC6]/70 flex items-center justify-between px-2 text-[11.5px] text-gray-600">
+                      <div className="flex items-center gap-1.5 font-medium">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>ISO 9001:2015 · 100% Prime Virgin PP 05</span>
+                      </div>
                       <Link
-                        key={item.href}
-                        href={item.href}
+                        href="/downloads"
                         onClick={() => setResourcesOpen(false)}
-                        aria-current={isActive(item.href) ? 'page' : undefined}
-                        className={`block rounded-xl px-4 py-2.5 transition-colors hover:bg-[var(--ace-paper)] ${isActive(item.href) ? 'bg-[var(--ace-paper)]' : ''
-                          }`}
+                        className="font-bold text-[#b99750] hover:text-[var(--ace-ink)] hover:underline flex items-center gap-1 transition-colors"
                       >
-                        <span className={`block text-[15px] font-bold ${isActive(item.href) ? 'text-[var(--ace-orange)]' : 'text-[var(--ace-ink)]'}`}>
-                          {item.label}
-                        </span>
-                        <span className="block text-xs font-medium text-gray-500">{item.hint}</span>
+                        <span>Download Center</span>
+                        <ArrowRight className="w-3 h-3" />
                       </Link>
-                    ))}
+                    </div>
                   </motion.div>
                 </div>
               )}
@@ -947,23 +1035,51 @@ export const Header: React.FC = () => {
               </nav>
 
               {/* Resources Strip in Mobile */}
-              <div className="pt-3 border-t border-[var(--ace-line)]">
-                <span className="block text-xs font-extrabold uppercase tracking-widest text-[var(--ace-orange)] mb-2 px-1">
-                  Resources & Downloads
-                </span>
-                <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-[var(--ace-ink)]">
-                  {resourceLinks.slice(0, 6).map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`p-2 rounded-xl bg-white border border-[var(--ace-line)] transition-colors hover:text-[var(--ace-orange)] flex flex-col justify-between ${isActive(item.href) ? 'text-[var(--ace-orange)] border-[var(--ace-orange)]/60' : ''
+              <div className="pt-3 border-t border-[#E6DBC6]">
+                <div className="flex items-center justify-between mb-2.5 px-1">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750]">
+                    Technical &amp; Commercial Resources
+                  </span>
+                  <span className="text-[10px] font-semibold text-gray-500 bg-[#FAF7EE] px-2 py-0.5 rounded-full border border-[#E6DBC6]">
+                    6 Sections
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {resourceLinks.map((item) => {
+                    const Icon = getResourceIcon(item.href);
+                    const isCurrent = isActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`p-2.5 rounded-xl bg-white hover:bg-[#FAF7EE] border transition-all flex items-center gap-3 group ${
+                          isCurrent
+                            ? 'border-[#b99750] bg-[#FAF7EE] shadow-xs text-[#b99750]'
+                            : 'border-[#EAE4D7] hover:border-[#b99750]/60 text-[var(--ace-ink)]'
                         }`}
-                    >
-                      <span className="font-bold truncate">{item.label}</span>
-                      <span className="text-[10px] text-gray-500 font-normal truncate">{item.hint}</span>
-                    </Link>
-                  ))}
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                            isCurrent
+                              ? 'bg-[#b99750] text-white'
+                              : 'bg-[#FAF8F5] group-hover:bg-[#b99750] group-hover:text-white border border-[#E6DBC6] text-[#b99750]'
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-bold group-hover:text-[#b99750] transition-colors truncate">
+                            {item.label}
+                          </p>
+                          <p className="text-[10.5px] text-gray-500 truncate mt-0.5">
+                            {item.hint}
+                          </p>
+                        </div>
+                        <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#b99750] group-hover:translate-x-0.5 transition-all shrink-0" />
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 

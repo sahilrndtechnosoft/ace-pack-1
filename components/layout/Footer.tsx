@@ -98,8 +98,7 @@ export const Footer: React.FC = () => {
               <li><Link href="/industries" className="hover:text-[#b99750] transition-colors">Industries We Serve</Link></li>
               <li><Link href="/quality" className="hover:text-[#b99750] transition-colors">Quality &amp; Certifications</Link></li>
               <li><Link href="/downloads" className="hover:text-[#b99750] transition-colors">Download Center</Link></li>
-              <li><Link href="/oem" className="hover:text-[#b99750] transition-colors">OEM &amp; Custom Tooling</Link></li>
-              <li><Link href="/customization" className="hover:text-[#b99750] transition-colors">Customization</Link></li>
+              <li><Link href="/customization" className="hover:text-[#b99750] transition-colors">OEM &amp; Customization</Link></li>
               <li><Link href="/tools" className="hover:text-[#b99750] transition-colors">Tools</Link></li>
               <li><Link href="/gallery" className="hover:text-[#b99750] transition-colors">Visual Gallery</Link></li>
               <li><Link href="/blog" className="hover:text-[#b99750] transition-colors">Blog &amp; Articles</Link></li>
