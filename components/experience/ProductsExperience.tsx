@@ -158,7 +158,6 @@ export default function ProductsExperience() {
         .from('.xpr-hero .xp-eyebrow', { opacity: 0, y: 12, duration: 0.7 }, 0)
         .from('.xpr-hero-lead', { opacity: 0, y: 18, duration: 0.8 }, 0.55)
         .from('.xpr-glance div', { opacity: 0, y: 22, duration: 0.7, stagger: 0.08 }, 0.5);
-      gsap.to('.xp-scroll-line', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: scope, start: 'top top', end: 'bottom bottom', scrub: true } });
       // Cards enter in viewport batches — one trigger per batch, not per card.
       // fromTo with explicit end values and clearProps, so nothing is left on
       // the element for a later Flip to inherit.
@@ -174,8 +173,6 @@ export default function ProductsExperience() {
 
   return (
     <div ref={root} className="xpr">
-      <div className="xp-scroll-line" aria-hidden="true" />
-
       <section className="xpr-hero">
         <div className="xpr-wrap xpr-hero-grid">
           <div>

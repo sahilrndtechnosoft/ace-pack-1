@@ -205,12 +205,6 @@ export default function CategoriesExperience() {
         .from('.xc-hero-lead', { opacity: 0, y: 18, duration: 0.8 }, 0.55)
         .from('.xc-glance div', { opacity: 0, y: 22, duration: 0.7, stagger: 0.08 }, 0.5);
 
-      gsap.to('.xp-scroll-line', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: { trigger: scope, start: 'top top', end: 'bottom bottom', scrub: true },
-      });
-
       gsap.from(rows, {
         opacity: 0,
         y: 20,
@@ -243,8 +237,6 @@ export default function CategoriesExperience() {
 
   return (
     <div ref={root} className="xc">
-      <div className="xp-scroll-line" aria-hidden="true" />
-
       {/* Hero */}
       <section className="xc-hero">
         <div className="xc-wrap xc-hero-grid">

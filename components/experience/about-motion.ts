@@ -46,11 +46,7 @@ export function buildAboutMotion(scope: HTMLElement): Cleanup {
       scrollTrigger: { trigger: '.xa-hero', start: 'top top', end: 'bottom 30%', scrub: true },
     });
 
-    // --- Page-long progress rail ----------------------------------------------
-    gsap.to('.xp-scroll-line', {
-      scaleX: 1, ease: 'none',
-      scrollTrigger: { trigger: scope, start: 'top top', end: 'bottom bottom', scrub: true },
-    });
+
 
     // --- Stats -------------------------------------------------------------------
     const stats = gsap.utils.toArray<HTMLElement>('.xa-stat');

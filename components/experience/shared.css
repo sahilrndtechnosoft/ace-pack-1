@@ -25,16 +25,7 @@
 }
 
 .xp-scroll-line {
-  position: fixed;
-  top: var(--xp-header, 84px);
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--brand-gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  z-index: 51;
-  pointer-events: none
+  display: none !important;
 }
 
 /* Button. Primary is ink on ivory pages; hover flips to brand gold. */

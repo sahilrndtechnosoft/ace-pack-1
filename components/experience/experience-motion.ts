@@ -126,12 +126,6 @@ export function buildScrollMotion(scope: HTMLElement, live: boolean): Cleanup {
       scrollTrigger: { trigger: '#main-content', start: 'top top', end: 'bottom top', scrub: true },
     });
 
-    // --- Page-long progress rail -----------------------------------------
-    gsap.to('.xp-scroll-line', {
-      scaleX: 1, ease: 'none',
-      scrollTrigger: { trigger: scope, start: 'top top', end: 'bottom bottom', scrub: true },
-    });
-
     // --- Section entrances ------------------------------------------------
     const fadeUp = (selector: string, vars: gsap.TweenVars = {}) => {
       gsap.utils.toArray<HTMLElement>(selector).forEach(el => {

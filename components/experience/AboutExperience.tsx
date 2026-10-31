@@ -51,8 +51,6 @@ export default function AboutExperience() {
 
   return (
     <div ref={root} className="xa">
-      <div className="xp-scroll-line" aria-hidden="true" />
-
       {/* 00 — Hero */}
       <section className="xa-hero" id="about-hero">
         <div className="xa-wrap">

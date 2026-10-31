@@ -83,7 +83,6 @@ export default function IndustriesExperience() {
         .from('.xin-hero .xp-eyebrow', { opacity: 0, y: 12, duration: 0.7 }, 0)
         .from('.xin-hero-lead', { opacity: 0, y: 18, duration: 0.8 }, 0.55)
         .from('.xin-glance div', { opacity: 0, y: 22, duration: 0.7, stagger: 0.08 }, 0.5);
-      gsap.to('.xp-scroll-line', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: scope, start: 'top top', end: 'bottom bottom', scrub: true } });
       gsap.from('.xin-panel', { opacity: 0, y: 40, duration: 0.9, ease: 'power2.out', scrollTrigger: { trigger: '.xin-index-grid', start: 'top 80%', once: true } });
       gsap.from('.xin-standard-list li', { opacity: 0, x: -14, duration: 0.55, ease: 'power2.out', stagger: 0.06, scrollTrigger: { trigger: '.xin-standard', start: 'top 80%', once: true } });
       // Touch layouts: each row's cover drifts inside its frame as it passes.
@@ -112,8 +111,6 @@ export default function IndustriesExperience() {
 
   return (
     <div ref={root} className="xin">
-      <div className="xp-scroll-line" aria-hidden="true" />
-
       <section className="xin-hero">
         <div className="xin-wrap xin-hero-grid">
           <div>

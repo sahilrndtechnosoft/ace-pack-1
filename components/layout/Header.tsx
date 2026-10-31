@@ -501,9 +501,6 @@ export const Header: React.FC = () => {
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                   />
-                                  <span className="absolute top-1.5 right-1.5 bg-white/95 text-[var(--brand-gold)] text-[10px] font-bold px-1.5 py-0.5 rounded border border-[var(--ace-line)] shadow-2xs">
-                                    {product.capacity}
-                                  </span>
                                 </div>
 
                                 <div className="min-w-0">

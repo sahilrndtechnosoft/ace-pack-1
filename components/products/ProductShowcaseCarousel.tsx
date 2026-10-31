@@ -417,7 +417,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   href={`/categories/${activeProduct.categorySlug}`}
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#b99750] text-white hover:bg-[#a6843e] text-xs font-bold uppercase tracking-wide sm:tracking-wider shadow-md shadow-[#b99750]/20 transition-all duration-300 text-center"
                 >
-                  <span>Explore Series Catalog</span>
+                  <span>Explore catalogue</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </Link>
                 <Link
@@ -425,7 +425,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs font-bold uppercase tracking-wide sm:tracking-wider transition-colors duration-300 text-center"
                 >
                   <PackageCheck className="w-4 h-4" />
-                  <span>Request Free Sample Box</span>
+                  <span>Request Sample </span>
                 </Link>
               </div>
             </div>
@@ -451,7 +451,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
               </div>
 
               {/* Multi-angle / Finish Photo Switcher if available */}
-              {activeProduct.gallery && activeProduct.gallery.length > 1 && (
+              {/* {activeProduct.gallery && activeProduct.gallery.length > 1 && (
                 <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3 p-1 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6]">
                   <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider px-1.5">
                     Angles:
@@ -486,7 +486,7 @@ export const ProductShowcaseCarousel: React.FC = () => {
                     );
                   })}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -542,13 +542,12 @@ export const ProductShowcaseCarousel: React.FC = () => {
                     }}
                     onClick={() => setCurrentIndex(idx)}
                     aria-label={`Select ${item.name}`}
-                    className={`shrink-0 w-[155px] sm:w-[190px] lg:w-[210px] snap-start relative rounded-2xl p-2.5 sm:p-3 text-left transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
-                      isActive
-                        ? 'border-[#b99750] bg-white shadow-xl shadow-[#b99750]/20 scale-[1.02] ring-2 ring-[#b99750]'
-                        : 'border-[#E6DBC6] bg-white/90 hover:bg-white hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-md'
-                    }`}
+                    className={`shrink-0 w-[155px] sm:w-[190px] lg:w-[210px] snap-start relative rounded-2xl p-2.5 sm:p-3 text-left transition-all duration-300 flex flex-col justify-between border cursor-pointer ${isActive
+                      ? 'border-[#b99750] bg-white shadow-xl shadow-[#b99750]/20 scale-[1.02] ring-2 ring-[#b99750]'
+                      : 'border-[#E6DBC6] bg-white/90 hover:bg-white hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-md'
+                      }`}
                   >
-                    <div className="h-16 sm:h-20 w-full flex items-center justify-center overflow-hidden mb-2 bg-gradient-to-b from-white to-[#F7F4EC] rounded-xl border border-[#E6DBC6]/60 relative">
+                    <div className="w-full aspect-[4/3] flex items-center justify-center overflow-hidden mb-2 bg-gradient-to-b from-white to-[#F7F4EC] rounded-xl border border-[#E6DBC6]/60 relative">
                       <img
                         src={item.image}
                         alt={item.name}
