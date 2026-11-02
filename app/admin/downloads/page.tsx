@@ -355,7 +355,7 @@ export default function AdminDownloadsPage() {
                 value={activeDoc.download_url || ''}
                 onChange={(url) => setActiveDoc({ ...activeDoc, download_url: url })}
                 onUploadDetails={(details) => {
-                  setActiveDoc((prev) => ({
+                  setActiveDoc((prev: any) => ({
                     ...prev,
                     download_url: details.url,
                     file_size: prev?.file_size || details.sizeFormatted,
