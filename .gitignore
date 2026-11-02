@@ -7,3 +7,5 @@ Miniconda3-latest-Linux-x86_64.sh
 
 # Isolated Next.js build and preview directories
 .next-*/
+.env
+out/

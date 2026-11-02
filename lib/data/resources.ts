@@ -3,7 +3,6 @@ export const resourceLinks = [
     { href: '/customization', label: 'OEM & Customization', hint: 'Custom tooling, IML branding & private label' },
     { href: '/quality', label: 'Quality & Certifications', hint: 'Material and manufacturing standards' },
     { href: '/process', label: 'Manufacturing Process', hint: 'From resin to dispatch' },
-    { href: '/capabilities', label: 'Capabilities', hint: 'Presses, tooling and capacity' },
     { href: '/downloads', label: 'Download Center', hint: 'Catalogues and datasheets' },
 ];
 

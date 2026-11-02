@@ -20,6 +20,7 @@ import {
   Layers,
   Factory,
   Image as ImageIcon,
+  Calendar,
 } from 'lucide-react';
 import { productCategories, type ProductCategory } from '@/lib/data/products';
 import { resourceLinks } from '@/lib/data/resources';
@@ -190,6 +191,7 @@ export const Header: React.FC = () => {
   const isActive = (href: string) => {
     const roots =
       href === '/categories' ? ['/categories', '/products']
+        : href === '/events' ? ['/events', '/exhibitions']
         : href === '/resources' ? resourceLinks.map((l) => l.href)
           : [href];
     return roots.some((root) => pathname === root || pathname.startsWith(`${root}/`));
@@ -311,9 +313,9 @@ export const Header: React.FC = () => {
       className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--ace-paper)] border-b border-[var(--ace-line)] text-[var(--ace-ink)] ${isScrolled ? 'shadow-md py-1.5' : 'py-2.5'
         }`}
     >
-      <div className="container-custom max-w-[1600px] flex items-center justify-between gap-3">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 flex items-center justify-between gap-4 lg:gap-6">
         {/* Brand Logo - Official Ace Packaging Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-3 group">
+        <Link href="/" className="flex shrink-0 items-center group py-0.5">
           <div className="flex items-center justify-center">
             <img
               src="/images/Ace_New_Update_Logo-01.png"
@@ -321,13 +323,13 @@ export const Header: React.FC = () => {
               width={340}
               height={152}
               decoding="async"
-              className="h-11 sm:h-14 lg:h-16 w-auto max-w-[130px] sm:max-w-[170px] lg:max-w-[190px] object-contain group-hover:scale-105 transition-transform"
+              className="h-10 sm:h-12 lg:h-11 xl:h-12 2xl:h-13.5 w-auto max-w-[125px] sm:max-w-[150px] lg:max-w-[145px] xl:max-w-[160px] 2xl:max-w-[180px] object-contain group-hover:scale-[1.02] transition-transform duration-200"
             />
           </div>
         </Link>
 
         {/* Desktop Navigation Links (Enabled for lg: >= 1024px) */}
-        <nav className="hidden lg:flex items-center gap-5 text-[15px] font-semibold whitespace-nowrap text-[var(--ace-ink)] xl:gap-7">
+        <nav className="hidden lg:flex items-center justify-center mx-auto px-2 xl:px-4 gap-3 lg:gap-3.5 xl:gap-5 2xl:gap-7 text-[12.5px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap text-[var(--ace-ink)] shrink-0">
           <Link href="/about" className={navLink('/about')} aria-current={isActive('/about') ? 'page' : undefined}>
             About Us
           </Link>
@@ -361,9 +363,10 @@ export const Header: React.FC = () => {
               aria-current={isActive('/categories') ? 'page' : undefined}
             >
               <span>Our Products</span>
-              <ChevronRight
-                className={`w-3.5 h-3.5 rotate-90 transition-transform duration-200 ${megaMenuOpen ? 'text-[var(--ace-orange)] -scale-y-100' : 'opacity-60'
-                  }`}
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  megaMenuOpen ? 'rotate-180 text-[var(--ace-orange)]' : 'opacity-60'
+                }`}
               />
             </button>
 
@@ -632,7 +635,7 @@ export const Header: React.FC = () => {
                             href={item.href}
                             onClick={() => setResourcesOpen(false)}
                             aria-current={isCurrent ? 'page' : undefined}
-                            className={`group flex items-start gap-2.5 p-2.5 rounded-xl transition-all duration-200 border ${
+                            className={`group flex items-start gap-2.5 p-2.5 rounded-xl transition-all duration-200 border odd:last:col-span-2 ${
                               isCurrent
                                 ? 'bg-[#FAF7EE] border-[#b99750] shadow-xs'
                                 : 'bg-[#FAF8F5]/60 hover:bg-[#FAF7EE] border-[#EAE4D7] hover:border-[#b99750] hover:shadow-xs'
@@ -687,17 +690,21 @@ export const Header: React.FC = () => {
             </AnimatePresence>
           </div>
 
+          <Link href="/events" className={navLink('/events')} aria-current={isActive('/events') ? 'page' : undefined}>
+            Exhibitions &amp; Events
+          </Link>
+
           <Link href="/blog" className={navLink('/blog')} aria-current={isActive('/blog') ? 'page' : undefined}>
             Blogs
           </Link>
         </nav>
 
         {/* Header Right Utilities */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-2.5 xl:gap-3 shrink-0">
           <LanguageSelector />
 
           {/* Action Button (Desktop) */}
-          <div className="hidden lg:flex shrink-0 items-center gap-3">
+          <div className="hidden lg:flex shrink-0 items-center gap-2 lg:gap-2.5 xl:gap-3">
             <a
               href="tel:+919925015906"
               className="hidden 2xl:flex items-center gap-1.5 text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
@@ -708,7 +715,7 @@ export const Header: React.FC = () => {
 
             <Link
               href="/contact"
-              className="bg-[var(--ace-orange)] text-white hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-xs font-bold px-4 py-2.5 rounded-full shadow-xs hover:shadow transition-all uppercase tracking-wider"
+              className="bg-[var(--ace-orange)] text-white hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-[11px] lg:text-[11.5px] xl:text-xs font-bold px-3 lg:px-3.5 xl:px-4 py-2 xl:py-2.5 rounded-full shadow-xs hover:shadow transition-all uppercase tracking-wider whitespace-nowrap"
             >
               Contact Us
             </Link>
@@ -1014,6 +1021,19 @@ export const Header: React.FC = () => {
                 </Link>
 
                 <Link
+                  href="/events"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileLink('/events')}
+                  aria-current={isActive('/events') ? 'page' : undefined}
+                >
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-[var(--ace-orange)]" />
+                    <span>Exhibitions &amp; Events</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+                </Link>
+
+                <Link
                   href="/blog"
                   onClick={() => setMobileMenuOpen(false)}
                   className={mobileLink('/blog')}
@@ -1041,7 +1061,7 @@ export const Header: React.FC = () => {
                     Technical &amp; Commercial Resources
                   </span>
                   <span className="text-[10px] font-semibold text-gray-500 bg-[#FAF7EE] px-2 py-0.5 rounded-full border border-[#E6DBC6]">
-                    6 Sections
+                    {resourceLinks.length} Sections
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

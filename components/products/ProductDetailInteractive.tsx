@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -53,6 +53,15 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
     }
     return product.varieties?.[0]?.slug || '';
   });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlVariety = new URLSearchParams(window.location.search).get('variety');
+      if (urlVariety && product.varieties?.some((v) => v.slug === urlVariety)) {
+        setSelectedVarietySlug(urlVariety);
+      }
+    }
+  }, [product.varieties]);
 
   const activeVariety = product.varieties?.find((v) => v.slug === selectedVarietySlug) || product.varieties?.[0];
 

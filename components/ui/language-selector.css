@@ -13,6 +13,20 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   transition: all 0.25s ease;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 1279px) {
+  .language-trigger {
+    min-height: 36px;
+    padding: 6px 11px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .language-trigger svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .language-trigger:hover {

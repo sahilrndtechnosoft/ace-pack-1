@@ -13,9 +13,6 @@ interface SpecificProductPageProps {
     category_slug: string;
     product_slug: string;
   }>;
-  searchParams?: Promise<{
-    variety?: string;
-  }>;
 }
 
 export async function generateStaticParams() {
@@ -37,9 +34,8 @@ export async function generateMetadata({ params }: SpecificProductPageProps): Pr
   };
 }
 
-export default async function SpecificProductPage({ params, searchParams }: SpecificProductPageProps) {
+export default async function SpecificProductPage({ params }: SpecificProductPageProps) {
   const { category_slug, product_slug } = await params;
-  const { variety } = (await searchParams) || {};
   const result = getProductBySlugs(category_slug, product_slug);
 
   if (!result) {
@@ -81,7 +77,7 @@ export default async function SpecificProductPage({ params, searchParams }: Spec
           </div>
 
           {/* Interactive 4-View Showcase (Blank, Specs, Food Locking, Video) */}
-          <ProductDetailInteractive category={category} product={product} initialVariety={variety} />
+          <ProductDetailInteractive category={category} product={product} />
 
           {/* Related Models in this category */}
           {relatedCategoryProducts.length > 0 && (

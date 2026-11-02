@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  output: 'export',
   distDir: process.env.ACEPACK_BUILD_DIR || ".next",
   images: {
     unoptimized: true,

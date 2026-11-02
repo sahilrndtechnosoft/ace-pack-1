@@ -2,14 +2,21 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ArrowRight, PhoneCall, Mail, MapPin, ShieldCheck, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Keep full-screen immersive gallery distraction-free on main exhibitions page
+  if (pathname === '/events' || pathname === '/exhibitions') {
+    return null;
+  }
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,12 +101,13 @@ export const Footer: React.FC = () => {
               <li><Link href="/categories" className="hover:text-[#b99750] transition-colors">Our Products</Link></li>
               <li><Link href="/products" className="hover:text-[#b99750] transition-colors">All Product Catalog</Link></li>
               <li><Link href="/about" className="hover:text-[#b99750] transition-colors">About Us</Link></li>
-              <li><Link href="/capabilities" className="hover:text-[#b99750] transition-colors">Capabilities</Link></li>
               <li><Link href="/industries" className="hover:text-[#b99750] transition-colors">Industries We Serve</Link></li>
               <li><Link href="/quality" className="hover:text-[#b99750] transition-colors">Quality &amp; Certifications</Link></li>
+              <li><Link href="/process" className="hover:text-[#b99750] transition-colors">Manufacturing Process</Link></li>
               <li><Link href="/downloads" className="hover:text-[#b99750] transition-colors">Download Center</Link></li>
               <li><Link href="/customization" className="hover:text-[#b99750] transition-colors">OEM &amp; Customization</Link></li>
               <li><Link href="/tools" className="hover:text-[#b99750] transition-colors">Tools</Link></li>
+              <li><Link href="/events" className="hover:text-[#b99750] transition-colors">Exhibitions &amp; Events</Link></li>
               <li><Link href="/gallery" className="hover:text-[#b99750] transition-colors">Visual Gallery</Link></li>
               <li><Link href="/blog" className="hover:text-[#b99750] transition-colors">Blog &amp; Articles</Link></li>
               <li><Link href="/contact" className="hover:text-[#b99750] transition-colors">Contact Team</Link></li>
