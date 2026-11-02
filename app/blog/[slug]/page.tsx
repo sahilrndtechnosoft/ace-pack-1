@@ -1,5 +1,6 @@
 import React from 'react';
 import { getBlogPostBySlug, getAllBlogSlugs, blogPosts } from '@/lib/data/blogs';
+import { getCmsBlogBySlug, getCmsBlogs } from '@/lib/db/content';
 import { productCategories } from '@/lib/data/products';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -21,7 +22,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = (await getCmsBlogBySlug(slug)) || getBlogPostBySlug(slug);
   if (!post) return { title: 'Article Not Found | Ace Packaging' };
 
   return {
@@ -32,13 +33,15 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = (await getCmsBlogBySlug(slug)) || getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const allBlogs = await getCmsBlogs();
+  const pool = allBlogs && allBlogs.length > 0 ? allBlogs : blogPosts;
+  const relatedPosts = pool.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">

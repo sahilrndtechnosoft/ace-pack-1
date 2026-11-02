@@ -2,14 +2,38 @@ import type { NextConfig } from "next";
 import fs from "fs";
 import path from "path";
 
+const isExport = process.env.NEXT_EXPORT === 'true';
+
 const nextConfig: NextConfig = {
-  output: 'export',
+  ...(isExport ? { output: 'export' } : {}),
   distDir: process.env.ACEPACK_BUILD_DIR || ".next",
   images: {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "**" }
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/admin/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive, nosnippet",
+          },
+        ],
+      },
+      {
+        source: "/api/admin/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive, nosnippet",
+          },
+        ],
+      },
+    ];
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

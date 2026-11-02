@@ -22,7 +22,9 @@ import {
 } from 'lucide-react';
 import { CatalogueDownloadModal } from '@/components/ui/CatalogueDownloadModal';
 
-export const QualityClient: React.FC = () => {
+export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ({ cmsSections }) => {
+  const certs = cmsSections?.certifications?.certifications || certifications;
+  const protocol = cmsSections?.inspection_protocol?.protocol || qualityChecks;
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<{ title: string; url: string }>({
     title: 'ISO 9001:2015 Management System Certificate - Ace Packaging',
@@ -80,7 +82,7 @@ export const QualityClient: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {certifications.map((cert, idx) => (
+            {certs.map((cert: any, idx: number) => (
               <Reveal key={cert.id} type="fade-up" delay={idx * 0.08}>
                 <div className="bg-white rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full group">
                   <div>
@@ -106,7 +108,7 @@ export const QualityClient: React.FC = () => {
                   {/* Standards Checklist */}
                   {cert.standards && (
                     <div className="pt-4 border-t border-gray-100 space-y-2">
-                      {cert.standards.map((std, sIdx) => (
+                      {cert.standards.map((std: string, sIdx: number) => (
                         <div key={sIdx} className="flex items-center gap-2 text-xs font-medium text-gray-700">
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#a8812f] shrink-0" />
                           <span>{std}</span>
@@ -193,7 +195,7 @@ export const QualityClient: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {qualityChecks.map((check, idx) => (
+            {protocol.map((check: any, idx: number) => (
               <Reveal key={check.step} type="fade-up" delay={idx * 0.06}>
                 <div className="bg-white p-6 rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] shadow-xs flex flex-col justify-between h-full text-left transition-all">
                   <div>

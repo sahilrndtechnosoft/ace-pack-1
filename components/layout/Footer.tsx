@@ -13,8 +13,8 @@ export const Footer: React.FC = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Keep full-screen immersive gallery distraction-free on main exhibitions page
-  if (pathname === '/events' || pathname === '/exhibitions') {
+  // Hide footer in admin dashboard or on immersive exhibitions 3D gallery
+  if (pathname?.startsWith('/admin') || pathname === '/events' || pathname === '/exhibitions') {
     return null;
   }
 

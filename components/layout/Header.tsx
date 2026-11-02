@@ -187,6 +187,10 @@ export const Header: React.FC = () => {
 
   const pathname = usePathname() ?? '/';
 
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   // Which top-level section the current URL belongs to.
   const isActive = (href: string) => {
     const roots =

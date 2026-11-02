@@ -18,6 +18,7 @@ import {
   Mail,
 } from 'lucide-react';
 import { exhibitionEvents, ExhibitionEvent } from '@/lib/data/events';
+import { getCmsEventBySlug, getCmsEvents } from '@/lib/db/content';
 import { EventBookingForm } from '@/components/events/EventBookingForm';
 
 interface Props {
@@ -32,7 +33,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const event = exhibitionEvents.find((e) => e.slug === slug);
+  const event = (await getCmsEventBySlug(slug)) || exhibitionEvents.find((e) => e.slug === slug);
   if (!event) return { title: 'Exhibition Not Found | Ace Packaging' };
 
   return {
@@ -43,13 +44,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EventDetailPage({ params }: Props) {
   const { slug } = await params;
-  const event = exhibitionEvents.find((e) => e.slug === slug);
+  const event = (await getCmsEventBySlug(slug)) || exhibitionEvents.find((e) => e.slug === slug);
 
   if (!event) {
     notFound();
   }
 
-  const otherEvents = exhibitionEvents
+  const allEvents = await getCmsEvents();
+  const pool = allEvents && allEvents.length > 0 ? allEvents : exhibitionEvents;
+  const otherEvents = pool
     .filter((e) => e.id !== event.id)
     .slice(0, 3);
 

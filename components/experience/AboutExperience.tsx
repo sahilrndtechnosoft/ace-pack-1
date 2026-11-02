@@ -35,8 +35,14 @@ function Count({ value, suffix = '' }: { value: number; suffix?: string }) {
   return <b ref={ref}>{value.toLocaleString('en-US')}{suffix}</b>;
 }
 
-export default function AboutExperience() {
+export default function AboutExperience({ cmsSections }: { cmsSections?: Record<string, any> } = {}) {
   const root = useRef<HTMLDivElement>(null);
+
+  const hero = cmsSections?.about_hero || aboutHero;
+  const stats = Array.isArray(cmsSections?.about_stats?.stats) ? cmsSections.about_stats.stats : aboutStats;
+  const overview = cmsSections?.about_overview || aboutOverview;
+  const journey = Array.isArray(cmsSections?.milestones?.milestones) ? cmsSections.milestones.milestones : milestones;
+  const desk = cmsSections?.md_desk || mdDesk;
 
   useEffect(() => {
     const scope = root.current;
@@ -56,17 +62,17 @@ export default function AboutExperience() {
         <div className="xa-wrap">
           <div className="xa-hero-grid">
             <div>
-              <span className="xp-eyebrow">{aboutHero.eyebrow}</span>
-              <h1 aria-label={aboutHero.title.join(' ')}>
-                {aboutHero.title.map((line, i) => (
+              <span className="xp-eyebrow">{hero.eyebrow}</span>
+              <h1 aria-label={Array.isArray(hero.title) ? hero.title.join(' ') : hero.title}>
+                {(Array.isArray(hero.title) ? hero.title : [hero.title]).map((line: string, i: number) => (
                   <span className="xa-title-mask" key={line}><span>{i ? <em>{line}</em> : line}</span></span>
                 ))}
               </h1>
-              <p className="xa-hero-lead">{aboutHero.lead}</p>
+              <p className="xa-hero-lead">{hero.lead}</p>
             </div>
             <div className="xa-hero-media">
-              <img src={aboutHero.image} alt={aboutHero.imageAlt} width="1200" height="900" fetchPriority="high" />
-              <div className="xa-hero-chip"><b>{aboutHero.chip.value}</b><span>{aboutHero.chip.label}</span></div>
+              <img src={hero.image} alt={hero.imageAlt || 'Ace Packaging'} width="1200" height="900" fetchPriority="high" />
+              {hero.chip && <div className="xa-hero-chip"><b>{hero.chip.value}</b><span>{hero.chip.label}</span></div>}
             </div>
           </div>
           <div className="xa-hero-bottom">
@@ -80,9 +86,9 @@ export default function AboutExperience() {
       <section className="xa-stats" id="about-stats">
         <div className="xa-wrap">
           <div className="xa-stats-grid">
-            {aboutStats.map(stat => (
+            {stats.map((stat: any) => (
               <div className="xa-stat" key={stat.label}>
-                <Count value={stat.value} suffix={stat.suffix} />
+                <Count value={Number(stat.value) || 0} suffix={stat.suffix || ''} />
                 <p>{stat.label}</p>
               </div>
             ))}
@@ -95,15 +101,17 @@ export default function AboutExperience() {
         <div className="xa-wrap">
           <div className="xa-overview-grid">
             <div>
-              <span className="xp-eyebrow">{aboutOverview.eyebrow}</span>
-              <h2 data-split>{aboutOverview.title[0]} <em>{aboutOverview.title[1]}</em></h2>
-              {aboutOverview.paragraphs.map(text => <p key={text.slice(0, 24)}>{text}</p>)}
-              <ul className="xa-checks">
-                {aboutOverview.points.map(point => <li key={point}><i />{point}</li>)}
-              </ul>
+              <span className="xp-eyebrow">{overview.eyebrow}</span>
+              <h2 data-split>{Array.isArray(overview.title) ? overview.title[0] : overview.title} <em>{Array.isArray(overview.title) ? overview.title[1] : ''}</em></h2>
+              {(Array.isArray(overview.paragraphs) ? overview.paragraphs : [overview.paragraphs || '']).map((text: string) => <p key={text.slice(0, 24)}>{text}</p>)}
+              {overview.points && (
+                <ul className="xa-checks">
+                  {overview.points.map((point: string) => <li key={point}><i />{point}</li>)}
+                </ul>
+              )}
             </div>
             <div className="xa-overview-media">
-              <img src={aboutOverview.image} alt={aboutOverview.imageAlt} width="1200" height="900" loading="lazy" />
+              <img src={overview.image} alt={overview.imageAlt || 'Ace Overview'} width="1200" height="900" loading="lazy" />
             </div>
           </div>
         </div>
@@ -118,7 +126,7 @@ export default function AboutExperience() {
               <h2 className="xa-journey-title">Fifteen years, <em>five turning points.</em></h2>
             </div>
             <nav className="xa-year-nav" aria-label="Jump to a year">
-              {milestones.map((m, i) => (
+              {journey.map((m: any, i: number) => (
                 <button type="button" className="xa-year-btn" data-index={i} key={m.year} aria-pressed={i === 0}>{m.year}</button>
               ))}
             </nav>
@@ -127,7 +135,7 @@ export default function AboutExperience() {
           <div className="xa-track-viewport">
             <div className="xa-track-line" aria-hidden="true"><span /></div>
             <ol className="xa-track">
-              {milestones.map((m, i) => (
+              {journey.map((m: any, i: number) => (
                 <li className={`xa-node${i === 0 ? ' is-active' : ''}`} data-index={i} key={m.year}>
                   <div className="xa-node-top"><span className="xa-node-year" aria-hidden="true">{m.year}</span></div>
                   <div className="xa-node-mid"><span className="xa-node-dot" /></div>
@@ -143,7 +151,7 @@ export default function AboutExperience() {
 
           <div className="xa-wrap xa-journey-foot">
             <span className="xp-eyebrow xa-journey-hint">Swipe or scroll to travel · tap a year to jump</span>
-            <span className="xa-journey-count"><b>01</b> / {String(milestones.length).padStart(2, '0')}</span>
+            <span className="xa-journey-count"><b>01</b> / {String(journey.length).padStart(2, '0')}</span>
           </div>
         </div>
       </section>
@@ -152,11 +160,11 @@ export default function AboutExperience() {
       <section className="xa-desk" id="md-desk">
         <div className="xa-wrap">
           <div className="xa-desk-inner">
-            <span className="xp-eyebrow">{mdDesk.eyebrow}</span>
-            <blockquote>{mdDesk.quote}”</blockquote>
+            <span className="xp-eyebrow">{desk.eyebrow}</span>
+            <blockquote>{desk.quote}”</blockquote>
             <div className="xa-desk-sign">
-              {mdDesk.portrait ? <img className="xa-desk-portrait" src={mdDesk.portrait} alt={mdDesk.name || 'Managing Director'} /> : <i />}
-              <span>{mdDesk.name && <b>{mdDesk.name}</b>}{mdDesk.role}</span>
+              {desk.portrait ? <img className="xa-desk-portrait" src={desk.portrait} alt={desk.name || 'Managing Director'} /> : <i />}
+              <span>{desk.name && <b>{desk.name}</b>}{desk.role}</span>
             </div>
           </div>
         </div>

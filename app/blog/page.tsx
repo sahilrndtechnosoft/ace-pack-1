@@ -3,13 +3,17 @@ import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { blogPosts } from '@/lib/data/blogs';
 import { BlogCatalogClient } from '@/components/sections/BlogCatalogClient';
+import { getCmsBlogs } from '@/lib/db/content';
 
 export const metadata: Metadata = {
   title: 'Packaging Industry Insights & Blogs | Ace Packaging',
   description: 'Stay updated with the latest food packaging trends, polymer material innovations, PP 05 safety guidelines, and cloud kitchen packaging solutions from Ace Packaging.',
 };
 
-export default function BlogGridPage() {
+export default async function BlogGridPage() {
+  const cmsBlogs = await getCmsBlogs();
+  const posts = cmsBlogs && cmsBlogs.length > 0 ? cmsBlogs : blogPosts;
+
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
       <PageBanner
@@ -22,7 +26,7 @@ export default function BlogGridPage() {
 
       <section className="py-12 md:py-16">
         <div className="container-custom">
-          <BlogCatalogClient initialPosts={blogPosts} />
+          <BlogCatalogClient initialPosts={posts} />
         </div>
       </section>
     </div>

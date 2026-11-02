@@ -4,13 +4,19 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { Reveal } from '@/components/ui/Reveal';
 import { MapPin, Phone, Mail, ArrowRight, ShieldCheck, MessageCircle, ExternalLink, Navigation } from 'lucide-react';
 import { FactoryInquiryForm } from '@/components/sections/FactoryInquiryForm';
+import { getCmsSettings } from '@/lib/db/content';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
   description: 'Get in touch with Ace Packaging sales team for product information, custom mould R&D, and free sample requests for plastic food containers.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getCmsSettings();
+  const phone = settings.contact_phone || '+91 98251 20023 / +91 98251 47525';
+  const email = settings.contact_email || 'acepack2011@gmail.com';
+  const whatsapp = settings.contact_whatsapp || '+91 99250 15906';
+  const address = settings.contact_address || 'Unit 1: Survey No. 42/1, Dori Kadaiya Road, Kadaiya, Nani Daman - 396 210, U.T., India.';
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
       <PageBanner
@@ -50,7 +56,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Direct Sales Hotline</span>
-                      <h3 className="text-base font-bold text-[#1A1D20] mb-1">+91 98251 20023 / +91 98251 47525</h3>
+                      <h3 className="text-base font-bold text-[#1A1D20] mb-1">{phone}</h3>
                       <p className="text-xs text-gray-600">Available Monday through Saturday, 9:00 AM – 7:00 PM IST.</p>
                     </div>
                   </div>
@@ -61,8 +67,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">Official Inquiry Emails</span>
-                      <h3 className="text-base font-bold text-[#1A1D20] mb-1">acepack2011@gmail.com</h3>
-                      <p className="text-xs text-gray-600">Domestic: acepack2011@gmail.com | Export: sales@acepack.co.in</p>
+                      <h3 className="text-base font-bold text-[#1A1D20] mb-1">{email}</h3>
+                      <p className="text-xs text-gray-600">Domestic: {email} | Export: sales@acepack.co.in</p>
                     </div>
                   </div>
 
@@ -72,9 +78,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-1">WhatsApp Sales</span>
-                      <h3 className="text-base font-bold text-[#1A1D20] mb-2">+91 99250 15906</h3>
+                      <h3 className="text-base font-bold text-[#1A1D20] mb-2">{whatsapp}</h3>
                       <a
-                        href="https://wa.me/919925015906?text=Hello%20Ace%20Packaging%2C%20I%27d%20like%20a%20product%20information%20for%20food%20containers."
+                        href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent("Hello Ace Packaging, I'd like product information for food containers.")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#1ebe5b] rounded-xl px-4 py-2.5 transition-colors"
