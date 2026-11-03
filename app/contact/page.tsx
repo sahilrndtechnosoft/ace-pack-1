@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const settings = await getCmsSettings();
-  const phone = settings.contact_phone || '+91 98251 20023 / +91 98251 47525';
-  const email = settings.contact_email || 'acepack2011@gmail.com';
-  const whatsapp = settings.contact_whatsapp || '+91 99250 15906';
+  const phone = settings.contact_phone || settings.contact_phone_domestic || settings.header_settings?.topbarPhone || '+91 98251 20023 / +91 98251 47525';
+  const email = settings.contact_email || settings.contact_email_domestic || settings.footer_settings?.domesticEmail || 'acepack2011@gmail.com';
+  const whatsapp = settings.contact_whatsapp || settings.whatsapp_number || settings.header_settings?.topbarPhone || '+91 99250 15906';
   const address = settings.contact_address || 'Unit 1: Survey No. 42/1, Dori Kadaiya Road, Kadaiya, Nani Daman - 396 210, U.T., India.';
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">

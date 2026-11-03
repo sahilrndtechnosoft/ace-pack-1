@@ -18,6 +18,8 @@ import {
   LogOut,
   ChevronRight,
   ExternalLink,
+  Grid,
+  Package,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -28,6 +30,8 @@ interface SidebarProps {
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { label: 'Categories', href: '/admin/categories', icon: Grid },
+  { label: 'Products', href: '/admin/products', icon: Package },
   { label: 'Pages', href: '/admin/pages', icon: FileText },
   { label: 'Sections', href: '/admin/sections', icon: Layers },
   { label: 'Header & Footer', href: '/admin/header-footer', icon: Sliders },

@@ -55,6 +55,17 @@ function AdminSectionsContent() {
   const [activeTab, setActiveTab] = useState<'visual' | 'json'>('visual');
   const [submitting, setSubmitting] = useState(false);
 
+  // Create Section Modal State
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [newSectionData, setNewSectionData] = useState({
+    page_slug: selectedPage,
+    section_key: '',
+    title: '',
+    subtitle: '',
+    content: '{\n  "heading": "",\n  "lead": ""\n}',
+  });
+  const [creating, setCreating] = useState(false);
+
   const fetchSections = async (page: string) => {
     setLoading(true);
     try {
@@ -205,6 +216,81 @@ function AdminSectionsContent() {
     }
   };
 
+  const handleCreateSection = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSectionData.section_key.trim()) {
+      showToast('Section key is required.', 'error');
+      return;
+    }
+
+    setCreating(true);
+    try {
+      let parsed = {};
+      try {
+        parsed = JSON.parse(newSectionData.content);
+      } catch {
+        parsed = { text: newSectionData.content };
+      }
+
+      const res = await fetch('/api/admin/sections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page_slug: newSectionData.page_slug || selectedPage,
+          section_key: newSectionData.section_key.trim(),
+          title: newSectionData.title.trim() || newSectionData.section_key.trim(),
+          subtitle: newSectionData.subtitle.trim(),
+          content: parsed,
+          is_enabled: true,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || 'Failed to create section.', 'error');
+        setCreating(false);
+        return;
+      }
+
+      showToast('Section created successfully in MySQL!');
+      setCreateModalOpen(false);
+      setNewSectionData({
+        page_slug: selectedPage,
+        section_key: '',
+        title: '',
+        subtitle: '',
+        content: '{\n  "heading": "",\n  "lead": ""\n}',
+      });
+      fetchSections(selectedPage);
+    } catch {
+      showToast('Network error creating section.', 'error');
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleDeleteSection = async (section: SectionItem) => {
+    if (!confirm(`Are you sure you want to delete section "${section.title || section.section_key}"?`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/sections?id=${encodeURIComponent(section.id)}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || 'Failed to delete section.', 'error');
+        return;
+      }
+
+      showToast(`Section "${section.title || section.section_key}" deleted.`);
+      fetchSections(selectedPage);
+    } catch {
+      showToast('Network error deleting section.', 'error');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Header */}
@@ -217,6 +303,24 @@ function AdminSectionsContent() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setNewSectionData({
+                page_slug: selectedPage,
+                section_key: '',
+                title: '',
+                subtitle: '',
+                content: '{\n  "heading": "",\n  "lead": ""\n}',
+              });
+              setCreateModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black shadow-sm transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>New Section</span>
+          </button>
+
           <a
             href={`/${selectedPage === 'home' ? '' : selectedPage}`}
             target="_blank"
@@ -377,6 +481,16 @@ function AdminSectionsContent() {
                     >
                       <Edit className="w-3.5 h-3.5" />
                       <span>Edit Content</span>
+                    </button>
+
+                    {/* Delete Section Button */}
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteSection(section)}
+                      title="Delete Section"
+                      className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -636,6 +750,136 @@ function AdminSectionsContent() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Section Modal */}
+      {createModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative space-y-5 max-h-[92vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#1E2633]">
+              <div>
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#b99750] block">
+                  New Section
+                </span>
+                <h3 className="font-black text-white text-lg">Add Section to Website</h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setCreateModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#161D27] text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSection} className="space-y-4">
+              {/* Target Page */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  Target Page *
+                </label>
+                <select
+                  value={newSectionData.page_slug}
+                  onChange={(e) => setNewSectionData({ ...newSectionData, page_slug: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141A24] border border-[#222C3D] text-white text-xs font-semibold focus:outline-hidden focus:border-[#b99750]"
+                >
+                  {pagesList.map((p) => (
+                    <option key={p.slug} value={p.slug}>
+                      {p.title} ({p.slug})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Section Key */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  Section Key (unique code) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. promo_banner, stats_grid, highlight_card"
+                  value={newSectionData.section_key}
+                  onChange={(e) =>
+                    setNewSectionData({
+                      ...newSectionData,
+                      section_key: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '_'),
+                    })
+                  }
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141A24] border border-[#222C3D] text-white text-xs font-mono focus:outline-hidden focus:border-[#b99750]"
+                />
+                <p className="text-[10px] text-gray-500 mt-1">
+                  Unique identifier used by frontend templates. Lowercase letters, numbers, and underscores only.
+                </p>
+              </div>
+
+              {/* Section Title */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  Display Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Special Festive Food Container Promo"
+                  value={newSectionData.title}
+                  onChange={(e) => setNewSectionData({ ...newSectionData, title: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141A24] border border-[#222C3D] text-white text-xs font-semibold focus:outline-hidden focus:border-[#b99750]"
+                />
+              </div>
+
+              {/* Section Subtitle */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  Subtitle / Eyebrow (Optional)
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Limited period bulk export rates"
+                  value={newSectionData.subtitle}
+                  onChange={(e) => setNewSectionData({ ...newSectionData, subtitle: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141A24] border border-[#222C3D] text-white text-xs font-semibold focus:outline-hidden focus:border-[#b99750]"
+                />
+              </div>
+
+              {/* Initial Content JSON */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                  Initial Content (JSON format)
+                </label>
+                <textarea
+                  rows={4}
+                  value={newSectionData.content}
+                  onChange={(e) => setNewSectionData({ ...newSectionData, content: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#090C10] border border-[#222C3D] text-[#b99750] font-mono text-xs focus:outline-hidden focus:border-[#b99750]"
+                />
+              </div>
+
+              {/* Modal Actions */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E2633]">
+                <button
+                  type="button"
+                  onClick={() => setCreateModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-[#161D27] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="px-5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{creating ? 'Creating...' : 'Create Section'}</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

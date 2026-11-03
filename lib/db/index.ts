@@ -181,6 +181,58 @@ export async function initDb(): Promise<void> {
   `);
 
   await db.query(`
+    CREATE TABLE IF NOT EXISTS categories (
+      id VARCHAR(191) PRIMARY KEY,
+      slug VARCHAR(191) UNIQUE NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      subtitle_name VARCHAR(255),
+      short_description TEXT,
+      description LONGTEXT,
+      hero_image VARCHAR(500),
+      features LONGTEXT,
+      gallery LONGTEXT,
+      faqs LONGTEXT,
+      sort_order INT DEFAULT 0,
+      is_active TINYINT(1) DEFAULT 1,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_cat_slug (slug),
+      INDEX idx_cat_order (sort_order ASC)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS products (
+      id VARCHAR(191) PRIMARY KEY,
+      category_slug VARCHAR(191) NOT NULL,
+      product_slug VARCHAR(191) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      capacity VARCHAR(100),
+      material VARCHAR(150),
+      quality VARCHAR(150),
+      packaging VARCHAR(150),
+      image VARCHAR(500),
+      blank_image VARCHAR(500),
+      locking_food_image VARCHAR(500),
+      description LONGTEXT,
+      features LONGTEXT,
+      dimensions LONGTEXT,
+      applications LONGTEXT,
+      specs LONGTEXT,
+      varieties LONGTEXT,
+      default_variety VARCHAR(100),
+      sort_order INT DEFAULT 0,
+      is_active TINYINT(1) DEFAULT 1,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      UNIQUE KEY uk_cat_prod (category_slug, product_slug),
+      INDEX idx_prod_cat (category_slug),
+      INDEX idx_prod_slug (product_slug),
+      INDEX idx_prod_order (sort_order ASC)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
+  await db.query(`
     CREATE TABLE IF NOT EXISTS activity_logs (
       id VARCHAR(191) PRIMARY KEY,
       admin_email VARCHAR(255) NOT NULL,

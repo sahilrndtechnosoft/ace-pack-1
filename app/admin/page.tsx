@@ -19,6 +19,8 @@ import {
   Settings,
   Plus,
   RefreshCw,
+  Grid,
+  Package,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 
@@ -27,6 +29,8 @@ interface OverviewData {
     totalPages: number;
     totalSections: number;
     activeSections: number;
+    totalCategories: number;
+    totalProducts: number;
     totalBlogs: number;
     totalEvents: number;
     totalDownloads: number;
@@ -137,7 +141,41 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Statistics Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
+        {/* Categories */}
+        <Link
+          href="/admin/categories"
+          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Categories</span>
+            <div className="w-7 h-7 rounded-lg bg-[#b99750]/15 text-[#b99750] flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Grid className="w-3.5 h-3.5" />
+            </div>
+          </div>
+          <span className="text-2xl font-black text-white block">
+            {data?.stats?.totalCategories ?? '...'}
+          </span>
+          <span className="text-[10px] text-gray-500 block mt-1">Series & lines</span>
+        </Link>
+
+        {/* Products */}
+        <Link
+          href="/admin/products"
+          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Products</span>
+            <div className="w-7 h-7 rounded-lg bg-teal-500/15 text-teal-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Package className="w-3.5 h-3.5" />
+            </div>
+          </div>
+          <span className="text-2xl font-black text-white block">
+            {data?.stats?.totalProducts ?? '...'}
+          </span>
+          <span className="text-[10px] text-teal-400 font-bold block mt-1">Container models</span>
+        </Link>
+
         {/* Pages */}
         <Link
           href="/admin/pages"
@@ -255,7 +293,37 @@ export default function AdminDashboardPage() {
           <span className="text-xs text-gray-500 font-medium">Direct management shortcuts</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+          <Link
+            href="/admin/categories"
+            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center mb-2">
+              <Grid className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
+                Product Categories
+              </span>
+              <span className="text-[10px] text-gray-500 block mt-0.5">Series &amp; Lines</span>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/products"
+            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-teal-500/50 transition-all flex flex-col justify-between group"
+          >
+            <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center mb-2">
+              <Package className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-white block leading-snug group-hover:text-teal-400 transition-colors">
+                Container Models
+              </span>
+              <span className="text-[10px] text-gray-500 block mt-0.5">Products &amp; Specs</span>
+            </div>
+          </Link>
+
           <Link
             href="/admin/sections?page=home"
             className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"

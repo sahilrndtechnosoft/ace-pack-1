@@ -1,5 +1,6 @@
 import React from 'react';
 import { getProductBySlugs, getAllProductPaths } from '@/lib/data/products';
+import { getCmsProductBySlugs } from '@/lib/db/content';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -7,6 +8,9 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { ProductDetailInteractive } from '@/components/products/ProductDetailInteractive';
 import { Reveal } from '@/components/ui/Reveal';
 import { ArrowLeft, ArrowRight, Layers, Box } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 interface SpecificProductPageProps {
   params: Promise<{
@@ -25,7 +29,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: SpecificProductPageProps): Promise<Metadata> {
   const { category_slug, product_slug } = await params;
-  const result = getProductBySlugs(category_slug, product_slug);
+  const result = (await getCmsProductBySlugs(category_slug, product_slug)) || getProductBySlugs(category_slug, product_slug);
   if (!result) return { title: 'Product Not Found | Ace Packaging' };
 
   return {
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }: SpecificProductPageProps): Pr
 
 export default async function SpecificProductPage({ params }: SpecificProductPageProps) {
   const { category_slug, product_slug } = await params;
-  const result = getProductBySlugs(category_slug, product_slug);
+  const result = (await getCmsProductBySlugs(category_slug, product_slug)) || getProductBySlugs(category_slug, product_slug);
 
   if (!result) {
     notFound();

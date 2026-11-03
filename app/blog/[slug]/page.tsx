@@ -9,6 +9,9 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { User, Calendar, Clock, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
 import { BlogInquiryForm } from '@/components/sections/BlogInquiryForm';
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 interface BlogDetailPageProps {
   params: Promise<{
     slug: string;

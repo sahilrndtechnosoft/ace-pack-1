@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import AboutExperience from '@/components/experience/AboutExperience';
 import { getCmsPage } from '@/lib/db/content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'About Us | Ace Packaging Plastic Food Packaging Manufacturer',
   description:

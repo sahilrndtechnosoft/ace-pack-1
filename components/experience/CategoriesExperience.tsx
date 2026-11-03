@@ -85,7 +85,9 @@ function getCategoryMeta(category: ProductCategory): CategoryMeta {
   };
 }
 
-export default function CategoriesExperience() {
+export default function CategoriesExperience({ initialCategories }: { initialCategories?: ProductCategory[] } = {}) {
+  const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
+  const modelCount = categories.reduce((n, c) => n + c.products.length, 0);
   const root = useRef<HTMLDivElement>(null);
   const preview = useRef<HTMLDivElement>(null);
 
@@ -241,17 +243,17 @@ export default function CategoriesExperience() {
       <section className="xc-hero">
         <div className="xc-wrap xc-hero-grid">
           <div>
-            <span className="xp-eyebrow">The catalog · {productCategories.length} product lines · {modelCount} models</span>
+            <span className="xp-eyebrow">The catalog · {categories.length} product lines · {modelCount} models</span>
             <h1 aria-label="Every format food service needs.">
               <span className="xc-title-mask"><span>Every format</span></span>
               <span className="xc-title-mask"><span><em>food service needs.</em></span></span>
             </h1>
             <p className="xc-hero-lead">
-              {productCategories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.
+              {categories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.
             </p>
           </div>
           <div className="xc-glance">
-            <div><b>{productCategories.length}</b><span>Categories</span></div>
+            <div><b>{categories.length}</b><span>Categories</span></div>
             <div><b>{modelCount}</b><span>Models</span></div>
             <div><b>PP 05</b><span>Virgin Resin</span></div>
             <div><b>−20 · +120°C</b><span>Rated Range</span></div>
@@ -268,12 +270,12 @@ export default function CategoriesExperience() {
               <h2 data-split>Find your <em>form.</em></h2>
             </div>
             <span className="xc-index-hint">
-              {productCategories.length} certified series · Select a category to inspect full specs
+              {categories.length} certified series · Select a category to inspect full specs
             </span>
           </div>
 
           <ol className="xc-list">
-            {productCategories.map((category, i) => {
+            {categories.map((category, i) => {
               const num = String(i + 1).padStart(2, '0');
               const detailId = `xc-detail-${category.slug}`;
               const meta = getCategoryMeta(category);
@@ -366,7 +368,7 @@ export default function CategoriesExperience() {
 
         {/* Floating cursor preview card for desktop fine-pointers */}
         <div ref={preview} className="xc-preview" aria-hidden="true">
-          {productCategories.map(category => (
+          {categories.map(category => (
             <img key={category.id} src={category.heroImage} alt="" loading="lazy" />
           ))}
           <span className="xc-preview-label" />

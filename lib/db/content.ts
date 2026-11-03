@@ -1,6 +1,7 @@
 import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
+import { productCategories, type ProductCategory, type ProductItem } from '../data/products';
 
 export async function getCmsPage(slug: string) {
   try {
@@ -245,5 +246,187 @@ export async function getCmsDownloads() {
   } catch (err) {
     console.error('getCmsDownloads error:', err);
     return [];
+  }
+}
+
+function safeParseJson<T>(val: any, fallback: T): T {
+  if (!val) return fallback;
+  if (typeof val === 'object') return val;
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
+}
+
+function mapRowToProduct(r: any): ProductItem {
+  return {
+    id: r.id,
+    name: r.name,
+    capacity: r.capacity || '',
+    product_slug: r.product_slug,
+    material: r.material || 'Virgin PP 05 Food Grade',
+    quality: r.quality || 'Export Grade Food Safe',
+    packaging: r.packaging || '',
+    image: r.image || '',
+    blankImage: r.blank_image || undefined,
+    lockingFoodImage: r.locking_food_image || undefined,
+    description: r.description || undefined,
+    features: safeParseJson<string[]>(r.features, []),
+    dimensions: safeParseJson<any>(r.dimensions, undefined),
+    applications: safeParseJson<string[]>(r.applications, []),
+    specs: safeParseJson<any[]>(r.specs, []),
+    varieties: safeParseJson<any[] | undefined>(r.varieties, undefined),
+    defaultVariety: r.default_variety || undefined,
+  };
+}
+
+function mapRowToCategory(r: any, products: ProductItem[] = []): ProductCategory {
+  return {
+    id: r.id,
+    name: r.name,
+    slug: r.slug,
+    subtitleName: r.subtitle_name || '',
+    shortDescription: r.short_description || '',
+    description: r.description || '',
+    heroImage: r.hero_image || '',
+    features: safeParseJson<string[]>(r.features, []),
+    gallery: safeParseJson<string[]>(r.gallery, []),
+    faqs: safeParseJson<any[]>(r.faqs, []),
+    products,
+  };
+}
+
+export async function getCmsCategories(): Promise<ProductCategory[]> {
+  try {
+    await initDb();
+    const db = getDbPool();
+    const [catRows]: any = await db.query(
+      'SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC, created_at ASC'
+    );
+
+    if (!catRows || catRows.length === 0) {
+      return productCategories;
+    }
+
+    const [prodRows]: any = await db.query(
+      'SELECT * FROM products WHERE is_active = 1 ORDER BY sort_order ASC, created_at ASC'
+    );
+
+    const prodsByCat: Record<string, ProductItem[]> = {};
+    for (const pr of prodRows) {
+      if (!prodsByCat[pr.category_slug]) prodsByCat[pr.category_slug] = [];
+      prodsByCat[pr.category_slug].push(mapRowToProduct(pr));
+    }
+
+    return catRows.map((cr: any) => mapRowToCategory(cr, prodsByCat[cr.slug] || []));
+  } catch (err) {
+    console.error('getCmsCategories error:', err);
+    return productCategories;
+  }
+}
+
+export async function getCmsCategoryBySlug(slug: string): Promise<ProductCategory | null> {
+  try {
+    await initDb();
+    const db = getDbPool();
+    const [catRows]: any = await db.query(
+      'SELECT * FROM categories WHERE slug = ? AND is_active = 1 LIMIT 1',
+      [slug]
+    );
+
+    if (!catRows || catRows.length === 0) {
+      return productCategories.find((c) => c.slug === slug) || null;
+    }
+
+    const [prodRows]: any = await db.query(
+      'SELECT * FROM products WHERE category_slug = ? AND is_active = 1 ORDER BY sort_order ASC, created_at ASC',
+      [slug]
+    );
+
+    const products = (prodRows || []).map(mapRowToProduct);
+    return mapRowToCategory(catRows[0], products);
+  } catch (err) {
+    console.error(`getCmsCategoryBySlug("${slug}") error:`, err);
+    return productCategories.find((c) => c.slug === slug) || null;
+  }
+}
+
+export async function getCmsProductBySlugs(
+  categorySlug: string,
+  productSlug: string
+): Promise<{ category: ProductCategory; product: ProductItem } | null> {
+  try {
+    await initDb();
+    const db = getDbPool();
+
+    const [prodRows]: any = await db.query(
+      'SELECT * FROM products WHERE category_slug = ? AND product_slug = ? AND is_active = 1 LIMIT 1',
+      [categorySlug, productSlug]
+    );
+
+    const category = await getCmsCategoryBySlug(categorySlug);
+    if (!category) return null;
+
+    if (prodRows && prodRows.length > 0) {
+      return {
+        category,
+        product: mapRowToProduct(prodRows[0]),
+      };
+    }
+
+    // Static fallback
+    const staticProd = category.products.find((p) => p.product_slug === productSlug);
+    if (staticProd) {
+      return { category, product: staticProd };
+    }
+
+    return null;
+  } catch (err) {
+    console.error(`getCmsProductBySlugs("${categorySlug}", "${productSlug}") error:`, err);
+    const cat = productCategories.find((c) => c.slug === categorySlug);
+    if (!cat) return null;
+    const prod = cat.products.find((p) => p.product_slug === productSlug);
+    if (!prod) return null;
+    return { category: cat, product: prod };
+  }
+}
+
+export async function getCmsAllProducts(): Promise<(ProductItem & { category_slug: string; category_name: string })[]> {
+  try {
+    await initDb();
+    const db = getDbPool();
+    const [rows]: any = await db.query(`
+      SELECT p.*, c.name as category_name
+      FROM products p
+      LEFT JOIN categories c ON p.category_slug = c.slug
+      WHERE p.is_active = 1
+      ORDER BY c.sort_order ASC, p.sort_order ASC
+    `);
+
+    if (!rows || rows.length === 0) {
+      return productCategories.flatMap((c) =>
+        c.products.map((p) => ({
+          ...p,
+          category_slug: c.slug,
+          category_name: c.name,
+        }))
+      );
+    }
+
+    return rows.map((r: any) => ({
+      ...mapRowToProduct(r),
+      category_slug: r.category_slug,
+      category_name: r.category_name || r.category_slug,
+    }));
+  } catch (err) {
+    console.error('getCmsAllProducts error:', err);
+    return productCategories.flatMap((c) =>
+      c.products.map((p) => ({
+        ...p,
+        category_slug: c.slug,
+        category_name: c.name,
+      }))
+    );
   }
 }

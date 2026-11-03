@@ -21,6 +21,9 @@ import { exhibitionEvents, ExhibitionEvent } from '@/lib/data/events';
 import { getCmsEventBySlug, getCmsEvents } from '@/lib/db/content';
 import { EventBookingForm } from '@/components/events/EventBookingForm';
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }

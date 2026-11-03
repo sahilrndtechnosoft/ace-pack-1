@@ -1,12 +1,41 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, PhoneCall, Mail, MapPin, ShieldCheck, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
-export const Footer: React.FC = () => {
+export interface FooterProps {
+  initialSettings?: any;
+  initialCategories?: any[];
+}
+
+export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategories }) => {
+  const [liveSettings, setLiveSettings] = useState(initialSettings || null);
+  const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
+
+  useEffect(() => {
+    if (initialSettings) {
+      setLiveSettings(initialSettings);
+    }
+  }, [initialSettings]);
+
+  useEffect(() => {
+    fetch('/api/content/settings')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.settings?.footer_settings) {
+          setLiveSettings(data.settings.footer_settings);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const phoneNumbers = liveSettings?.phoneNumbers || initialSettings?.phoneNumbers || '(+91) 99250 15906 / (+91) 99251 55799';
+  const domesticEmail = liveSettings?.domesticEmail || initialSettings?.domesticEmail || 'acepack2011@gmail.com';
+  const exportEmail = liveSettings?.exportEmail || initialSettings?.exportEmail || 'sales@acepack.co.in / exports@acepack.co.in';
+
   const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
@@ -80,15 +109,15 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-2.5">
                 <PhoneCall className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>(+91) 99250 15906 / (+91) 99251 55799</span>
+                <span>{phoneNumbers}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>Domestic: acepack2011@gmail.com</span>
+                <span>Domestic: {domesticEmail}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>Export: sales@acepack.co.in / exports@acepack.co.in</span>
+                <span>Export: {exportEmail}</span>
               </div>
             </div>
           </div>
@@ -117,11 +146,11 @@ export const Footer: React.FC = () => {
           {/* Product Lines Column */}
           <div className="lg:col-span-3">
             <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">
-              All {productCategories.length} Product Collections
+              All {categories.length} Product Collections
             </h4>
             <ul className="space-y-2 text-xs font-semibold text-gray-600">
-              {productCategories.map((cat) => (
-                <li key={cat.id}>
+              {categories.map((cat) => (
+                <li key={cat.id || cat.slug}>
                   <Link href={`/categories/${cat.slug}`} className="hover:text-[#b99750] transition-colors flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#b99750]" />
                     <span>{cat.name}</span>
@@ -194,7 +223,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 text-center md:text-left">
-          <p>© {new Date().getFullYear()} Ace Packaging Solutions. All rights reserved.</p>
+          <p>{liveSettings?.copyrightText || initialSettings?.copyrightText || `© ${new Date().getFullYear()} Ace Packaging Solutions. All rights reserved.`}</p>
           <p className="text-gray-500">
             Designed and Developed by{' '}
             <a

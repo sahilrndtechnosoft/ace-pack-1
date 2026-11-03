@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
@@ -71,6 +72,10 @@ export async function PUT(request: NextRequest) {
       updatedHeader: Boolean(headerSettings),
       updatedFooter: Boolean(footerSettings),
     });
+
+    try {
+      revalidatePath('/', 'layout');
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Header and footer settings updated successfully.' });
   } catch (error: any) {

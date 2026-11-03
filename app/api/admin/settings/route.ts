@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
@@ -77,6 +78,10 @@ export async function PUT(request: NextRequest) {
     await logActivity(admin.email, 'UPDATE_SITE_SETTINGS', 'SETTINGS', 'global', {
       updatedKeys: Object.keys(settings),
     });
+
+    try {
+      revalidatePath('/', 'layout');
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Settings saved successfully.' });
   } catch (error: any) {

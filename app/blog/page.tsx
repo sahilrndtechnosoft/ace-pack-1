@@ -5,6 +5,8 @@ import { blogPosts } from '@/lib/data/blogs';
 import { BlogCatalogClient } from '@/components/sections/BlogCatalogClient';
 import { getCmsBlogs } from '@/lib/db/content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Packaging Industry Insights & Blogs | Ace Packaging',
   description: 'Stay updated with the latest food packaging trends, polymer material innovations, PP 05 safety guidelines, and cloud kitchen packaging solutions from Ace Packaging.',

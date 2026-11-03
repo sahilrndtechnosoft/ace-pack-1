@@ -5,6 +5,8 @@ import { downloadGroups, type DownloadItem } from '@/lib/data/downloads';
 import { getCmsDownloads } from '@/lib/db/content';
 import { DownloadsClient, type DownloadsClientGroup } from '@/components/sections/DownloadsClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Download Center | Ace Packaging Catalogs & Certificates',
   description:

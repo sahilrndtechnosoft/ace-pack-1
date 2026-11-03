@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
     const [pageRows]: any = await db.query('SELECT count(*) as count FROM pages');
     const [sectionRows]: any = await db.query('SELECT count(*) as count FROM sections');
     const [enabledSections]: any = await db.query('SELECT count(*) as count FROM sections WHERE is_enabled = 1');
+    const [categoryRows]: any = await db.query('SELECT count(*) as count FROM categories');
+    const [productRows]: any = await db.query('SELECT count(*) as count FROM products');
     const [blogRows]: any = await db.query('SELECT count(*) as count FROM blogs');
     const [eventRows]: any = await db.query('SELECT count(*) as count FROM events');
     const [downloadRows]: any = await db.query('SELECT count(*) as count FROM downloads');
@@ -53,6 +55,8 @@ export async function GET(request: NextRequest) {
         totalPages: pageRows[0]?.count || 0,
         totalSections: sectionRows[0]?.count || 0,
         activeSections: enabledSections[0]?.count || 0,
+        totalCategories: categoryRows[0]?.count || 0,
+        totalProducts: productRows[0]?.count || 0,
         totalBlogs: blogRows[0]?.count || 0,
         totalEvents: eventRows[0]?.count || 0,
         totalDownloads: downloadRows[0]?.count || 0,

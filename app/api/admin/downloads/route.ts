@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
@@ -60,6 +61,10 @@ export async function POST(request: NextRequest) {
 
     await logActivity(admin.email, 'CREATE_DOWNLOAD', 'DOWNLOAD', id, { title });
 
+    try {
+      revalidatePath('/downloads');
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Document added to downloads library.', downloadId: id });
   } catch (error: any) {
     console.error('Create download error:', error);
@@ -110,6 +115,10 @@ export async function PUT(request: NextRequest) {
 
     await logActivity(admin.email, 'UPDATE_DOWNLOAD', 'DOWNLOAD', id, { title });
 
+    try {
+      revalidatePath('/downloads');
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Download updated successfully.' });
   } catch (error: any) {
     console.error('Update download error:', error);
@@ -142,6 +151,10 @@ export async function DELETE(request: NextRequest) {
     await db.query('DELETE FROM downloads WHERE id = ?', [id]);
 
     await logActivity(admin.email, 'DELETE_DOWNLOAD', 'DOWNLOAD', id, { title: doc.title });
+
+    try {
+      revalidatePath('/downloads');
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Download deleted successfully.' });
   } catch (error: any) {

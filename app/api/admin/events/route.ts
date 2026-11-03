@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
@@ -81,6 +82,11 @@ export async function POST(request: NextRequest) {
 
     await logActivity(admin.email, 'CREATE_EVENT', 'EVENT', id, { title, slug: cleanSlug });
 
+    try {
+      revalidatePath('/events');
+      revalidatePath(`/events/${cleanSlug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Event created successfully.', eventId: id });
   } catch (error: any) {
     console.error('Create event error:', error);
@@ -144,6 +150,11 @@ export async function PUT(request: NextRequest) {
 
     await logActivity(admin.email, 'UPDATE_EVENT', 'EVENT', id, { title, slug });
 
+    try {
+      revalidatePath('/events');
+      if (slug) revalidatePath(`/events/${slug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Event updated successfully.' });
   } catch (error: any) {
     console.error('Update event error:', error);
@@ -176,6 +187,11 @@ export async function DELETE(request: NextRequest) {
     await db.query('DELETE FROM events WHERE id = ?', [id]);
 
     await logActivity(admin.email, 'DELETE_EVENT', 'EVENT', id, { title: event.title, slug: event.slug });
+
+    try {
+      revalidatePath('/events');
+      revalidatePath(`/events/${event.slug}`);
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Event deleted successfully.' });
   } catch (error: any) {

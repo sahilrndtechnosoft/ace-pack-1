@@ -5,6 +5,7 @@ import path from "path";
 const isExport = process.env.NEXT_EXPORT === 'true';
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['mysql2', 'bcryptjs'],
   ...(isExport ? { output: 'export' } : {}),
   distDir: process.env.ACEPACK_BUILD_DIR || ".next",
   images: {

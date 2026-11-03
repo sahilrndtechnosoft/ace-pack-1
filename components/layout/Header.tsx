@@ -138,7 +138,50 @@ const getResourceIcon = (href: string) => {
   }
 };
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  initialSettings?: any;
+  initialCategories?: ProductCategory[];
+}
+
+export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategories }) => {
+  const [liveSettings, setLiveSettings] = useState(initialSettings || null);
+  const [categories, setCategories] = useState<ProductCategory[]>(
+    initialCategories && initialCategories.length > 0 ? initialCategories : productCategories
+  );
+
+  useEffect(() => {
+    if (initialSettings) {
+      setLiveSettings(initialSettings);
+    }
+  }, [initialSettings]);
+
+  useEffect(() => {
+    if (initialCategories && initialCategories.length > 0) {
+      setCategories(initialCategories);
+    }
+  }, [initialCategories]);
+
+  useEffect(() => {
+    fetch('/api/content/settings')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.settings?.header_settings) {
+          setLiveSettings(data.settings.header_settings);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/content/categories')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.categories && data.categories.length > 0) {
+          setCategories(data.categories);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const topbarPhone = liveSettings?.topbarPhone || initialSettings?.topbarPhone || '+91 99250 15906';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -211,7 +254,7 @@ export const Header: React.FC = () => {
 
   // Filtered categories for desktop mega menu
   const desktopFilteredCategories = useMemo(() => {
-    let list = productCategories;
+    let list = categories;
     if (desktopSegment !== 'all') {
       const grp = CATEGORY_GROUPS.find((g) => g.id === desktopSegment);
       if (grp) {
@@ -228,19 +271,19 @@ export const Header: React.FC = () => {
       );
     }
     return list;
-  }, [desktopSegment, desktopSearch]);
+  }, [categories, desktopSegment, desktopSearch]);
 
   // Ensure activeCategorySlug is valid when filters change
   const activeCategory: ProductCategory = useMemo(() => {
     const found = desktopFilteredCategories.find((c) => c.slug === activeCategorySlug);
     if (found) return found;
-    return desktopFilteredCategories[0] || productCategories[0];
-  }, [desktopFilteredCategories, activeCategorySlug]);
+    return desktopFilteredCategories[0] || categories[0] || productCategories[0];
+  }, [desktopFilteredCategories, activeCategorySlug, categories]);
 
   // Sorted categories for the mobile drawer full A-Z directory
   const sortedAllCategories = useMemo(() => {
-    return [...productCategories].sort((a, b) => a.name.localeCompare(b.name));
-  }, []);
+    return [...categories].sort((a, b) => a.name.localeCompare(b.name));
+  }, [categories]);
 
   // Instant smart search results for mobile menu
   const mobileSearchResults = useMemo(() => {
@@ -256,7 +299,7 @@ export const Header: React.FC = () => {
     }[] = [];
 
     // Match categories first
-    for (const cat of productCategories) {
+    for (const cat of categories) {
       if (
         cat.name.toLowerCase().includes(q) ||
         cat.subtitleName.toLowerCase().includes(q) ||
@@ -273,7 +316,7 @@ export const Header: React.FC = () => {
     }
 
     // Match individual products
-    for (const cat of productCategories) {
+    for (const cat of categories) {
       for (const prod of cat.products) {
         if (
           prod.name.toLowerCase().includes(q) ||
@@ -295,7 +338,7 @@ export const Header: React.FC = () => {
     }
 
     return results.slice(0, 6);
-  }, [mobileSearch]);
+  }, [mobileSearch, categories]);
 
   useEffect(() => {
     let queued = false;
@@ -710,11 +753,11 @@ export const Header: React.FC = () => {
           {/* Action Button (Desktop) */}
           <div className="hidden lg:flex shrink-0 items-center gap-2 lg:gap-2.5 xl:gap-3">
             <a
-              href="tel:+919925015906"
+              href={`tel:${topbarPhone.replace(/\s+/g, '')}`}
               className="hidden 2xl:flex items-center gap-1.5 text-xs font-bold text-[var(--ace-ink)] hover:text-[var(--ace-orange)] transition-colors"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-              <span>+91 99250 15906</span>
+              <span>{topbarPhone}</span>
             </a>
 
             <Link
@@ -1110,11 +1153,11 @@ export const Header: React.FC = () => {
               {/* Direct Call & CTA */}
               <div className="pt-3 border-t border-[var(--ace-line)] flex flex-col gap-2.5">
                 <a
-                  href="tel:+919925015906"
+                  href={`tel:${topbarPhone.replace(/\s+/g, '')}`}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white border border-[var(--ace-line)] font-bold text-xs text-[var(--ace-ink)] hover:text-[var(--ace-orange)]"
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-                  <span>Call +91 99250 15906</span>
+                  <span>Call {topbarPhone}</span>
                 </a>
 
                 <Link

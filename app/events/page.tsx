@@ -4,6 +4,8 @@ import { Curved3DGallery } from '@/components/events/Curved3DGallery';
 import { exhibitionEvents } from '@/lib/data/events';
 import { getCmsEvents } from '@/lib/db/content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Exhibitions & Industry Events | Ace Packaging',
   description:

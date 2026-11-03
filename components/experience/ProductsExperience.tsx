@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/Flip';
 import { ArrowUpRight, ArrowRight, ArrowDownUp, FileDown } from 'lucide-react';
-import { productCategories } from '@/lib/data/products';
+import { productCategories, type ProductCategory } from '@/lib/data/products';
 import { buildTextReveals, refreshOnSettle } from './experience-motion';
 import LinesCarousel from './LinesCarousel';
 import './products.css';
@@ -15,27 +15,28 @@ gsap.registerPlugin(ScrollTrigger, Flip);
 
 type Sort = 'line' | 'capacity';
 
-// Flatten once at module scope; the list never changes at runtime.
-const models = productCategories.flatMap((category, c) =>
-  category.products.map((product, p) => ({
-    ...product,
-    line: category.name,
-    lineSlug: category.slug,
-    href: `/categories/${category.slug}/${product.product_slug}`,
-    // Stable catalog order: by line, then by the order models are listed.
-    index: c * 100 + p,
-  }))
-);
-
 // "30ml (1 oz)" -> 30, "500g" -> 500, "Custom Capacity" -> last.
 const capacityValue = (capacity: string) => {
   const m = capacity.match(/(\d+(?:\.\d+)?)\s*(ml|g)/i);
   return m ? parseFloat(m[1]) : Number.POSITIVE_INFINITY;
 };
-const numeric = models.map(m => capacityValue(m.capacity)).filter(Number.isFinite);
-const capacityRange = `${Math.min(...numeric)}–${Math.max(...numeric)} ml`;
 
-export default function ProductsExperience() {
+export default function ProductsExperience({ initialCategories }: { initialCategories?: ProductCategory[] } = {}) {
+  const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
+
+  const models = useMemo(() => categories.flatMap((category, c) =>
+    category.products.map((product, p) => ({
+      ...product,
+      line: category.name,
+      lineSlug: category.slug,
+      href: `/categories/${category.slug}/${product.product_slug}`,
+      index: c * 100 + p,
+    }))
+  ), [categories]);
+
+  const numeric = useMemo(() => models.map(m => capacityValue(m.capacity)).filter(Number.isFinite), [models]);
+  const capacityRange = useMemo(() => numeric.length ? `${Math.min(...numeric)}–${Math.max(...numeric)} ml` : 'Various', [numeric]);
+
   const root = useRef<HTMLDivElement>(null);
   const grid = useRef<HTMLUListElement>(null);
   const rail = useRef<HTMLDivElement>(null);
@@ -50,8 +51,8 @@ export default function ProductsExperience() {
 
   const lines = useMemo(() => [
     { slug: 'all', name: 'All lines', count: models.length },
-    ...productCategories.map(c => ({ slug: c.slug, name: c.name, count: c.products.length })),
-  ], []);
+    ...categories.map(c => ({ slug: c.slug, name: c.name, count: c.products.length })),
+  ], [categories, models]);
 
   // Glide the indicator under the active pill and keep that pill in view on a
   // scrolling rail. Runs on every change and once on mount.
@@ -102,9 +103,9 @@ export default function ProductsExperience() {
     }
   }, []);
 
-  const lineCards = useMemo(() => productCategories.map(c => ({
+  const lineCards = useMemo(() => categories.map(c => ({
     slug: c.slug, name: c.name, subtitle: c.subtitleName, image: c.heroImage, count: c.products.length,
-  })), []);
+  })), [categories]);
 
   // From the carousel: filter to that line and bring the catalog up under the bar.
   const selectFromCarousel = (slug: string) => {
@@ -137,7 +138,7 @@ export default function ProductsExperience() {
 
     // Deep link: /products?line=hinge-cups opens on that line.
     const wanted = new URLSearchParams(window.location.search).get('line');
-    if (wanted && productCategories.some(c => c.slug === wanted)) {
+    if (wanted && categories.some(c => c.slug === wanted)) {
       setLine(wanted);
       applyView(wanted, 'line', false);
     }
@@ -176,7 +177,7 @@ export default function ProductsExperience() {
       <section className="xpr-hero">
         <div className="xpr-wrap xpr-hero-grid">
           <div>
-            <span className="xp-eyebrow">The catalog · {models.length} models · {productCategories.length} lines</span>
+            <span className="xp-eyebrow">The catalog · {models.length} models · {categories.length} lines</span>
             <h1 aria-label={`${models.length} models. Specified in hand.`}>
               <span className="xpr-title-mask"><span>{models.length} models.</span></span>
               <span className="xpr-title-mask"><span><em>Specified in hand.</em></span></span>
@@ -185,7 +186,7 @@ export default function ProductsExperience() {
           </div>
           <div className="xpr-glance">
             <div><b>{models.length}</b><span>Models</span></div>
-            <div><b>{productCategories.length}</b><span>Lines</span></div>
+            <div><b>{categories.length}</b><span>Lines</span></div>
             <div><b>{capacityRange}</b><span>Capacity range</span></div>
             <div><b>PP 05</b><span>Virgin resin</span></div>
           </div>

@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import { QualityClient } from '@/components/sections/QualityClient';
 import { getCmsPage } from '@/lib/db/content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Quality Assurance & Certifications | Ace Packaging',
   description:

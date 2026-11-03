@@ -1,5 +1,6 @@
 import React from 'react';
 import { getCategoryBySlug, getAllCategorySlugs, productCategories } from '@/lib/data/products';
+import { getCmsCategoryBySlug, getCmsCategories } from '@/lib/db/content';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -7,6 +8,9 @@ import { PageBanner } from '@/components/ui/PageBanner';
 import { Reveal } from '@/components/ui/Reveal';
 import { ArrowLeft, ArrowRight, HelpCircle, Box, ShieldCheck, Ruler, Layers } from 'lucide-react';
 import { CategoryProductGrid } from '@/components/categories/CategoryProductGrid';
+
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 interface CategoryDetailPageProps {
   params: Promise<{
@@ -21,7 +25,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: CategoryDetailPageProps): Promise<Metadata> {
   const { category_slug } = await params;
-  const category = getCategoryBySlug(category_slug);
+  const category = (await getCmsCategoryBySlug(category_slug)) || getCategoryBySlug(category_slug);
   if (!category) return { title: 'Category Not Found | Ace Packaging' };
 
   return {
@@ -32,13 +36,14 @@ export async function generateMetadata({ params }: CategoryDetailPageProps): Pro
 
 export default async function CategoryDetailPage({ params }: CategoryDetailPageProps) {
   const { category_slug } = await params;
-  const category = getCategoryBySlug(category_slug);
+  const category = (await getCmsCategoryBySlug(category_slug)) || getCategoryBySlug(category_slug);
 
   if (!category) {
     notFound();
   }
 
-  const otherCategories = productCategories.filter((c) => c.slug !== category_slug).slice(0, 3);
+  const allCategories = await getCmsCategories();
+  const otherCategories = allCategories.filter((c) => c.slug !== category_slug).slice(0, 3);
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[var(--ace-ink)] pb-24">

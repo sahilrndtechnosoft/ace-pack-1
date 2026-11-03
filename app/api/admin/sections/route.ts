@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
@@ -83,6 +84,11 @@ export async function POST(request: NextRequest) {
 
     await logActivity(admin.email, 'CREATE_SECTION', 'SECTION', id, { page_slug, section_key: cleanKey });
 
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(page_slug === 'home' ? '/' : `/${page_slug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Section created successfully.', sectionId: id });
   } catch (error: any) {
     console.error('Create section error:', error);
@@ -159,6 +165,11 @@ export async function PUT(request: NextRequest) {
       }
     );
 
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(current.page_slug === 'home' ? '/' : `/${current.page_slug}`);
+    } catch {}
+
     return NextResponse.json({
       success: true,
       message: publish ? 'Section changes published live!' : 'Section draft saved.',
@@ -197,6 +208,11 @@ export async function DELETE(request: NextRequest) {
       page_slug: section.page_slug,
       section_key: section.section_key,
     });
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(section.page_slug === 'home' ? '/' : `/${section.page_slug}`);
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Section deleted successfully.' });
   } catch (error: any) {

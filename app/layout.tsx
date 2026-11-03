@@ -8,19 +8,28 @@ import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import { CursorTrail } from "@/components/ui/CursorTrail";
+import { ContentProtection } from "@/components/ui/ContentProtection";
+import { getCmsSettings, getCmsCategories } from "@/lib/db/content";
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "Ace Packaging | Premium Plastic Food Containers",
   description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
 };
 
-import { ContentProtection } from "@/components/ui/ContentProtection";
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [settings, categories] = await Promise.all([
+    getCmsSettings(),
+    getCmsCategories(),
+  ]);
+  const headerSettings = settings?.header_settings || null;
+  const footerSettings = settings?.footer_settings || null;
+
   return (
     <html lang="en" data-scroll-behavior="smooth" className="font-sans max-w-full w-full">
       <head>
@@ -35,9 +44,9 @@ export default function RootLayout({
         <ContentProtection />
         <SmoothScroll />
         <CursorTrail />
-        <Header />
+        <Header initialSettings={headerSettings} initialCategories={categories} />
         <main className="flex-1 flex flex-col">{children}</main>
-        <Footer />
+        <Footer initialSettings={footerSettings} initialCategories={categories} />
         <ScrollToTopButton />
       </body>
     </html>

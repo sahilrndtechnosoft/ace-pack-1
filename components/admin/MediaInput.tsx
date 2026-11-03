@@ -30,7 +30,7 @@ export interface MediaInputProps {
   onUploadDetails?: (details: UploadDetails) => void;
   placeholder?: string;
   helpText?: string;
-  category?: 'branding' | 'blogs' | 'events' | 'pages' | 'downloads' | 'general' | 'documents';
+  category?: 'branding' | 'blogs' | 'events' | 'pages' | 'downloads' | 'general' | 'documents' | 'products' | 'categories' | string;
   accept?: string;
   fileType?: 'image' | 'pdf' | 'any';
   required?: boolean;

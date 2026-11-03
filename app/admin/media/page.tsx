@@ -95,9 +95,9 @@ export default function AdminMediaPage() {
   };
 
   const handleCopyUrl = (url: string, id: string) => {
-    navigator.clipboard.writeText(window.location.origin + url);
+    navigator.clipboard.writeText(url);
     setCopiedId(id);
-    showToast('Media URL copied to clipboard!');
+    showToast('Media relative URL copied to clipboard!');
     setTimeout(() => setCopiedId(null), 2500);
   };
 

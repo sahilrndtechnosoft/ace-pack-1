@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Lock, Mail, Shield, Save, CheckCircle2, KeyRound } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 
@@ -14,6 +14,13 @@ export default function AdminProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (admin) {
+      if (admin.name) setName(admin.name);
+      if (admin.email) setEmail(admin.email);
+    }
+  }, [admin]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

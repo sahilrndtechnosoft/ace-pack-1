@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
@@ -107,6 +108,11 @@ export async function POST(request: NextRequest) {
 
     await logActivity(admin.email, 'CREATE_BLOG', 'BLOG', id, { title, slug: cleanSlug });
 
+    try {
+      revalidatePath('/blog');
+      revalidatePath(`/blog/${cleanSlug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Blog post created successfully.', blogId: id });
   } catch (error: any) {
     console.error('Create blog error:', error);
@@ -191,6 +197,11 @@ export async function PUT(request: NextRequest) {
 
     await logActivity(admin.email, 'UPDATE_BLOG', 'BLOG', id, { title, slug });
 
+    try {
+      revalidatePath('/blog');
+      if (slug) revalidatePath(`/blog/${slug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Blog post updated successfully.' });
   } catch (error: any) {
     console.error('Update blog error:', error);
@@ -223,6 +234,11 @@ export async function DELETE(request: NextRequest) {
     await db.query('DELETE FROM blogs WHERE id = ?', [id]);
 
     await logActivity(admin.email, 'DELETE_BLOG', 'BLOG', id, { title: blog.title, slug: blog.slug });
+
+    try {
+      revalidatePath('/blog');
+      revalidatePath(`/blog/${blog.slug}`);
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Blog post deleted successfully.' });
   } catch (error: any) {

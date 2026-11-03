@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
@@ -63,6 +64,11 @@ export async function POST(request: NextRequest) {
 
     await logActivity(admin.email, 'CREATE_PAGE', 'PAGE', id, { title, slug: cleanSlug });
 
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(`/${cleanSlug}`);
+    } catch {}
+
     return NextResponse.json({ success: true, message: 'Page created successfully.', pageId: id });
   } catch (error: any) {
     console.error('Create page error:', error);
@@ -89,9 +95,21 @@ export async function PUT(request: NextRequest) {
     }
 
     const db = getDbPool();
+    const [existing]: any = await db.query('SELECT slug FROM pages WHERE id = ?', [id]);
+    if (!existing || existing.length === 0) {
+      return NextResponse.json({ error: 'Page not found.' }, { status: 404 });
+    }
+
+    const oldSlug = existing[0].slug;
+    let newSlug = oldSlug;
+    if (slug && oldSlug !== 'home') {
+      newSlug = slug.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+    }
+
     await db.query(
       `UPDATE pages
        SET title = ?,
+           slug = ?,
            seo_title = ?,
            seo_description = ?,
            og_image = ?,
@@ -102,6 +120,7 @@ export async function PUT(request: NextRequest) {
        WHERE id = ?`,
       [
         title.trim(),
+        newSlug,
         seo_title || null,
         seo_description || null,
         og_image || null,
@@ -112,7 +131,19 @@ export async function PUT(request: NextRequest) {
       ]
     );
 
-    await logActivity(admin.email, 'UPDATE_PAGE', 'PAGE', id, { title, slug });
+    if (newSlug !== oldSlug) {
+      await db.query('UPDATE sections SET page_slug = ? WHERE page_slug = ?', [newSlug, oldSlug]);
+    }
+
+    await logActivity(admin.email, 'UPDATE_PAGE', 'PAGE', id, { title, oldSlug, newSlug });
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(oldSlug === 'home' ? '/' : `/${oldSlug}`);
+      if (newSlug !== oldSlug) {
+        revalidatePath(`/${newSlug}`);
+      }
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Page updated successfully.' });
   } catch (error: any) {
@@ -153,6 +184,11 @@ export async function DELETE(request: NextRequest) {
     await db.query('DELETE FROM pages WHERE id = ?', [id]);
 
     await logActivity(admin.email, 'DELETE_PAGE', 'PAGE', id, { title: page.title, slug: page.slug });
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath(page.slug === 'home' ? '/' : `/${page.slug}`);
+    } catch {}
 
     return NextResponse.json({ success: true, message: 'Page and its sections deleted successfully.' });
   } catch (error: any) {
