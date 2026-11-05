@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Container } from '../ui/Container';
 import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
-import { MapPin, Phone, Mail, ArrowRight, Lock, CheckCircle2, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowRight, Lock, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
 const inputClasses =
@@ -43,14 +43,55 @@ export const ContactSection: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    if (!formData.name.trim() || !formData.company.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim()) {
+      setError('Please fill in all mandatory fields (*).');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (formData.phone.replace(/\D/g, '').length < 7) {
+      setError('Please enter a valid phone number (min. 7 digits).');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          company: formData.company.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          category: formData.category,
+          message: formData.message.trim(),
+          source_page: 'homepage',
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send inquiry.');
+      }
+
       setSubmitted(true);
-    }, 700);
+    } catch (err: any) {
+      setError(err.message || 'Failed to submit inquiry. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <section className="relative py-16 sm:py-24 bg-[#FAF8F4] overflow-hidden">
@@ -130,6 +171,12 @@ export const ContactSection: React.FC = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {error && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{error}</span>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">Full Name *</label>

@@ -20,6 +20,8 @@ import {
   ExternalLink,
   Grid,
   Package,
+  Mail,
+  Users,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -32,6 +34,8 @@ const NAV_ITEMS = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Categories', href: '/admin/categories', icon: Grid },
   { label: 'Products', href: '/admin/products', icon: Package },
+  { label: 'Contact Inquiries', href: '/admin/contacts', icon: Mail },
+  { label: 'Site Visitors', href: '/admin/visitors', icon: Users },
   { label: 'Pages', href: '/admin/pages', icon: FileText },
   { label: 'Sections', href: '/admin/sections', icon: Layers },
   { label: 'Header & Footer', href: '/admin/header-footer', icon: Sliders },

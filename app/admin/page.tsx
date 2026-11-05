@@ -21,6 +21,8 @@ import {
   RefreshCw,
   Grid,
   Package,
+  Mail,
+  Users,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 
@@ -35,6 +37,10 @@ interface OverviewData {
     totalEvents: number;
     totalDownloads: number;
     totalMedia: number;
+    totalContacts?: number;
+    unreadContacts?: number;
+    totalVisitors?: number;
+    newVisitorsToday?: number;
     maintenanceMode: boolean;
     siteName: string;
     logoUrl: string;
@@ -55,6 +61,16 @@ interface OverviewData {
     title: string;
     page_title: string;
     updated_at: string;
+  }>;
+  recentContacts?: Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    company: string | null;
+    category: string | null;
+    status: string;
+    created_at: string;
   }>;
 }
 
@@ -138,6 +154,61 @@ export default function AdminDashboardPage() {
             <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </div>
+      </div>
+
+      {/* Featured Business Highlights: Inquiries & Visitors */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link
+          href="/admin/contacts"
+          className="p-5 rounded-2xl bg-gradient-to-br from-[#161B22] to-[#11161F] border border-[#1E2633] hover:border-[#b99750]/60 transition-all group flex items-center justify-between shadow-lg"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#b99750]/20 text-[#b99750] border border-[#b99750]/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Mail className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Contact &amp; Factory Inquiries</span>
+                {(data?.stats?.unreadContacts ?? 0) > 0 && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
+                    {data?.stats?.unreadContacts} UNREAD
+                  </span>
+                )}
+              </div>
+              <div className="text-2xl font-black text-white mt-0.5">
+                {data?.stats?.totalContacts ?? 0}{' '}
+                <span className="text-xs font-normal text-gray-400">total leads received</span>
+              </div>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-[#b99750] group-hover:translate-x-1 transition-all" />
+        </Link>
+
+        <Link
+          href="/admin/visitors"
+          className="p-5 rounded-2xl bg-gradient-to-br from-[#161B22] to-[#11161F] border border-[#1E2633] hover:border-emerald-500/60 transition-all group flex items-center justify-between shadow-lg"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Users className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Live Site Visitors</span>
+                {(data?.stats?.newVisitorsToday ?? 0) > 0 && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                    +{data?.stats?.newVisitorsToday} new today
+                  </span>
+                )}
+              </div>
+              <div className="text-2xl font-black text-white mt-0.5">
+                {data?.stats?.totalVisitors ?? 0}{' '}
+                <span className="text-xs font-normal text-gray-400">unique visitor records</span>
+              </div>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+        </Link>
       </div>
 
       {/* Statistics Cards Grid */}
@@ -400,6 +471,55 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* Recent Contact Inquiries Banner */}
+      {data?.recentContacts && data.recentContacts.length > 0 && (
+        <div className="p-5 sm:p-6 rounded-3xl bg-[#0D1117] border border-[#1E2633] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-[#b99750]" />
+              <h2 className="text-sm font-extrabold text-white">Recent Customer &amp; Factory Leads</h2>
+            </div>
+            <Link
+              href="/admin/contacts"
+              className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
+            >
+              <span>View All Inquiries</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {data.recentContacts.slice(0, 3).map((lead) => (
+              <Link
+                key={lead.id}
+                href="/admin/contacts"
+                className="p-3.5 rounded-xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-bold text-white text-xs group-hover:text-[#b99750] transition-colors truncate">
+                      {lead.name}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                      lead.status === 'unread'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                        : 'bg-emerald-500/20 text-emerald-300'
+                    }`}>
+                      {lead.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-gray-400 truncate">{lead.email}</div>
+                  <div className="text-[10px] text-gray-500 mt-1">{lead.company || lead.category || 'General Inquiry'}</div>
+                </div>
+                <div className="text-[10px] text-gray-500 font-mono mt-2 pt-2 border-t border-[#1E2633]">
+                  {formatDate(lead.created_at)}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Two Column Split: Recently Modified Sections & Real-time Audit Logs */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

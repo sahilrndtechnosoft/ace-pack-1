@@ -9,6 +9,7 @@ import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton";
 import { CursorTrail } from "@/components/ui/CursorTrail";
 import { ContentProtection } from "@/components/ui/ContentProtection";
+import { SiteVisitorTracker } from "@/components/analytics/SiteVisitorTracker";
 import { getCmsSettings, getCmsCategories } from "@/lib/db/content";
 
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground font-sans max-w-full w-full relative">
+        <SiteVisitorTracker />
         <ContentProtection />
         <SmoothScroll />
         <CursorTrail />

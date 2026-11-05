@@ -245,6 +245,73 @@ export async function initDb(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   `);
 
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS contact_submissions (
+      id VARCHAR(191) PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(100) NOT NULL,
+      company VARCHAR(255),
+      category VARCHAR(150),
+      subject VARCHAR(255),
+      message LONGTEXT NOT NULL,
+      source_page VARCHAR(255) DEFAULT '/contact',
+      status VARCHAR(50) NOT NULL DEFAULT 'unread',
+      ip_address VARCHAR(100),
+      user_agent TEXT,
+      notes LONGTEXT,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_contact_created (created_at DESC),
+      INDEX idx_contact_status (status),
+      INDEX idx_contact_email (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS site_visitors (
+      id VARCHAR(191) PRIMARY KEY,
+      visitor_id VARCHAR(191) UNIQUE NOT NULL,
+      ip_address VARCHAR(100),
+      user_agent TEXT,
+      device_type VARCHAR(50) DEFAULT 'Desktop',
+      browser VARCHAR(100),
+      os VARCHAR(100),
+      initial_landing_page VARCHAR(500),
+      initial_referrer VARCHAR(500),
+      country VARCHAR(100),
+      city VARCHAR(100),
+      visit_count INT DEFAULT 1,
+      first_visit_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      last_visit_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_sv_visitor (visitor_id),
+      INDEX idx_sv_device (device_type),
+      INDEX idx_sv_first_visit (first_visit_at DESC),
+      INDEX idx_sv_last_visit (last_visit_at DESC)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS visitor_logs (
+      id VARCHAR(191) PRIMARY KEY,
+      visitor_id VARCHAR(191) NOT NULL,
+      page_url VARCHAR(500) NOT NULL,
+      page_title VARCHAR(255),
+      referrer VARCHAR(500),
+      is_new_visitor TINYINT(1) DEFAULT 0,
+      ip_address VARCHAR(100),
+      device_type VARCHAR(50) DEFAULT 'Desktop',
+      browser VARCHAR(100),
+      os VARCHAR(100),
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_vl_created (created_at DESC),
+      INDEX idx_vl_visitor (visitor_id),
+      INDEX idx_vl_is_new (is_new_visitor)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
   // Check if admin exists; if not, seed complete initial website data
   const [rows]: any = await db.query('SELECT count(*) as count FROM admins');
   if (rows && rows[0] && rows[0].count === 0) {

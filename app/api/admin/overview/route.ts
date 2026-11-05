@@ -22,6 +22,18 @@ export async function GET(request: NextRequest) {
     const [eventRows]: any = await db.query('SELECT count(*) as count FROM events');
     const [downloadRows]: any = await db.query('SELECT count(*) as count FROM downloads');
     const [mediaRows]: any = await db.query('SELECT count(*) as count FROM media');
+    const [contactRows]: any = await db.query('SELECT count(*) as count FROM contact_submissions');
+    const [unreadContacts]: any = await db.query("SELECT count(*) as count FROM contact_submissions WHERE status = 'unread'");
+    const [visitorRows]: any = await db.query('SELECT count(*) as count FROM site_visitors');
+    const [newVisitorsToday]: any = await db.query('SELECT count(*) as count FROM site_visitors WHERE DATE(first_visit_at) = CURDATE()');
+
+    // Recent contact submissions
+    const [recentContacts]: any = await db.query(
+      `SELECT id, name, email, phone, company, category, status, created_at
+       FROM contact_submissions
+       ORDER BY created_at DESC
+       LIMIT 5`
+    );
 
     // Recent activity logs
     const [logs]: any = await db.query(
@@ -61,12 +73,17 @@ export async function GET(request: NextRequest) {
         totalEvents: eventRows[0]?.count || 0,
         totalDownloads: downloadRows[0]?.count || 0,
         totalMedia: mediaRows[0]?.count || 0,
+        totalContacts: contactRows[0]?.count || 0,
+        unreadContacts: unreadContacts[0]?.count || 0,
+        totalVisitors: visitorRows[0]?.count || 0,
+        newVisitorsToday: newVisitorsToday[0]?.count || 0,
         maintenanceMode: settingsMap['maintenance_mode'] === 'true',
         siteName: settingsMap['site_name'] || 'Ace Packaging',
         logoUrl: settingsMap['logo_url'] || '/images/Ace_New_Update_Logo-01.png',
       },
       recentLogs: logs,
       recentSections,
+      recentContacts: recentContacts || [],
     });
   } catch (error: any) {
     console.error('Overview API error:', error);
