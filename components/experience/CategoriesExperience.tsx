@@ -85,11 +85,23 @@ function getCategoryMeta(category: ProductCategory): CategoryMeta {
   };
 }
 
-export default function CategoriesExperience({ initialCategories }: { initialCategories?: ProductCategory[] } = {}) {
+export default function CategoriesExperience({
+  initialCategories,
+  cmsSections,
+}: {
+  initialCategories?: ProductCategory[];
+  cmsSections?: Record<string, any>;
+} = {}) {
   const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
   const modelCount = categories.reduce((n, c) => n + c.products.length, 0);
   const root = useRef<HTMLDivElement>(null);
   const preview = useRef<HTMLDivElement>(null);
+
+  // Dynamic CMS sections with fallbacks
+  const heroSec = cmsSections?.hero || {};
+  const indexSec = cmsSections?.index || {};
+  const standardSec = cmsSections?.standard || {};
+  const standardList = Array.isArray(standardSec.bullets) && standardSec.bullets.length > 0 ? standardSec.bullets : standard;
 
   useEffect(() => {
     const scope = root.current;
@@ -243,20 +255,22 @@ export default function CategoriesExperience({ initialCategories }: { initialCat
       <section className="xc-hero">
         <div className="xc-wrap xc-hero-grid">
           <div>
-            <span className="xp-eyebrow">The catalog · {categories.length} product lines · {modelCount} models</span>
-            <h1 aria-label="Every format food service needs.">
-              <span className="xc-title-mask"><span>Every format</span></span>
-              <span className="xc-title-mask"><span><em>food service needs.</em></span></span>
+            <span className="xp-eyebrow">
+              {heroSec.eyebrow || `The catalog · ${categories.length} product lines · ${modelCount} models`}
+            </span>
+            <h1 aria-label={`${heroSec.title_line_1 || 'Every format'} ${heroSec.title_line_2 || 'food service needs.'}`}>
+              <span className="xc-title-mask"><span>{heroSec.title_line_1 || 'Every format'}</span></span>
+              <span className="xc-title-mask"><span><em>{heroSec.title_line_2 || 'food service needs.'}</em></span></span>
             </h1>
             <p className="xc-hero-lead">
-              {categories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.
+              {heroSec.lead || `${categories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.`}
             </p>
           </div>
           <div className="xc-glance">
             <div><b>{categories.length}</b><span>Categories</span></div>
             <div><b>{modelCount}</b><span>Models</span></div>
-            <div><b>PP 05</b><span>Virgin Resin</span></div>
-            <div><b>−20 · +120°C</b><span>Rated Range</span></div>
+            <div><b>{heroSec.stat_resin || 'PP 05'}</b><span>{heroSec.stat_resin_label || 'Virgin Resin'}</span></div>
+            <div><b>{heroSec.stat_range || '−20 · +120°C'}</b><span>{heroSec.stat_range_label || 'Rated Range'}</span></div>
           </div>
         </div>
       </section>
@@ -266,11 +280,11 @@ export default function CategoriesExperience({ initialCategories }: { initialCat
         <div className="xc-wrap">
           <div className="xc-index-head">
             <div>
-              <span className="xp-eyebrow">01 / Commercial Packaging Lines</span>
-              <h2 data-split>Find your <em>form.</em></h2>
+              <span className="xp-eyebrow">{indexSec.eyebrow || '01 / Commercial Packaging Lines'}</span>
+              <h2 data-split>{indexSec.title ? indexSec.title : <>Find your <em>form.</em></>}</h2>
             </div>
             <span className="xc-index-hint">
-              {categories.length} certified series · Select a category to inspect full specs
+              {indexSec.hint || `${categories.length} certified series · Select a category to inspect full specs`}
             </span>
           </div>
 
@@ -379,12 +393,12 @@ export default function CategoriesExperience({ initialCategories }: { initialCat
       <section className="xc-standard">
         <div className="xc-wrap xc-standard-grid">
           <div>
-            <span className="xp-eyebrow">02 / Polymer Specification</span>
-            <h2 data-split>Every line, <em>the same polymer.</em></h2>
+            <span className="xp-eyebrow">{standardSec.eyebrow || '02 / Polymer Specification'}</span>
+            <h2 data-split>{standardSec.title ? standardSec.title : <>Every line, <em>the same polymer.</em></>}</h2>
           </div>
           <ul className="xc-standard-list">
-            {standard.map(item => (
-              <li key={item}><i />{item}</li>
+            {standardList.map((item: string, i: number) => (
+              <li key={i}><i />{item}</li>
             ))}
           </ul>
         </div>

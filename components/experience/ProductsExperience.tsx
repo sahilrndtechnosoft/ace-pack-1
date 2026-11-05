@@ -21,8 +21,18 @@ const capacityValue = (capacity: string) => {
   return m ? parseFloat(m[1]) : Number.POSITIVE_INFINITY;
 };
 
-export default function ProductsExperience({ initialCategories }: { initialCategories?: ProductCategory[] } = {}) {
+export default function ProductsExperience({
+  initialCategories,
+  cmsSections,
+}: {
+  initialCategories?: ProductCategory[];
+  cmsSections?: Record<string, any>;
+} = {}) {
   const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
+
+  // Dynamic CMS sections with fallbacks
+  const heroSec = cmsSections?.hero || {};
+  const ctaSec = cmsSections?.custom_mould_cta || {};
 
   const models = useMemo(() => categories.flatMap((category, c) =>
     category.products.map((product, p) => ({
@@ -177,18 +187,22 @@ export default function ProductsExperience({ initialCategories }: { initialCateg
       <section className="xpr-hero">
         <div className="xpr-wrap xpr-hero-grid">
           <div>
-            <span className="xp-eyebrow">The catalog · {models.length} models · {categories.length} lines</span>
-            <h1 aria-label={`${models.length} models. Specified in hand.`}>
-              <span className="xpr-title-mask"><span>{models.length} models.</span></span>
-              <span className="xpr-title-mask"><span><em>Specified in hand.</em></span></span>
+            <span className="xp-eyebrow">
+              {heroSec.eyebrow || `The catalog · ${models.length} models · ${categories.length} lines`}
+            </span>
+            <h1 aria-label={`${heroSec.title_line_1 || `${models.length} models.`} ${heroSec.title_line_2 || 'Specified in hand.'}`}>
+              <span className="xpr-title-mask"><span>{heroSec.title_line_1 || `${models.length} models.`}</span></span>
+              <span className="xpr-title-mask"><span><em>{heroSec.title_line_2 || 'Specified in hand.'}</em></span></span>
             </h1>
-            <p className="xpr-hero-lead">Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.</p>
+            <p className="xpr-hero-lead">
+              {heroSec.lead || 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.'}
+            </p>
           </div>
           <div className="xpr-glance">
             <div><b>{models.length}</b><span>Models</span></div>
             <div><b>{categories.length}</b><span>Lines</span></div>
             <div><b>{capacityRange}</b><span>Capacity range</span></div>
-            <div><b>PP 05</b><span>Virgin resin</span></div>
+            <div><b>{heroSec.stat_resin || 'PP 05'}</b><span>{heroSec.stat_resin_label || 'Virgin resin'}</span></div>
           </div>
         </div>
         <div className="xpr-wrap">
@@ -256,10 +270,13 @@ export default function ProductsExperience({ initialCategories }: { initialCateg
 
       <section className="xpr-closing">
         <div className="xpr-wrap">
-          <span className="xp-eyebrow">Product information &amp; sample kit</span>
-          <h2 data-split>See it <em>before you order.</em></h2>
+          <span className="xp-eyebrow">{ctaSec.heading || 'Product information & sample kit'}</span>
+          <h2 data-split>{ctaSec.heading ? ctaSec.heading : <>See it <em>before you order.</em></>}</h2>
+          {ctaSec.lead && <p className="text-xs text-gray-400 mt-2 max-w-xl mx-auto">{ctaSec.lead}</p>}
           <div className="xpr-closing-actions">
-            <Link href="/contact" className="xp-button">Discuss your requirements <ArrowRight size={18} /></Link>
+            <Link href={ctaSec.button_link || '/contact'} className="xp-button">
+              {ctaSec.button_text || 'Discuss your requirements'} <ArrowRight size={18} />
+            </Link>
             <Link href="/downloads" className="xp-button xp-button--ghost">Download datasheets <FileDown size={18} /></Link>
           </div>
         </div>

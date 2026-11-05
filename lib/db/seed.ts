@@ -413,7 +413,175 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
     );
   }
 
-  // 8. Seed Blogs
+  // 8. Seed Sections for Categories Page
+  const categorySections = [
+    {
+      key: 'hero',
+      title: 'Every format food service needs.',
+      subtitle: 'Commercial container lines, one material standard: 100% prime virgin PP 05.',
+      sort_order: 1,
+      content: {
+        eyebrow: 'The catalog · commercial packaging lines',
+        title_line_1: 'Every format',
+        title_line_2: 'food service needs.',
+        lead: 'Commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.',
+        stat_resin: 'PP 05',
+        stat_resin_label: 'Virgin Resin',
+        stat_range: '−20 · +120°C',
+        stat_range_label: 'Rated Range',
+      },
+    },
+    {
+      key: 'index',
+      title: 'Commercial Packaging Lines Directory',
+      subtitle: 'Find your form among our certified commercial container series.',
+      sort_order: 2,
+      content: {
+        eyebrow: '01 / Commercial Packaging Lines',
+        title: 'Find your form.',
+        hint: 'Certified series · Select a category to inspect full specs',
+      },
+    },
+    {
+      key: 'standard',
+      title: 'Material & Engineering Standard',
+      subtitle: 'One standard across every format.',
+      sort_order: 3,
+      content: {
+        eyebrow: '02 / Material & Engineering Standard',
+        title: 'One standard across every format.',
+        lead: 'Whether you order 5,000 hinge cups or 500,000 bento boxes, every container is produced to the same rigorous technical specification.',
+        bullets: [
+          '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
+          'Manufactured in an ISO 9001:2015 certified facility in Daman',
+          'Rated −20°C deep freeze to +120°C microwave reheating',
+          'Zero-leak snap-rim geometry across every lidded format',
+          'BPA-free and heavy-metal free',
+          'Custom in-mould labelling available on every line',
+        ],
+      },
+    },
+  ];
+
+  for (const s of categorySections) {
+    const secId = `sec_categories_${s.key}`;
+    const contentJson = JSON.stringify(s.content);
+    await db.query(
+      `INSERT INTO sections (id, page_slug, section_key, title, subtitle, draft_content, published_content, is_enabled, is_published, sort_order, created_at, updated_at)
+       VALUES (?, 'categories', ?, ?, ?, ?, ?, 1, 1, ?, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE title=VALUES(title), subtitle=VALUES(subtitle), draft_content=VALUES(draft_content), published_content=VALUES(published_content), sort_order=VALUES(sort_order)`,
+      [secId, s.key, s.title, s.subtitle, contentJson, contentJson, s.sort_order]
+    );
+  }
+
+  // 9. Seed Sections for Products Page
+  const productSections = [
+    {
+      key: 'hero',
+      title: 'Specified in hand.',
+      subtitle: 'Complete catalog of plastic food containers and packaging models.',
+      sort_order: 1,
+      content: {
+        eyebrow: 'The catalog · models · lines',
+        title_line_1: 'Models.',
+        title_line_2: 'Specified in hand.',
+        lead: 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.',
+        stat_resin: 'PP 05',
+        stat_resin_label: 'Virgin resin',
+        stat_facility: 'ISO 9001:2015',
+        stat_facility_label: 'Facility Standard',
+      },
+    },
+    {
+      key: 'catalog_filter',
+      title: 'Interactive Model Catalog & Filters',
+      subtitle: 'Filter by container series, sort by volume capacity, and access full engineering drawings.',
+      sort_order: 2,
+      content: {
+        filter_label: 'Filter by product line',
+        sort_label: 'Sort by capacity',
+        empty_message: 'No models match the selected filter.',
+        catalog_download_cta: 'Download Full Catalog (PDF)',
+        catalog_download_link: '/downloads',
+      },
+    },
+    {
+      key: 'custom_mould_cta',
+      title: 'Custom Mould Tooling & OEM Production',
+      subtitle: 'Inquire about custom tooling or high-volume wholesale dispatch.',
+      sort_order: 3,
+      content: {
+        heading: 'Need a customized shape, volume or IML decoration?',
+        lead: 'Our in-house mould tooling engineers in Daman develop bespoke packaging for restaurant chains and food brands.',
+        button_text: 'Contact Engineering Team',
+        button_link: '/contact',
+      },
+    },
+  ];
+
+  for (const s of productSections) {
+    const secId = `sec_products_${s.key}`;
+    const contentJson = JSON.stringify(s.content);
+    await db.query(
+      `INSERT INTO sections (id, page_slug, section_key, title, subtitle, draft_content, published_content, is_enabled, is_published, sort_order, created_at, updated_at)
+       VALUES (?, 'products', ?, ?, ?, ?, ?, 1, 1, ?, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE title=VALUES(title), subtitle=VALUES(subtitle), draft_content=VALUES(draft_content), published_content=VALUES(published_content), sort_order=VALUES(sort_order)`,
+      [secId, s.key, s.title, s.subtitle, contentJson, contentJson, s.sort_order]
+    );
+  }
+
+  // 10. Seed Sections for Downloads, Events, Gallery Pages
+  const otherPageSections = [
+    {
+      page: 'downloads',
+      key: 'hero',
+      title: 'Download Center & Technical Datasheets',
+      subtitle: 'Official specification sheets, ISO 9001 certificates, and high-resolution packaging catalogs.',
+      sort_order: 1,
+      content: {
+        badge: 'Official Technical Documentation',
+        heading: 'Technical Datasheets & Compliance Files',
+        lead: 'Download verified engineering drawings, migration test reports, and compliance certificates for your regulatory filing.',
+      },
+    },
+    {
+      page: 'events',
+      key: 'hero',
+      title: 'Exhibitions & Industry Events',
+      subtitle: 'Connect with our polymer engineers at global food packaging summits and expos.',
+      sort_order: 1,
+      content: {
+        badge: 'Global Trade Presence',
+        heading: 'Meet Ace Packaging Worldwide',
+        lead: 'Visit our expo booths to test physical container samples, discuss volume contracts, and review mould innovations.',
+      },
+    },
+    {
+      page: 'gallery',
+      key: 'hero',
+      title: 'Visual Manufacturing Gallery',
+      subtitle: 'Inside look at our Daman manufacturing operations and food container models.',
+      sort_order: 1,
+      content: {
+        badge: 'Factory Floor & Packaging Showcase',
+        heading: 'Precision in Every Frame',
+        lead: 'High-speed multi-cavity injection moulds, robotic clean-pack cells, and our commercial food container lines.',
+      },
+    },
+  ];
+
+  for (const s of otherPageSections) {
+    const secId = `sec_${s.page}_${s.key}`;
+    const contentJson = JSON.stringify(s.content);
+    await db.query(
+      `INSERT INTO sections (id, page_slug, section_key, title, subtitle, draft_content, published_content, is_enabled, is_published, sort_order, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1, ?, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE title=VALUES(title), subtitle=VALUES(subtitle), draft_content=VALUES(draft_content), published_content=VALUES(published_content), sort_order=VALUES(sort_order)`,
+      [secId, s.page, s.key, s.title, s.subtitle, contentJson, contentJson, s.sort_order]
+    );
+  }
+
+  // 11. Seed Blogs
   for (const post of blogPosts) {
     const blogId = 'blog_' + post.slug;
     await db.query(
@@ -549,7 +717,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
 
   // 12. Seed initial Activity Log
   await db.query(
-    `INSERT INTO activity_logs (id, admin_email, action, entity_type, entity_id, details, created_at)
+    `INSERT IGNORE INTO activity_logs (id, admin_email, action, entity_type, entity_id, details, created_at)
      VALUES (?, ?, ?, ?, ?, ?, NOW())`,
     [
       'act_init_seed',
