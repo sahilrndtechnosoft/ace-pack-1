@@ -12,9 +12,15 @@ import {
   Clock,
   ArrowUp,
   ArrowDown,
+  Eye,
+  X,
+  FileText,
+  Calendar,
+  Save,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface DownloadItem {
   id: string;
@@ -35,7 +41,15 @@ export default function AdminDownloadsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  // Modal
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Detail Modal state
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewingDoc, setViewingDoc] = useState<DownloadItem | null>(null);
+
+  // Modal State
   const [modalOpen, setModalOpen] = useState(false);
   const [activeDoc, setActiveDoc] = useState<any | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -99,8 +113,11 @@ export default function AdminDownloadsPage() {
         return;
       }
 
-      showToast(isUpdate ? 'Document updated!' : 'Document added to downloads!');
+      showToast(isUpdate ? 'Download item updated!' : 'Download item created!');
       setModalOpen(false);
+      if (viewingDoc?.id === activeDoc.id) {
+        setViewingDoc((prev) => (prev ? { ...prev, ...activeDoc } as DownloadItem : null));
+      }
       setActiveDoc(null);
       fetchDownloads();
     } catch {
@@ -117,20 +134,41 @@ export default function AdminDownloadsPage() {
       const res = await fetch(`/api/admin/downloads?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
       if (res.ok) {
         showToast(`Document "${title}" deleted.`);
+        if (viewingDoc?.id === id) {
+          setViewModalOpen(false);
+          setViewingDoc(null);
+        }
         fetchDownloads();
       } else {
         showToast('Failed to delete download.', 'error');
       }
     } catch {
-      showToast('Network error deleting document.', 'error');
+      showToast('Network error deleting download.', 'error');
     }
   };
 
   const filteredDownloads = downloads.filter(
     (d) =>
       d.title.toLowerCase().includes(search.toLowerCase()) ||
-      d.category.toLowerCase().includes(search.toLowerCase())
+      d.category.toLowerCase().includes(search.toLowerCase()) ||
+      d.download_url.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Pagination calculation
+  const totalItems = filteredDownloads.length;
+  const paginatedDownloads = filteredDownloads.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -139,7 +177,7 @@ export default function AdminDownloadsPage() {
         <div>
           <h1 className="text-2xl font-black text-white">Download Center Management</h1>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Manage downloadable PDF product catalogues, ISO compliance certificates, and CAD drawings.
+            Manage product catalogues, food safety compliance certificates, specs sheets, and brochures.
           </p>
         </div>
 
@@ -149,7 +187,7 @@ export default function AdminDownloadsPage() {
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all shadow-md cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Document</span>
+          <span>Add New Document</span>
         </button>
       </div>
 
@@ -160,13 +198,16 @@ export default function AdminDownloadsPage() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search downloads by title or category..."
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
+            placeholder="Search documents by title, category, or file path..."
             className="w-full pl-9 pr-4 py-2 bg-[#141A24] border border-[#222C3D] focus:border-[#b99750] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none transition-colors"
           />
         </div>
-        <span className="text-xs text-gray-400 font-medium">
-          {filteredDownloads.length} Documents
+        <span className="text-xs text-gray-400 font-medium whitespace-nowrap">
+          {filteredDownloads.length} Documents Total
         </span>
       </div>
 
@@ -177,7 +218,7 @@ export default function AdminDownloadsPage() {
             Loading downloads from MySQL...
           </div>
         ) : filteredDownloads.length === 0 ? (
-          <div className="p-12 text-center text-gray-500 text-xs">No downloads found.</div>
+          <div className="p-12 text-center text-gray-500 text-xs">No downloads found matching search.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -185,13 +226,13 @@ export default function AdminDownloadsPage() {
                 <tr className="border-b border-[#1E2633] bg-[#0A0D12] text-[10px] font-extrabold uppercase tracking-wider text-gray-400">
                   <th className="py-3.5 px-4">Document Title</th>
                   <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">File Details</th>
+                  <th className="py-3.5 px-4">Format &amp; Size</th>
                   <th className="py-3.5 px-4">Status</th>
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1A2230]">
-                {filteredDownloads.map((doc) => (
+                {paginatedDownloads.map((doc) => (
                   <tr key={doc.id} className="hover:bg-[#141A24]/60 transition-colors">
                     <td className="py-3.5 px-4 max-w-sm">
                       <div className="flex items-center gap-3">
@@ -236,16 +277,31 @@ export default function AdminDownloadsPage() {
 
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        {/* Detail View Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewingDoc(doc);
+                            setViewModalOpen(true);
+                          }}
+                          title="View Document Details"
+                          className="p-2 rounded-lg bg-[#141A24] hover:bg-[#b99750] text-gray-300 hover:text-[#0A0D12] transition-colors cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Direct Download / View */}
                         <a
                           href={doc.download_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          title="Open document"
+                          title="Open/Download Document"
                           className="p-2 rounded-lg bg-[#141A24] hover:bg-[#1E2633] text-gray-400 hover:text-white transition-colors"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
 
+                        {/* Edit Button */}
                         <button
                           type="button"
                           onClick={() => openEditModal(doc)}
@@ -255,6 +311,7 @@ export default function AdminDownloadsPage() {
                           <Edit className="w-3.5 h-3.5" />
                         </button>
 
+                        {/* Delete Button */}
                         <button
                           type="button"
                           onClick={() => handleDelete(doc.id, doc.title)}
@@ -271,12 +328,128 @@ export default function AdminDownloadsPage() {
             </table>
           </div>
         )}
+
+        {/* Universal Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalItems={totalItems}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[5, 10, 20]}
+        />
       </div>
 
-      {/* Modal */}
+      {/* Detail View Modal */}
+      {viewModalOpen && viewingDoc && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-[#1E2633]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center shrink-0">
+                  <FileDown className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-lg leading-tight">{viewingDoc.title}</h3>
+                  <span className="text-xs text-[#b99750] font-semibold mt-0.5 block">{viewingDoc.category}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewModalOpen(false);
+                  setViewingDoc(null);
+                }}
+                className="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-[#141A24] transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Cover image if available */}
+            {viewingDoc.cover_image && (
+              <div className="relative rounded-2xl overflow-hidden border border-[#222C3D] bg-[#141A24] aspect-[16/9] max-h-48">
+                <img
+                  src={viewingDoc.cover_image}
+                  alt={viewingDoc.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Quick Stat Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Status</span>
+                <span className={`text-xs font-bold mt-1 inline-flex items-center gap-1 ${viewingDoc.is_published ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {viewingDoc.is_published ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                  {viewingDoc.is_published ? 'Active' : 'Hidden'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Format</span>
+                <span className="text-xs font-bold text-white mt-1 block font-mono">
+                  {viewingDoc.format}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">File Size</span>
+                <span className="text-xs font-bold text-white mt-1 block font-mono">
+                  {viewingDoc.file_size}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Added On</span>
+                <span className="text-xs font-bold text-white mt-1 block truncate">
+                  {formatDate(viewingDoc.created_at)}
+                </span>
+              </div>
+            </div>
+
+            {/* Download Link Card */}
+            <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-2">
+              <span className="text-[10px] uppercase font-bold text-gray-400 block">File Asset URL:</span>
+              <p className="font-mono text-xs text-[#b99750] break-all bg-[#0D1117] p-2.5 rounded-xl border border-[#1E2633]">
+                {viewingDoc.download_url}
+              </p>
+            </div>
+
+            {/* Footer Actions */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#1E2633]">
+              <a
+                href={viewingDoc.download_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Test Download File</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setViewModalOpen(false);
+                  openEditModal(viewingDoc);
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all"
+              >
+                <Edit className="w-3.5 h-3.5" />
+                <span>Edit Document</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal - Decluttered */}
       {modalOpen && activeDoc && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative space-y-5 max-h-[92vh] overflow-y-auto custom-scrollbar">
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl relative space-y-5 max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
               <div className="flex items-center gap-2">
                 <FileDown className="w-5 h-5 text-[#b99750]" />
@@ -304,11 +477,11 @@ export default function AdminDownloadsPage() {
                   value={activeDoc.title || ''}
                   onChange={(e) => setActiveDoc({ ...activeDoc, title: e.target.value })}
                   placeholder="e.g. Ace Packaging Full Product Catalog 2026"
-                  className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                  className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
                     Category
@@ -318,7 +491,7 @@ export default function AdminDownloadsPage() {
                     value={activeDoc.category || ''}
                     onChange={(e) => setActiveDoc({ ...activeDoc, category: e.target.value })}
                     placeholder="Catalogues & Brochures"
-                    className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                    className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                   />
                 </div>
 
@@ -330,12 +503,10 @@ export default function AdminDownloadsPage() {
                     type="text"
                     value={activeDoc.format || ''}
                     onChange={(e) => setActiveDoc({ ...activeDoc, format: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                    className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
                     File Size Display
@@ -345,13 +516,13 @@ export default function AdminDownloadsPage() {
                     value={activeDoc.file_size || ''}
                     onChange={(e) => setActiveDoc({ ...activeDoc, file_size: e.target.value })}
                     placeholder="4.2 MB"
-                    className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                    className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                   />
                 </div>
               </div>
 
               <MediaInput
-                label="Downloadable File (PDF or Document)"
+                label="Downloadable File (PDF or Document) *"
                 value={activeDoc.download_url || ''}
                 onChange={(url) => setActiveDoc({ ...activeDoc, download_url: url })}
                 onUploadDetails={(details) => {

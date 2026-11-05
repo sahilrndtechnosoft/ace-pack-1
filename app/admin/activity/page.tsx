@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { History, Search, RefreshCw, Shield, User, Filter, ArrowRight } from 'lucide-react';
+import { History, Search, RefreshCw, Shield, User, Filter, ArrowRight, Eye, Copy, Check, X } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
+import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface LogItem {
   id: string;
@@ -21,13 +22,18 @@ export default function AdminActivityPage() {
   const [filterAction, setFilterAction] = useState('all');
   const [search, setSearch] = useState('');
   const [selectedLog, setSelectedLog] = useState<LogItem | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
 
   const fetchLogs = async () => {
     setLoading(true);
     try {
       const url = new URL('/api/admin/activity', window.location.origin);
       if (filterAction !== 'all') url.searchParams.set('action', filterAction);
-      url.searchParams.set('limit', '100');
+      url.searchParams.set('limit', '200');
 
       const res = await fetch(url.toString());
       if (res.ok) {
@@ -43,6 +49,7 @@ export default function AdminActivityPage() {
 
   useEffect(() => {
     fetchLogs();
+    setCurrentPage(1);
   }, [filterAction]);
 
   const formatDate = (isoString: string) => {
@@ -69,6 +76,17 @@ export default function AdminActivityPage() {
       (l.details && l.details.toLowerCase().includes(search.toLowerCase()))
   );
 
+  // Pagination calculation
+  const totalItems = filteredLogs.length;
+  const paginatedLogs = filteredLogs.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleCopyDetails = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    showToast('Payload copied to clipboard!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -93,7 +111,7 @@ export default function AdminActivityPage() {
 
       {/* Filter and Search */}
       <div className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar">
           {['all', 'LOGIN', 'UPDATE_SECTION_DRAFT', 'PUBLISH_SECTION', 'CREATE_BLOG', 'UPDATE_HEADER_FOOTER', 'UPLOAD_MEDIA'].map(
             (act) => (
               <button
@@ -117,7 +135,10 @@ export default function AdminActivityPage() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
             placeholder="Search audit trail..."
             className="w-full pl-9 pr-4 py-1.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
           />
@@ -145,7 +166,7 @@ export default function AdminActivityPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1A2230]">
-                {filteredLogs.map((log) => (
+                {paginatedLogs.map((log) => (
                   <tr key={log.id} className="hover:bg-[#141A24]/60 transition-colors">
                     <td className="py-3.5 px-4">
                       <span className="font-mono font-extrabold text-[#b99750] block">
@@ -172,9 +193,10 @@ export default function AdminActivityPage() {
                         <button
                           type="button"
                           onClick={() => setSelectedLog(log)}
-                          className="px-2.5 py-1 rounded-lg bg-[#141A24] hover:bg-[#b99750] text-gray-300 hover:text-[#0A0D12] text-[10px] font-bold border border-[#222C3D] transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#141A24] hover:bg-[#b99750] text-gray-300 hover:text-[#0A0D12] text-[11px] font-bold border border-[#222C3D] transition-colors cursor-pointer"
                         >
-                          View Details
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Inspect</span>
                         </button>
                       ) : (
                         <span className="text-gray-600 text-[11px]">—</span>
@@ -186,50 +208,81 @@ export default function AdminActivityPage() {
             </table>
           </div>
         )}
+
+        {/* Universal Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalItems={totalItems}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[10, 15, 25, 50]}
+        />
       </div>
 
       {/* Details Popup Modal */}
       {selectedLog && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative space-y-4">
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
-              <div className="flex items-center gap-2">
-                <History className="w-5 h-5 text-[#b99750]" />
-                <h3 className="font-extrabold text-white text-base">
-                  Audit Record: {selectedLog.action}
-                </h3>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#b99750]/20 text-[#b99750] flex items-center justify-center">
+                  <History className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-base">
+                    Audit Record: {selectedLog.action}
+                  </h3>
+                  <span className="text-[11px] text-gray-400 font-mono">{formatDate(selectedLog.created_at)}</span>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedLog(null)}
-                className="text-gray-400 hover:text-white p-1 cursor-pointer"
+                className="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-[#141A24] cursor-pointer"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-[#1E2633]">
-                <span className="text-gray-400 font-bold">Admin:</span>
-                <span className="text-white font-mono">{selectedLog.admin_email}</span>
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Administrator</span>
+                <span className="text-white font-mono font-semibold block mt-1 truncate">{selectedLog.admin_email}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#1E2633]">
-                <span className="text-gray-400 font-bold">Timestamp:</span>
-                <span className="text-gray-300 font-mono">{formatDate(selectedLog.created_at)}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-[#1E2633]">
-                <span className="text-gray-400 font-bold">Entity:</span>
-                <span className="text-gray-300 font-mono">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Target Entity</span>
+                <span className="text-[#b99750] font-mono font-semibold block mt-1 truncate">
                   {selectedLog.entity_type} {selectedLog.entity_id ? `(${selectedLog.entity_id})` : ''}
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
-                Metadata Details Payload:
-              </label>
-              <pre className="p-3 bg-[#0A0D12] border border-[#1E2633] rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto max-h-48">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-300">
+                  Metadata Audit Payload:
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const formatted = (() => {
+                      try {
+                        return JSON.stringify(JSON.parse(selectedLog.details || '{}'), null, 2);
+                      } catch {
+                        return selectedLog.details || '';
+                      }
+                    })();
+                    handleCopyDetails(formatted);
+                  }}
+                  className="inline-flex items-center gap-1 text-[11px] text-[#b99750] hover:underline font-bold cursor-pointer"
+                >
+                  {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  <span>{copied ? 'Copied' : 'Copy JSON'}</span>
+                </button>
+              </div>
+
+              <pre className="p-4 bg-[#090C10] border border-[#1E2633] rounded-2xl text-[11px] font-mono text-emerald-400 overflow-x-auto max-h-64 leading-relaxed">
                 {(() => {
                   try {
                     return JSON.stringify(JSON.parse(selectedLog.details || '{}'), null, 2);
@@ -238,6 +291,16 @@ export default function AdminActivityPage() {
                   }
                 })()}
               </pre>
+            </div>
+
+            <div className="flex justify-end pt-3 border-t border-[#1E2633]">
+              <button
+                type="button"
+                onClick={() => setSelectedLog(null)}
+                className="px-4 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors cursor-pointer"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

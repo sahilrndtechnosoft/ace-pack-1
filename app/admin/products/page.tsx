@@ -22,9 +22,13 @@ import {
   Ruler,
   Box,
   Layers,
+  Calendar,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface ProductItemAdmin {
   id: string;
@@ -68,6 +72,14 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategoryFilter);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Detail Modal state
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewingProduct, setViewingProduct] = useState<ProductItemAdmin | null>(null);
+
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState<Partial<ProductItemAdmin> | null>(null);
@@ -76,11 +88,10 @@ export default function AdminProductsPage() {
   const [appsList, setAppsList] = useState<string[]>([]);
   const [appInput, setAppInput] = useState('');
   const [specsList, setSpecsList] = useState<{ label: string; value: string }[]>([]);
-  const [specLabel, setSpecLabel] = useState('');
-  const [specValue, setSpecValue] = useState('');
   const [dimTop, setDimTop] = useState('');
   const [dimHeight, setDimHeight] = useState('');
   const [dimBottom, setDimBottom] = useState('');
+  const [formTab, setFormTab] = useState<'basic' | 'media' | 'dimensions' | 'features' | 'desc'>('basic');
   const [submitting, setSubmitting] = useState(false);
 
   // Delete modal state
@@ -135,12 +146,13 @@ export default function AdminProductsPage() {
       sort_order: products.length + 1,
       is_active: 1,
     });
-    setFeaturesList(['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom']);
+    setFeaturesList(['Premium Quality', 'Secure Leak-Proof Seal', 'Sturdy Base']);
     setAppsList(['Takeaway', 'Cloud Kitchens', 'Delivery']);
     setSpecsList([]);
     setDimTop('');
     setDimHeight('');
     setDimBottom('');
+    setFormTab('basic');
     setModalOpen(true);
   };
 
@@ -152,6 +164,7 @@ export default function AdminProductsPage() {
     setDimTop(prod.dimensions?.top || '');
     setDimHeight(prod.dimensions?.height || '');
     setDimBottom(prod.dimensions?.bottom || '');
+    setFormTab('basic');
     setModalOpen(true);
   };
 
@@ -173,17 +186,6 @@ export default function AdminProductsPage() {
 
   const handleRemoveApp = (idx: number) => {
     setAppsList(appsList.filter((_, i) => i !== idx));
-  };
-
-  const handleAddSpec = () => {
-    if (!specLabel.trim() || !specValue.trim()) return;
-    setSpecsList([...specsList, { label: specLabel.trim(), value: specValue.trim() }]);
-    setSpecLabel('');
-    setSpecValue('');
-  };
-
-  const handleRemoveSpec = (idx: number) => {
-    setSpecsList(specsList.filter((_, i) => i !== idx));
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -225,6 +227,9 @@ export default function AdminProductsPage() {
 
       showToast(isUpdate ? 'Product updated successfully!' : 'Product created successfully!');
       setModalOpen(false);
+      if (viewingProduct?.id === activeProduct.id) {
+        setViewingProduct((prev) => (prev ? { ...prev, ...payload } as ProductItemAdmin : null));
+      }
       fetchData();
     } catch {
       showToast('Network error saving product.', 'error');
@@ -248,6 +253,10 @@ export default function AdminProductsPage() {
       }
 
       showToast(`Product "${deleteConfirm.name}" deleted.`);
+      if (viewingProduct?.id === deleteConfirm.id) {
+        setViewModalOpen(false);
+        setViewingProduct(null);
+      }
       setDeleteConfirm(null);
       fetchData();
     } catch {
@@ -270,6 +279,22 @@ export default function AdminProductsPage() {
       return matchesCat && matchesSearch;
     });
   }, [products, selectedCategory, search]);
+
+  // Pagination calculation
+  const totalItems = filteredProducts.length;
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -311,7 +336,10 @@ export default function AdminProductsPage() {
               type="text"
               placeholder="Search product models or capacity..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
             />
           </div>
@@ -320,7 +348,10 @@ export default function AdminProductsPage() {
           <div className="w-full sm:w-64">
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
             >
               <option value="all">All Categories ({categories.length})</option>
@@ -366,7 +397,7 @@ export default function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1E2633]">
-                {filteredProducts.map((p) => (
+                {paginatedProducts.map((p) => (
                   <tr key={p.id} className="hover:bg-[#1A212D]/50 transition-colors">
                     {/* Thumbnail */}
                     <td className="py-3.5 px-4">
@@ -437,6 +468,20 @@ export default function AdminProductsPage() {
                     {/* Actions */}
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        {/* Detail View Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewingProduct(p);
+                            setViewModalOpen(true);
+                          }}
+                          className="p-1.5 rounded-lg text-gray-400 hover:text-[#b99750] hover:bg-[#1E2633] transition-colors cursor-pointer"
+                          title="View Product Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+
+                        {/* Live Page Preview */}
                         <Link
                           href={`/categories/${p.category_slug}/${p.product_slug}`}
                           target="_blank"
@@ -447,6 +492,7 @@ export default function AdminProductsPage() {
                           <ExternalLink className="w-4 h-4" />
                         </Link>
 
+                        {/* Edit Button */}
                         <button
                           onClick={() => openEditModal(p)}
                           className="p-1.5 rounded-lg text-gray-400 hover:text-[#b99750] hover:bg-[#1E2633] transition-colors cursor-pointer"
@@ -455,6 +501,7 @@ export default function AdminProductsPage() {
                           <Edit className="w-4 h-4" />
                         </button>
 
+                        {/* Delete Button */}
                         <button
                           onClick={() => setDeleteConfirm(p)}
                           className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-[#1E2633] transition-colors cursor-pointer"
@@ -469,354 +516,711 @@ export default function AdminProductsPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Universal Pagination */}
+          <AdminPagination
+            currentPage={currentPage}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[5, 10, 20, 50]}
+          />
         </div>
       )}
 
-      {/* Create / Edit Modal */}
-      {modalOpen && activeProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-[#161B22] border border-[#1E2633] rounded-2xl w-full max-w-3xl my-8 p-6 shadow-2xl space-y-5">
+      {/* Detail View Modal */}
+      {viewModalOpen && viewingProduct && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setViewModalOpen(false);
+              setViewingProduct(null);
+            }
+          }}
+        >
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-3xl w-full shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-[#1E2633]">
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5 text-[#b99750]" />
-                <h3 className="font-extrabold text-white text-base">
-                  {activeProduct.id ? 'Edit Product Model' : 'Add New Product Model'}
-                </h3>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center shrink-0">
+                  <Package className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-lg leading-tight">{viewingProduct.name}</h3>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-xs text-[#b99750] font-semibold">{viewingProduct.category_name || viewingProduct.category_slug}</span>
+                    <span className="text-gray-600">·</span>
+                    <span className="text-xs text-gray-400 font-mono">/{viewingProduct.product_slug}</span>
+                  </div>
+                </div>
               </div>
               <button
-                onClick={() => setModalOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded-lg"
+                type="button"
+                onClick={() => {
+                  setViewModalOpen(false);
+                  setViewingProduct(null);
+                }}
+                className="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-[#141A24] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="space-y-4 max-h-[75vh] overflow-y-auto pr-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Parent Category *
-                  </label>
-                  <select
-                    required
-                    value={activeProduct.category_slug || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, category_slug: e.target.value })}
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
-                  >
-                    {categories.map((c) => (
-                      <option key={c.slug} value={c.slug}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Model / Product Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={activeProduct.name || ''}
-                    onChange={(e) => {
-                      const name = e.target.value;
-                      if (!activeProduct.id) {
-                        const slug = name
-                          .toLowerCase()
-                          .trim()
-                          .replace(/[^a-z0-9-]/g, '-')
-                          .replace(/-+/g, '-');
-                        setActiveProduct({ ...activeProduct, name, product_slug: slug });
-                      } else {
-                        setActiveProduct({ ...activeProduct, name });
-                      }
-                    }}
-                    placeholder="e.g. 50ml Hinge Cup"
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
+            {/* Images Showcase */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="p-3 rounded-2xl bg-[#141A24] border border-[#222C3D] flex flex-col items-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Main Product</span>
+                <div className="w-full aspect-square rounded-xl bg-[#0D1117] border border-[#1E2633] flex items-center justify-center p-2 overflow-hidden">
+                  {viewingProduct.image ? (
+                    <img src={viewingProduct.image} alt={viewingProduct.name} className="w-full h-full object-contain" />
+                  ) : (
+                    <span className="text-xs text-gray-500">No Image</span>
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Product Slug *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={activeProduct.product_slug || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, product_slug: e.target.value })}
-                    placeholder="e.g. 50ml-hinge-cup"
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs font-mono text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Capacity
-                  </label>
-                  <input
-                    type="text"
-                    value={activeProduct.capacity || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, capacity: e.target.value })}
-                    placeholder="e.g. 50ml or 500ml (16 oz)"
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
+              <div className="p-3 rounded-2xl bg-[#141A24] border border-[#222C3D] flex flex-col items-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Clear View / Blank</span>
+                <div className="w-full aspect-square rounded-xl bg-[#0D1117] border border-[#1E2633] flex items-center justify-center p-2 overflow-hidden">
+                  {viewingProduct.blank_image ? (
+                    <img src={viewingProduct.blank_image} alt="Blank view" className="w-full h-full object-contain" />
+                  ) : (
+                    <span className="text-xs text-gray-600 italic">Not provided</span>
+                  )}
                 </div>
               </div>
 
-              {/* Media Inputs */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <MediaInput
-                  label="Primary Product Image *"
-                  value={activeProduct.image || ''}
-                  onChange={(url) => setActiveProduct({ ...activeProduct, image: url })}
-                  category="products"
-                  placeholder="/images/products/hinge/hinge-50ml.webp"
-                />
-
-                <MediaInput
-                  label="Blank / Clear View Image (Optional)"
-                  value={activeProduct.blank_image || ''}
-                  onChange={(url) => setActiveProduct({ ...activeProduct, blank_image: url })}
-                  category="products"
-                  placeholder="/images/products/hinge/hinge-50ml-blank.webp"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-[#0D1117] p-3.5 rounded-xl border border-[#1E2633]">
-                <div>
-                  <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
-                    Material Polymer
-                  </label>
-                  <input
-                    type="text"
-                    value={activeProduct.material || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, material: e.target.value })}
-                    placeholder="Virgin PP 05 Food Grade"
-                    className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
-                    Quality Standard
-                  </label>
-                  <input
-                    type="text"
-                    value={activeProduct.quality || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, quality: e.target.value })}
-                    placeholder="Export Grade Food Safe"
-                    className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
-                    Master Packaging
-                  </label>
-                  <input
-                    type="text"
-                    value={activeProduct.packaging || ''}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, packaging: e.target.value })}
-                    placeholder="2,000 PCS per Master Pack"
-                    className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                  />
+              <div className="p-3 rounded-2xl bg-[#141A24] border border-[#222C3D] flex flex-col items-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Locking / Food Pair</span>
+                <div className="w-full aspect-square rounded-xl bg-[#0D1117] border border-[#1E2633] flex items-center justify-center p-2 overflow-hidden">
+                  {viewingProduct.locking_food_image ? (
+                    <img src={viewingProduct.locking_food_image} alt="Food pairing" className="w-full h-full object-contain" />
+                  ) : (
+                    <span className="text-xs text-gray-600 italic">Not provided</span>
+                  )}
                 </div>
               </div>
+            </div>
 
-              {/* Dimensions */}
-              <div className="bg-[#0D1117] p-3.5 rounded-xl border border-[#1E2633] space-y-2">
-                <span className="text-[11px] font-bold text-[#b99750] uppercase tracking-wider flex items-center gap-1.5">
-                  <Ruler className="w-3.5 h-3.5" /> Dimensions (Millimeters)
+            {/* Quick Stat Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Status</span>
+                <span className={`text-xs font-bold mt-1 inline-flex items-center gap-1 ${viewingProduct.is_active ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {viewingProduct.is_active ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                  {viewingProduct.is_active ? 'Published' : 'Draft'}
                 </span>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="block text-[10px] text-gray-400 mb-1">Top Diameter / Rim</label>
-                    <input
-                      type="text"
-                      value={dimTop}
-                      onChange={(e) => setDimTop(e.target.value)}
-                      placeholder="e.g. 61 mm"
-                      className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] text-gray-400 mb-1">Height</label>
-                    <input
-                      type="text"
-                      value={dimHeight}
-                      onChange={(e) => setDimHeight(e.target.value)}
-                      placeholder="e.g. 25 mm"
-                      className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] text-gray-400 mb-1">Bottom Diameter</label>
-                    <input
-                      type="text"
-                      value={dimBottom}
-                      onChange={(e) => setDimBottom(e.target.value)}
-                      placeholder="e.g. 52 mm"
-                      className="w-full bg-[#161B22] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-white"
-                    />
-                  </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Capacity</span>
+                <span className="text-xs font-bold text-white mt-1 block truncate">
+                  {viewingProduct.capacity || 'Standard'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Material Polymer</span>
+                <span className="text-xs font-bold text-white mt-1 block truncate">
+                  {viewingProduct.material || 'PP 05'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Master Packaging</span>
+                <span className="text-xs font-bold text-white mt-1 block truncate">
+                  {viewingProduct.packaging || '2,000 PCS'}
+                </span>
+              </div>
+            </div>
+
+            {/* Dimensions Card */}
+            <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-3">
+              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#b99750]">
+                <Ruler className="w-4 h-4" />
+                <span>Physical Dimensions</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-2.5 rounded-xl bg-[#0D1117] border border-[#1E2633]">
+                  <span className="text-[10px] font-bold uppercase text-gray-500 block">Top Diameter</span>
+                  <span className="font-mono text-xs text-white font-bold">{viewingProduct.dimensions?.top || '—'}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#0D1117] border border-[#1E2633]">
+                  <span className="text-[10px] font-bold uppercase text-gray-500 block">Height</span>
+                  <span className="font-mono text-xs text-white font-bold">{viewingProduct.dimensions?.height || '—'}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#0D1117] border border-[#1E2633]">
+                  <span className="text-[10px] font-bold uppercase text-gray-500 block">Bottom Diameter</span>
+                  <span className="font-mono text-xs text-white font-bold">{viewingProduct.dimensions?.bottom || '—'}</span>
                 </div>
               </div>
+            </div>
 
-              {/* Description */}
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Description
-                </label>
-                <textarea
-                  rows={2}
-                  value={activeProduct.description || ''}
-                  onChange={(e) => setActiveProduct({ ...activeProduct, description: e.target.value })}
-                  placeholder="Engineered container characteristics and application details..."
-                  className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                />
-              </div>
-
-              {/* Features Tags */}
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+            {/* Features & Applications */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750] block">
                   Product Features
-                </label>
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={featureInput}
-                    onChange={(e) => setFeatureInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddFeature();
-                      }
-                    }}
-                    placeholder="e.g. Microwave Safe, Leak-Proof Seal..."
-                    className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddFeature}
-                    className="px-3 py-1.5 bg-[#1E2633] hover:bg-[#2A3447] text-white text-xs font-bold rounded-xl"
-                  >
-                    Add
-                  </button>
-                </div>
+                </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {featuresList.map((f, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0D1117] border border-[#1E2633] text-gray-300 text-[11px]"
-                    >
-                      <span>{f}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFeature(i)}
-                        className="text-gray-500 hover:text-red-400"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
+                  {viewingProduct.features && viewingProduct.features.length > 0 ? (
+                    viewingProduct.features.map((f, i) => (
+                      <span key={i} className="px-2.5 py-1 rounded-full bg-[#0D1117] border border-[#222C3D] text-[11px] text-gray-300">
+                        ✓ {f}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-gray-500 italic">No features listed</span>
+                  )}
                 </div>
               </div>
 
-              {/* Applications Tags */}
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Applications / Food Pairing Suggestions
-                </label>
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={appInput}
-                    onChange={(e) => setAppInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddApp();
-                      }
-                    }}
-                    placeholder="e.g. Chutneys, Gravies, Ice Cream, Salads..."
-                    className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddApp}
-                    className="px-3 py-1.5 bg-[#1E2633] hover:bg-[#2A3447] text-white text-xs font-bold rounded-xl"
-                  >
-                    Add
-                  </button>
-                </div>
+              <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-400 block">
+                  Recommended Applications
+                </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {appsList.map((a, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0D1117] border border-[#1E2633] text-emerald-400 text-[11px]"
-                    >
-                      <span>{a}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveApp(i)}
-                        className="text-gray-500 hover:text-red-400"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
+                  {viewingProduct.applications && viewingProduct.applications.length > 0 ? (
+                    viewingProduct.applications.map((a, i) => (
+                      <span key={i} className="px-2.5 py-1 rounded-full bg-[#0D1117] border border-[#222C3D] text-[11px] text-emerald-400">
+                        • {a}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-gray-500 italic">No applications listed</span>
+                  )}
                 </div>
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Sort Order
-                  </label>
-                  <input
-                    type="number"
-                    value={activeProduct.sort_order ?? 0}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, sort_order: Number(e.target.value) })}
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
-                  />
-                </div>
+            {/* Description */}
+            {viewingProduct.description && (
+              <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-1.5">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block">Description</span>
+                <p className="text-xs text-gray-300 leading-relaxed whitespace-pre-line">{viewingProduct.description}</p>
+              </div>
+            )}
 
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Publish Status
-                  </label>
-                  <select
-                    value={activeProduct.is_active ? 1 : 0}
-                    onChange={(e) => setActiveProduct({ ...activeProduct, is_active: Number(e.target.value) })}
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
-                  >
-                    <option value={1}>Published (Visible on Website)</option>
-                    <option value={0}>Draft (Hidden)</option>
-                  </select>
-                </div>
+            {/* Actions Footer */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#1E2633]">
+              <div className="text-xs text-gray-500">
+                Sort Order: <span className="font-bold text-white">#{viewingProduct.sort_order}</span> · Updated:{' '}
+                <span className="text-gray-300">{formatDate(viewingProduct.updated_at || viewingProduct.created_at)}</span>
               </div>
 
-              {/* Modal Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E2633]">
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/categories/${viewingProduct.category_slug}/${viewingProduct.product_slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>View Live</span>
+                </Link>
+
                 <button
                   type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-[#1E2633] text-gray-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                  onClick={() => {
+                    setViewModalOpen(false);
+                    openEditModal(viewingProduct);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all"
                 >
-                  Cancel
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit Product</span>
                 </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer"
-                >
-                  <Save className="w-4 h-4" />
-                  <span>{submitting ? 'Saving...' : 'Save Product'}</span>
-                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create / Edit Modal - Structured & Decluttered */}
+      {modalOpen && activeProduct && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setModalOpen(false);
+          }}
+        >
+          <div className="bg-[#161B22] border border-[#1E2633] rounded-3xl w-full max-w-3xl my-8 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#b99750]/20 text-[#b99750] flex items-center justify-center">
+                  <Package className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-base">
+                    {activeProduct.id ? 'Edit Product Model' : 'Add New Product Model'}
+                  </h3>
+                  <span className="text-[11px] text-gray-400 font-mono">
+                    {activeProduct.product_slug ? `/${activeProduct.product_slug}` : 'New packaging SKU'}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-[#0D1117] transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Navigation Tabs */}
+            <div className="flex border-b border-[#1E2633] gap-2 overflow-x-auto">
+              <button
+                type="button"
+                onClick={() => setFormTab('basic')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'basic'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                1. Basic Info
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('media')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'media'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                2. Imagery
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('dimensions')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'dimensions'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                3. Dimensions &amp; Specs
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('features')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'features'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                4. Features &amp; Apps
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('desc')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'desc'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                5. Description
+              </button>
+            </div>
+
+            <form onSubmit={handleSave} className="space-y-4">
+              {/* Tab 1: Basic Info */}
+              {formTab === 'basic' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Parent Category *
+                      </label>
+                      <select
+                        required
+                        value={activeProduct.category_slug || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, category_slug: e.target.value })}
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      >
+                        {categories.map((c) => (
+                          <option key={c.slug} value={c.slug}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Model / Product Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={activeProduct.name || ''}
+                        onChange={(e) => {
+                          const name = e.target.value;
+                          if (!activeProduct.id) {
+                            const slug = name
+                              .toLowerCase()
+                              .trim()
+                              .replace(/[^a-z0-9-]/g, '-')
+                              .replace(/-+/g, '-');
+                            setActiveProduct({ ...activeProduct, name, product_slug: slug });
+                          } else {
+                            setActiveProduct({ ...activeProduct, name });
+                          }
+                        }}
+                        placeholder="e.g. 50ml Hinge Cup"
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Product Slug (URL identifier) *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={activeProduct.product_slug || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, product_slug: e.target.value })}
+                        placeholder="e.g. 50ml-hinge-cup"
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Capacity / Volume
+                      </label>
+                      <input
+                        type="text"
+                        value={activeProduct.capacity || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, capacity: e.target.value })}
+                        placeholder="e.g. 50ml or 500ml (16 oz)"
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Sort Order
+                      </label>
+                      <input
+                        type="number"
+                        value={activeProduct.sort_order ?? 0}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, sort_order: Number(e.target.value) })}
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Publish Status
+                      </label>
+                      <select
+                        value={activeProduct.is_active ? 1 : 0}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, is_active: Number(e.target.value) })}
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      >
+                        <option value={1}>Published (Visible on Website)</option>
+                        <option value={0}>Draft (Hidden)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: Imagery */}
+              {formTab === 'media' && (
+                <div className="space-y-4">
+                  <MediaInput
+                    label="Primary Product Image *"
+                    value={activeProduct.image || ''}
+                    onChange={(url) => setActiveProduct({ ...activeProduct, image: url })}
+                    category="products"
+                    placeholder="/images/products/hinge/hinge-50ml.webp"
+                    helpText="Primary card thumbnail and hero product photo."
+                  />
+
+                  <MediaInput
+                    label="Blank / Clear Outline Image (Optional)"
+                    value={activeProduct.blank_image || ''}
+                    onChange={(url) => setActiveProduct({ ...activeProduct, blank_image: url })}
+                    category="products"
+                    placeholder="/images/products/hinge/hinge-50ml-blank.webp"
+                    helpText="Clean transparent view of empty container for technical specs."
+                  />
+
+                  <MediaInput
+                    label="Locking / Food Pair Image (Optional)"
+                    value={activeProduct.locking_food_image || ''}
+                    onChange={(url) => setActiveProduct({ ...activeProduct, locking_food_image: url })}
+                    category="products"
+                    placeholder="/images/products/hinge/hinge-50ml-food.webp"
+                    helpText="Image showing container closed with food contents."
+                  />
+                </div>
+              )}
+
+              {/* Tab 3: Dimensions & Specs */}
+              {formTab === 'dimensions' && (
+                <div className="space-y-4">
+                  <div className="bg-[#0D1117] p-4 rounded-2xl border border-[#1E2633] space-y-3">
+                    <span className="text-[11px] font-bold text-[#b99750] uppercase tracking-wider flex items-center gap-1.5">
+                      <Ruler className="w-3.5 h-3.5" /> Dimensions (Millimeters)
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1">Top Diameter / Rim</label>
+                        <input
+                          type="text"
+                          value={dimTop}
+                          onChange={(e) => setDimTop(e.target.value)}
+                          placeholder="e.g. 61 mm"
+                          className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1">Height</label>
+                        <input
+                          type="text"
+                          value={dimHeight}
+                          onChange={(e) => setDimHeight(e.target.value)}
+                          placeholder="e.g. 25 mm"
+                          className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1">Bottom Diameter</label>
+                        <input
+                          type="text"
+                          value={dimBottom}
+                          onChange={(e) => setDimBottom(e.target.value)}
+                          placeholder="e.g. 52 mm"
+                          className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#0D1117] p-4 rounded-2xl border border-[#1E2633]">
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
+                        Material Polymer
+                      </label>
+                      <input
+                        type="text"
+                        value={activeProduct.material || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, material: e.target.value })}
+                        placeholder="Virgin PP 05 Food Grade"
+                        className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
+                        Quality Standard
+                      </label>
+                      <input
+                        type="text"
+                        value={activeProduct.quality || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, quality: e.target.value })}
+                        placeholder="Export Grade Food Safe"
+                        className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
+                        Master Packaging
+                      </label>
+                      <input
+                        type="text"
+                        value={activeProduct.packaging || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, packaging: e.target.value })}
+                        placeholder="2,000 PCS per Master Pack"
+                        className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 4: Features & Apps */}
+              {formTab === 'features' && (
+                <div className="space-y-4">
+                  {/* Features */}
+                  <div className="space-y-2">
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider">
+                      Product Highlights &amp; Features
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={featureInput}
+                        onChange={(e) => setFeatureInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleAddFeature();
+                          }
+                        }}
+                        placeholder="e.g. Microwave Safe, Leak-Proof Snap..."
+                        className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddFeature}
+                        className="px-3.5 py-2 bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-bold rounded-xl cursor-pointer"
+                      >
+                        Add
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 p-3 rounded-2xl bg-[#0D1117] border border-[#1E2633] min-h-[60px] content-start">
+                      {featuresList.map((f, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#161B22] border border-[#222C3D] text-gray-200 text-xs"
+                        >
+                          <span>{f}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFeature(i)}
+                            className="text-gray-500 hover:text-red-400 p-0.5"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Applications */}
+                  <div className="space-y-2">
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider">
+                      Recommended Applications / Food Pairings
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={appInput}
+                        onChange={(e) => setAppInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleAddApp();
+                          }
+                        }}
+                        placeholder="e.g. Chutneys, Gravies, Ice Cream, Dips..."
+                        className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddApp}
+                        className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl cursor-pointer"
+                      >
+                        Add
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 p-3 rounded-2xl bg-[#0D1117] border border-[#1E2633] min-h-[60px] content-start">
+                      {appsList.map((a, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#161B22] border border-emerald-500/30 text-emerald-400 text-xs"
+                        >
+                          <span>{a}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveApp(i)}
+                            className="text-gray-500 hover:text-red-400 p-0.5"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 5: Description */}
+              {formTab === 'desc' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                      Container Description &amp; Technical Notes
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={activeProduct.description || ''}
+                      onChange={(e) => setActiveProduct({ ...activeProduct, description: e.target.value })}
+                      placeholder="Engineered container characteristics, stacking strength, rim rigidity, and food delivery safety..."
+                      className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Modal Buttons */}
+              <div className="flex items-center justify-between pt-4 border-t border-[#1E2633]">
+                <div className="flex items-center gap-2">
+                  {formTab !== 'basic' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs: Array<'basic' | 'media' | 'dimensions' | 'features' | 'desc'> = ['basic', 'media', 'dimensions', 'features', 'desc'];
+                        const currIdx = tabs.indexOf(formTab);
+                        if (currIdx > 0) setFormTab(tabs[currIdx - 1]);
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  )}
+                  {formTab !== 'desc' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs: Array<'basic' | 'media' | 'dimensions' | 'features' | 'desc'> = ['basic', 'media', 'dimensions', 'features', 'desc'];
+                        const currIdx = tabs.indexOf(formTab);
+                        if (currIdx < tabs.length - 1) setFormTab(tabs[currIdx + 1]);
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#b99750] hover:underline cursor-pointer"
+                    >
+                      Next Step →
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="px-4 py-2 rounded-xl border border-[#1E2633] text-gray-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{submitting ? 'Saving...' : 'Save Product'}</span>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -825,7 +1229,12 @@ export default function AdminProductsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setDeleteConfirm(null);
+          }}
+        >
           <div className="bg-[#161B22] border border-red-500/30 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
             <div className="flex items-center gap-3 text-red-400">
               <div className="w-10 h-10 rounded-full bg-red-950/60 border border-red-500/30 flex items-center justify-center shrink-0">

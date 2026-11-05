@@ -18,9 +18,14 @@ import {
   Image as ImageIcon,
   Save,
   X,
+  FileText,
+  Calendar,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface CategoryItem {
   id: string;
@@ -46,11 +51,20 @@ export default function AdminCategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  // Modal states
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Detail Modal state
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewingCategory, setViewingCategory] = useState<CategoryItem | null>(null);
+
+  // Create / Edit Modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Partial<CategoryItem> | null>(null);
   const [featuresList, setFeaturesList] = useState<string[]>([]);
   const [featureInput, setFeatureInput] = useState('');
+  const [formTab, setFormTab] = useState<'general' | 'content' | 'media' | 'features'>('general');
   const [submitting, setSubmitting] = useState(false);
 
   // Delete modal state
@@ -92,6 +106,7 @@ export default function AdminCategoriesPage() {
     });
     setFeaturesList([]);
     setFeatureInput('');
+    setFormTab('general');
     setModalOpen(true);
   };
 
@@ -99,6 +114,7 @@ export default function AdminCategoriesPage() {
     setActiveCategory(cat);
     setFeaturesList(cat.features || []);
     setFeatureInput('');
+    setFormTab('general');
     setModalOpen(true);
   };
 
@@ -144,6 +160,9 @@ export default function AdminCategoriesPage() {
 
       showToast(isUpdate ? 'Category updated successfully!' : 'Category created successfully!');
       setModalOpen(false);
+      if (viewingCategory?.id === activeCategory.id) {
+        setViewingCategory((prev) => (prev ? { ...prev, ...payload } as CategoryItem : null));
+      }
       fetchCategories();
     } catch {
       showToast('Network error saving category.', 'error');
@@ -167,6 +186,10 @@ export default function AdminCategoriesPage() {
       }
 
       showToast(`Category "${deleteConfirm.name}" and its products deleted.`);
+      if (viewingCategory?.id === deleteConfirm.id) {
+        setViewModalOpen(false);
+        setViewingCategory(null);
+      }
       setDeleteConfirm(null);
       fetchCategories();
     } catch {
@@ -176,11 +199,28 @@ export default function AdminCategoriesPage() {
     }
   };
 
-  const filteredCategories = categories.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.slug.toLowerCase().includes(search.toLowerCase()) ||
-    (c.subtitle_name && c.subtitle_name.toLowerCase().includes(search.toLowerCase()))
+  const filteredCategories = categories.filter(
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.slug.toLowerCase().includes(search.toLowerCase()) ||
+      (c.subtitle_name && c.subtitle_name.toLowerCase().includes(search.toLowerCase()))
   );
+
+  // Pagination calculation
+  const totalItems = filteredCategories.length;
+  const paginatedCategories = filteredCategories.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -220,23 +260,26 @@ export default function AdminCategoriesPage() {
             type="text"
             placeholder="Search categories by name, slug or subtitle..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
             className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
           />
         </div>
 
         <div className="flex items-center gap-4 text-xs text-gray-400">
           <span>
-            Total: <strong className="text-white">{categories.length}</strong> categories
+            Total: <strong className="text-white">{filteredCategories.length}</strong> categories
           </span>
           <span>·</span>
           <span>
-            Active: <strong className="text-emerald-400">{categories.filter((c) => c.is_active).length}</strong>
+            Active: <strong className="text-emerald-400">{filteredCategories.filter((c) => c.is_active).length}</strong>
           </span>
         </div>
       </div>
 
-      {/* Categories Table / Cards */}
+      {/* Categories Table */}
       {loading ? (
         <div className="p-12 text-center text-[#b99750] text-xs font-bold animate-pulse">
           Loading product categories...
@@ -261,7 +304,7 @@ export default function AdminCategoriesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1E2633]">
-                {filteredCategories.map((cat) => (
+                {paginatedCategories.map((cat) => (
                   <tr key={cat.id} className="hover:bg-[#1A212D]/50 transition-colors">
                     {/* Hero Preview */}
                     <td className="py-3.5 px-4">
@@ -331,6 +374,20 @@ export default function AdminCategoriesPage() {
                     {/* Actions */}
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        {/* Detail View Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewingCategory(cat);
+                            setViewModalOpen(true);
+                          }}
+                          className="p-1.5 rounded-lg text-gray-400 hover:text-[#b99750] hover:bg-[#1E2633] transition-colors cursor-pointer"
+                          title="View Category Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+
+                        {/* Live Page Preview */}
                         <Link
                           href={`/categories/${cat.slug}`}
                           target="_blank"
@@ -341,7 +398,9 @@ export default function AdminCategoriesPage() {
                           <ExternalLink className="w-4 h-4" />
                         </Link>
 
+                        {/* Edit Button */}
                         <button
+                          type="button"
                           onClick={() => openEditModal(cat)}
                           className="p-1.5 rounded-lg text-gray-400 hover:text-[#b99750] hover:bg-[#1E2633] transition-colors cursor-pointer"
                           title="Edit Category"
@@ -349,7 +408,9 @@ export default function AdminCategoriesPage() {
                           <Edit className="w-4 h-4" />
                         </button>
 
+                        {/* Delete Button */}
                         <button
+                          type="button"
                           onClick={() => setDeleteConfirm(cat)}
                           className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-[#1E2633] transition-colors cursor-pointer"
                           title="Delete Category"
@@ -363,213 +424,495 @@ export default function AdminCategoriesPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Universal Pagination */}
+          <AdminPagination
+            currentPage={currentPage}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[5, 10, 20, 50]}
+          />
         </div>
       )}
 
-      {/* Create / Edit Modal */}
-      {modalOpen && activeCategory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-[#161B22] border border-[#1E2633] rounded-2xl w-full max-w-2xl my-8 p-6 shadow-2xl space-y-5">
+      {/* Detail View Modal */}
+      {viewModalOpen && viewingCategory && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setViewModalOpen(false);
+              setViewingCategory(null);
+            }
+          }}
+        >
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Modal Header */}
             <div className="flex items-center justify-between pb-4 border-b border-[#1E2633]">
-              <div className="flex items-center gap-2">
-                <Grid className="w-5 h-5 text-[#b99750]" />
-                <h3 className="font-extrabold text-white text-base">
-                  {activeCategory.id ? 'Edit Product Category' : 'Create New Product Category'}
-                </h3>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center shrink-0">
+                  <Grid className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-lg leading-tight">{viewingCategory.name}</h3>
+                  <p className="text-xs text-[#b99750] mt-0.5">{viewingCategory.subtitle_name || `/categories/${viewingCategory.slug}`}</p>
+                </div>
               </div>
               <button
-                onClick={() => setModalOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded-lg"
+                type="button"
+                onClick={() => {
+                  setViewModalOpen(false);
+                  setViewingCategory(null);
+                }}
+                className="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-[#141A24] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Hero Image Banner Preview */}
+            {viewingCategory.hero_image && (
+              <div className="relative rounded-2xl overflow-hidden border border-[#222C3D] bg-[#141A24] aspect-[21/9] max-h-48">
+                <img
+                  src={viewingCategory.hero_image}
+                  alt={viewingCategory.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-gray-300 block">Category Route</span>
+                    <span className="font-mono text-xs text-[#b99750] font-bold">/categories/{viewingCategory.slug}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Quick Stat Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Status</span>
+                <span className={`text-xs font-bold mt-1 inline-flex items-center gap-1 ${viewingCategory.is_active ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {viewingCategory.is_active ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                  {viewingCategory.is_active ? 'Published' : 'Draft'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Products</span>
+                <span className="text-xs font-bold text-white mt-1 inline-flex items-center gap-1">
+                  <Package className="w-3.5 h-3.5 text-[#b99750]" />
+                  {viewingCategory.product_count} Models
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Sort Order</span>
+                <span className="text-xs font-bold text-white mt-1 inline-flex items-center gap-1">
+                  #{viewingCategory.sort_order}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Last Modified</span>
+                <span className="text-xs font-bold text-white mt-1 inline-flex items-center gap-1 truncate">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  {formatDate(viewingCategory.updated_at || viewingCategory.created_at)}
+                </span>
+              </div>
+            </div>
+
+            {/* Descriptions Card */}
+            <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-3">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750] block">
+                Overview &amp; Descriptions
+              </span>
+
+              {viewingCategory.short_description && (
                 <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Category Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={activeCategory.name || ''}
-                    onChange={(e) => {
-                      const name = e.target.value;
-                      if (!activeCategory.id) {
-                        const slug = name
-                          .toLowerCase()
-                          .trim()
-                          .replace(/[^a-z0-9-]/g, '-')
-                          .replace(/-+/g, '-');
-                        setActiveCategory({ ...activeCategory, name, slug });
-                      } else {
-                        setActiveCategory({ ...activeCategory, name });
-                      }
-                    }}
-                    placeholder="e.g. Hinge Cups"
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
+                  <span className="text-gray-400 font-semibold block text-[11px]">Short Summary:</span>
+                  <p className="text-white text-xs mt-0.5 leading-relaxed">{viewingCategory.short_description}</p>
                 </div>
+              )}
 
+              {viewingCategory.description && (
                 <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    URL Slug *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={activeCategory.slug || ''}
-                    onChange={(e) => setActiveCategory({ ...activeCategory, slug: e.target.value })}
-                    placeholder="e.g. hinge-cups"
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs font-mono text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
+                  <span className="text-gray-400 font-semibold block text-[11px]">Full Banner Description:</span>
+                  <p className="text-gray-300 text-xs mt-0.5 leading-relaxed whitespace-pre-line">{viewingCategory.description}</p>
                 </div>
-              </div>
+              )}
+            </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Subtitle / Series Name
-                </label>
-                <input
-                  type="text"
-                  value={activeCategory.subtitle_name || ''}
-                  onChange={(e) => setActiveCategory({ ...activeCategory, subtitle_name: e.target.value })}
-                  placeholder="e.g. One-Piece Attached Snap Lids"
-                  className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                />
-              </div>
-
-              {/* Media Input for Hero Image */}
-              <div>
-                <MediaInput
-                  label="Hero Banner Image"
-                  value={activeCategory.hero_image || ''}
-                  onChange={(url) => setActiveCategory({ ...activeCategory, hero_image: url })}
-                  category="categories"
-                  placeholder="/images/products/hinge/hinge-cups-hero.webp"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Short Description (Cards & Highlights)
-                </label>
-                <textarea
-                  rows={2}
-                  value={activeCategory.short_description || ''}
-                  onChange={(e) => setActiveCategory({ ...activeCategory, short_description: e.target.value })}
-                  placeholder="Brief 1-2 sentence overview for catalog summary cards..."
-                  className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Full Description (Detail Page Banner)
-                </label>
-                <textarea
-                  rows={3}
-                  value={activeCategory.description || ''}
-                  onChange={(e) => setActiveCategory({ ...activeCategory, description: e.target.value })}
-                  placeholder="Comprehensive technical packaging overview for the category page..."
-                  className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                />
-              </div>
-
-              {/* Key Features List */}
-              <div>
-                <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Key Specifications / Highlights
-                </label>
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={featureInput}
-                    onChange={(e) => setFeatureInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddFeature();
-                      }
-                    }}
-                    placeholder="e.g. 100% Virgin PP 05, Microwave Reheatable..."
-                    className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddFeature}
-                    className="px-3 py-1.5 bg-[#1E2633] hover:bg-[#2A3447] text-white text-xs font-bold rounded-xl transition-colors"
-                  >
-                    Add
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {featuresList.map((f, i) => (
+            {/* Key Specifications & Features Chips */}
+            {viewingCategory.features && viewingCategory.features.length > 0 && (
+              <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-2.5">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750] block">
+                  Key Specifications &amp; Highlights ({viewingCategory.features.length})
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {viewingCategory.features.map((feat, i) => (
                     <span
                       key={i}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0D1117] border border-[#1E2633] text-gray-300 text-[11px]"
+                      className="px-3 py-1 rounded-full bg-[#0D1117] border border-[#222C3D] text-xs text-gray-300 font-medium"
                     >
-                      <span>{f}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFeature(i)}
-                        className="text-gray-500 hover:text-red-400"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
+                      ✓ {feat}
                     </span>
                   ))}
                 </div>
               </div>
+            )}
 
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Sort Order
-                  </label>
-                  <input
-                    type="number"
-                    value={activeCategory.sort_order ?? 0}
-                    onChange={(e) => setActiveCategory({ ...activeCategory, sort_order: Number(e.target.value) })}
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
-                  />
-                </div>
+            {/* Actions Footer */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#1E2633]">
+              <Link
+                href={`/admin/products?category=${viewingCategory.slug}`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+              >
+                <Package className="w-3.5 h-3.5 text-[#b99750]" />
+                <span>Browse Products ({viewingCategory.product_count})</span>
+              </Link>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Publish Status
-                  </label>
-                  <select
-                    value={activeCategory.is_active ? 1 : 0}
-                    onChange={(e) => setActiveCategory({ ...activeCategory, is_active: Number(e.target.value) })}
-                    className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#b99750]"
-                  >
-                    <option value={1}>Published (Visible on Website)</option>
-                    <option value={0}>Draft (Hidden)</option>
-                  </select>
-                </div>
-              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/categories/${viewingCategory.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open Live Page</span>
+                </Link>
 
-              {/* Modal Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E2633]">
                 <button
                   type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-[#1E2633] text-gray-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                  onClick={() => {
+                    setViewModalOpen(false);
+                    openEditModal(viewingCategory);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all"
                 >
-                  Cancel
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit Category</span>
                 </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer"
-                >
-                  <Save className="w-4 h-4" />
-                  <span>{submitting ? 'Saving...' : 'Save Category'}</span>
-                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create / Edit Modal - Structured & Decluttered */}
+      {modalOpen && activeCategory && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setModalOpen(false);
+          }}
+        >
+          <div className="bg-[#161B22] border border-[#1E2633] rounded-3xl w-full max-w-2xl my-8 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#b99750]/20 text-[#b99750] flex items-center justify-center">
+                  <Grid className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-base">
+                    {activeCategory.id ? 'Edit Category' : 'Create New Category'}
+                  </h3>
+                  <span className="text-[11px] text-gray-400 font-mono">
+                    {activeCategory.slug ? `/categories/${activeCategory.slug}` : 'New series collection'}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-[#0D1117] transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Navigation Tabs */}
+            <div className="flex border-b border-[#1E2633] gap-2 overflow-x-auto">
+              <button
+                type="button"
+                onClick={() => setFormTab('general')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'general'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                1. General Info
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('content')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'content'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                2. Descriptions
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('media')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'media'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                3. Hero Banner
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('features')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'features'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                4. Specifications ({featuresList.length})
+              </button>
+            </div>
+
+            <form onSubmit={handleSave} className="space-y-4">
+              {formTab === 'general' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Category Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={activeCategory.name || ''}
+                        onChange={(e) => {
+                          const name = e.target.value;
+                          if (!activeCategory.id) {
+                            const slug = name
+                              .toLowerCase()
+                              .trim()
+                              .replace(/[^a-z0-9-]/g, '-')
+                              .replace(/-+/g, '-');
+                            setActiveCategory({ ...activeCategory, name, slug });
+                          } else {
+                            setActiveCategory({ ...activeCategory, name });
+                          }
+                        }}
+                        placeholder="e.g. Hinge Cups"
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        URL Slug *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={activeCategory.slug || ''}
+                        onChange={(e) => setActiveCategory({ ...activeCategory, slug: e.target.value })}
+                        placeholder="e.g. hinge-cups"
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                      Subtitle / Series Tagline
+                    </label>
+                    <input
+                      type="text"
+                      value={activeCategory.subtitle_name || ''}
+                      onChange={(e) => setActiveCategory({ ...activeCategory, subtitle_name: e.target.value })}
+                      placeholder="e.g. One-Piece Attached Snap Lids"
+                      className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Sort Order
+                      </label>
+                      <input
+                        type="number"
+                        value={activeCategory.sort_order ?? 0}
+                        onChange={(e) => setActiveCategory({ ...activeCategory, sort_order: Number(e.target.value) })}
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                        Publish Status
+                      </label>
+                      <select
+                        value={activeCategory.is_active ? 1 : 0}
+                        onChange={(e) => setActiveCategory({ ...activeCategory, is_active: Number(e.target.value) })}
+                        className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      >
+                        <option value={1}>Published (Visible on Website)</option>
+                        <option value={0}>Draft (Hidden)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {formTab === 'content' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                      Short Description (Summary cards &amp; previews)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={activeCategory.short_description || ''}
+                      onChange={(e) => setActiveCategory({ ...activeCategory, short_description: e.target.value })}
+                      placeholder="Brief 1-2 sentence overview for catalog summary cards..."
+                      className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
+                      Full Description (Category detail page banner)
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={activeCategory.description || ''}
+                      onChange={(e) => setActiveCategory({ ...activeCategory, description: e.target.value })}
+                      placeholder="Comprehensive packaging specifications and engineering highlights for the category detail page..."
+                      className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {formTab === 'media' && (
+                <div className="space-y-4">
+                  <MediaInput
+                    label="Hero Banner Image"
+                    value={activeCategory.hero_image || ''}
+                    onChange={(url) => setActiveCategory({ ...activeCategory, hero_image: url })}
+                    category="categories"
+                    placeholder="/images/products/hinge/hinge-cups-hero.webp"
+                    helpText="Large header banner image displayed at the top of the category products page."
+                  />
+                </div>
+              )}
+
+              {formTab === 'features' && (
+                <div className="space-y-3">
+                  <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider">
+                    Add Key Feature / Technical Specification
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={featureInput}
+                      onChange={(e) => setFeatureInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddFeature();
+                        }
+                      }}
+                      placeholder="e.g. 100% Virgin PP 05 Food Grade, Microwave Safe..."
+                      className="flex-1 bg-[#0D1117] border border-[#1E2633] rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddFeature}
+                      className="px-4 py-2 bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                    >
+                      Add
+                    </button>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-[#0D1117] border border-[#1E2633] min-h-[100px] flex flex-wrap gap-2 content-start">
+                    {featuresList.length === 0 ? (
+                      <span className="text-xs text-gray-500 italic">No features added yet. Type above and click Add or press Enter.</span>
+                    ) : (
+                      featuresList.map((f, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#161B22] border border-[#222C3D] text-gray-200 text-xs"
+                        >
+                          <span>{f}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFeature(i)}
+                            className="text-gray-500 hover:text-red-400 p-0.5"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between pt-4 border-t border-[#1E2633]">
+                <div className="flex items-center gap-2">
+                  {formTab !== 'general' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs: Array<'general' | 'content' | 'media' | 'features'> = ['general', 'content', 'media', 'features'];
+                        const currIdx = tabs.indexOf(formTab);
+                        if (currIdx > 0) setFormTab(tabs[currIdx - 1]);
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  )}
+                  {formTab !== 'features' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tabs: Array<'general' | 'content' | 'media' | 'features'> = ['general', 'content', 'media', 'features'];
+                        const currIdx = tabs.indexOf(formTab);
+                        if (currIdx < tabs.length - 1) setFormTab(tabs[currIdx + 1]);
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#b99750] hover:underline cursor-pointer"
+                    >
+                      Next Step →
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="px-4 py-2 rounded-xl border border-[#1E2633] text-gray-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{submitting ? 'Saving...' : 'Save Category'}</span>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -578,7 +921,12 @@ export default function AdminCategoriesPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setDeleteConfirm(null);
+          }}
+        >
           <div className="bg-[#161B22] border border-red-500/30 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
             <div className="flex items-center gap-3 text-red-400">
               <div className="w-10 h-10 rounded-full bg-red-950/60 border border-red-500/30 flex items-center justify-center shrink-0">

@@ -18,9 +18,13 @@ import {
   Sliders,
   ExternalLink,
   ChevronDown,
+  X,
+  Copy,
+  Calendar,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface SectionItem {
   id: string;
@@ -47,6 +51,16 @@ function AdminSectionsContent() {
   const [sections, setSections] = useState<SectionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagesList, setPagesList] = useState<Array<{ slug: string; title: string }>>([]);
+  const [search, setSearch] = useState('');
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Detail View Modal State
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewingSection, setViewingSection] = useState<SectionItem | null>(null);
+  const [detailTab, setDetailTab] = useState<'overview' | 'draft' | 'published'>('overview');
 
   // Edit Modal State
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -99,6 +113,7 @@ function AdminSectionsContent() {
 
   useEffect(() => {
     fetchSections(selectedPage);
+    setCurrentPage(1);
   }, [selectedPage]);
 
   const handleSelectPage = (slug: string) => {
@@ -131,7 +146,6 @@ function AdminSectionsContent() {
     const targetSection = sections[targetIndex];
 
     try {
-      // Swap sort_orders
       await fetch('/api/admin/sections', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -285,9 +299,36 @@ function AdminSectionsContent() {
       }
 
       showToast(`Section "${section.title || section.section_key}" deleted.`);
+      if (viewingSection?.id === section.id) {
+        setViewModalOpen(false);
+        setViewingSection(null);
+      }
       fetchSections(selectedPage);
     } catch {
       showToast('Network error deleting section.', 'error');
+    }
+  };
+
+  const filteredSections = sections.filter(
+    (s) =>
+      s.title?.toLowerCase().includes(search.toLowerCase()) ||
+      s.section_key.toLowerCase().includes(search.toLowerCase()) ||
+      s.subtitle?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Pagination calculation
+  const totalItems = filteredSections.length;
+  const paginatedSections = filteredSections.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const formatDate = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
     }
   };
 
@@ -315,7 +356,7 @@ function AdminSectionsContent() {
               });
               setCreateModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black shadow-sm transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black shadow-sm transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>New Section</span>
@@ -325,7 +366,7 @@ function AdminSectionsContent() {
             href={`/${selectedPage === 'home' ? '' : selectedPage}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#161D27] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#161D27] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
           >
             <span>Preview Page</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -358,8 +399,24 @@ function AdminSectionsContent() {
           })}
         </div>
 
-        <div className="text-xs text-gray-400 font-mono shrink-0">
-          Route: <span className="text-[#b99750]">/{selectedPage === 'home' ? '' : selectedPage}</span>
+        <div className="flex items-center gap-3">
+          <div className="relative w-48 sm:w-60">
+            <Search className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+              placeholder="Search sections..."
+              className="w-full pl-8 pr-3 py-1.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+            />
+          </div>
+
+          <div className="text-xs text-gray-400 font-mono shrink-0">
+            Route: <span className="text-[#b99750]">/{selectedPage === 'home' ? '' : selectedPage}</span>
+          </div>
         </div>
       </div>
 
@@ -369,136 +426,378 @@ function AdminSectionsContent() {
           <div className="p-12 text-center text-[#b99750] text-xs font-bold animate-pulse rounded-2xl bg-[#0D1117] border border-[#1E2633]">
             Loading sections from MySQL...
           </div>
-        ) : sections.length === 0 ? (
+        ) : filteredSections.length === 0 ? (
           <div className="p-12 text-center text-gray-500 text-xs rounded-2xl bg-[#0D1117] border border-[#1E2633]">
-            No sections found for this page.
+            No sections found matching your filter.
           </div>
         ) : (
-          sections.map((section, idx) => {
-            const hasDraft = section.draft_content !== section.published_content;
+          <div className="space-y-3">
+            {paginatedSections.map((section, idx) => {
+              const hasDraft = section.draft_content !== section.published_content;
+              const globalIdx = (currentPage - 1) * pageSize + idx;
 
-            return (
-              <div
-                key={section.id}
-                className={`p-5 rounded-3xl border transition-all ${
-                  section.is_enabled
-                    ? 'bg-[#0D1117] border-[#1E2633] hover:border-[#b99750]/40'
-                    : 'bg-[#090C10] border-[#161C26] opacity-60'
-                }`}
-              >
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  {/* Left: Info */}
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-8 h-8 rounded-xl bg-[#141A24] border border-[#222C3D] text-[#b99750] font-black text-xs flex items-center justify-center shrink-0">
-                      {idx + 1}
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm sm:text-base font-extrabold text-white">
-                          {section.title || section.section_key}
-                        </span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#141A24] border border-[#222C3D] text-gray-400">
-                          {section.section_key}
-                        </span>
-
-                        {hasDraft ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                            <Clock className="w-3 h-3" />
-                            <span>Draft Changes</span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                            <CheckCircle2 className="w-3 h-3" />
-                            <span>Live</span>
-                          </span>
-                        )}
+              return (
+                <div
+                  key={section.id}
+                  className={`p-5 rounded-2xl border transition-all ${
+                    section.is_enabled
+                      ? 'bg-[#0D1117] border-[#1E2633] hover:border-[#b99750]/40'
+                      : 'bg-[#090C10] border-[#161C26] opacity-60'
+                  }`}
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    {/* Left: Info */}
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-xl bg-[#141A24] border border-[#222C3D] text-[#b99750] font-black text-xs flex items-center justify-center shrink-0">
+                        {globalIdx + 1}
                       </div>
 
-                      {section.subtitle && (
-                        <p className="text-xs text-gray-400 line-clamp-1 max-w-2xl">
-                          {section.subtitle}
-                        </p>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="text-sm sm:text-base font-extrabold text-white">
+                            {section.title || section.section_key}
+                          </span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#141A24] border border-[#222C3D] text-gray-400">
+                            {section.section_key}
+                          </span>
+
+                          {hasDraft ? (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                              <Clock className="w-3 h-3" />
+                              <span>Draft Changes</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>Live</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {section.subtitle && (
+                          <p className="text-xs text-gray-400 line-clamp-1 max-w-2xl">
+                            {section.subtitle}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right: Actions */}
+                    <div className="flex items-center gap-2 self-end lg:self-auto shrink-0 flex-wrap">
+                      {/* Sort controls */}
+                      <div className="flex items-center border border-[#222C3D] rounded-xl overflow-hidden bg-[#141A24]">
+                        <button
+                          type="button"
+                          onClick={() => handleReorder(section, 'up')}
+                          disabled={globalIdx === 0}
+                          title="Move Section Up"
+                          className="p-2 hover:bg-[#1E2633] text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
+                        >
+                          <ArrowUp className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleReorder(section, 'down')}
+                          disabled={globalIdx === sections.length - 1}
+                          title="Move Section Down"
+                          className="p-2 hover:bg-[#1E2633] text-gray-400 hover:text-white disabled:opacity-30 border-l border-[#222C3D] cursor-pointer"
+                        >
+                          <ArrowDown className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Enable/Disable Toggle */}
+                      <button
+                        type="button"
+                        onClick={() => handleToggleEnabled(section)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+                          section.is_enabled
+                            ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/25'
+                            : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700'
+                        }`}
+                      >
+                        {section.is_enabled ? 'Active' : 'Disabled'}
+                      </button>
+
+                      {/* Detail View Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setViewingSection(section);
+                          setDetailTab('overview');
+                          setViewModalOpen(true);
+                        }}
+                        title="View Section Details & Raw JSON"
+                        className="p-2 rounded-xl bg-[#141A24] hover:bg-[#b99750] text-gray-300 hover:text-[#0A0D12] border border-[#222C3D] transition-colors cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                      </button>
+
+                      {/* Publish Live if has draft */}
+                      {hasDraft && (
+                        <button
+                          type="button"
+                          onClick={() => handlePublishDirect(section)}
+                          title="Promote draft directly to live site"
+                          className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold border border-amber-500/40 transition-colors cursor-pointer flex items-center gap-1.5"
+                        >
+                          <Send className="w-3 h-3" />
+                          <span>Publish</span>
+                        </button>
                       )}
+
+                      {/* Edit Section Button */}
+                      <button
+                        type="button"
+                        onClick={() => openEditor(section)}
+                        className="px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        <span>Edit Content</span>
+                      </button>
+
+                      {/* Delete Section Button */}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteSection(section)}
+                        title="Delete Section"
+                        className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
+                </div>
+              );
+            })}
 
-                  {/* Right: Actions */}
-                  <div className="flex items-center gap-2 self-end lg:self-auto shrink-0">
-                    {/* Sort controls */}
-                    <div className="flex items-center border border-[#222C3D] rounded-xl overflow-hidden bg-[#141A24]">
-                      <button
-                        type="button"
-                        onClick={() => handleReorder(section, 'up')}
-                        disabled={idx === 0}
-                        title="Move Section Up"
-                        className="p-2 hover:bg-[#1E2633] text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
-                      >
-                        <ArrowUp className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleReorder(section, 'down')}
-                        disabled={idx === sections.length - 1}
-                        title="Move Section Down"
-                        className="p-2 hover:bg-[#1E2633] text-gray-400 hover:text-white disabled:opacity-30 border-l border-[#222C3D] cursor-pointer"
-                      >
-                        <ArrowDown className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
+            {/* Universal Pagination */}
+            <div className="rounded-2xl overflow-hidden border border-[#1E2633]">
+              <AdminPagination
+                currentPage={currentPage}
+                totalItems={totalItems}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize}
+                pageSizeOptions={[5, 10, 20]}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
-                    {/* Enable/Disable Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => handleToggleEnabled(section)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
-                        section.is_enabled
-                          ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/25'
-                          : 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700'
-                      }`}
-                    >
-                      {section.is_enabled ? 'Active' : 'Disabled'}
-                    </button>
-
-                    {/* Publish Live if has draft */}
-                    {hasDraft && (
-                      <button
-                        type="button"
-                        onClick={() => handlePublishDirect(section)}
-                        title="Promote draft directly to live site"
-                        className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold border border-amber-500/40 transition-colors cursor-pointer flex items-center gap-1.5"
-                      >
-                        <Send className="w-3 h-3" />
-                        <span>Publish Live</span>
-                      </button>
-                    )}
-
-                    {/* Edit Section Button */}
-                    <button
-                      type="button"
-                      onClick={() => openEditor(section)}
-                      className="px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-                    >
-                      <Edit className="w-3.5 h-3.5" />
-                      <span>Edit Content</span>
-                    </button>
-
-                    {/* Delete Section Button */}
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteSection(section)}
-                      title="Delete Section"
-                      className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+      {/* Detail View Modal */}
+      {viewModalOpen && viewingSection && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-[#0D1117] border border-[#1E2633] rounded-3xl p-6 sm:p-8 max-w-3xl w-full shadow-2xl relative space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center shrink-0">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-lg leading-tight">
+                    {viewingSection.title || viewingSection.section_key}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="font-mono text-xs text-[#b99750]">{viewingSection.section_key}</span>
+                    <span className="text-gray-600">·</span>
+                    <span className="text-xs text-gray-400 font-mono">Page: /{viewingSection.page_slug}</span>
                   </div>
                 </div>
               </div>
-            );
-          })
-        )}
-      </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewModalOpen(false);
+                  setViewingSection(null);
+                }}
+                className="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-[#141A24] transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Quick Stat Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Status</span>
+                <span className={`text-xs font-bold mt-1 inline-flex items-center gap-1 ${viewingSection.is_enabled ? 'text-emerald-400' : 'text-gray-400'}`}>
+                  {viewingSection.is_enabled ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                  {viewingSection.is_enabled ? 'Active / Visible' : 'Disabled'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Publish State</span>
+                <span className={`text-xs font-bold mt-1 inline-flex items-center gap-1 ${viewingSection.draft_content !== viewingSection.published_content ? 'text-amber-400' : 'text-emerald-400'}`}>
+                  {viewingSection.draft_content !== viewingSection.published_content ? 'Draft Changes' : 'Synced Live'}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Sort Order</span>
+                <span className="text-xs font-bold text-white mt-1 block">
+                  #{viewingSection.sort_order}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D]">
+                <span className="text-[10px] uppercase font-bold text-gray-400 block">Last Modified</span>
+                <span className="text-xs font-bold text-white mt-1 block truncate">
+                  {formatDate(viewingSection.updated_at)}
+                </span>
+              </div>
+            </div>
+
+            {/* Tab navigation */}
+            <div className="flex border-b border-[#1E2633] gap-2">
+              <button
+                type="button"
+                onClick={() => setDetailTab('overview')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  detailTab === 'overview'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                Content Overview
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetailTab('draft')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  detailTab === 'draft'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                Draft JSON
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetailTab('published')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  detailTab === 'published'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                Live Published JSON
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            {detailTab === 'overview' && (
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-3">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block">Section Title:</span>
+                    <p className="text-white text-sm font-bold mt-0.5">{viewingSection.title || '—'}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block">Subtitle / Eyebrow:</span>
+                    <p className="text-gray-300 text-xs mt-0.5">{viewingSection.subtitle || '—'}</p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#090C10] border border-[#1E2633] space-y-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#b99750] block">
+                    Structured Content Fields
+                  </span>
+                  <div className="divide-y divide-[#1E2633] text-xs">
+                    {(() => {
+                      try {
+                        const parsed = JSON.parse(viewingSection.draft_content || '{}');
+                        return Object.entries(parsed).map(([k, v]) => (
+                          <div key={k} className="py-2 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                            <span className="font-mono text-gray-400 font-semibold shrink-0 sm:w-1/3">{k}:</span>
+                            <span className="text-white break-words sm:w-2/3 font-medium">
+                              {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+                            </span>
+                          </div>
+                        ));
+                      } catch {
+                        return <span className="text-gray-500 italic">Raw non-JSON string content</span>;
+                      }
+                    })()}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {detailTab === 'draft' && (
+              <div className="relative">
+                <pre className="p-4 bg-[#090C10] border border-[#222C3D] rounded-2xl text-xs font-mono text-emerald-400 overflow-x-auto max-h-80">
+                  {(() => {
+                    try {
+                      return JSON.stringify(JSON.parse(viewingSection.draft_content), null, 2);
+                    } catch {
+                      return viewingSection.draft_content;
+                    }
+                  })()}
+                </pre>
+              </div>
+            )}
+
+            {detailTab === 'published' && (
+              <div className="relative">
+                <pre className="p-4 bg-[#090C10] border border-[#222C3D] rounded-2xl text-xs font-mono text-cyan-400 overflow-x-auto max-h-80">
+                  {(() => {
+                    try {
+                      return JSON.stringify(JSON.parse(viewingSection.published_content), null, 2);
+                    } catch {
+                      return viewingSection.published_content || 'No published content yet.';
+                    }
+                  })()}
+                </pre>
+              </div>
+            )}
+
+            {/* Actions Footer */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#1E2633]">
+              <a
+                href={`/${viewingSection.page_slug === 'home' ? '' : viewingSection.page_slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#141A24] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Preview Page</span>
+              </a>
+
+              <div className="flex items-center gap-2">
+                {viewingSection.draft_content !== viewingSection.published_content && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handlePublishDirect(viewingSection);
+                      setViewModalOpen(false);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold border border-amber-500/40 transition-colors cursor-pointer"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Publish Draft</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setViewModalOpen(false);
+                    openEditor(viewingSection);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit Content</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Edit Section Content Modal */}
       {editModalOpen && activeSection && (
@@ -558,7 +857,7 @@ function AdminSectionsContent() {
                       type="text"
                       value={activeSection.title || ''}
                       onChange={(e) => setActiveSection({ ...activeSection, title: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                     />
                   </div>
                   <div>
@@ -569,7 +868,7 @@ function AdminSectionsContent() {
                       type="text"
                       value={activeSection.subtitle || ''}
                       onChange={(e) => setActiveSection({ ...activeSection, subtitle: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                      className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                     />
                   </div>
                 </div>
@@ -653,14 +952,14 @@ function AdminSectionsContent() {
                               rows={3}
                               value={value}
                               onChange={(e) => setParsedDraft({ ...parsedDraft, [key]: e.target.value })}
-                              className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                              className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                             />
                           ) : (
                             <input
                               type="text"
                               value={value}
                               onChange={(e) => setParsedDraft({ ...parsedDraft, [key]: e.target.value })}
-                              className="w-full px-3 py-2 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                              className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                             />
                           )}
                         </div>
@@ -669,7 +968,7 @@ function AdminSectionsContent() {
 
                     if (typeof value === 'object' && value !== null) {
                       return (
-                        <div key={key} className="p-3 rounded-xl bg-[#141A24] border border-[#222C3D] space-y-2">
+                        <div key={key} className="p-3.5 rounded-xl bg-[#141A24] border border-[#222C3D] space-y-2">
                           <label className="block text-xs font-mono font-extrabold text-[#b99750] capitalize">
                             {key.replace(/([A-Z])/g, ' $1')} (Complex Structure)
                           </label>
@@ -789,7 +1088,7 @@ function AdminSectionsContent() {
                 >
                   {pagesList.map((p) => (
                     <option key={p.slug} value={p.slug}>
-                      {p.title} ({p.slug})
+                      {p.title} (/{p.slug === 'home' ? '' : p.slug})
                     </option>
                   ))}
                 </select>
@@ -873,7 +1172,7 @@ function AdminSectionsContent() {
                 <button
                   type="submit"
                   disabled={creating}
-                  className="px-5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>{creating ? 'Creating...' : 'Create Section'}</span>
