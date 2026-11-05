@@ -6,8 +6,9 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { ProductDetailInteractive } from '@/components/products/ProductDetailInteractive';
+import { ProductCard } from '@/components/products/ProductCard';
 import { Reveal } from '@/components/ui/Reveal';
-import { ArrowLeft, ArrowRight, Layers, Box } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -104,35 +105,15 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* Grid matching exact width, height, and layout of cards in other pages */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
                 {relatedCategoryProducts.map((rel, idx) => (
-                  <Reveal key={rel.id} type="fade-up" delay={idx * 0.08}>
-                    <Link
-                      href={`/categories/${category.slug}/${rel.product_slug}`}
-                      className="bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-2xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all hover:shadow-lg group text-left h-full"
-                    >
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center shrink-0 border border-[#E6DBC6]">
-                        <img
-                          src={rel.image}
-                          alt={rel.name}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <span className="text-[10px] sm:text-[11px] font-extrabold text-[#b99750] uppercase block">
-                          {rel.capacity}
-                        </span>
-                        <h4 className="text-xs sm:text-sm font-bold text-[var(--ace-ink)] group-hover:text-[#b99750] transition-colors leading-snug truncate">
-                          {rel.name}
-                        </h4>
-                        <p className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5 truncate">
-                          {rel.packaging ? rel.packaging.split(' ')[0] + ' Pcs / Box' : '100% Virgin PP 05'}
-                        </p>
-                      </div>
-                    </Link>
-                  </Reveal>
+                  <ProductCard
+                    key={rel.id}
+                    product={rel}
+                    categorySlug={category.slug}
+                    delay={Math.min(idx % 3, 2) * 0.08}
+                  />
                 ))}
               </div>
             </div>

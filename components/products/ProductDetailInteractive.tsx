@@ -381,50 +381,114 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             </span>
           </div>
 
-          {/* Quick thumbnail strip to toggle */}
-          <div className="grid grid-cols-4 gap-2 mt-1">
+          {/* 4-View Visual Studio Cards (Consistent Aspect Ratio & Sizing) */}
+          <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5 mt-3">
+            {/* Card 1: Product View */}
             <button
               type="button"
               onClick={() => setActiveView('blank')}
-              aria-label="View Blank Container"
-              className={`p-1.5 rounded-xl border bg-white flex items-center justify-center h-14 sm:h-16 transition-all cursor-pointer ${
-                activeView === 'blank' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
+              aria-label="View Product Structure"
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
+                activeView === 'blank'
+                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
               }`}
             >
-              <img src={blankImage} alt="Thumb blank" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
+              <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
+                <img
+                  src={blankImage}
+                  alt={`${product.name} Structure`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              {activeView === 'blank' && (
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#b99750] ring-2 ring-white" />
+              )}
             </button>
+
+            {/* Card 2: Dimensions & Blueprint */}
             <button
               type="button"
               onClick={() => setActiveView('specs')}
               aria-label="View Dimensions Blueprint"
-              className={`p-1.5 rounded-xl border bg-white flex items-center justify-center h-14 sm:h-16 transition-all cursor-pointer ${
-                activeView === 'specs' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
+                activeView === 'specs'
+                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
               }`}
             >
-              <img src={currentProductImage} alt="Thumb specs" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
+              <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
+                <img
+                  src={currentProductImage}
+                  alt={`${product.name} Dimensions`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              {activeView === 'specs' && (
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#b99750] ring-2 ring-white" />
+              )}
             </button>
+
+            {/* Card 3: Food Locking Seal */}
             <button
               type="button"
               onClick={() => setActiveView('locking')}
-              aria-label="View Food Locking Application"
-              className={`p-1.5 rounded-xl border bg-white flex items-center justify-center h-14 sm:h-16 transition-all overflow-hidden cursor-pointer ${
-                activeView === 'locking' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
+              aria-label="View Food Locking Seal"
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
+                activeView === 'locking'
+                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
               }`}
             >
-              <img src={lockingFoodImage} alt="Thumb food" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg" />
+              <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
+                <img
+                  src={lockingFoodImage}
+                  alt={`${product.name} Food Locking`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              {activeView === 'locking' && (
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#b99750] ring-2 ring-white" />
+              )}
             </button>
+
+            {/* Card 4: Manufacturing Video */}
             <button
               type="button"
               onClick={() => setActiveView('video')}
               aria-label="View Manufacturing Video"
-              className={`p-1.5 rounded-xl border bg-white flex items-center justify-center h-14 sm:h-16 transition-all cursor-pointer ${
-                activeView === 'video' ? 'border-[#b99750] ring-2 ring-[#b99750]/30 shadow-xs' : 'border-[#E6DBC6] hover:border-[#b99750]/60'
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
+                activeView === 'video'
+                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
               }`}
             >
-              <div className="flex flex-col items-center justify-center text-[#b99750]">
-                <Play className="w-4 h-4 fill-[#b99750]" />
-                <span className="text-[9px] font-bold mt-0.5">Video</span>
+              <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex flex-col items-center justify-center relative border border-[#E6DBC6]/50">
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1664392020927-9344e87b378d?q=80&w=800&auto=format&fit=crop"
+                  alt="Process Video Poster"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center gap-1">
+                  <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#b99750] text-white flex items-center justify-center shadow-md">
+                    <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white ml-0.5" />
+                  </span>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-white tracking-wide drop-shadow-xs">
+                    Video
+                  </span>
+                </div>
               </div>
+              {activeView === 'video' && (
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#b99750] ring-2 ring-white z-10" />
+              )}
             </button>
           </div>
         </div>
