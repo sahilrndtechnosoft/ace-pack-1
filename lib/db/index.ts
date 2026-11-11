@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import { seedDatabase } from './seed';
+import { CMS_PAGES } from '../cms/registry';
 
 let pool: mysql.Pool | null = null;
 let initialized = false;
@@ -320,7 +321,35 @@ export async function initDb(): Promise<void> {
     console.log('[CMS MySQL] Initial database seed completed!');
   }
 
+  await syncCmsRegistry(db);
+
   initialized = true;
+}
+
+/**
+ * Make sure every page/section the website renders exists in the CMS so admins can edit it.
+ * Insert-only: existing rows (and anything an admin already edited) are never overwritten.
+ */
+async function syncCmsRegistry(db: mysql.Pool): Promise<void> {
+  for (const [slug, page] of Object.entries(CMS_PAGES)) {
+    await db.query(
+      `INSERT INTO pages (id, slug, title, is_published, created_at, updated_at)
+       VALUES (?, ?, ?, 1, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE id = id`,
+      ['page_' + slug, slug, page.title]
+    );
+    let order = 0;
+    for (const [key, section] of Object.entries(page.sections as Record<string, { label: string; content: unknown }>)) {
+      order += 1;
+      const json = JSON.stringify(section.content);
+      await db.query(
+        `INSERT INTO sections (id, page_slug, section_key, title, subtitle, draft_content, published_content, is_enabled, is_published, sort_order, created_at, updated_at)
+         VALUES (?, ?, ?, ?, '', ?, ?, 1, 1, ?, NOW(), NOW())
+         ON DUPLICATE KEY UPDATE id = id`,
+        [`sec_${slug}_${key}`, slug, key, section.label, json, json, order]
+      );
+    }
+  }
 }
 
 export async function logActivity(

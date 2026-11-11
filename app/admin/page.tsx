@@ -34,6 +34,8 @@ interface OverviewData {
     totalCategories: number;
     totalProducts: number;
     totalBlogs: number;
+    publishedBlogs: number;
+    draftBlogs: number;
     totalEvents: number;
     totalDownloads: number;
     totalMedia: number;
@@ -266,7 +268,7 @@ export default function AdminDashboardPage() {
 
         {/* Sections */}
         <Link
-          href="/admin/sections"
+          href="/admin/pages"
           className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
         >
           <div className="flex items-center justify-between mb-2">
@@ -295,9 +297,11 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalBlogs ?? '...'}
+            {data?.stats?.publishedBlogs ?? '...'}
           </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Published posts</span>
+          <span className="text-[10px] text-gray-500 block mt-1">
+            Published · {data?.stats?.draftBlogs ?? 0} draft{data?.stats?.draftBlogs === 1 ? '' : 's'}
+          </span>
         </Link>
 
         {/* Events */}
@@ -396,7 +400,7 @@ export default function AdminDashboardPage() {
           </Link>
 
           <Link
-            href="/admin/sections?page=home"
+            href="/admin/pages/home"
             className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
           >
             <div className="w-8 h-8 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center mb-2">
@@ -411,7 +415,7 @@ export default function AdminDashboardPage() {
           </Link>
 
           <Link
-            href="/admin/header-footer"
+            href="/admin/settings"
             className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
           >
             <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2">
@@ -531,7 +535,7 @@ export default function AdminDashboardPage() {
               <h2 className="text-sm font-extrabold text-white">Recently Updated Sections</h2>
             </div>
             <Link
-              href="/admin/sections"
+              href="/admin/pages"
               className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
             >
               <span>View All</span>
@@ -546,7 +550,7 @@ export default function AdminDashboardPage() {
               data.recentSections.map((sec) => (
                 <Link
                   key={sec.id}
-                  href={`/admin/sections?page=${sec.page_slug}`}
+                  href={`/admin/pages/${sec.page_slug}`}
                   className="p-3 rounded-xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] flex items-center justify-between transition-colors group"
                 >
                   <div className="min-w-0 flex-1 pr-3">

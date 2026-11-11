@@ -16,74 +16,10 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export interface SectorCard {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  href: string;
-}
+import { homeIndustries } from '@/lib/cms/pages/home';
 
-export const SECTOR_CARDS: SectorCard[] = [
-  {
-    id: 'foodservice',
-    title: 'Foodservice',
-    description: 'Engineered for high-volume takeaway: leak-proof snap seal, microwave-safe, and rigid stacking base.',
-    image: '/images/gallery/bento-meal.webp',
-    href: '/categories/re-series',
-  },
-  {
-    id: 'quick-commerce',
-    title: 'Quick Commerce',
-    description: 'Built for 10-minute delivery: tamper-evident, light, durable and 100% recyclable virgin PP.',
-    image: '/images/food-pairings/salad-bowl.webp',
-    href: '/categories/re-series',
-  },
-  {
-    id: 'personal-care',
-    title: 'Personal Care',
-    description: 'Airtight security and portion precision: sterile food-grade packaging for pharma and wellness.',
-    image: '/images/gallery/hinge-cups.webp',
-    href: '/categories/hinge-cups',
-  },
-  {
-    id: 'dairy',
-    title: 'Dairy',
-    description: 'Hermetically sealed round tubs: freezer-to-table integrity for yogurt, curd, paneer and butter.',
-    image: '/images/gallery/kitchen-set.webp',
-    href: '/categories/deli-series',
-  },
-  {
-    id: 'confectionery',
-    title: 'Confectionery',
-    description: 'Crystal-clear rigid boxes: aroma-preserving display for traditional mithai, cookies and dry fruits.',
-    image: '/images/gallery/sweet-box.webp',
-    href: '/categories/sweet-box-containers',
-  },
-  {
-    id: 'frozen-foods',
-    title: 'Frozen Foods',
-    description: 'Deep-freeze resistant down to −20°C: crack-proof walls preventing freezer burn and brittleness.',
-    image: '/images/gallery/ro-series.webp',
-    href: '/categories/ro-series',
-  },
-  {
-    id: 'bakery',
-    title: 'Bakery',
-    description: 'Optical clarity presentation: rigid dome containers for pastries, cakes, croissants and fresh prep.',
-    image: '/images/food-pairings/burger-meal.webp',
-    href: '/categories/flat-containers',
-  },
-  {
-    id: 'fashion-fmcg',
-    title: 'Fashion & FMCG',
-    description: 'High-speed automated filling ready: uniform wall thickness and tamper-resistant retail display.',
-    image: '/images/gallery/studio-range.webp',
-    href: '/categories/deli-series',
-  },
-];
-
-export function TrustCardsSection() {
+export function TrustCardsSection({ content = homeIndustries }: { content?: typeof homeIndustries }) {
+  const SECTOR_CARDS = content.cards;
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
@@ -199,13 +135,13 @@ export function TrustCardsSection() {
           <div className="max-w-2xl">
             <span className="xp-eyebrow inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#b99750]/15 border border-[#b99750]/30 text-[#9e7f3b] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1 sm:mb-1.5">
               <Sparkles size={11} className="text-[#b99750]" />
-              Trusted at scale
+              {content.eyebrow}
             </span>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-[#14171A] leading-tight">
-              1,000+ brands served across India and 12 export markets.
+              {content.heading}
             </h2>
             <p className="text-[11px] sm:text-xs text-gray-600 mt-1 leading-relaxed max-w-xl">
-              Packaging solutions engineered for what your product needs to do — from rapid delivery to shelf-ready retail presentation.
+              {content.description}
             </p>
           </div>
 
@@ -249,7 +185,7 @@ export function TrustCardsSection() {
 
               return (
                 <div
-                  key={card.id}
+                  key={`${card.title}-${idx}`}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   onClick={() => setActiveIdx(idx)}
@@ -303,7 +239,7 @@ export function TrustCardsSection() {
 
                       {/* White circular button with right arrow (exact match to screenshot) */}
                       <Link
-                        href={card.href}
+                        href={card.link}
                         aria-label={`Explore ${card.title} packaging`}
                         onClick={(e) => e.stopPropagation()}
                         className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#ce1b2f] flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 group/btn"

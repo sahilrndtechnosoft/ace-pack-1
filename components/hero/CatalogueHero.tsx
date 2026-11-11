@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShieldCheck, CheckCircle2, FileDown } from 'lucide-react';
 import { CatalogueDownloadModal } from '@/components/ui/CatalogueDownloadModal';
+import { homeHero } from '@/lib/cms/pages/home';
 
-export function CatalogueHero() {
+export function CatalogueHero({ content = homeHero }: { content?: typeof homeHero }) {
+  const c = content;
+  // The optimised .webp twin only exists for the stock image; a CMS-replaced image is served as-is.
+  const webp = c.image === homeHero.image ? c.image.replace(/\.png$/, '.webp') : null;
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
 
   return (
@@ -25,12 +29,12 @@ export function CatalogueHero() {
             <div className="flex items-center gap-2 text-white/95 drop-shadow-sm font-sans">
               <span className="w-2 h-2 rounded-full bg-[#E6DBC6] animate-pulse" />
               <span className="uppercase text-xs tracking-widest font-medium">
-                India&apos;s Leading Moulding Plant
+                {c.topLabel}
               </span>
             </div>
             <div className="flex items-center gap-2 text-white/95 text-xs font-medium drop-shadow-sm font-sans">
               <ShieldCheck size={16} className="text-emerald-300" />
-              <span>ISO 9001:2015 Certified</span>
+              <span>{c.certificationLabel}</span>
             </div>
           </div>
 
@@ -47,7 +51,7 @@ export function CatalogueHero() {
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[#faeac7] text-xs font-semibold uppercase tracking-wider mb-5 shadow-sm font-sans w-fit"
                 >
                   <CheckCircle2 size={13} className="text-[#faeac7]" />
-                  <span>100% Prime Virgin Polypropylene (PP 05)</span>
+                  <span>{c.badge}</span>
                 </motion.div>
 
                 {/* Hero Display Heading */}
@@ -57,9 +61,9 @@ export function CatalogueHero() {
                   transition={{ duration: 0.75, delay: 0.1 }}
                   className="text-4xl xl:text-5xl 2xl:text-6xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)] leading-[1.08] mb-5 font-sans"
                 >
-                  Pioneers of Precision{' '}
+                  {c.heading}{' '}
                   <span className="font-serif italic font-normal text-[#faeac7] drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
-                    Food Packaging.
+                    {c.headingHighlight}
                   </span>
                 </motion.h1>
 
@@ -70,7 +74,7 @@ export function CatalogueHero() {
                   transition={{ duration: 0.7, delay: 0.2 }}
                   className="text-base xl:text-lg text-white/95 font-medium leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)] mb-8 font-sans max-w-lg"
                 >
-                  From crystal-clear fruit boxes and leak-proof boba cups to round deli bowls and multi-compartment meal trays. Manufactured in Daman for 1,000+ brands across 12 export countries.
+                  {c.description}
                 </motion.p>
 
                 {/* Action CTAs */}
@@ -81,10 +85,10 @@ export function CatalogueHero() {
                   className="flex flex-wrap items-center gap-3.5 mb-10"
                 >
                   <Link
-                    href="/products"
+                    href={c.primaryButton.link}
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#14171A] hover:bg-black text-white font-semibold text-sm tracking-wide shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 group font-sans"
                   >
-                    <span>Explore Products</span>
+                    <span>{c.primaryButton.text}</span>
                     <ArrowUpRight
                       size={17}
                       className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
@@ -97,7 +101,7 @@ export function CatalogueHero() {
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/35 text-white font-semibold text-sm tracking-wide shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer font-sans"
                   >
                     <FileDown size={17} className="text-[#faeac7]" />
-                    <span>Download Catalogue</span>
+                    <span>{c.catalogueButtonText}</span>
                   </button>
                 </motion.div>
 
@@ -108,18 +112,12 @@ export function CatalogueHero() {
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="grid grid-cols-3 gap-4 pt-6 border-t border-white/25 max-w-md font-sans"
                 >
-                  <div>
-                    <p className="text-2xl font-extrabold text-white drop-shadow-sm tracking-tight">1.5M+</p>
-                    <p className="text-xs text-white/85 font-medium tracking-wide">Moulded Daily</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-extrabold text-white drop-shadow-sm tracking-tight">1,000+</p>
-                    <p className="text-xs text-white/85 font-medium tracking-wide">Global Clients</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-extrabold text-white drop-shadow-sm tracking-tight">12+</p>
-                    <p className="text-xs text-white/85 font-medium tracking-wide">Export Markets</p>
-                  </div>
+                  {c.stats.map((stat) => (
+                    <div key={stat.label}>
+                      <p className="text-2xl font-extrabold text-white drop-shadow-sm tracking-tight">{stat.value}</p>
+                      <p className="text-xs text-white/85 font-medium tracking-wide">{stat.label}</p>
+                    </div>
+                  ))}
                 </motion.div>
               </div>
 
@@ -132,10 +130,10 @@ export function CatalogueHero() {
               >
                 <div className="relative w-full flex items-center justify-center">
                   <picture className="w-full flex items-center justify-center">
-                    <source srcSet="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.webp" type="image/webp" />
+                    {webp && <source srcSet={webp} type="image/webp" />}
                     <img
-                      src="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.png"
-                      alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
+                      src={c.image}
+                      alt={c.imageAlt}
                       className="w-auto h-auto max-w-full max-h-[58vh] xl:max-h-[66vh] 2xl:max-h-[72vh] object-contain block select-none pointer-events-none"
                       loading="eager"
                       fetchPriority="high"
@@ -155,12 +153,15 @@ export function CatalogueHero() {
               <span className="w-6 h-6 rounded-full border border-white/40 flex items-center justify-center text-[10px]">
                 ↓
               </span>
-              <span>Scroll to unbox the craft</span>
+              <span>{c.scrollCue}</span>
             </a>
             <div className="flex items-center gap-4 text-xs font-medium tracking-wide">
-              <span>01 / 06 Formats</span>
-              <span className="text-white/40">·</span>
-              <span>100% Recyclable PP 05</span>
+              {c.footerNotes.map((note, i) => (
+                <React.Fragment key={note}>
+                  {i > 0 && <span className="text-white/40">·</span>}
+                  <span>{note}</span>
+                </React.Fragment>
+              ))}
             </div>
           </div>
         </div>
@@ -173,11 +174,11 @@ export function CatalogueHero() {
           <div className="px-4 pt-3.5 pb-1 flex items-center justify-between text-[10px] font-semibold text-white/90">
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#faeac7] animate-pulse" />
-              <span className="uppercase tracking-wider">India&apos;s Leading Moulding Plant</span>
+              <span className="uppercase tracking-wider">{c.topLabel}</span>
             </div>
             <div className="flex items-center gap-1 text-[10px] text-white/90">
               <ShieldCheck size={13} className="text-emerald-300" />
-              <span>ISO 9001:2015 Certified</span>
+              <span>{c.certificationLabel}</span>
             </div>
           </div>
 
@@ -185,26 +186,26 @@ export function CatalogueHero() {
           <div className="px-4 pt-2 pb-3">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md border border-white/25 text-[#faeac7] text-[10px] font-semibold uppercase tracking-wider mb-2">
               <CheckCircle2 size={11} className="text-[#faeac7]" />
-              <span>100% Prime Virgin PP 05</span>
+              <span>{c.badge}</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-[1.12] mb-2 font-sans">
-              Pioneers of Precision{' '}
+              {c.heading}{' '}
               <span className="font-serif italic font-normal text-[#faeac7]">
-                Food Packaging.
+                {c.headingHighlight}
               </span>
             </h1>
 
             <p className="text-xs sm:text-sm text-white/90 font-normal leading-relaxed mb-3.5 max-w-sm">
-              Crystal-clear fruit boxes, salad bowls, leak-proof boba cups, and living-hinge portion tubs moulded in Daman for 1,000+ global brands.
+              {c.mobileDescription}
             </p>
 
             <div className="flex flex-wrap items-center gap-2.5">
               <Link
-                href="/products"
+                href={c.primaryButton.link}
                 className="inline-flex items-center gap-1.5 whitespace-nowrap px-4 py-2 rounded-full bg-[#14171A] hover:bg-black text-white font-semibold text-xs tracking-wide shadow-lg active:scale-95 transition-all"
               >
-                <span>Explore Products</span>
+                <span>{c.primaryButton.text}</span>
                 <ArrowUpRight size={14} />
               </Link>
               <button
@@ -213,7 +214,7 @@ export function CatalogueHero() {
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/35 text-white font-semibold text-xs tracking-wide shadow-md active:scale-95 transition-all cursor-pointer"
               >
                 <FileDown size={14} className="text-[#faeac7]" />
-                <span>Catalogue</span>
+                <span>{c.catalogueButtonText}</span>
               </button>
             </div>
           </div>
@@ -222,10 +223,10 @@ export function CatalogueHero() {
           <div className="px-3 sm:px-4 py-2 flex items-center justify-center">
             <div className="relative w-full max-w-[480px] mx-auto flex items-center justify-center">
               <picture className="w-full flex items-center justify-center">
-                <source srcSet="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.webp" type="image/webp" />
+                {webp && <source srcSet={webp} type="image/webp" />}
                 <img
-                  src="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.png"
-                  alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
+                  src={c.image}
+                  alt={c.imageAlt}
                   className="w-auto h-auto max-w-full max-h-[36vh] sm:max-h-[42vh] object-contain block select-none pointer-events-none"
                   loading="eager"
                   fetchPriority="high"
@@ -236,18 +237,12 @@ export function CatalogueHero() {
 
           {/* Metrics Strip */}
           <div className="grid grid-cols-3 gap-1 px-4 py-3 border-t border-white/20 bg-black/15 text-center">
-            <div>
-              <p className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">1.5M+</p>
-              <p className="text-[9px] sm:text-[10px] text-white/80 font-medium">Moulded Daily</p>
-            </div>
-            <div>
-              <p className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">1,000+</p>
-              <p className="text-[9px] sm:text-[10px] text-white/80 font-medium">Global Clients</p>
-            </div>
-            <div>
-              <p className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">12+</p>
-              <p className="text-[9px] sm:text-[10px] text-white/80 font-medium">Export Markets</p>
-            </div>
+            {c.stats.map((stat) => (
+              <div key={stat.label}>
+                <p className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">{stat.value}</p>
+                <p className="text-[9px] sm:text-[10px] text-white/80 font-medium">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

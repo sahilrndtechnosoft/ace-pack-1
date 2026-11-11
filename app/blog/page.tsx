@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { blogPosts, combineBlogs } from '@/lib/data/blogs';
 import { BlogCatalogClient } from '@/components/sections/BlogCatalogClient';
-import { getCmsBlogs } from '@/lib/db/content';
+import { getCmsBlogs, getPageContent } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,18 +16,16 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogGridPage() {
+  const page = await getPageContent('blog');
+  const banner = { ...page.content.banner, hidden: page.hidden.includes('banner') };
   const cmsBlogs = await getCmsBlogs();
   const posts = combineBlogs(blogPosts, cmsBlogs);
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
-      <PageBanner
-        title="Our Blogs & Insights"
-        subtitle="Explore expert perspectives on plastic food container engineering, zero-leak lid designs, microwave safety, and sustainable packaging trends."
-        badge="PACKAGING KNOWLEDGE & ARTICLES"
-        bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
-        breadcrumbs={[{ name: 'Blogs', href: '/blogs' }]}
-      />
+      {!banner.hidden && (
+        <PageBanner title={banner.title} subtitle={banner.subtitle} badge={banner.badge} bgImage={banner.bgImage} breadcrumbs={[{ name: 'Blogs', href: '/blogs' }]} />
+      )}
 
       <section className="py-12 md:py-16">
         <div className="container-custom">

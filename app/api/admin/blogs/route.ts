@@ -3,6 +3,10 @@ import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
+import { htmlToParagraphs, sanitizeArticleHtml } from '@/lib/cms/sanitize-html';
+
+const optionalText = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null);
+const validCanonical = (v: unknown) => v == null || v === '' || (typeof v === 'string' && /^https?:\/\//i.test(v.trim()));
 
 export async function GET(request: NextRequest) {
   try {
@@ -65,6 +69,10 @@ export async function POST(request: NextRequest) {
       author_avatar,
       read_time,
       is_published,
+      content_html,
+      meta_title,
+      meta_description,
+      canonical,
     } = body;
 
     if (!title || !summary) {
@@ -78,15 +86,22 @@ export async function POST(request: NextRequest) {
       .replace(/-+/g, '-');
 
     const id = 'blog_' + cleanSlug;
-    const contentStr = Array.isArray(content) ? JSON.stringify(content) : JSON.stringify([String(content || '')]);
+    if (!validCanonical(canonical)) {
+      return NextResponse.json({ error: 'Canonical URL must start with https://' }, { status: 400 });
+    }
+    const html = typeof content_html === 'string' ? sanitizeArticleHtml(content_html) : null;
+    // `content` keeps a plain-text copy for listings/fallback; the article page shows content_html.
+    const contentStr = html
+      ? JSON.stringify(htmlToParagraphs(html))
+      : Array.isArray(content) ? JSON.stringify(content) : JSON.stringify([String(content || '')]);
     const takeawaysStr = Array.isArray(takeaways) ? JSON.stringify(takeaways) : '[]';
     const tagsStr = Array.isArray(tags) ? JSON.stringify(tags) : '[]';
     const postDate = new Date().toISOString().split('T')[0];
 
     const db = getDbPool();
     await db.query(
-      `INSERT INTO blogs (id, slug, title, category, summary, content, takeaways, tags, image, author_name, author_role, author_avatar, read_time, date, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO blogs (id, slug, title, category, summary, content, takeaways, tags, image, author_name, author_role, author_avatar, read_time, date, is_published, content_html, meta_title, meta_description, canonical, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         id,
         cleanSlug,
@@ -103,6 +118,10 @@ export async function POST(request: NextRequest) {
         read_time || '4 min read',
         postDate,
         is_published !== undefined ? (is_published ? 1 : 0) : 1,
+        html,
+        optionalText(meta_title),
+        optionalText(meta_description),
+        optionalText(canonical),
       ]
     );
 
@@ -147,15 +166,25 @@ export async function PUT(request: NextRequest) {
       author_avatar,
       read_time,
       is_published,
+      content_html,
+      meta_title,
+      meta_description,
+      canonical,
     } = body;
 
     if (!id || !title) {
       return NextResponse.json({ error: 'Blog ID and title are required.' }, { status: 400 });
     }
 
-    const contentStr = content !== undefined
-      ? (Array.isArray(content) ? JSON.stringify(content) : (typeof content === 'string' ? content : JSON.stringify([content])))
-      : null;
+    if (!validCanonical(canonical)) {
+      return NextResponse.json({ error: 'Canonical URL must start with https://' }, { status: 400 });
+    }
+    const html = typeof content_html === 'string' ? sanitizeArticleHtml(content_html) : null;
+    const contentStr = html
+      ? JSON.stringify(htmlToParagraphs(html))
+      : content !== undefined
+        ? (Array.isArray(content) ? JSON.stringify(content) : (typeof content === 'string' ? content : JSON.stringify([content])))
+        : null;
     const takeawaysStr = takeaways !== undefined ? JSON.stringify(takeaways) : null;
     const tagsStr = tags !== undefined ? JSON.stringify(tags) : null;
 
@@ -175,6 +204,10 @@ export async function PUT(request: NextRequest) {
            author_avatar = COALESCE(?, author_avatar),
            read_time = COALESCE(?, read_time),
            is_published = COALESCE(?, is_published),
+           content_html = COALESCE(?, content_html),
+           meta_title = IF(?, ?, meta_title),
+           meta_description = IF(?, ?, meta_description),
+           canonical = IF(?, ?, canonical),
            updated_at = NOW()
        WHERE id = ?`,
       [
@@ -191,6 +224,11 @@ export async function PUT(request: NextRequest) {
         author_avatar || null,
         read_time || null,
         is_published !== undefined ? (is_published ? 1 : 0) : null,
+        html,
+        // SEO fields change only when the request includes them (empty clears them).
+        'meta_title' in body, optionalText(meta_title),
+        'meta_description' in body, optionalText(meta_description),
+        'canonical' in body, optionalText(canonical),
         id,
       ]
     );

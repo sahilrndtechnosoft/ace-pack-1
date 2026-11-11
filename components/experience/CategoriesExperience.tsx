@@ -1,4 +1,6 @@
 'use client';
+import { categoriesPage } from '@/lib/cms/pages/catalogue';
+import type { CmsPageContent } from '@/lib/cms/registry';
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -13,14 +15,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const modelCount = productCategories.reduce((n, c) => n + c.products.length, 0);
 
-const standard = [
-  '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
-  'Manufactured in an ISO 9001:2015 certified facility in Daman',
-  'Rated −20°C deep freeze to +120°C microwave reheating',
-  'Zero-leak snap-rim geometry across every lidded format',
-  'BPA-free and heavy-metal free',
-  'Custom in-mould labelling available on every line',
-];
+const CATEGORIES_DEFAULTS = Object.fromEntries(
+  Object.entries(categoriesPage.sections).map(([key, section]) => [key, section.content])
+) as CmsPageContent<'categories'>;
 
 interface CategoryMeta {
   countLabel: string;
@@ -87,23 +84,24 @@ function getCategoryMeta(category: ProductCategory): CategoryMeta {
 
 export default function CategoriesExperience({
   initialCategories,
-  cmsSections,
+  content = CATEGORIES_DEFAULTS,
+  hidden = [],
   basePath = '/categories',
 }: {
   initialCategories?: ProductCategory[];
-  cmsSections?: Record<string, any>;
+  content?: CmsPageContent<'categories'>;
+  hidden?: string[];
   basePath?: string;
 } = {}) {
+  const show = (key: keyof CmsPageContent<'categories'>) => !hidden.includes(key);
   const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
   const modelCount = categories.reduce((n, c) => n + c.products.length, 0);
   const root = useRef<HTMLDivElement>(null);
   const preview = useRef<HTMLDivElement>(null);
 
   // Dynamic CMS sections with fallbacks
-  const heroSec = cmsSections?.hero || {};
-  const indexSec = cmsSections?.index || {};
-  const standardSec = cmsSections?.standard || {};
-  const standardList = Array.isArray(standardSec.bullets) && standardSec.bullets.length > 0 ? standardSec.bullets : standard;
+  const { hero: heroSec, index: indexSec, standard: standardSec, closing } = content;
+  const standardList = standardSec.bullets;
 
   useEffect(() => {
     const scope = root.current;
@@ -254,7 +252,8 @@ export default function CategoriesExperience({
   return (
     <div ref={root} className="xc">
       {/* Hero */}
-      <section className="xc-hero">
+      {show('hero') && (
+      <section className="xc-hero" id="categories-hero">
         <div className="xc-wrap xc-hero-grid">
           <div>
             <span className="xp-eyebrow">
@@ -276,14 +275,16 @@ export default function CategoriesExperience({
           </div>
         </div>
       </section>
+      )}
 
       {/* Directory Index */}
+      {show('index') && (
       <section className="xc-index" id="index">
         <div className="xc-wrap">
           <div className="xc-index-head">
             <div>
               <span className="xp-eyebrow">{indexSec.eyebrow || '01 / Commercial Packaging Lines'}</span>
-              <h2 data-split>{indexSec.title ? indexSec.title : <>Find your <em>form.</em></>}</h2>
+              <h2 data-split>{indexSec.title}</h2>
             </div>
             <span className="xc-index-hint">
               {indexSec.hint || `${categories.length} certified series · Select a category to inspect full specs`}
@@ -390,13 +391,15 @@ export default function CategoriesExperience({
           <span className="xc-preview-label" />
         </div>
       </section>
+      )}
 
       {/* Polymer Standard Strip */}
-      <section className="xc-standard">
+      {show('standard') && (
+      <section className="xc-standard" id="standard">
         <div className="xc-wrap xc-standard-grid">
           <div>
             <span className="xp-eyebrow">{standardSec.eyebrow || '02 / Polymer Specification'}</span>
-            <h2 data-split>{standardSec.title ? standardSec.title : <>Every line, <em>the same polymer.</em></>}</h2>
+            <h2 data-split>{standardSec.title}</h2>
           </div>
           <ul className="xc-standard-list">
             {standardList.map((item: string, i: number) => (
@@ -405,22 +408,25 @@ export default function CategoriesExperience({
           </ul>
         </div>
       </section>
+      )}
 
       {/* Closing CTA */}
-      <section className="xc-closing">
+      {show('closing') && (
+      <section className="xc-closing" id="closing">
         <div className="xc-wrap">
-          <span className="xp-eyebrow">Catalog &amp; Sample Kit</span>
-          <h2 data-split>Specify it <em>in hand.</em></h2>
+          <span className="xp-eyebrow">{closing.eyebrow}</span>
+          <h2 data-split>{closing.heading} <em>{closing.headingHighlight}</em></h2>
           <div className="xc-closing-actions">
-            <Link href="/contact" className="xp-button">
-              Discuss your requirements <ArrowRight size={18} />
+            <Link href={closing.primaryButton.link} className="xp-button">
+              {closing.primaryButton.text} <ArrowRight size={18} />
             </Link>
-            <Link href="/downloads" className="xp-button xp-button--ghost">
-              Download the catalog <FileDown size={18} />
+            <Link href={closing.secondaryButton.link} className="xp-button xp-button--ghost">
+              {closing.secondaryButton.text} <FileDown size={18} />
             </Link>
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }

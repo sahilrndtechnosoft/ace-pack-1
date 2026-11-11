@@ -6,8 +6,6 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   FileText,
-  Layers,
-  Sliders,
   Image as ImageIcon,
   BookOpen,
   Calendar,
@@ -30,22 +28,45 @@ interface SidebarProps {
   onLogout: () => void;
 }
 
-const NAV_ITEMS = [
-  { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { label: 'Categories', href: '/admin/categories', icon: Grid },
-  { label: 'Products', href: '/admin/products', icon: Package },
-  { label: 'Contact Inquiries', href: '/admin/contacts', icon: Mail },
-  { label: 'Site Visitors', href: '/admin/visitors', icon: Users },
-  { label: 'Pages', href: '/admin/pages', icon: FileText },
-  { label: 'Sections', href: '/admin/sections', icon: Layers },
-  { label: 'Header & Footer', href: '/admin/header-footer', icon: Sliders },
-  { label: 'Media Library', href: '/admin/media', icon: ImageIcon },
-  { label: 'Blog / Articles', href: '/admin/blogs', icon: BookOpen },
-  { label: 'Events & Expos', href: '/admin/events', icon: Calendar },
-  { label: 'Download Center', href: '/admin/downloads', icon: FileDown },
-  { label: 'Global Settings', href: '/admin/settings', icon: Settings },
-  { label: 'Activity Logs', href: '/admin/activity', icon: History },
-  { label: 'Admin Profile', href: '/admin/profile', icon: User },
+const NAV_GROUPS = [
+  { heading: null, items: [{ label: 'Dashboard', href: '/admin', icon: LayoutDashboard }] },
+  {
+    heading: 'Website Content',
+    items: [
+      { label: 'Website Pages', href: '/admin/pages', icon: FileText },
+      { label: 'Blog Management', href: '/admin/blogs', icon: BookOpen },
+      { label: 'Events & Expos', href: '/admin/events', icon: Calendar },
+      { label: 'Download Center', href: '/admin/downloads', icon: FileDown },
+      { label: 'Media Library', href: '/admin/media', icon: ImageIcon },
+    ],
+  },
+  {
+    heading: 'Product Catalogue',
+    items: [
+      { label: 'Categories', href: '/admin/categories', icon: Grid },
+      { label: 'Products', href: '/admin/products', icon: Package },
+    ],
+  },
+  {
+    heading: 'Site-wide Settings',
+    items: [
+      { label: 'Header, Footer & Contact', href: '/admin/settings', icon: Settings },
+    ],
+  },
+  {
+    heading: 'Leads & Analytics',
+    items: [
+      { label: 'Contact Inquiries', href: '/admin/contacts', icon: Mail },
+      { label: 'Site Visitors', href: '/admin/visitors', icon: Users },
+    ],
+  },
+  {
+    heading: 'Account',
+    items: [
+      { label: 'Activity Logs', href: '/admin/activity', icon: History },
+      { label: 'Admin Profile', href: '/admin/profile', icon: User },
+    ],
+  },
 ];
 
 export const AdminSidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, onLogout }) => {
@@ -100,34 +121,39 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOp
         </div>
 
         {/* Navigation Items */}
-        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-1.5 custom-scrollbar">
-          <div className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-gray-500">
-            Content Management
-          </div>
-
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.href);
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                  active
-                    ? 'bg-[#b99750] text-[#0A0D12] font-extrabold shadow-sm'
-                    : 'text-gray-300 hover:bg-[#161D27] hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${active ? 'text-[#0A0D12]' : 'text-[#b99750]'}`} />
-                  <span>{item.label}</span>
+        <div className="flex-1 overflow-y-auto px-4 py-5 custom-scrollbar">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.heading ?? 'main'} className="space-y-1.5 pb-3">
+              {group.heading && (
+                <div className="px-3 pt-2 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-gray-500">
+                  {group.heading}
                 </div>
-                {active && <ChevronRight className="w-3.5 h-3.5 opacity-70" />}
-              </Link>
-            );
-          })}
+              )}
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      active
+                        ? 'bg-[#b99750] text-[#0A0D12] font-extrabold shadow-sm'
+                        : 'text-gray-300 hover:bg-[#161D27] hover:text-white'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className={`w-4 h-4 ${active ? 'text-[#0A0D12]' : 'text-[#b99750]'}`} />
+                      <span>{item.label}</span>
+                    </div>
+                    {active && <ChevronRight className="w-3.5 h-3.5 opacity-70" />}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </div>
 
         {/* Database & User Status Footer */}

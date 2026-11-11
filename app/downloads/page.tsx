@@ -2,18 +2,24 @@ import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { downloadGroups, type DownloadItem } from '@/lib/data/downloads';
-import { getCmsDownloads } from '@/lib/db/content';
+import { getCmsDownloads, cmsMetadata, getPageContent } from '@/lib/db/content';
 import { DownloadsClient, type DownloadsClientGroup } from '@/components/sections/DownloadsClient';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+const staticMetadata: Metadata = {
   title: 'Download Center | Ace Packaging Catalogs & Certificates',
   description:
     'Catalogs, per-line datasheets, the IML branding guide and compliance certificates — everything a buyer or export auditor needs from one place.',
 };
 
+export function generateMetadata(): Promise<Metadata> {
+  return cmsMetadata('downloads', staticMetadata);
+}
+
 export default async function DownloadsPage() {
+  const page = await getPageContent('downloads');
+  const banner = { ...page.content.banner, hidden: page.hidden.includes('banner') };
   const cmsRows = await getCmsDownloads();
 
   let groups: DownloadsClientGroup[] = downloadGroups as DownloadsClientGroup[];
@@ -43,13 +49,9 @@ export default async function DownloadsPage() {
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
-      <PageBanner
-        title="Download Center"
-        subtitle="Catalogs, per-line datasheets, the IML branding guide and compliance certificates — everything a buyer or export auditor needs from one place."
-        badge="CATALOGS & DATASHEETS"
-        bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
-        breadcrumbs={[{ name: 'Downloads', href: '/downloads' }]}
-      />
+      {!banner.hidden && (
+        <PageBanner title={banner.title} subtitle={banner.subtitle} badge={banner.badge} bgImage={banner.bgImage} breadcrumbs={[{ name: 'Downloads', href: '/downloads' }]} />
+      )}
 
       <section className="py-10 md:py-12">
         <div className="container-custom">

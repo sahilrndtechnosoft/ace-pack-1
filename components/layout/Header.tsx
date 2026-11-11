@@ -1,5 +1,7 @@
 'use client';
 
+import { withDefaults } from '@/lib/cms/merge';
+import { headerDefaults } from '@/lib/cms/site-settings';
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -181,7 +183,8 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
       .catch(() => {});
   }, []);
 
-  const topbarPhone = liveSettings?.topbarPhone || initialSettings?.topbarPhone || '+91 99250 15906';
+  const site = withDefaults(headerDefaults, liveSettings);
+  const topbarPhone = site.topbarPhone;
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -370,7 +373,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
         <Link href="/" className="flex shrink-0 items-center group py-0.5">
           <div className="flex items-center justify-center">
             <img
-              src="/images/Ace_New_Update_Logo-01.png"
+              src={site.logo}
               alt="Ace Packaging"
               width={340}
               height={152}
@@ -766,10 +769,10 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
             </a>
 
             <Link
-              href="/contact"
+              href={site.ctaButtonLink}
               className="bg-[var(--ace-orange)] text-white hover:bg-[var(--ace-ink)] hover:text-[var(--ace-paper)] text-[11px] lg:text-[11.5px] xl:text-xs font-bold px-3 lg:px-3.5 xl:px-4 py-2 xl:py-2.5 rounded-full shadow-xs hover:shadow transition-all uppercase tracking-wider whitespace-nowrap"
             >
-              Contact Us
+              {site.ctaButtonText}
             </Link>
           </div>
 

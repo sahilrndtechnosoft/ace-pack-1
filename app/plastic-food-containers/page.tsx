@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import CategoriesExperience from '@/components/experience/CategoriesExperience';
-import { getCmsCategories, getCmsPage } from '@/lib/db/content';
+import { getCmsCategories, getPageContent } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,12 +22,13 @@ export const metadata: Metadata = {
 export default async function PlasticFoodContainersIndexPage() {
   const [categories, cmsData] = await Promise.all([
     getCmsCategories(),
-    getCmsPage('categories'),
+    getPageContent('categories'),
   ]);
   return (
     <CategoriesExperience
       initialCategories={categories}
-      cmsSections={cmsData?.sections}
+      content={cmsData.content}
+      hidden={cmsData.hidden}
       basePath="/plastic-food-containers"
     />
   );

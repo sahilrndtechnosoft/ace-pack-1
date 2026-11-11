@@ -1,5 +1,6 @@
 'use client';
 
+import { homeCertifications } from '@/lib/cms/pages/home';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Award, FileCheck2, ArrowRight, CheckCircle2, FlaskConical, Sparkles, FileDown, Eye } from 'lucide-react';
@@ -8,40 +9,11 @@ import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
 import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 
-export const QualityCertificationsSection: React.FC = () => {
+const CARD_ICONS = [Award, ShieldCheck, FlaskConical, FileCheck2];
+
+export const QualityCertificationsSection: React.FC<{ content?: typeof homeCertifications }> = ({ content: c = homeCertifications }) => {
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
 
-  const credentials = [
-    {
-      badge: 'ISO 9001:2015 CERTIFIED',
-      title: 'ISO 9001:2015 Plant Certification',
-      description: 'Certified Quality Management System covering precision injection moulding, tooling calibration, and rigorous quality control protocols.',
-      standard: 'SGS Certificate IN25/00000652',
-      icon: Award,
-      hasCertificateThumb: true,
-    },
-    {
-      badge: 'ISO CERTIFIED FACILITY',
-      title: 'Cleanroom Production Standards',
-      description: 'Standardized cleanroom manufacturing, automated optical defect inspection, and complete batch traceability across Daman Unit 1 & Unit 2.',
-      standard: 'Zero-Defect Quality Protocol',
-      icon: ShieldCheck,
-    },
-    {
-      badge: 'PRECISION TOLERANCE',
-      title: 'Optical Inspection (±0.02mm)',
-      description: 'Every mould and lid undergoes continuous optical inspection and zero-leak pressure testing under ISO quality management guidelines.',
-      standard: 'Continuous Line Auditing',
-      icon: FlaskConical,
-    },
-    {
-      badge: 'VIRGIN POLYMER ASSURANCE',
-      title: '100% Prime Virgin PP 05',
-      description: 'Exclusively virgin polypropylene polymer sourced directly from prime petrochemical refiners. Completely BPA-free, odorless, and non-toxic.',
-      standard: 'Zero Contaminant Purity',
-      icon: FileCheck2,
-    },
-  ];
 
   return (
     <section id="certifications-quality" className="relative py-20 bg-gradient-to-b from-[#FAF8F4] to-[#f4f1e8] text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
@@ -57,15 +29,15 @@ export const QualityCertificationsSection: React.FC = () => {
             <div className="max-w-2xl text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#b99750]/15 border border-[#b99750]/30 text-[#b99750] text-xs font-bold uppercase tracking-wider mb-3">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Certified &amp; Qualified Manufacturing</span>
+                <span>{c.badge}</span>
               </div>
               <SplitHeading>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight">
-                  ISO 9001:2015 Certified Manufacturing
+                  {c.heading}
                 </h2>
               </SplitHeading>
               <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed">
-                Ace Packaging operates under an externally audited and certified ISO 9001:2015 Quality Management System (Certificate IN25/00000652 by SGS) across Daman Unit 1 and Unit 2.
+                {c.description}
               </p>
             </div>
 
@@ -76,14 +48,14 @@ export const QualityCertificationsSection: React.FC = () => {
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
               >
                 <FileDown className="w-4 h-4" />
-                <span>Download ISO Certificate</span>
+                <span>{c.downloadButtonText}</span>
               </button>
 
               <Link
-                href="/quality"
+                href={c.specsButton.link}
                 className="inline-flex items-center justify-center gap-1.5 px-4 py-3 sm:py-3.5 rounded-full border border-[#E6DBC6] hover:border-[#b99750] bg-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wide transition-colors"
               >
-                <span>View Quality Specs</span>
+                <span>{c.specsButton.text}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -92,8 +64,8 @@ export const QualityCertificationsSection: React.FC = () => {
 
         {/* 4 Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {credentials.map((item, idx) => {
-            const Icon = item.icon;
+          {c.cards.map((item, idx) => {
+            const Icon = CARD_ICONS[idx % CARD_ICONS.length];
             return (
               <Reveal key={idx} type="fade-up" delay={idx * 0.08}>
                 <div className="h-full bg-white rounded-3xl border-2 border-[#E6DBC6] hover:border-[#b99750] p-6 sm:p-7 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group text-left">
@@ -124,14 +96,14 @@ export const QualityCertificationsSection: React.FC = () => {
                       {item.description}
                     </p>
 
-                    {item.hasCertificateThumb && (
+                    {idx === 0 && c.certificateThumbnail && (
                       <div
                         onClick={() => setDownloadModalOpen(true)}
                         className="mb-4 p-2 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] transition-colors flex items-center gap-3 cursor-pointer group/thumb"
                       >
                         <div className="w-10 h-14 rounded-md bg-white border border-gray-200 overflow-hidden shrink-0">
                           <img
-                            src="/images/certifications/ace-packaging-iso-9001-certificate.jpg"
+                            src={c.certificateThumbnail}
                             alt="SGS ISO 9001 Certificate"
                             className="w-full h-full object-cover object-top"
                           />
@@ -163,10 +135,10 @@ export const QualityCertificationsSection: React.FC = () => {
             </div>
             <div>
               <h4 className="text-sm sm:text-base font-bold text-[var(--ace-ink)]">
-                Export &amp; Institutional Audit Reports Available
+                {c.bannerHeading}
               </h4>
               <p className="text-xs text-gray-600 mt-0.5">
-                Download formal SGS ISO 9001 certificate copies or request batch-specific migration test laboratory reports for institutional vendor clearance.
+                {c.bannerText}
               </p>
             </div>
           </div>
@@ -178,13 +150,13 @@ export const QualityCertificationsSection: React.FC = () => {
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer shadow-sm"
             >
               <FileDown className="w-4 h-4" />
-              <span>Get Certificate Emailed</span>
+              <span>{c.bannerButtonText}</span>
             </button>
             <Link
-              href="/quality"
+              href={c.bannerLink.link}
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wide sm:tracking-wider text-center transition-colors"
             >
-              <span>Full Quality Page</span>
+              <span>{c.bannerLink.text}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -196,8 +168,8 @@ export const QualityCertificationsSection: React.FC = () => {
       <CatalogueDownloadModal
         isOpen={downloadModalOpen}
         onClose={() => setDownloadModalOpen(false)}
-        documentTitle="ISO 9001:2015 Management System Certificate"
-        downloadUrl="/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg"
+        documentTitle={c.certificateTitle}
+        downloadUrl={c.certificateFile}
       />
     </section>
   );

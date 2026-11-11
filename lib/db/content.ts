@@ -1,7 +1,121 @@
+import { draftMode } from 'next/headers';
 import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
 import { productCategories, type ProductCategory, type ProductItem } from '../data/products';
+import { CMS_PAGES, type CmsPageContent, type CmsPageSlug, type CmsSectionDef } from '../cms/registry';
+import { parseContent, withDefaults } from '../cms/merge';
+import { customPageDef, isBuiltInSlug, type CustomPageContent } from '../cms/pages/custom';
+import type { Metadata } from 'next';
+
+export interface PageContentResult<S extends CmsPageSlug> {
+  content: CmsPageContent<S>;
+  /** Section keys the admin switched off ("Hidden on website"). */
+  hidden: string[];
+}
+
+/**
+ * Published CMS content for a registered page. Every field falls back to the live default
+ * when the database is empty or unreachable, so pages always render.
+ */
+async function isPreviewing(): Promise<boolean> {
+  try {
+    return (await draftMode()).isEnabled;
+  } catch {
+    return false; // outside a request (build time)
+  }
+}
+
+async function loadSections(slug: string, sectionDefs: Record<string, CmsSectionDef>) {
+  const rows = new Map<string, { published_content: string; is_enabled: number }>();
+  try {
+    await initDb();
+    // Admin preview (draft mode) shows saved drafts; everyone else sees published content.
+    const column = (await isPreviewing()) ? 'draft_content' : 'published_content';
+    const [result] = await getDbPool().query(
+      `SELECT section_key, ${column} AS published_content, is_enabled FROM sections WHERE page_slug = ?`,
+      [slug]
+    );
+    for (const row of result as Array<{ section_key: string; published_content: string; is_enabled: number }>) {
+      rows.set(row.section_key, row);
+    }
+  } catch (err) {
+    console.error(`loadSections("${slug}") error, using fallback content:`, err);
+  }
+
+  const content: Record<string, unknown> = {};
+  const hidden: string[] = [];
+  for (const [key, def] of Object.entries(sectionDefs)) {
+    const row = rows.get(key);
+    content[key] = withDefaults(def.content, parseContent(row?.published_content));
+    if (row && !row.is_enabled) hidden.push(key);
+  }
+  return { content, hidden };
+}
+
+/**
+ * Published CMS content for a registered page. Every field falls back to the live default
+ * when the database is empty or unreachable, so pages always render.
+ */
+export async function getPageContent<S extends CmsPageSlug>(slug: S): Promise<PageContentResult<S>> {
+  const { content, hidden } = await loadSections(slug, CMS_PAGES[slug].sections);
+  return { content: content as CmsPageContent<S>, hidden };
+}
+
+export interface CmsPageSeo {
+  slug: string;
+  title: string;
+  seo_title: string | null;
+  seo_description: string | null;
+  og_image: string | null;
+  canonical_url: string | null;
+  robots_index: number;
+  is_published: number;
+}
+
+export async function getPageSeo(slug: string): Promise<CmsPageSeo | null> {
+  try {
+    await initDb();
+    const [rows] = await getDbPool().query(
+      'SELECT slug, title, seo_title, seo_description, og_image, canonical_url, robots_index, is_published FROM pages WHERE slug = ? LIMIT 1',
+      [slug]
+    );
+    return (rows as CmsPageSeo[])[0] ?? null;
+  } catch (err) {
+    console.error(`getPageSeo("${slug}") error:`, err);
+    return null;
+  }
+}
+
+/** Page metadata: SEO fields filled in under Website Pages → SEO win; empty ones keep the built-in values. */
+export async function cmsMetadata(slug: string, fallback: Metadata): Promise<Metadata> {
+  const seo = await getPageSeo(slug);
+  if (!seo) return fallback;
+  const title = seo.seo_title?.trim() || fallback.title;
+  const description = seo.seo_description?.trim() || fallback.description;
+  const ogImage = seo.og_image?.trim();
+  const canonical = seo.canonical_url?.trim();
+  return {
+    ...fallback,
+    // Only set keys that have a value: an explicit undefined would wipe the layout's defaults.
+    ...(title ? { title } : {}),
+    ...(description ? { description } : {}),
+    ...(canonical ? { alternates: { ...fallback.alternates, canonical } } : {}),
+    ...(ogImage || seo.seo_title || seo.seo_description
+      ? { openGraph: { ...fallback.openGraph, ...(ogImage ? { images: [ogImage] } : {}), title: title ?? undefined, description: description ?? undefined } }
+      : {}),
+    ...(seo.robots_index === 0 ? { robots: { index: false, follow: true } } : {}),
+  };
+}
+
+/** Content of an admin-created page, or null when it does not exist / is unpublished. */
+export async function getCustomPage(slug: string) {
+  if (isBuiltInSlug(slug)) return null;
+  const seo = await getPageSeo(slug);
+  if (!seo || (!seo.is_published && !(await isPreviewing()))) return null;
+  const { content, hidden } = await loadSections(slug, customPageDef(seo.title).sections);
+  return { seo, content: content as CustomPageContent, hidden };
+}
 
 export async function getCmsPage(slug: string) {
   try {
@@ -141,10 +255,9 @@ export async function getCmsBlogBySlug(slug: string): Promise<BlogPost | null> {
   try {
     await initDb();
     const db = getDbPool();
-    const [rows]: any = await db.query(
-      'SELECT * FROM blogs WHERE slug = ? AND is_published = 1 LIMIT 1',
-      [slug]
-    );
+    // Admin preview (draft mode) can open unpublished articles.
+    const publishedOnly = (await isPreviewing()) ? '' : ' AND is_published = 1';
+    const [rows]: any = await db.query(`SELECT * FROM blogs WHERE slug = ?${publishedOnly} LIMIT 1`, [slug]);
     if (!rows.length) return null;
     return mapRowToBlogPost(rows[0]);
   } catch (err) {

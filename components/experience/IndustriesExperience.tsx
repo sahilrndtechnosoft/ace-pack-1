@@ -5,7 +5,12 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import { allIndustries } from '@/lib/data/industries';
+import { industriesPage } from '@/lib/cms/pages/industries';
+import type { CmsPageContent } from '@/lib/cms/registry';
+
+const INDUSTRIES_DEFAULTS = Object.fromEntries(
+  Object.entries(industriesPage.sections).map(([key, section]) => [key, section.content])
+) as CmsPageContent<'industries'>;
 import { productCategories } from '@/lib/data/products';
 import { buildTextReveals, refreshOnSettle } from './experience-motion';
 import './industries.css';
@@ -14,23 +19,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const lineName = (slug: string) => productCategories.find(c => c.slug === slug)?.name ?? slug;
 
-const standard = [
-  '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
-  '100% food-grade material with ISO 9001:2015 plant certification',
-  'Rated −20°C deep freeze to +120°C microwave reheating',
-  'Zero-leak snap-rim geometry across every lidded format',
-  'Custom in-mould labelling on any line',
-  'ISO 9001:2015 facility, two Daman units, 12+ export markets',
-];
 
-export default function IndustriesExperience() {
+export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'industries'>; hidden?: string[] } = {}) {
+  const show = (key: keyof CmsPageContent<'industries'>) => !hidden.includes(key);
+  const { hero, segments, standard, closing } = content;
+  const allIndustries = segments.items.map((item, i) => ({ ...item, slug: item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `segment-${i + 1}` }));
   const root = useRef<HTMLDivElement>(null);
   const strip = useRef<HTMLDivElement>(null);
   // Set while the user is swiping the strip themselves, so the page-scroll
   // driven sync does not yank it out from under their thumb.
   const swiping = useRef<number>(0);
   const [active, setActive] = useState(0);
-  const current = allIndustries[active];
+  const current = allIndustries[active] ?? allIndustries[0];
 
   // Touch layouts: keep the active card centred in the strip as the page scrolls.
   useEffect(() => {
@@ -111,30 +111,32 @@ export default function IndustriesExperience() {
 
   return (
     <div ref={root} className="xin">
-      <section className="xin-hero">
+      {show('hero') && (
+      <section className="xin-hero" id="industries-hero">
         <div className="xin-wrap xin-hero-grid">
           <div>
-            <span className="xp-eyebrow">Who we serve · {allIndustries.length} segments</span>
-            <h1 aria-label="Built for the way each industry serves.">
-              <span className="xin-title-mask"><span>Built for the way</span></span>
-              <span className="xin-title-mask"><span><em>each industry serves.</em></span></span>
+            <span className="xp-eyebrow">{hero.eyebrow} · {allIndustries.length} segments</span>
+            <h1 aria-label={`${hero.heading} ${hero.headingHighlight}`}>
+              <span className="xin-title-mask"><span>{hero.heading}</span></span>
+              <span className="xin-title-mask"><span><em>{hero.headingHighlight}</em></span></span>
             </h1>
-            <p className="xin-hero-lead">From the corner QSR to global export partners: twelve segments, each with its own demands on a container, all moulded from the same certified virgin PP 05.</p>
+            <p className="xin-hero-lead">{hero.lead}</p>
           </div>
           <div className="xin-glance">
             <div><b>{allIndustries.length}</b><span>Segments</span></div>
             <div><b>{productCategories.length}</b><span>Container lines</span></div>
-            <div><b>12+</b><span>Export markets</span></div>
-            <div><b>PP 05</b><span>One resin</span></div>
+            {hero.stats.map(stat => <div key={stat.label}><b>{stat.value}</b><span>{stat.label}</span></div>)}
           </div>
         </div>
       </section>
+      )}
 
+      {show('segments') && (
       <section className="xin-index" id="segments">
         <div className="xin-wrap">
           <div className="xin-index-head">
-            <span className="xp-eyebrow">01 / By segment</span>
-            <h2 data-split>What each kitchen asks of a container, <em>and the lines that answer.</em></h2>
+            <span className="xp-eyebrow">{segments.eyebrow}</span>
+            <h2 data-split>{segments.heading} <em>{segments.headingHighlight}</em></h2>
           </div>
 
           {/* Touch layouts only (hidden by CSS above 900px): the pinned panel's
@@ -161,18 +163,18 @@ export default function IndustriesExperience() {
             <ol className="xin-rows">
               {allIndustries.map((industry, i) => (
                 <li className={`xin-row${i === active ? ' is-active' : ''}`} key={industry.slug} id={industry.slug}>
-                  <Link href={industry.href ?? '/categories'} className="xin-row-cover" aria-label={`${industry.title}: open the line`}>
+                  <Link href={industry.link || '/categories'} className="xin-row-cover" aria-label={`${industry.title}: open the line`}>
                     <img src={industry.image} alt="" loading="lazy" />
                     <span>{String(i + 1).padStart(2, '0')}</span>
-                    <b>Open the line <ArrowUpRight size={13} /></b>
+                    <b>{segments.buttonText} <ArrowUpRight size={13} /></b>
                   </Link>
                   <div className="xin-row-head">
                     <span className="xin-num">{String(i + 1).padStart(2, '0')}</span>
                     <h3>{industry.title}</h3>
                   </div>
                   <p>{industry.description}</p>
-                  {industry.needs && <ul className="xin-needs">{industry.needs.map(n => <li key={n}>{n}</li>)}</ul>}
-                  {industry.lines && (
+                  {industry.needs.length > 0 && <ul className="xin-needs">{industry.needs.map(n => <li key={n}>{n}</li>)}</ul>}
+                  {industry.lines.length > 0 && (
                     <div className="xin-lines">
                       <span>Served by</span>
                       {industry.lines.map(slug => <Link key={slug} href={`/categories/${slug}`}>{lineName(slug)} <ArrowUpRight size={12} /></Link>)}
@@ -192,35 +194,40 @@ export default function IndustriesExperience() {
               </div>
               <div className="xin-panel-body">
                 <span className="xp-eyebrow">Now viewing</span>
-                <h3>{current.title}</h3>
-                {current.needs && <ul className="xin-panel-needs">{current.needs.map(n => <li key={n}>{n}</li>)}</ul>}
-                {current.href && <Link href={current.href} className="xin-panel-cta" tabIndex={-1}>Open the line <ArrowUpRight size={14} /></Link>}
+                <h3>{current?.title}</h3>
+                {current?.needs.length > 0 && <ul className="xin-panel-needs">{current.needs.map(n => <li key={n}>{n}</li>)}</ul>}
+                {current?.link && <Link href={current.link} className="xin-panel-cta" tabIndex={-1}>{segments.buttonText} <ArrowUpRight size={14} /></Link>}
               </div>
             </aside>
           </div>
         </div>
       </section>
+      )}
 
-      <section className="xin-standard">
+      {show('standard') && (
+      <section className="xin-standard" id="standard">
         <div className="xin-wrap xin-standard-grid">
           <div>
-            <span className="xp-eyebrow">02 / Every segment, one standard</span>
-            <h2 data-split>Different demands, <em>the same polymer.</em></h2>
+            <span className="xp-eyebrow">{standard.eyebrow}</span>
+            <h2 data-split>{standard.heading} <em>{standard.headingHighlight}</em></h2>
           </div>
           <ul className="xin-standard-list">
-            {standard.map(item => <li key={item}><i />{item}</li>)}
+            {standard.bullets.map(item => <li key={item}><i />{item}</li>)}
           </ul>
         </div>
       </section>
+      )}
 
-      <section className="xin-closing">
+      {show('closing') && (
+      <section className="xin-closing" id="closing">
         <div className="xin-wrap">
-          <span className="xp-eyebrow">Don&apos;t see your segment?</span>
-          <h2 data-split>Custom formats <em>to specification.</em></h2>
-          <p>Our in-house CAD toolroom develops new container geometries and multi-cavity moulds. Tell us the product, the volume and the shipping route.</p>
-          <Link href="/contact" className="xp-button">Discuss your requirement <ArrowRight size={18} /></Link>
+          <span className="xp-eyebrow">{closing.eyebrow}</span>
+          <h2 data-split>{closing.heading} <em>{closing.headingHighlight}</em></h2>
+          <p>{closing.description}</p>
+          <Link href={closing.button.link} className="xp-button">{closing.button.text} <ArrowRight size={18} /></Link>
         </div>
       </section>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
+import { hasUnsafeUrl } from '@/lib/cms/merge';
 
 export async function GET(request: NextRequest) {
   try {
@@ -112,6 +113,13 @@ export async function PUT(request: NextRequest) {
 
     if (!id) {
       return NextResponse.json({ error: 'Section ID is required.' }, { status: 400 });
+    }
+
+    if (draft_content !== undefined && (typeof draft_content !== 'object' || draft_content === null || Array.isArray(draft_content))) {
+      return NextResponse.json({ error: 'Section content must be a set of fields.' }, { status: 400 });
+    }
+    if (hasUnsafeUrl(draft_content)) {
+      return NextResponse.json({ error: 'Links cannot start with "javascript:". Use a page path or https:// address.' }, { status: 400 });
     }
 
     const db = getDbPool();

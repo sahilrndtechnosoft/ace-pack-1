@@ -14,6 +14,7 @@ import {
   Maximize2,
   CheckCircle2,
 } from 'lucide-react';
+import { OEM_GALLERY_ITEMS } from '@/lib/cms/pages/oem';
 
 export interface OemGalleryItem {
   id: string | number;
@@ -32,41 +33,12 @@ interface OemProductGalleryProps {
   kind?: 'oem' | 'customization' | 'oem_customization';
 }
 
-const DEFAULT_ITEMS: OemGalleryItem[] = [
-  {
-    id: 'round-glass-range',
-    title: 'Round Glass Multi-Capacity Line',
-    category: 'Round Glass Range',
-    description:
-      'Custom-tooled 90mm round drinkware and dessert cups in 350ml, 500ml, 600ml, and 700ml capacities with hermetic snap-lock rims and ultra-clear PP 05 transparency.',
-    image: '/images/oem/DSC04469.webp',
-    specs: ['350ml - 700ml Formats', '90mm Standard Rim', '100% Prime Virgin PP 05', 'Optical Clarity'],
-  },
-  {
-    id: 'custom-lids-closures',
-    title: 'Bespoke Coloured Tethered Lids & Closures',
-    category: 'Tethered Closures',
-    description:
-      'Vibrant custom Pantone polymer formulation with leak-proof tethered flip caps, sippy spouts, and food-grade silicone plug seals for hot & cold beverage service.',
-    image: '/images/oem/DSC04472.webp',
-    specs: ['Custom Pantone Colours', 'Tethered Spill-Proof Cap', 'Hot & Cold Rated', 'BPA Free Food-Grade'],
-  },
-  {
-    id: 'iml-branding-suite',
-    title: 'Full-Coverage In-Mould Labelling (IML)',
-    category: 'IML Branding',
-    description:
-      'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — scratch-resistant, water-proof, microwave reheating and -20°C deep-freeze durable.',
-    image: '/images/oem/DSC04473.webp',
-    specs: ['5-Sided Photorealistic Wrap', 'Zero Peel & Scratch-Proof', 'Microwave & Freezer Safe', 'Tamper-Evident Rim'],
-  },
-];
 
 export function OemProductGallery({
   badge = 'PRODUCT GALLERY',
   heading = 'Round Glass & Custom Product Showcase',
   lead = 'Photographs of custom Round Glass containers, bespoke colour closures, and precision IML mouldings engineered for leading QSR chains, beverage brands, and foodservice distributors.',
-  items = DEFAULT_ITEMS,
+  items = OEM_GALLERY_ITEMS,
   kind = 'oem',
 }: OemProductGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -74,7 +46,7 @@ export function OemProductGallery({
   const modalRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
-  const galleryItems = items && items.length > 0 ? items : DEFAULT_ITEMS;
+  const galleryItems = items && items.length > 0 ? items : OEM_GALLERY_ITEMS;
   const [activeModalIdx, setActiveModalIdx] = useState<number | null>(null);
 
   // Initial GSAP Smooth Staggered Entrance

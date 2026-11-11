@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
+import { hasUnsafeUrl } from '@/lib/cms/merge';
 
 export async function GET(request: NextRequest) {
   try {
@@ -49,6 +50,10 @@ export async function PUT(request: NextRequest) {
 
     if (!settings || typeof settings !== 'object') {
       return NextResponse.json({ error: 'Settings object is required.' }, { status: 400 });
+    }
+    // Settings are rendered into links on every page; refuse script URLs.
+    if (hasUnsafeUrl(settings)) {
+      return NextResponse.json({ error: 'Links cannot start with "javascript:". Use a page path or https:// address.' }, { status: 400 });
     }
 
     const db = getDbPool();

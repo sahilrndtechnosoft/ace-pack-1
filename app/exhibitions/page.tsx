@@ -1,1 +1,1 @@
-export { default, metadata } from '../events/page';
+export { default, generateMetadata } from '../events/page';

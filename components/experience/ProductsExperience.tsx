@@ -1,4 +1,10 @@
 'use client';
+import { productsPage } from '@/lib/cms/pages/catalogue';
+import type { CmsPageContent } from '@/lib/cms/registry';
+
+const PRODUCTS_DEFAULTS = Object.fromEntries(
+  Object.entries(productsPage.sections).map(([key, section]) => [key, section.content])
+) as CmsPageContent<'products'>;
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -23,16 +29,18 @@ const capacityValue = (capacity: string) => {
 
 export default function ProductsExperience({
   initialCategories,
-  cmsSections,
+  content = PRODUCTS_DEFAULTS,
+  hidden = [],
 }: {
   initialCategories?: ProductCategory[];
-  cmsSections?: Record<string, any>;
+  content?: CmsPageContent<'products'>;
+  hidden?: string[];
 } = {}) {
+  const show = (key: keyof CmsPageContent<'products'>) => !hidden.includes(key);
   const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
 
   // Dynamic CMS sections with fallbacks
-  const heroSec = cmsSections?.hero || {};
-  const ctaSec = cmsSections?.custom_mould_cta || {};
+  const { hero: heroSec, custom_mould_cta: ctaSec } = content;
 
   const models = useMemo(() => categories.flatMap((category, c) =>
     category.products.map((product, p) => ({
@@ -184,7 +192,8 @@ export default function ProductsExperience({
 
   return (
     <div ref={root} className="xpr">
-      <section className="xpr-hero">
+      {show('hero') && (
+      <section className="xpr-hero" id="products-hero">
         <div className="xpr-wrap xpr-hero-grid">
           <div>
             <span className="xp-eyebrow">
@@ -209,6 +218,7 @@ export default function ProductsExperience({
           <LinesCarousel cards={lineCards} onSelect={selectFromCarousel} />
         </div>
       </section>
+      )}
 
       {/* Sticky filter rail */}
       <div className="xpr-bar">
@@ -268,19 +278,21 @@ export default function ProductsExperience({
         </div>
       </section>
 
-      <section className="xpr-closing">
+      {show('custom_mould_cta') && (
+      <section className="xpr-closing" id="closing">
         <div className="xpr-wrap">
-          <span className="xp-eyebrow">{ctaSec.heading || 'Product information & sample kit'}</span>
-          <h2 data-split>{ctaSec.heading ? ctaSec.heading : <>See it <em>before you order.</em></>}</h2>
+          <span className="xp-eyebrow">{ctaSec.eyebrow}</span>
+          <h2 data-split>{ctaSec.heading}</h2>
           {ctaSec.lead && <p className="text-xs text-gray-400 mt-2 max-w-xl mx-auto">{ctaSec.lead}</p>}
           <div className="xpr-closing-actions">
             <Link href={ctaSec.button_link || '/contact'} className="xp-button">
               {ctaSec.button_text || 'Discuss your requirements'} <ArrowRight size={18} />
             </Link>
-            <Link href="/downloads" className="xp-button xp-button--ghost">Download datasheets <FileDown size={18} /></Link>
+            <Link href={ctaSec.secondary_button_link} className="xp-button xp-button--ghost">{ctaSec.secondary_button_text} <FileDown size={18} /></Link>
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }

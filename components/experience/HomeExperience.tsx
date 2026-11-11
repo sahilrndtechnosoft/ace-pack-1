@@ -19,6 +19,12 @@ import { PreFooterCTA } from '@/components/sections/PreFooterCTA';
 import { ObserverCollectionShowcase } from './ObserverCollectionShowcase';
 import { CatalogueHero } from '@/components/hero/CatalogueHero';
 import { TrustCardsSection } from './TrustCardsSection';
+import { homePage } from '@/lib/cms/pages/home';
+import type { CmsPageContent } from '@/lib/cms/registry';
+
+const HOME_DEFAULTS = Object.fromEntries(
+  Object.entries(homePage.sections).map(([key, section]) => [key, section.content])
+) as CmsPageContent<'home'>;
 
 const PackagingScene = dynamic(() => import('./PackagingScene'), { ssr: false });
 gsap.registerPlugin(ScrollTrigger);
@@ -50,12 +56,9 @@ function Count({ value, suffix='' }: { value:number; suffix?:string }) {
     </span>
   );
 }
-const craftFacts=[
-  {title:'100% virgin\nPP 05.',body:'100% prime virgin food-grade polymer. Completely BPA-free, heavy-metal free and non-toxic.',tag:'01 / Material integrity'},
-  {title:'Zero-leak\nsnap rim.',body:'A hermetically tight rim seal that stops sauce and liquid escaping on a motorcycle delivery run.',tag:'02 / Sealed for the ride'},
-  {title:'−20°C to\n+120°C.',body:'From deep-freeze storage through to hot curry and microwave reheating, with no warping or crazing.',tag:'03 / Extreme thermal range'},
-];
-export default function HomeExperience() {
+export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'home'>; hidden?: string[] } = {}) {
+  const show=(key:keyof CmsPageContent<'home'>)=>!hidden.includes(key);
+  const { craft, manufacturing } = content;
   const root=useRef<HTMLDivElement>(null),state=useRef(initialSceneState());
   const [mode,setMode]=useState<'pending'|'3d'|'static'>('pending');
   const [ready,setReady]=useState(false),[progress,setProgress]=useState(0),[loadRange,setLoadRange]=useState(false);
@@ -224,8 +227,8 @@ export default function HomeExperience() {
     <a href="#main-content" className="xp-skip">Skip to content</a>
     {live&&<div className="xp-scene-layer" style={{ opacity: 0 }} aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
     <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['products-showcase','Products'],['manufacturing','Our thinking'],['closing','Sample kit']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
-    <CatalogueHero />
-    <section id="craft" className="xp-craft"><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">01 / A closer look</span><span className="xp-eyebrow">Beauty is in the details.</span></div><div className="xp-section-heading"><h2 data-split>Unbox <em>the craft.</em></h2></div><div className="xp-craft-facts">{craftFacts.map((fact,i)=><motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={live&&craftPhase!==i} {...panelMotion(!live||craftPhase===i,24)} transition={{duration:.55,ease:[.22,1,.36,1]}}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line=><span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule"/></motion.div>)}</div>{!live&&<img className="xp-craft-image" src="/models/acepack/clamshell.webp" alt="Hinged clamshell with its lid slightly open" width="1000" height="769" loading="lazy"/>}<span className="xp-craft-measure" aria-hidden="true">+<span>Designed to do more.</span>+</span><div className="xp-story-bottom"><span>One simple form.<br/><b>A world of thought.</b></span><div className="xp-story-steps">{['Consider','Open','Discover'].map((word,i)=><span key={word} className={craftPhase===i?'is-active':''}><b>0{i+1}</b>{word}</span>)}</div><span className="xp-turn-label"><Rotate3D size={20}/>360° of consideration</span></div></div></section>
+    {show('hero_banner')&&<CatalogueHero content={content.hero_banner} />}
+    {show('craft')&&<section id="craft" className="xp-craft"><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">{craft.eyebrow}</span><span className="xp-eyebrow">{craft.sideNote}</span></div><div className="xp-section-heading"><h2 data-split>{craft.heading} <em>{craft.headingHighlight}</em></h2></div><div className="xp-craft-facts">{craft.facts.map((fact,i)=><motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={live&&craftPhase!==i} {...panelMotion(!live||craftPhase===i,24)} transition={{duration:.55,ease:[.22,1,.36,1]}}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line=><span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule"/></motion.div>)}</div>{!live&&<img className="xp-craft-image" src={craft.image} alt={craft.imageAlt} width="1000" height="769" loading="lazy"/>}<span className="xp-craft-measure" aria-hidden="true">+<span>Designed to do more.</span>+</span><div className="xp-story-bottom"><span>One simple form.<br/><b>A world of thought.</b></span><div className="xp-story-steps">{['Consider','Open','Discover'].map((word,i)=><span key={word} className={craftPhase===i?'is-active':''}><b>0{i+1}</b>{word}</span>)}</div><span className="xp-turn-label"><Rotate3D size={20}/>360° of consideration</span></div></div></section>}
     {/* GSAP Observer Dual-Wrapper Counter-Sliding Collection Section */}
     <ObserverCollectionShowcase />
 
@@ -234,22 +237,22 @@ export default function HomeExperience() {
       <ProductShowcaseCarousel />
     </div>
 
-    <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">03 / Made with intent</span><Plus size={30}/></div><Reveal><h2 data-split>Robotic precision.<br/><em>1.5 million a day.</em></h2></Reveal><div className="xp-manufacturing-copy"><p>Fifteen years of injection moulding across two Daman units — Dori Kadaiya and Dabhel — supplying QSR chains, cloud kitchens and food brands in Australia, the UAE, Europe, Canada and the Middle East. Moulded exclusively from 100% prime virgin PP 05.</p><Link href="/capabilities">Inside our process <ArrowUpRight size={19}/></Link></div><div className="xp-stats"><div><Count value={1500000} suffix="+"/><p>Containers moulded daily</p></div><div><Count value={1000} suffix="+"/><p>Clients served</p></div><div><Count value={12} suffix="+"/><p>Export markets worldwide</p></div></div><p className="xp-recycling-note">ISO 9001:2015 certified manufacturing facility. PP 05 is widely recyclable — check local collection guidance for each format.</p></section>
+    {show('manufacturing')&&<section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">{manufacturing.eyebrow}</span><Plus size={30}/></div><Reveal><h2 data-split>{manufacturing.heading}<br/><em>{manufacturing.headingHighlight}</em></h2></Reveal><div className="xp-manufacturing-copy"><p>{manufacturing.body}</p><Link href={manufacturing.link.link}>{manufacturing.link.text} <ArrowUpRight size={19}/></Link></div><div className="xp-stats">{manufacturing.stats.map(stat=><div key={stat.label}><Count value={Number(stat.value)||0} suffix={stat.suffix}/><p>{stat.label}</p></div>)}</div><p className="xp-recycling-note">{manufacturing.note}</p></section>}
     
     {/* Trusted at scale - Interactive Scroll-driven Industry Cards */}
-    <TrustCardsSection />
+    {show('industries')&&<TrustCardsSection content={content.industries} />}
     
     {/* Homepage Certifications & Quality Credentials */}
-    <QualityCertificationsSection />
+    {show('certifications')&&<QualityCertificationsSection content={content.certifications} />}
 
     {/* Dedicated Export Marketing Section ("Every container we ship for export is carefully planned/prepared for delivery") */}
-    <ExportMarketingSection />
+    {show('export')&&<ExportMarketingSection content={content.export} />}
 
     {/* Help & FAQ with Factory Inquiry Form */}
-    <FaqSection />
+    {show('faq')&&<FaqSection content={content.faq} />}
 
     {/* Pre-Footer Call to Action & Gated Catalogue Download */}
-    <PreFooterCTA />
+    {show('closing_cta')&&<PreFooterCTA content={content.closing_cta} />}
 
     <div id="footer" aria-hidden="true"/>
   </div></MotionConfig>;

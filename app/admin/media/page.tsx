@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Check,
   Filter,
+  RefreshCw,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 
@@ -106,14 +107,49 @@ export default function AdminMediaPage() {
 
     try {
       const res = await fetch(`/api/admin/media?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         showToast(`File "${name}" deleted.`);
         fetchMedia();
+      } else if (res.status === 409 && Array.isArray(data.usedIn)) {
+        window.alert(`"${name}" can't be deleted because it is still used here:\n\n• ${data.usedIn.slice(0, 12).join('\n• ')}${data.usedIn.length > 12 ? `\n…and ${data.usedIn.length - 12} more` : ''}\n\nChoose a different image in those places first.`);
       } else {
-        showToast('Failed to delete file.', 'error');
+        showToast(data.error || 'Failed to delete file.', 'error');
       }
     } catch {
       showToast('Network error deleting file.', 'error');
+    }
+  };
+
+  const saveAltText = async (item: MediaItem, altText: string) => {
+    if (altText.trim() === (item.alt_text || '').trim()) return;
+    try {
+      const res = await fetch('/api/admin/media', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, alt_text: altText }),
+      });
+      if (!res.ok) throw new Error();
+      setMedia((prev) => prev.map((m) => (m.id === item.id ? { ...m, alt_text: altText.trim() } : m)));
+      showToast('Image description saved.');
+    } catch {
+      showToast('Could not save the description.', 'error');
+    }
+  };
+
+  const replaceFile = async (item: MediaItem, file: File) => {
+    if (!confirm(`Replace "${item.original_name}" everywhere it is used on the website?`)) return;
+    const body = new FormData();
+    body.append('id', item.id);
+    body.append('file', file);
+    try {
+      const res = await fetch('/api/admin/media', { method: 'PUT', body });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Replace failed.');
+      showToast('File replaced. Pages using it now show the new version.');
+      fetchMedia();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Replace failed.', 'error');
     }
   };
 
@@ -264,6 +300,18 @@ export default function AdminMediaPage() {
                     <span>{formatFileSize(item.size)}</span>
                     <span className="uppercase">{item.category}</span>
                   </div>
+                  {isImage && (
+                    <input
+                      type="text"
+                      defaultValue={item.alt_text || ''}
+                      onBlur={(e) => saveAltText(item, e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
+                      placeholder="Describe the image (alt text)"
+                      aria-label={`Description of ${item.original_name}`}
+                      maxLength={255}
+                      className="w-full mt-1 px-2 py-1.5 bg-[#141A24] border border-[#222C3D] rounded-lg text-[11px] text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+                    />
+                  )}
                 </div>
 
                 {/* Actions */}
@@ -296,6 +344,23 @@ export default function AdminMediaPage() {
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
+
+                  {item.url.startsWith('/uploads/') && (
+                    <label title="Replace file (keeps the same link)" className="p-1.5 rounded-lg bg-[#141A24] hover:bg-[#1E2633] text-gray-400 hover:text-white transition-colors cursor-pointer">
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span className="sr-only">Replace {item.original_name}</span>
+                      <input
+                        type="file"
+                        className="sr-only"
+                        accept={item.mime_type}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          e.target.value = '';
+                          if (file) replaceFile(item, file);
+                        }}
+                      />
+                    </label>
+                  )}
 
                   <button
                     type="button"

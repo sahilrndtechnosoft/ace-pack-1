@@ -22,7 +22,21 @@ import {
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { AdminPagination } from '@/components/admin/AdminPagination';
+
+// Older posts stored plain paragraphs; show them in the rich-text editor as HTML.
+function paragraphsToHtml(content: string): string {
+  let paragraphs: string[] = [];
+  try {
+    const parsed = JSON.parse(content);
+    paragraphs = Array.isArray(parsed) ? parsed.map(String) : [String(content)];
+  } catch {
+    paragraphs = String(content || '').split(/\n{2,}/);
+  }
+  const escape = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return paragraphs.filter((p) => p.trim()).map((p) => `<p>${escape(p)}</p>`).join('');
+}
 
 interface BlogPostItem {
   id: string;
@@ -40,6 +54,10 @@ interface BlogPostItem {
   read_time: string;
   date: string;
   is_published: number;
+  content_html?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  canonical?: string | null;
 }
 
 export default function AdminBlogsPage() {
@@ -59,11 +77,11 @@ export default function AdminBlogsPage() {
   // Modal State
   const [modalOpen, setModalOpen] = useState(false);
   const [activeBlog, setActiveBlog] = useState<any | null>(null);
-  const [paragraphs, setParagraphs] = useState<string[]>([]);
   const [takeaways, setTakeaways] = useState<string[]>([]);
   const [tagsStr, setTagsStr] = useState<string>('');
-  const [formTab, setFormTab] = useState<'meta' | 'media' | 'summary' | 'content' | 'tags'>('meta');
+  const [formTab, setFormTab] = useState<'meta' | 'media' | 'summary' | 'content' | 'seo' | 'tags'>('meta');
   const [submitting, setSubmitting] = useState(false);
+  const [slugUnlocked, setSlugUnlocked] = useState(false);
 
   const fetchBlogs = async () => {
     setLoading(true);
@@ -96,9 +114,10 @@ export default function AdminBlogsPage() {
       author_avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop',
       read_time: '4 min read',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      is_published: 1,
+      is_published: 0,
+      content_html: '',
     });
-    setParagraphs(['']);
+    setSlugUnlocked(true);
     setTakeaways(['']);
     setTagsStr('Food Packaging, Takeaway, Leak-Proof');
     setFormTab('meta');
@@ -106,12 +125,8 @@ export default function AdminBlogsPage() {
   };
 
   const openEditModal = (blog: BlogPostItem) => {
-    setActiveBlog(blog);
-    try {
-      setParagraphs(JSON.parse(blog.content) || ['']);
-    } catch {
-      setParagraphs([blog.content]);
-    }
+    setSlugUnlocked(false);
+    setActiveBlog({ ...blog, content_html: blog.content_html || paragraphsToHtml(blog.content) });
     try {
       setTakeaways(JSON.parse(blog.takeaways || '[]') || ['']);
     } catch {
@@ -137,9 +152,20 @@ export default function AdminBlogsPage() {
       .map((t) => t.trim())
       .filter(Boolean);
 
+    if (!activeBlog.content_html || !activeBlog.content_html.replace(/<[^>]+>/g, '').trim()) {
+      showToast('Please write the article content (tab 4).', 'error');
+      setFormTab('content');
+      setSubmitting(false);
+      return;
+    }
+    if (activeBlog.canonical && !/^https?:\/\//i.test(activeBlog.canonical)) {
+      showToast('Canonical URL must start with https://', 'error');
+      setFormTab('seo');
+      setSubmitting(false);
+      return;
+    }
     const payload = {
       ...activeBlog,
-      content: paragraphs.filter((p) => p.trim()),
       takeaways: takeaways.filter((t) => t.trim()),
       tags: tagsArray,
     };
@@ -623,7 +649,18 @@ export default function AdminBlogsPage() {
                     : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
               >
-                4. Article Content ({paragraphs.length})
+                4. Article Content
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormTab('seo')}
+                className={`pb-2.5 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
+                  formTab === 'seo'
+                    ? 'border-[#b99750] text-[#b99750]'
+                    : 'border-transparent text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                5. SEO
               </button>
               <button
                 type="button"
@@ -634,7 +671,7 @@ export default function AdminBlogsPage() {
                     : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
               >
-                5. Tags
+                6. Tags
               </button>
             </div>
 
@@ -657,7 +694,7 @@ export default function AdminBlogsPage() {
                           setActiveBlog({
                             ...activeBlog,
                             title,
-                            slug: activeBlog.slug ? activeBlog.slug : slug,
+                            slug: activeBlog.id || activeBlog.slug ? activeBlog.slug : slug,
                           });
                         }}
                         className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
@@ -668,13 +705,27 @@ export default function AdminBlogsPage() {
                       <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
                         URL Slug *
                       </label>
-                      <input
-                        type="text"
-                        required
-                        value={activeBlog.slug || ''}
-                        onChange={(e) => setActiveBlog({ ...activeBlog, slug: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white font-mono focus:outline-none focus:border-[#b99750]"
-                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          required
+                          disabled={!slugUnlocked}
+                          value={activeBlog.slug || ''}
+                          onChange={(e) => setActiveBlog({ ...activeBlog, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') })}
+                          className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white font-mono focus:outline-none focus:border-[#b99750] disabled:opacity-60"
+                        />
+                        {!slugUnlocked && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm('Changing the URL breaks existing links and Google rankings for this article. Change it anyway?')) setSlugUnlocked(true);
+                            }}
+                            className="px-3 rounded-xl border border-[#222C3D] text-xs font-bold text-gray-300 hover:text-white shrink-0 cursor-pointer"
+                          >
+                            Change
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -845,49 +896,35 @@ export default function AdminBlogsPage() {
 
               {/* Tab 4: Content */}
               {formTab === 'content' && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-300">
-                      Article Paragraphs / Content Blocks
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => setParagraphs([...paragraphs, ''])}
-                      className="text-xs text-[#b99750] hover:underline font-bold"
-                    >
-                      + Add Paragraph
-                    </button>
-                  </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-400">This is exactly what readers see on the article page. Use Heading for section titles.</p>
+                  <RichTextEditor
+                    value={activeBlog.content_html || ''}
+                    onChange={(html) => setActiveBlog((prev: any) => ({ ...prev, content_html: html }))}
+                  />
+                </div>
+              )}
 
-                  {paragraphs.map((p, idx) => (
-                    <div key={idx} className="p-3 rounded-2xl bg-[#141A24] border border-[#222C3D] space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-[#b99750] font-bold">
-                          Paragraph #{idx + 1}
-                        </span>
-                        {paragraphs.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => setParagraphs(paragraphs.filter((_, i) => i !== idx))}
-                            className="text-[11px] text-gray-500 hover:text-red-400"
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
-                      <textarea
-                        rows={3}
-                        value={p}
-                        onChange={(e) => {
-                          const updated = [...paragraphs];
-                          updated[idx] = e.target.value;
-                          setParagraphs(updated);
-                        }}
-                        placeholder="Write article body paragraph content..."
-                        className="w-full px-3 py-2 bg-[#0D1117] border border-[#1E2633] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
-                      />
-                    </div>
-                  ))}
+              {/* Tab 5: SEO */}
+              {formTab === 'seo' && (
+                <div className="space-y-4">
+                  <p className="text-xs text-gray-400">How this article appears in Google. Leave empty to use the article title and summary.</p>
+                  <div>
+                    <label htmlFor="blog-meta-title" className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
+                      Google title <span className="normal-case font-normal text-gray-500">({(activeBlog.meta_title || '').length}/60)</span>
+                    </label>
+                    <input id="blog-meta-title" type="text" maxLength={120} value={activeBlog.meta_title || ''} onChange={(e) => setActiveBlog({ ...activeBlog, meta_title: e.target.value })} placeholder={`${activeBlog.title || 'Article title'} | Ace Packaging`} className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]" />
+                  </div>
+                  <div>
+                    <label htmlFor="blog-meta-desc" className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
+                      Meta description <span className="normal-case font-normal text-gray-500">({(activeBlog.meta_description || '').length}/160)</span>
+                    </label>
+                    <textarea id="blog-meta-desc" rows={3} maxLength={320} value={activeBlog.meta_description || ''} onChange={(e) => setActiveBlog({ ...activeBlog, meta_description: e.target.value })} placeholder={activeBlog.summary || ''} className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]" />
+                  </div>
+                  <div>
+                    <label htmlFor="blog-canonical" className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">Canonical URL (optional)</label>
+                    <input id="blog-canonical" type="text" value={activeBlog.canonical || ''} onChange={(e) => setActiveBlog({ ...activeBlog, canonical: e.target.value })} placeholder={`https://www.acepack.co.in/blog/${activeBlog.slug || 'article-url'}`} className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white font-mono focus:outline-none focus:border-[#b99750]" />
+                  </div>
                 </div>
               )}
 
@@ -936,7 +973,7 @@ export default function AdminBlogsPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        const tabs: Array<'meta' | 'media' | 'summary' | 'content' | 'tags'> = ['meta', 'media', 'summary', 'content', 'tags'];
+                        const tabs: Array<'meta' | 'media' | 'summary' | 'content' | 'seo' | 'tags'> = ['meta', 'media', 'summary', 'content', 'seo', 'tags'];
                         const currIdx = tabs.indexOf(formTab);
                         if (currIdx > 0) setFormTab(tabs[currIdx - 1]);
                       }}
@@ -949,7 +986,7 @@ export default function AdminBlogsPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        const tabs: Array<'meta' | 'media' | 'summary' | 'content' | 'tags'> = ['meta', 'media', 'summary', 'content', 'tags'];
+                        const tabs: Array<'meta' | 'media' | 'summary' | 'content' | 'seo' | 'tags'> = ['meta', 'media', 'summary', 'content', 'seo', 'tags'];
                         const currIdx = tabs.indexOf(formTab);
                         if (currIdx < tabs.length - 1) setFormTab(tabs[currIdx + 1]);
                       }}
@@ -968,6 +1005,17 @@ export default function AdminBlogsPage() {
                   >
                     Cancel
                   </button>
+                  {activeBlog.id && (
+                    <a
+                      href={`/api/admin/preview?path=${encodeURIComponent(`/blog/${activeBlog.slug}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Shows the last saved version, including drafts"
+                      className="px-4 py-2 rounded-xl border border-[#222C3D] text-xs font-bold text-gray-300 hover:text-white"
+                    >
+                      Preview saved version
+                    </a>
+                  )}
                   <button
                     type="submit"
                     disabled={submitting}

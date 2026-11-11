@@ -1,12 +1,13 @@
 'use client';
 
+import { homeClosingCta } from '@/lib/cms/pages/home';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Container } from '../ui/Container';
 import { PackageCheck, FileDown, CheckCircle2, ArrowRight } from 'lucide-react';
 import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 
-export const PreFooterCTA: React.FC = () => {
+export const PreFooterCTA: React.FC<{ content?: typeof homeClosingCta }> = ({ content: c = homeClosingCta }) => {
   const [catalogueOpen, setCatalogueOpen] = useState(false);
 
   return (
@@ -21,23 +22,23 @@ export const PreFooterCTA: React.FC = () => {
           <div className="max-w-4xl mx-auto bg-white rounded-3xl border-2 border-[#E6DBC6] p-6 sm:p-12 shadow-xl text-center">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#b99750]/15 border border-[#b99750]/30 text-[#b99750] text-xs font-extrabold uppercase tracking-wider mb-4">
               <PackageCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>Complimentary Factory Samples</span>
+              <span>{c.badge}</span>
             </span>
 
             <h2 className="text-2xl sm:text-3xl md:text-[32px] font-extrabold text-[var(--ace-ink)] tracking-tight leading-snug sm:leading-tight mb-4">
-              Ready to Upgrade Your Food Delivery Packaging?
+              {c.heading}
             </h2>
 
             <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-              Test our zero-leak snap seals and extreme thermal durability in your own kitchen or packaging line. We dispatch curated sample kits across India and global ports within 24 hours.
+              {c.description}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
               <Link
-                href="/contact"
+                href={c.primaryButton.link}
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
               >
-                <span>Request Free Sample Kit</span>
+                <span>{c.primaryButton.text}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -46,28 +47,22 @@ export const PreFooterCTA: React.FC = () => {
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-full border-2 border-[var(--ace-ink)] hover:bg-[var(--ace-ink)] hover:text-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center transition-all duration-300 cursor-pointer"
               >
                 <FileDown className="w-4 h-4" />
-                <span>Download Product Catalogue</span>
+                <span>{c.catalogueButtonText}</span>
               </button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[#E6DBC6]/60 text-xs text-gray-600">
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>Zero Commitment Evaluation</span>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>Dispatch Within 24 Hours</span>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>ISO 9001:2015 Certified Facility</span>
-              </div>
+              {c.highlights.map((item) => (
+                <div key={item} className="flex items-center justify-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0" />
+                  <span>{item}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="mt-8 text-center text-xs sm:text-sm text-gray-500 font-medium tracking-wide">
-            Daman, India · sales@acepack.co.in · +91 99250 15906
+            {c.footerLine}
           </div>
         </Container>
       </section>

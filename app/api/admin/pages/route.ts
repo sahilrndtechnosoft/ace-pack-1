@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
+import { customPageDef, isBuiltInSlug } from '@/lib/cms/pages/custom';
 
 export async function GET(request: NextRequest) {
   try {
@@ -42,7 +43,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Page title and slug are required.' }, { status: 400 });
     }
 
-    const cleanSlug = slug.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+    const cleanSlug = String(slug).toLowerCase().trim().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    if (!cleanSlug) {
+      return NextResponse.json({ error: 'Please enter a valid URL slug (letters, numbers and dashes).' }, { status: 400 });
+    }
+    if (isBuiltInSlug(cleanSlug)) {
+      return NextResponse.json({ error: `/${cleanSlug} is already a built-in website page. Choose another URL.` }, { status: 409 });
+    }
     const id = 'page_' + cleanSlug;
 
     const db = getDbPool();
@@ -53,14 +60,27 @@ export async function POST(request: NextRequest) {
         id,
         cleanSlug,
         title.trim(),
-        seo_title || title.trim(),
-        seo_description || '',
-        og_image || '/images/hero-bg-image.jpg',
-        canonical_url || `https://acepack.co.in/${cleanSlug}`,
+        seo_title || null,
+        seo_description || null,
+        og_image || null,
+        canonical_url || null,
         robots_index !== undefined ? (robots_index ? 1 : 0) : 1,
         is_published !== undefined ? (is_published ? 1 : 0) : 1,
       ]
     );
+
+    // Give the new page its editable sections straight away.
+    let order = 0;
+    for (const [key, section] of Object.entries(customPageDef(title.trim()).sections)) {
+      order += 1;
+      const json = JSON.stringify(section.content);
+      await db.query(
+        `INSERT INTO sections (id, page_slug, section_key, title, subtitle, draft_content, published_content, is_enabled, is_published, sort_order, created_at, updated_at)
+         VALUES (?, ?, ?, ?, '', ?, ?, 1, 1, ?, NOW(), NOW())
+         ON DUPLICATE KEY UPDATE id = id`,
+        [`sec_${cleanSlug}_${key}`, cleanSlug, key, section.label, json, json, order]
+      );
+    }
 
     await logActivity(admin.email, 'CREATE_PAGE', 'PAGE', id, { title, slug: cleanSlug });
 
@@ -102,8 +122,12 @@ export async function PUT(request: NextRequest) {
 
     const oldSlug = existing[0].slug;
     let newSlug = oldSlug;
-    if (slug && oldSlug !== 'home') {
+    // Built-in pages live at fixed routes in the site code; only custom pages can be moved.
+    if (slug && !isBuiltInSlug(oldSlug)) {
       newSlug = slug.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+    }
+    if (newSlug !== oldSlug && isBuiltInSlug(newSlug)) {
+      return NextResponse.json({ error: `/${newSlug} is already a built-in website page. Choose another URL.` }, { status: 409 });
     }
 
     await db.query(
@@ -178,6 +202,9 @@ export async function DELETE(request: NextRequest) {
     }
 
     const page = rows[0];
+    if (isBuiltInSlug(page.slug)) {
+      return NextResponse.json({ error: `"${page.title}" is a built-in website page and cannot be deleted. You can hide its sections instead.` }, { status: 400 });
+    }
     // Delete sections of this page
     await db.query('DELETE FROM sections WHERE page_slug = ?', [page.slug]);
     // Delete the page

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import AboutExperience from '@/components/experience/AboutExperience';
-import { getCmsPage } from '@/lib/db/content';
+import { getPageContent } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +20,6 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutUsPage() {
-  const { sections } = await getCmsPage('about');
-  return <AboutExperience cmsSections={sections} />;
+  const { content, hidden } = await getPageContent('about');
+  return <AboutExperience content={content} hidden={hidden} />;
 }

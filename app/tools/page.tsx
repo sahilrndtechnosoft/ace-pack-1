@@ -1,7 +1,30 @@
 import type { Metadata } from 'next';
 import { ToolsCalculator } from '@/components/sections/ToolsCalculator';
 import '@/components/sections/resource-pages.css';
-export const metadata: Metadata = {title:'Packaging Tools | Ace Packaging',description:'Convert container capacities and estimate cartons for your packaging requirements.'};
-export default function ToolsPage() {
-  return <div className="resource-page"><section className="resource-hero"><div className="container-custom"><span className="xp-eyebrow">Resources / Tools</span><h1>A little planning.<br />A clearer brief.</h1><p>Simple tools to help you compare container capacities and prepare your packaging requirements.</p></div></section><div className="container-custom resource-content"><ToolsCalculator /><p className="resource-note">Planning estimates only. Actual packing configurations, product capacities and shipment details are confirmed with our team.</p></div></div>;
+const staticMetadata: Metadata = {title:'Packaging Tools | Ace Packaging',description:'Convert container capacities and estimate cartons for your packaging requirements.'};
+import { cmsMetadata, getPageContent } from '@/lib/db/content';
+
+export function generateMetadata(): Promise<Metadata> {
+  return cmsMetadata('tools', staticMetadata);
+}
+export default async function ToolsPage() {
+  const { content, hidden } = await getPageContent('tools');
+  const { hero, note } = content;
+  return (
+    <div className="resource-page">
+      {!hidden.includes('hero') && (
+        <section className="resource-hero">
+          <div className="container-custom">
+            <span className="xp-eyebrow">{hero.eyebrow}</span>
+            <h1>{hero.heading}<br />{hero.headingSecondLine}</h1>
+            <p>{hero.description}</p>
+          </div>
+        </section>
+      )}
+      <div className="container-custom resource-content">
+        <ToolsCalculator />
+        {!hidden.includes('note') && <p className="resource-note">{note.text}</p>}
+      </div>
+    </div>
+  );
 }

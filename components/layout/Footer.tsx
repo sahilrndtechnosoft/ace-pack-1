@@ -1,5 +1,7 @@
 'use client';
 
+import { withDefaults } from '@/lib/cms/merge';
+import { footerDefaults } from '@/lib/cms/site-settings';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -32,9 +34,8 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
       .catch(() => {});
   }, []);
 
-  const phoneNumbers = liveSettings?.phoneNumbers || initialSettings?.phoneNumbers || '(+91) 99250 15906 / (+91) 99251 55799';
-  const domesticEmail = liveSettings?.domesticEmail || initialSettings?.domesticEmail || 'acepack2011@gmail.com';
-  const exportEmail = liveSettings?.exportEmail || initialSettings?.exportEmail || 'sales@acepack.co.in / exports@acepack.co.in';
+  const site = withDefaults(footerDefaults, liveSettings);
+  const { phoneNumbers, domesticEmail, exportEmail } = site;
 
   const pathname = usePathname();
   const [email, setEmail] = useState('');
@@ -77,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
               <Link href="/" className="inline-block mb-6 group">
                 <div className="bg-white px-4 py-2.5 rounded-2xl border border-[#b99750]/40 shadow-xs inline-flex items-center group-hover:border-[#b99750] transition-colors">
                   <img
-                    src="/images/Ace_New_Update_Logo-01.png"
+                    src={site.logo}
                     alt="Ace Packaging"
                     width={400}
                     height={178}
@@ -89,23 +90,23 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
               </Link>
 
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-sm mb-6">
-                The foundation of Ace Packaging was laid to manufacture, distribute, and export premium food packaging containers. With over 15 years of experience, we offer our customers the finest, durable, and extensive quality products.
+                {site.description}
               </p>
 
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#b99750]/40 text-xs font-semibold text-[#8c6f2a] shadow-2xs">
                 <ShieldCheck className="w-4 h-4 text-[#b99750] shrink-0" />
-                <span>ISO 9001:2015 Certified Facility</span>
+                <span>{site.badge}</span>
               </div>
             </div>
 
             <div className="mt-8 flex flex-col gap-2.5 text-xs text-gray-700">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#b99750] shrink-0 mt-0.5" />
-                <span>Unit 1: Survey No. 111, Gala No. 2, Village Dori Kadaiya, Daman - 396210</span>
+                <span>Unit 1: {site.unit1Address}</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#b99750] shrink-0 mt-0.5" />
-                <span>Unit 2: Survey No. 201/(24), Nr. Atiyawad Check Post, Dabhel, Daman - 396210</span>
+                <span>Unit 2: {site.unit2Address}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <PhoneCall className="w-4 h-4 text-[#b99750] shrink-0" />
@@ -124,22 +125,11 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
 
           {/* Quick Links Column */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">Quick Links</h4>
+            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">{site.quickLinksHeading}</h4>
             <ul className="space-y-2.5 text-xs font-semibold text-gray-600">
-              <li><Link href="/" className="hover:text-[#b99750] transition-colors">Home</Link></li>
-              <li><Link href="/categories" className="hover:text-[#b99750] transition-colors">Our Products</Link></li>
-              <li><Link href="/products" className="hover:text-[#b99750] transition-colors">All Product Catalog</Link></li>
-              <li><Link href="/about" className="hover:text-[#b99750] transition-colors">About Us</Link></li>
-              <li><Link href="/industries" className="hover:text-[#b99750] transition-colors">Industries We Serve</Link></li>
-              <li><Link href="/quality" className="hover:text-[#b99750] transition-colors">Quality &amp; Certifications</Link></li>
-              <li><Link href="/process" className="hover:text-[#b99750] transition-colors">Manufacturing Process</Link></li>
-              <li><Link href="/downloads" className="hover:text-[#b99750] transition-colors">Download Center</Link></li>
-              <li><Link href="/customization" className="hover:text-[#b99750] transition-colors">OEM &amp; Customization</Link></li>
-              <li><Link href="/tools" className="hover:text-[#b99750] transition-colors">Tools</Link></li>
-              <li><Link href="/events" className="hover:text-[#b99750] transition-colors">Exhibitions &amp; Events</Link></li>
-              <li><Link href="/gallery" className="hover:text-[#b99750] transition-colors">Visual Gallery</Link></li>
-              <li><Link href="/blogs" className="hover:text-[#b99750] transition-colors">Blog &amp; Articles</Link></li>
-              <li><Link href="/contact" className="hover:text-[#b99750] transition-colors">Contact Team</Link></li>
+              {site.quickLinks.map((item) => (
+                <li key={`${item.label}-${item.link}`}><Link href={item.link} className="hover:text-[#b99750] transition-colors">{item.label}</Link></li>
+              ))}
             </ul>
           </div>
 
@@ -162,9 +152,9 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
 
           {/* Newsletter Column */}
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">Catalog &amp; Updates</h4>
+            <h4 className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider mb-5">{site.newsletterHeading}</h4>
             <p className="text-xs text-gray-600 leading-relaxed mb-4">
-              Subscribe to receive our latest product catalog, new CAD specifications, and export packaging updates.
+              {site.newsletterText}
             </p>
 
             {subscribed ? (
@@ -223,7 +213,7 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 text-center md:text-left">
-          <p>{liveSettings?.copyrightText || initialSettings?.copyrightText || `© ${new Date().getFullYear()} Ace Packaging Solutions. All rights reserved.`}</p>
+          <p>{site.copyrightText || `© ${new Date().getFullYear()} Ace Packaging Solutions. All rights reserved.`}</p>
           <p className="text-gray-500">
             Designed and Developed by{' '}
             <a
@@ -236,6 +226,9 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
             </a>
           </p>
           <div className="flex items-center gap-6">
+            {site.socialLinks.filter((social) => social.label && /^https?:\/\//.test(social.link)).map((social) => (
+              <a key={social.link} href={social.link} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--ace-ink)] transition-colors">{social.label}</a>
+            ))}
             <Link href="/privacy" className="hover:text-[var(--ace-ink)] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[var(--ace-ink)] transition-colors">Terms &amp; Conditions</Link>
           </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 // Lenis ships its required stylesheet rather than injecting it at runtime
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -25,9 +26,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [settings, categories] = await Promise.all([
+  const [settings, categories, draft] = await Promise.all([
     getCmsSettings(),
     getCmsCategories(),
+    draftMode(),
   ]);
   const headerSettings = settings?.header_settings || null;
   const footerSettings = settings?.footer_settings || null;
@@ -43,6 +45,12 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col justify-between bg-background text-foreground font-sans max-w-full w-full relative">
+        {draft.isEnabled && (
+          <div role="status" className="sticky top-0 z-[100] bg-amber-400 text-black text-xs font-bold text-center py-2 px-4">
+            Preview mode: you are seeing unpublished drafts.{' '}
+            <a href="/api/admin/preview?exit=1" className="underline">Exit preview</a>
+          </div>
+        )}
         <SiteVisitorTracker />
         <ContentProtection />
         <SmoothScroll />

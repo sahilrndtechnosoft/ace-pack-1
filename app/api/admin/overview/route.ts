@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const [enabledSections]: any = await db.query('SELECT count(*) as count FROM sections WHERE is_enabled = 1');
     const [categoryRows]: any = await db.query('SELECT count(*) as count FROM categories');
     const [productRows]: any = await db.query('SELECT count(*) as count FROM products');
-    const [blogRows]: any = await db.query('SELECT count(*) as count FROM blogs');
+    const [blogRows]: any = await db.query('SELECT count(*) as count, COALESCE(SUM(is_published = 1), 0) as published FROM blogs');
     const [eventRows]: any = await db.query('SELECT count(*) as count FROM events');
     const [downloadRows]: any = await db.query('SELECT count(*) as count FROM downloads');
     const [mediaRows]: any = await db.query('SELECT count(*) as count FROM media');
@@ -70,6 +70,8 @@ export async function GET(request: NextRequest) {
         totalCategories: categoryRows[0]?.count || 0,
         totalProducts: productRows[0]?.count || 0,
         totalBlogs: blogRows[0]?.count || 0,
+        publishedBlogs: Number(blogRows[0]?.published || 0),
+        draftBlogs: (blogRows[0]?.count || 0) - Number(blogRows[0]?.published || 0),
         totalEvents: eventRows[0]?.count || 0,
         totalDownloads: downloadRows[0]?.count || 0,
         totalMedia: mediaRows[0]?.count || 0,

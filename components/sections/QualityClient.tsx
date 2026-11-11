@@ -12,46 +12,48 @@ import {
   X,
 } from 'lucide-react';
 import { CatalogueDownloadModal } from '@/components/ui/CatalogueDownloadModal';
+import { qualityPage } from '@/lib/cms/pages/quality';
+import type { CmsPageContent } from '@/lib/cms/registry';
 
-export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = () => {
+const QUALITY_DEFAULTS = {
+  banner: qualityPage.sections.banner.content,
+  certificate: qualityPage.sections.certificate.content,
+};
+
+export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidden?: string[] }> = ({ content = QUALITY_DEFAULTS, hidden = [] }) => {
+  const { banner, certificate: c } = content;
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState<{ title: string; url: string }>({
-    title: 'ISO 9001:2015 Management System Certificate - Ace Packaging',
-    url: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
-  });
+  const [selectedDoc, setSelectedDoc] = useState<{ title: string; url: string }>({ title: c.certificateTitle, url: c.certificateFile });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleDownloadCertificate = () => {
-    setSelectedDoc({
-      title: 'ISO 9001:2015 Management System Certificate - Ace Packaging',
-      url: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
-    });
+    setSelectedDoc({ title: c.certificateTitle, url: c.certificateFile });
     setDownloadModalOpen(true);
   };
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
       {/* Page Banner */}
-      <PageBanner
-        title="Quality Assurance & Certifications"
-        subtitle="Every container is moulded from certified virgin PP 05 in our ISO 9001:2015 certified facility in Daman, with 100% leak testing and ±0.02 mm precision tolerance across every production batch."
-        badge="QUALITY ASSURANCE & STANDARDS"
-        bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
+      {!hidden.includes('banner') && <PageBanner
+        title={banner.title}
+        subtitle={banner.subtitle}
+        badge={banner.badge}
+        bgImage={banner.bgImage}
         breadcrumbs={[{ name: 'Quality & Certification', href: '/quality' }]}
-      />
+      />}
 
       {/* Featured Official ISO 9001:2015 Certificate Showcase */}
-      <section className="py-12 md:py-16">
+      {!hidden.includes('certificate') && <section className="py-12 md:py-16">
         <div className="container-custom">
           <div className="max-w-3xl mb-10 text-left">
             <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-2">
-              Official Plant Accreditation
+              {c.eyebrow}
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1A1D20] tracking-tight">
-              ISO 9001:2015 Quality Management System
+              {c.heading}
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 mt-2.5 leading-relaxed">
-              Ace Packaging operates under an externally audited and certified Quality Management System assessed by SGS United Kingdom Ltd with UKAS and IAF international recognition.
+              {c.description}
             </p>
           </div>
 
@@ -61,13 +63,13 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
                 {/* Certificate Frame Preview */}
                 <div className="lg:col-span-5 flex flex-col items-center">
                   <div
-                    onClick={() => setPreviewImage('/images/certifications/ace-packaging-iso-9001-certificate.jpg')}
+                    onClick={() => setPreviewImage(c.certificateImage)}
                     className="relative group/cert w-full max-w-sm rounded-2xl bg-[#FAF8F4] p-3 sm:p-4 border-2 border-[#E6DBC6] shadow-xl hover:shadow-2xl transition-all cursor-pointer overflow-hidden"
                   >
                     <div className="aspect-[3/4] w-full bg-white rounded-xl overflow-hidden relative border border-black/5">
                       <img
-                        src="/images/certifications/ace-packaging-iso-9001-certificate.jpg"
-                        alt="SGS ISO 9001:2015 Certificate - Ace Packaging"
+                        src={c.certificateImage}
+                        alt={c.imageAlt}
                         className="w-full h-full object-cover object-top group-hover/cert:scale-103 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/cert:opacity-100 flex flex-col items-center justify-center transition-opacity text-white text-xs font-bold gap-1.5 backdrop-blur-2xs">
@@ -77,8 +79,8 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
                     </div>
 
                     <div className="mt-3 flex items-center justify-between px-1 text-[11px] text-gray-600 font-semibold">
-                      <span className="text-[#a8812f] font-bold">Certificate IN25/00000652</span>
-                      <span>SGS · UKAS · IAF</span>
+                      <span className="text-[#a8812f] font-bold">{c.imageCaption}</span>
+                      <span>{c.imageCaptionRight}</span>
                     </div>
                   </div>
                 </div>
@@ -88,73 +90,36 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
                   <div>
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#b99750]/15 text-[#96742e] border border-[#b99750]/30 text-xs font-extrabold uppercase tracking-wider mb-4">
                       <Award className="w-4 h-4 text-[#b99750]" />
-                      <span>Official SGS UKAS Accreditation</span>
+                      <span>{c.badge}</span>
                     </div>
 
                     <h3 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-3 leading-snug">
-                      The Management System of Ace Packaging
+                      {c.title}
                     </h3>
 
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
-                      Assessed and certified as meeting the requirements of <strong>ISO 9001:2015</strong> for the following activities: <em>Manufacturing &amp; Supply of Injection Moulded Food Packaging Articles</em> across our Daman Unit 1 and Unit 2 manufacturing facilities.
+                      {c.body}
                     </p>
 
                     {/* Metadata Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                      <div className="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1">
-                          Certificate Number
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-[#1A1D20] font-mono">
-                          IN25/00000652
-                        </span>
-                      </div>
-
-                      <div className="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1">
-                          Auditing &amp; Issuing Body
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-[#1A1D20]">
-                          SGS United Kingdom Ltd (UKAS 0005)
-                        </span>
-                      </div>
-
-                      <div className="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1">
-                          Validity Period
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-emerald-700">
-                          01 August 2025 – 01 August 2028
-                        </span>
-                      </div>
-
-                      <div className="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1">
-                          Certified Manufacturing Site
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-[#1A1D20]">
-                          Survey No: 142/1, Dabhel, Daman - 396210, India
-                        </span>
-                      </div>
+                      {c.details.map((d) => (
+                        <div key={d.label} className="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#E6DBC6]">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1">{d.label}</span>
+                          <span className="text-xs sm:text-sm font-bold text-[#1A1D20]">{d.value}</span>
+                        </div>
+                      ))}
                     </div>
-
                     {/* Standard Verification Points */}
                     <div className="space-y-2 mb-6">
-                      <div className="flex items-center gap-2 text-xs font-medium text-gray-700">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#a8812f] shrink-0" />
-                        <span>Externally audited Quality Management System for precision injection moulding</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs font-medium text-gray-700">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#a8812f] shrink-0" />
-                        <span>100% prime virgin polypropylene (PP 05) with zero chemical migration</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs font-medium text-gray-700">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#a8812f] shrink-0" />
-                        <span>Full batch serialization and raw material traceability from resin intake to dispatch</span>
-                      </div>
+                      {c.points.map((point) => (
+                        <div key={point} className="flex items-center gap-2 text-xs font-medium text-gray-700">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#a8812f] shrink-0" />
+                          <span>{point}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-
                   {/* Action Button: Only one button with text "Download" */}
                   <div className="pt-4 border-t border-gray-100 flex items-center">
                     <button
@@ -163,7 +128,7 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
                       className="inline-flex items-center justify-center gap-2 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3.5 px-8 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md shadow-[#b99750]/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                     >
                       <FileDown className="w-4 h-4" />
-                      <span>Download</span>
+                      <span>{c.downloadButtonText}</span>
                     </button>
                   </div>
                 </div>
@@ -171,7 +136,7 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
             </div>
           </Reveal>
         </div>
-      </section>
+      </section>}
 
       {/* Catalogue & Certificate Download / Email Modal */}
       <CatalogueDownloadModal
@@ -215,7 +180,7 @@ export const QualityClient: React.FC<{ cmsSections?: Record<string, any> }> = ()
             </div>
             <div className="p-3 border-t border-gray-100 flex items-center justify-between gap-3 bg-[#FAF8F4]">
               <span className="text-[11px] text-gray-600 font-semibold">
-                Certificate IN25/00000652 · Valid through August 2028
+                {c.validityNote}
               </span>
               <button
                 type="button"

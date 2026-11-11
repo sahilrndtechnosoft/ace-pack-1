@@ -6,8 +6,12 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
-import { aboutHero, aboutStats, aboutOverview, milestones, mdDesk, values, plant, leadership } from '@/lib/data/about';
-import { certifications } from '@/lib/data/quality';
+import { aboutPage } from '@/lib/cms/pages/about';
+import type { CmsPageContent } from '@/lib/cms/registry';
+
+const ABOUT_DEFAULTS = Object.fromEntries(
+  Object.entries(aboutPage.sections).map(([key, section]) => [key, section.content])
+) as CmsPageContent<'about'>;
 import { buildTextReveals, refreshOnSettle } from './experience-motion';
 import { buildAboutMotion } from './about-motion';
 import './about.css';
@@ -35,14 +39,14 @@ function Count({ value, suffix = '' }: { value: number; suffix?: string }) {
   return <b ref={ref}>{value.toLocaleString('en-US')}{suffix}</b>;
 }
 
-export default function AboutExperience({ cmsSections }: { cmsSections?: Record<string, any> } = {}) {
+export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'about'>; hidden?: string[] } = {}) {
+  const show = (key: keyof CmsPageContent<'about'>) => !hidden.includes(key);
   const root = useRef<HTMLDivElement>(null);
 
-  const hero = cmsSections?.about_hero || aboutHero;
-  const stats = Array.isArray(cmsSections?.about_stats?.stats) ? cmsSections.about_stats.stats : aboutStats;
-  const overview = cmsSections?.about_overview || aboutOverview;
-  const journey = Array.isArray(cmsSections?.milestones?.milestones) ? cmsSections.milestones.milestones : milestones;
-  const desk = cmsSections?.md_desk || mdDesk;
+  const { hero, overview, plant, values, team, certifications, closing } = content;
+  const stats = content.stats.stats;
+  const journey = content.milestones.milestones;
+  const desk = content.md_desk;
 
   useEffect(() => {
     const scope = root.current;
@@ -58,6 +62,7 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
   return (
     <div ref={root} className="xa">
       {/* 00 — Hero */}
+      {show('hero') && (
       <section className="xa-hero" id="about-hero">
         <div className="xa-wrap">
           <div className="xa-hero-grid">
@@ -81,8 +86,10 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* Stats */}
+      {show('stats') && (
       <section className="xa-stats" id="about-stats">
         <div className="xa-wrap">
           <div className="xa-stats-grid">
@@ -95,8 +102,10 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* 01 — Overview */}
+      {show('overview') && (
       <section className="xa-overview" id="overview">
         <div className="xa-wrap">
           <div className="xa-overview-grid">
@@ -116,14 +125,16 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* 02 — Journey: a horizontal track that travels with the scroll */}
+      {show('milestones') && (
       <section className="xa-journey" id="journey">
         <div className="xa-journey-stage">
           <div className="xa-wrap xa-journey-head">
             <div>
-              <span className="xp-eyebrow">02 / Our journey</span>
-              <h2 className="xa-journey-title">Fifteen years, <em>five turning points.</em></h2>
+              <span className="xp-eyebrow">{content.milestones.eyebrow}</span>
+              <h2 className="xa-journey-title">{content.milestones.heading} <em>{content.milestones.headingHighlight}</em></h2>
             </div>
             <nav className="xa-year-nav" aria-label="Jump to a year">
               {journey.map((m: any, i: number) => (
@@ -150,13 +161,15 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
 
           <div className="xa-wrap xa-journey-foot">
-            <span className="xp-eyebrow xa-journey-hint">Swipe or scroll to travel · tap a year to jump</span>
+            <span className="xp-eyebrow xa-journey-hint">{content.milestones.hint}</span>
             <span className="xa-journey-count"><b>01</b> / {String(journey.length).padStart(2, '0')}</span>
           </div>
         </div>
       </section>
+      )}
 
       {/* MD's desk */}
+      {show('md_desk') && (
       <section className="xa-desk" id="md-desk">
         <div className="xa-wrap">
           <div className="xa-desk-inner">
@@ -169,14 +182,16 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* Values */}
+      {show('values') && (
       <section className="xa-values" id="values">
         <div className="xa-wrap">
-          <span className="xp-eyebrow">What we stand for</span>
-          <h2 data-split>Safest container. <em>Highest clarity.</em> Zero leaks.</h2>
+          <span className="xp-eyebrow">{values.eyebrow}</span>
+          <h2 data-split>{values.heading} <em>{values.headingHighlight}</em> {values.headingEnd}</h2>
           <div className="xa-values-grid">
-            {values.map(v => (
+            {values.items.map(v => (
               <div className="xa-value" key={v.num}>
                 <span className="xp-eyebrow">{v.num}</span>
                 <h3>{v.title}</h3>
@@ -186,8 +201,10 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* 03 — Plant */}
+      {show('plant') && (
       <section className="xa-plant" id="infrastructure">
         <div className="xa-pattern" aria-hidden="true" />
         <div className="xa-wrap xa-plant-inner">
@@ -195,7 +212,7 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           <h2 data-split>{plant.title[0]}<br /><em>{plant.title[1]}</em></h2>
           <div className="xa-plant-copy">
             <p>{plant.body}</p>
-            <Link href="/capabilities">Inside our capabilities <ArrowUpRight size={18} /></Link>
+            <Link href={plant.link.link}>{plant.link.text} <ArrowUpRight size={18} /></Link>
           </div>
           <div className="xa-plant-grid">
             {plant.stats.map(stat => (
@@ -204,41 +221,45 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* Leadership */}
+      {show('team') && (
       <section className="xa-leadership" id="leadership">
         <div className="xa-wrap">
-          <span className="xp-eyebrow">04 / Our team</span>
-          <h2 data-split>The people behind <em>every container.</em></h2>
-          <p className="xa-team-note" id="team">Seasoned polymer engineers, toolmakers, and packaging specialists leading precision injection moulding operations across Daman.</p>
+          <span className="xp-eyebrow">{team.eyebrow}</span>
+          <h2 data-split>{team.heading} <em>{team.headingHighlight}</em></h2>
+          <p className="xa-team-note" id="team">{team.note}</p>
           <div className="xa-lead-grid">
-            {leadership.map((person, i) => (
-              <div className="xa-lead" key={person.role}>
+            {team.members.map((person, i) => (
+              <div className="xa-lead" key={`${person.role}-${i}`}>
                 <span className="xa-lead-num">{String(i + 1).padStart(2, '0')}</span>
                 {person.portrait && <img className="xa-lead-portrait" src={person.portrait} alt={person.name || person.role} loading="lazy" />}
                 <h3>{person.name}</h3>
                 <span className="xa-lead-name">{person.role}</span>
                 <p>{person.remit}</p>
-                <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn for ${person.name}`}>Connect on LinkedIn <ArrowUpRight size={16} /></a>
+                {person.linkedin && <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn for ${person.name}`}>Connect on LinkedIn <ArrowUpRight size={16} /></a>}
               </div>
             ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* Certifications */}
+      {show('certifications') && (
       <section className="xa-certs" id="certifications">
         <div className="xa-wrap">
           <div className="xa-certs-head">
             <div>
-              <span className="xp-eyebrow">05 / Certifications</span>
-              <h2 data-split>Certified at the material, the facility and the process.</h2>
+              <span className="xp-eyebrow">{certifications.eyebrow}</span>
+              <h2 data-split>{certifications.heading}</h2>
             </div>
-            <Link href="/quality">Quality &amp; testing <ArrowUpRight size={16} /></Link>
+            <Link href={certifications.link.link}>{certifications.link.text} <ArrowUpRight size={16} /></Link>
           </div>
           <div className="xa-certs-grid">
-            {certifications.map(cert => (
-              <div className="xa-cert" key={cert.id}>
+            {certifications.items.map((cert, i) => (
+              <div className="xa-cert" key={`${cert.title}-${i}`}>
                 <span className="xp-eyebrow">{cert.scope}</span>
                 <h3>{cert.title}</h3>
                 <p>{cert.body}</p>
@@ -247,16 +268,19 @@ export default function AboutExperience({ cmsSections }: { cmsSections?: Record<
           </div>
         </div>
       </section>
+      )}
 
       {/* Closing */}
+      {show('closing') && (
       <section className="xa-closing" id="closing">
         <div className="xa-wrap">
-          <span className="xp-eyebrow">Product catalog &amp; sample kit</span>
-          <h2 data-split>Let’s make <em>something good.</em></h2>
-          <Link href="/contact" className="xp-button">Discuss your requirements <ArrowRight size={18} /></Link>
-          <span className="xa-closing-note">Daman, India · sales@acepack.co.in · +91 99250 15906</span>
+          <span className="xp-eyebrow">{closing.eyebrow}</span>
+          <h2 data-split>{closing.heading} <em>{closing.headingHighlight}</em></h2>
+          <Link href={closing.button.link} className="xp-button">{closing.button.text} <ArrowRight size={18} /></Link>
+          <span className="xa-closing-note">{closing.note}</span>
         </div>
       </section>
+      )}
     </div>
   );
 }

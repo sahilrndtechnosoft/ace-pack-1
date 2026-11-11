@@ -3,51 +3,33 @@ import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { HelpCircle, ShieldCheck, Flame, Lock, Truck, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { getPageContent, cmsMetadata } from '@/lib/db/content';
 
-export const metadata: Metadata = {
+const staticMetadata: Metadata = {
   title: 'Frequently Asked Questions (FAQ) | Ace Packaging',
   description: 'Find answers regarding virgin PP 05 food safety, microwave reheating, leak testing, product enquiries, and shipping logistics.',
 };
 
-export default function FaqPage() {
-  const faqs = [
-    {
-      question: 'What material resins are used in Ace Packaging containers?',
-      answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) in our ISO 9001:2015 certified facilities. They are 100% BPA-free, heavy metal free, and food-contact safe.'
-    },
-    {
-      question: 'Are your plastic containers microwave and freezer safe?',
-      answer: 'Yes, our PP 05 material has a operating thermal range spanning -20°C (deep freeze) up to +120°C (hot gravy filling and microwave reheating).'
-    },
-    {
-      question: 'How do Hinge Cups prevent sauce leakage during delivery?',
-      answer: 'Our Hinge Cups feature a built-in snap-tight lid rim geometry that creates an airtight hermetic seal, preventing liquid spillage even during rough motorcycle transit.'
-    },
-    {
-      question: 'What information should I share when enquiring?',
-      answer: 'Share your food application, preferred format and capacity, expected quantities, destination, and any colour or IML artwork requirements. Our team can help you prepare the product specification.'
-    },
-    {
-      question: 'Where is your manufacturing facility located?',
-      answer: 'Our modern automated injection moulding facility is located in Daman (U.T.), India, with 2 plant units capable of producing over 1.5 million container units daily.'
-    }
-  ];
+export function generateMetadata(): Promise<Metadata> {
+  return cmsMetadata('faq', staticMetadata);
+}
+
+export default async function FaqPage() {
+  const { content, hidden } = await getPageContent('faq');
+  const show = (key: string) => !hidden.includes(key);
+  const { banner, questions, cta } = content;
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
-      <PageBanner
-        title="Frequently Asked Questions"
-        subtitle="Clear answers about our plastic food containers, polymer safety certifications, custom printing, and shipping logistics."
-        badge="HELP & FAQ"
-        bgImage="/b9d572a7-af59-4e63-92e8-2971440edffe.png"
-        breadcrumbs={[{ name: 'FAQ', href: '/faq' }]}
-      />
+      {show('banner') && (
+        <PageBanner title={banner.title} subtitle={banner.subtitle} badge={banner.badge} bgImage={banner.bgImage} breadcrumbs={[{ name: 'FAQ', href: '/faq' }]} />
+      )}
 
       <section className="py-12 md:py-16">
         <div className="container-custom">
           
-          <div className="max-w-4xl mx-auto space-y-6 mb-16">
-            {faqs.map((faq, idx) => (
+          {show('questions') && <div className="max-w-4xl mx-auto space-y-6 mb-16">
+            {questions.faqs.map((faq, idx) => (
               <div key={idx} className="bg-white p-5 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
                 <h3 className="text-lg font-bold text-[#1A1D20] mb-3 flex items-start gap-3">
                   <HelpCircle className="w-5 h-5 text-[#a8812f] shrink-0 mt-0.5" />
@@ -58,21 +40,20 @@ export default function FaqPage() {
                 </p>
               </div>
             ))}
-          </div>
+          </div>}
 
-          <div className="bg-white p-5 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-md text-center max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-[#1A1D20] mb-2">Have Additional Questions?</h3>
-            <p className="text-xs text-gray-500 mb-6">Our sales & packaging engineers are standing by to assist your food brand.</p>
+          {show('cta') && <div className="bg-white p-5 sm:p-10 rounded-3xl border-2 border-[#cfa144]/60 shadow-md text-center max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-[#1A1D20] mb-2">{cta.heading}</h3>
+            <p className="text-xs text-gray-500 mb-6">{cta.description}</p>
 
             <Link
-              href="/contact"
+              href={cta.button.link}
               className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-5 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wide sm:tracking-wider text-center shadow-sm transition-colors"
             >
-              <span>Contact Our Technical Team</span>
+              <span>{cta.button.text}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
-
+          </div>}
         </div>
       </section>
     </div>
