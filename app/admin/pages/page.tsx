@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Edit3, ExternalLink, FileText, Loader2, Plus, Search, Settings2, Trash2, X } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
-import { CMS_PAGES } from '@/lib/cms/registry';
+import { CMS_PAGES, SEO_ONLY_PAGES } from '@/lib/cms/registry';
 import { isBuiltInSlug } from '@/lib/cms/pages/custom';
 
 interface PageItem {
@@ -48,7 +48,7 @@ const EMPTY_FORM: FormState = {
 const BUILT_IN_ORDER = Object.keys(CMS_PAGES);
 
 const pagePath = (slug: string) =>
-  (CMS_PAGES as Record<string, { path: string }>)[slug]?.path ?? (slug === 'home' ? '/' : `/${slug}`);
+  SEO_ONLY_PAGES[slug]?.path ?? (CMS_PAGES as Record<string, { path: string }>)[slug]?.path ?? (slug === 'home' ? '/' : `/${slug}`);
 
 const inputClass =
   'w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#b99750]';
@@ -209,7 +209,7 @@ export default function AdminPagesPage() {
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Link href={`/admin/pages/${page.slug}`} className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black">
+                  <Link href={`/admin/pages/${SEO_ONLY_PAGES[page.slug]?.contentSlug ?? page.slug}`} title={SEO_ONLY_PAGES[page.slug] ? 'Shares its content with the main page' : undefined} className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black">
                     <Edit3 className="w-3.5 h-3.5" /> Edit Content
                   </Link>
                   <button type="button" onClick={() => openSeo(page)} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#222C3D] text-gray-200 hover:bg-[#161D27] text-xs font-bold cursor-pointer">

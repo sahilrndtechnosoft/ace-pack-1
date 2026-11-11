@@ -1,4 +1,6 @@
 // Home page (/) — one entry per visible section, top to bottom. Values are the live fallback content.
+import { homeCollection } from './home-collection';
+import { homeProductCarousel } from './home-carousel';
 
 export const homeHero = {
   topLabel: "India's Leading Moulding Plant",
@@ -141,6 +143,8 @@ export const homePage = {
   sections: {
     hero_banner: { label: 'Hero Banner', description: 'First screen: headline, buttons, main image and quick stats.', content: homeHero },
     craft: { label: 'Unbox the Craft', description: 'Three key product facts shown with the 3D container.', content: homeCraft },
+    collection: { label: 'Product Series Showcase', description: 'Dark stacked panels, one per product series, with photos and size options.', content: homeCollection },
+    product_carousel: { label: 'Signature Product Carousel', description: 'Product slider with photos, capacities and highlights.', content: homeProductCarousel },
     manufacturing: { label: 'Manufacturing Highlight', description: 'Dark band with production numbers.', content: homeManufacturing },
     industries: { label: 'Industries We Serve', description: 'Scrolling industry cards ("Trusted at scale").', content: homeIndustries },
     certifications: { label: 'Certifications & Quality', description: 'ISO certificate cards and download banner.', content: homeCertifications },

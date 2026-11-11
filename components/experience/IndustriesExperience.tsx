@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -21,6 +22,7 @@ const lineName = (slug: string) => productCategories.find(c => c.slug === slug)?
 
 
 export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'industries'>; hidden?: string[] } = {}) {
+  const L = useSiteText().labels;
   const show = (key: keyof CmsPageContent<'industries'>) => !hidden.includes(key);
   const { hero, segments, standard, closing } = content;
   const allIndustries = segments.items.map((item, i) => ({ ...item, slug: item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `segment-${i + 1}` }));
@@ -123,8 +125,8 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
             <p className="xin-hero-lead">{hero.lead}</p>
           </div>
           <div className="xin-glance">
-            <div><b>{allIndustries.length}</b><span>Segments</span></div>
-            <div><b>{productCategories.length}</b><span>Container lines</span></div>
+            <div><b>{allIndustries.length}</b><span>{L.industriesSegments}</span></div>
+            <div><b>{productCategories.length}</b><span>{L.industriesContainerLines}</span></div>
             {hero.stats.map(stat => <div key={stat.label}><b>{stat.value}</b><span>{stat.label}</span></div>)}
           </div>
         </div>
@@ -176,7 +178,7 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
                   {industry.needs.length > 0 && <ul className="xin-needs">{industry.needs.map(n => <li key={n}>{n}</li>)}</ul>}
                   {industry.lines.length > 0 && (
                     <div className="xin-lines">
-                      <span>Served by</span>
+                      <span>{L.industriesServedBy}</span>
                       {industry.lines.map(slug => <Link key={slug} href={`/categories/${slug}`}>{lineName(slug)} <ArrowUpRight size={12} /></Link>)}
                     </div>
                   )}
@@ -193,7 +195,7 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
                 <span ref={numRef} className="xin-panel-num">{String(active + 1).padStart(2, '0')}</span>
               </div>
               <div className="xin-panel-body">
-                <span className="xp-eyebrow">Now viewing</span>
+                <span className="xp-eyebrow">{L.industriesNowViewing}</span>
                 <h3>{current?.title}</h3>
                 {current?.needs.length > 0 && <ul className="xin-panel-needs">{current.needs.map(n => <li key={n}>{n}</li>)}</ul>}
                 {current?.link && <Link href={current.link} className="xin-panel-cta" tabIndex={-1}>{segments.buttonText} <ArrowUpRight size={14} /></Link>}

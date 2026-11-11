@@ -5,7 +5,7 @@ import { Edit, Loader2, Save, X } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { ContentFields, findInvalidLinks } from '@/components/admin/ContentFields';
 import { isPlainObject, withDefaults } from '@/lib/cms/merge';
-import { contactDefaults, footerDefaults, headerDefaults } from '@/lib/cms/site-settings';
+import { contactDefaults, footerDefaults, headerDefaults, siteTextDefaults } from '@/lib/cms/site-settings';
 
 type Settings = Record<string, unknown>;
 
@@ -17,7 +17,7 @@ const GROUPS = [
   {
     id: 'header',
     label: 'Header',
-    description: 'Logo, phone number and the button at the top of every page. The menu links follow your pages and product categories automatically.',
+    description: 'Logo, phone number, button and menu: top-level menu names and the Resources dropdown (names, links, order). The Products dropdown lists your product categories automatically.',
     storageKey: 'header_settings',
     defaults: headerDefaults,
   },
@@ -27,6 +27,13 @@ const GROUPS = [
     description: 'Logo, company description, addresses, contact lines, quick links, social links and copyright at the bottom of every page.',
     storageKey: 'footer_settings',
     defaults: footerDefaults,
+  },
+  {
+    id: 'site-text',
+    label: 'Forms, Pop-ups & Page Labels',
+    description: 'Wording of the inquiry form, download pop-up, product page labels and sample form, small labels on category, blog, event, downloads and industries pages, home side-menu names, and the "page not found" screen.',
+    storageKey: 'site_text',
+    defaults: siteTextDefaults,
   },
   {
     id: 'contact',

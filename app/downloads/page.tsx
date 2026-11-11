@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { downloadGroups, type DownloadItem } from '@/lib/data/downloads';
-import { getCmsDownloads, cmsMetadata, getPageContent } from '@/lib/db/content';
+import { getCmsDownloads, cmsMetadata, getPageContent, getSiteText } from '@/lib/db/content';
 import { DownloadsClient, type DownloadsClientGroup } from '@/components/sections/DownloadsClient';
 
 export const dynamic = 'force-dynamic';
@@ -18,6 +18,7 @@ export function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DownloadsPage() {
+  const L = (await getSiteText()).labels;
   const page = await getPageContent('downloads');
   const banner = { ...page.content.banner, hidden: page.hidden.includes('banner') };
   const cmsRows = await getCmsDownloads();
@@ -42,7 +43,7 @@ export default async function DownloadsPage() {
     groups = Array.from(catMap.entries()).map(([cat, items], idx) => ({
       id: `section-${idx}-${cat.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
       title: cat,
-      intro: `Official Ace Packaging technical resources and documentation for ${cat.toLowerCase()}.`,
+      intro: L.downloadsGroupIntro.replace('{category}', cat.toLowerCase()),
       items,
     }));
   }

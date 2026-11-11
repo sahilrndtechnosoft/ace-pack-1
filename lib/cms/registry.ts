@@ -26,6 +26,17 @@ export interface CmsPageDef {
   sections: Record<string, CmsSectionDef>;
 }
 
+/**
+ * Second URLs that show another page's content but keep their own Google title/description
+ * (kept from the previous website for SEO). They get their own "SEO & Settings" entry.
+ */
+export const SEO_ONLY_PAGES: Record<string, { title: string; path: string; contentSlug: string }> = {
+  aboutus: { title: 'About Us (/aboutus)', path: '/aboutus', contentSlug: 'about' },
+  contactus: { title: 'Contact Us (/contactus)', path: '/contactus', contentSlug: 'contact' },
+  'plastic-food-containers': { title: 'Plastic Food Containers (/plastic-food-containers)', path: '/plastic-food-containers', contentSlug: 'categories' },
+  'blog-old': { title: 'Blog (/blog)', path: '/blog', contentSlug: 'blog' },
+};
+
 /** Lists shown on a page but edited in their own admin module, so the page editor can point there. */
 export const MANAGED_ELSEWHERE: Record<string, { text: string; href: string; linkText: string }> = {
   products: { text: 'The products shown on this page are managed in Product Catalogue.', href: '/admin/products', linkText: 'Open Products' },

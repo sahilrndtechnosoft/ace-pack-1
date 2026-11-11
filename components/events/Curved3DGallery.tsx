@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
@@ -111,6 +112,7 @@ const fragmentShader = `
 `;
 
 export const Curved3DGallery: React.FC<Curved3DGalleryProps> = ({ events }) => {
+  const L = useSiteText().labels;
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -629,7 +631,7 @@ export const Curved3DGallery: React.FC<Curved3DGalleryProps> = ({ events }) => {
       <div className="relative z-30 pb-6 sm:pb-8 px-6 sm:px-12 max-w-7xl mx-auto w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-400 pointer-events-auto">
         <div className="flex items-center gap-3">
           <span className="text-[10px] uppercase tracking-[0.2em] font-extrabold text-gray-400">
-            Scroll or drag to rotate
+            {L.eventsGalleryDragHint}
           </span>
           <div className="relative h-1 w-32 sm:w-44 bg-white/10 rounded-full overflow-hidden">
             <div
@@ -641,7 +643,7 @@ export const Curved3DGallery: React.FC<Curved3DGalleryProps> = ({ events }) => {
         </div>
 
         <div className="text-[11px] text-gray-400">
-          Click any exhibition poster to view details &amp; schedule meeting
+          {L.eventsGalleryClickHint}
         </div>
       </div>
     </section>

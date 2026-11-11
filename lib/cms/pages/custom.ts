@@ -7,7 +7,7 @@ export const BUILT_IN_SLUGS = [
   'home', 'admin', 'api', 'uploads', 'about', 'aboutus', 'blog', 'blogs', 'capabilities', 'categories',
   'contact', 'contactus', 'customization', 'downloads', 'events', 'exhibitions', 'faq', 'gallery',
   'industries', 'oem', 'plastic-food-containers', 'privacy', 'process', 'products', 'quality', 'terms',
-  'tools', 'robots.txt', 'sitemap.xml', 'favicon.ico',
+  'tools', 'blog-old', 'robots.txt', 'sitemap.xml', 'favicon.ico',
 ];
 
 export function isBuiltInSlug(slug: string): boolean {

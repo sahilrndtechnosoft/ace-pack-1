@@ -20,6 +20,21 @@ import {
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { MediaInput } from '@/components/admin/MediaInput';
+import { ContentFields } from '@/components/admin/ContentFields';
+
+// Stored as JSON text; the form edits it as a list.
+function eventList<T>(value: unknown, empty: T[]): T[] {
+  if (Array.isArray(value)) return value as T[];
+  if (typeof value === 'string' && value.trim()) {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed) && parsed.length) return parsed as T[];
+    } catch {
+      // fall through to an empty editable list
+    }
+  }
+  return empty;
+}
 import { AdminPagination } from '@/components/admin/AdminPagination';
 
 interface EventItem {
@@ -660,6 +675,17 @@ export default function AdminEventsPage() {
                       onChange={(e) => setActiveEvent({ ...activeEvent, full_desc: e.target.value })}
                       placeholder="Detailed exhibition description and showcase notes"
                       className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                    />
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-[#090C10] border border-[#1E2633] space-y-3">
+                    <p className="text-xs text-gray-400">
+                      Shown on this event&apos;s detail page. &ldquo;Slug&rdquo; is the product line&apos;s URL name, e.g. <span className="font-mono">re-series</span>. Leave empty to show the standard highlights.
+                    </p>
+                    <ContentFields
+                      value={{ highlights: eventList(activeEvent.highlights, ['']), focusProducts: eventList(activeEvent.focus_products, [{ name: '', slug: '', desc: '' }]) }}
+                      template={{ highlights: [''], focusProducts: [{ name: '', slug: '', desc: '' }] }}
+                      onChange={(v) => setActiveEvent({ ...activeEvent, highlights: v.highlights, focus_products: v.focusProducts })}
                     />
                   </div>
 

@@ -11,7 +11,7 @@ import {
   getLiveProductSlug,
   LIVE_CATEGORIES,
 } from '@/lib/data/live-routing';
-import { getCmsCategoryBySlug } from '@/lib/db/content';
+import { getCmsCategoryBySlug, getSiteText } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: LiveCategoryPageProps): Promi
 }
 
 export default async function LiveCategoryPage({ params }: LiveCategoryPageProps) {
+  const L = (await getSiteText()).labels;
   const { category_slug } = await params;
   const res = resolveLiveCategory(category_slug);
   const cmsCategory = !res ? await getCmsCategoryBySlug(category_slug) : null;
@@ -140,7 +141,7 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
               className="text-xs font-bold text-[#b99750] hover:text-[var(--ace-ink)] transition-colors flex items-center gap-1.5 self-start sm:self-auto"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>All Containers</span>
+              <span>{L.seriesAllContainers}</span>
             </Link>
           </div>
 
@@ -156,7 +157,7 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
           {otherCategories.length > 0 && (
             <div className="mt-16 pt-10 border-t border-[#E6DBC6]">
               <h3 className="text-lg font-bold text-[var(--ace-ink)] mb-4">
-                Explore Other Container Series
+                {L.seriesOtherSeries}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {otherCategories.map((c) => (

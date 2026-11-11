@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -26,6 +27,7 @@ interface DownloadsClientProps {
 }
 
 export function DownloadsClient({ groups }: DownloadsClientProps) {
+  const L = useSiteText().labels;
   const [selectedDoc, setSelectedDoc] = useState<{ title: string; url?: string } | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -105,7 +107,7 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
                           className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#b99750] hover:bg-[#a6843e] active:scale-[0.99] text-white font-bold py-3 px-5 rounded-xl text-xs uppercase tracking-wider transition-all cursor-pointer shadow-sm hover:shadow"
                         >
                           <FileDown className="w-4 h-4" />
-                          <span>Download &amp; Email</span>
+                          <span>{L.downloadsButton}</span>
                         </button>
                       </div>
                     </div>
@@ -122,16 +124,16 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
           <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block mb-2">
             Need a physical sample?
           </span>
-          <h3 className="text-xl font-extrabold mb-2">Sample kits ship with the printed catalog</h3>
+          <h3 className="text-xl font-extrabold mb-2">{L.downloadsSampleHeading}</h3>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Request a sample of the lines you are evaluating, so specifications can be checked in hand.
+            {L.downloadsSampleText}
           </p>
         </div>
         <Link
           href="/contact"
           className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3 px-5 sm:py-3.5 sm:px-7 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all"
         >
-          Request a sample
+          {L.downloadsSampleButton}
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -159,7 +161,7 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
             <div className="flex items-center justify-between p-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#b99750]" />
-                <span className="text-xs font-bold text-[#1A1D20]">SGS ISO 9001:2015 Official Certificate</span>
+                <span className="text-xs font-bold text-[#1A1D20]">{L.downloadsCertificateTitle}</span>
               </div>
               <button
                 type="button"
@@ -192,7 +194,7 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] cursor-pointer"
               >
                 <FileDown className="w-3.5 h-3.5" />
-                <span>Download &amp; Email Certificate</span>
+                <span>{L.downloadsCertificateButton}</span>
               </button>
             </div>
           </div>

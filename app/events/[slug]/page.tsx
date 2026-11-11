@@ -18,7 +18,7 @@ import {
   Mail,
 } from 'lucide-react';
 import { exhibitionEvents, ExhibitionEvent } from '@/lib/data/events';
-import { getCmsEventBySlug, getCmsEvents } from '@/lib/db/content';
+import { getCmsEventBySlug, getCmsEvents, getSiteText, getCmsSettings } from '@/lib/db/content';
 import { EventBookingForm } from '@/components/events/EventBookingForm';
 
 export const dynamic = 'force-dynamic';
@@ -46,6 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function EventDetailPage({ params }: Props) {
+  const L = (await getSiteText()).labels;
+  const settings = await getCmsSettings();
   const { slug } = await params;
   const event = (await getCmsEventBySlug(slug)) || exhibitionEvents.find((e) => e.slug === slug);
 
@@ -59,8 +61,10 @@ export default async function EventDetailPage({ params }: Props) {
     .filter((e) => e.id !== event.id)
     .slice(0, 3);
 
-  const whatsappLink = `https://wa.me/919925015906?text=${encodeURIComponent(
-    `Hello Ace Packaging, I would like to schedule a booth meeting at ${event.title} (${event.location}).`
+  // Number comes from Site-wide Settings → Contact Details.
+  const whatsappDigits = String(settings.whatsapp_number || '919925015906').replace(/[^0-9]/g, '') || '919925015906';
+  const whatsappLink = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
+    L.eventWhatsappMessage.replace('{event}', event.title).replace('{location}', event.location)
   )}`;
 
   return (
@@ -73,7 +77,7 @@ export default async function EventDetailPage({ params }: Props) {
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#d6b05d] hover:text-white transition-colors mb-6 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to All Exhibitions &amp; Events</span>
+            <span>{L.eventBackLink}</span>
           </Link>
 
           <div className="flex flex-wrap items-center gap-2.5 mb-3">
@@ -140,7 +144,7 @@ export default async function EventDetailPage({ params }: Props) {
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DBC6] shadow-xs space-y-4">
               <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#b99750]">
                 <Sparkles className="w-4 h-4" />
-                <span>Exhibition Profile &amp; Mission</span>
+                <span>{L.eventProfileHeading}</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-black text-[#1A1D20]">
@@ -162,7 +166,7 @@ export default async function EventDetailPage({ params }: Props) {
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DBC6] shadow-xs">
               <h3 className="text-lg font-black text-[#1A1D20] mb-4 flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[#b99750]" />
-                <span>What Ace Packaging Is Demonstrating</span>
+                <span>{L.eventDemoHeading}</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -182,14 +186,14 @@ export default async function EventDetailPage({ params }: Props) {
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6DBC6] shadow-xs">
               <h3 className="text-lg font-black text-[#1A1D20] mb-4 flex items-center gap-2">
                 <Package className="w-5 h-5 text-[#b99750]" />
-                <span>Featured Container Lines on Display</span>
+                <span>{L.eventProductsHeading}</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {event.focusProducts.map((prod, idx) => (
                   <Link
                     key={idx}
-                    href={`/categories/${prod.slug}`}
+                    href={prod.slug ? `/categories/${prod.slug}` : '/categories'}
                     className="group p-4 rounded-2xl bg-[#FAF8F4] hover:bg-white border border-[#E6DBC6] hover:border-[#b99750] transition-all flex flex-col justify-between cursor-pointer"
                   >
                     <div>
@@ -204,7 +208,7 @@ export default async function EventDetailPage({ params }: Props) {
                       </p>
                     </div>
                     <div className="mt-3 text-[11px] font-bold text-[#b99750] flex items-center gap-1">
-                      <span>Explore line</span>
+                      <span>{L.eventExploreLine}</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>
@@ -230,7 +234,7 @@ export default async function EventDetailPage({ params }: Props) {
                 </div>
                 {event.booth && (
                   <div className="p-2.5 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6] flex items-center justify-between font-bold text-[#b99750]">
-                    <span>Official Stand Allocation:</span>
+                    <span>{L.eventStandLabel}</span>
                     <span>{event.booth}</span>
                   </div>
                 )}
@@ -250,7 +254,7 @@ export default async function EventDetailPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc59] text-white text-xs font-bold py-2.5 px-5 rounded-full uppercase tracking-wider transition-colors shadow-sm"
                 >
-                  <span>WhatsApp Event Desk</span>
+                  <span>{L.eventWhatsappButton}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -274,7 +278,7 @@ export default async function EventDetailPage({ params }: Props) {
               href="/events"
               className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
             >
-              <span>View All 8 Expos</span>
+              <span>{L.eventViewAll.replace('{count}', String(pool.length))}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -306,7 +310,7 @@ export default async function EventDetailPage({ params }: Props) {
                     <p className="text-xs text-gray-500 mt-1 line-clamp-2">{oe.description}</p>
                   </div>
                   <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#b99750]">
-                    <span>View Event Showcase</span>
+                    <span>{L.eventViewShowcase}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>

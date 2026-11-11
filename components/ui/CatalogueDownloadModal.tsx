@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import {
@@ -37,6 +38,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
   documentTitle = 'Ace Packaging Full Product Catalog 2026',
   downloadUrl = '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
 }) => {
+  const t = useSiteText().downloadPopup;
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [submittedEmail, setSubmittedEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -93,11 +95,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     documentTitle.toLowerCase().includes('sgs');
   const isDatasheet = documentTitle.toLowerCase().includes('datasheet');
 
-  const modalHeading = isCertificate
-    ? 'Official Certificate Request'
-    : isDatasheet
-    ? 'Download Technical Datasheet'
-    : 'Download Product Catalogue';
+  const modalHeading = isCertificate ? t.certificateHeading : isDatasheet ? t.datasheetHeading : t.catalogueHeading;
 
   const targetPdf =
     downloadUrl ||
@@ -227,7 +225,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 <div className="flex items-center gap-1.5 mb-1.5">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#9a7628] bg-[#b99750]/15 border border-[#b99750]/25">
                     <FileDown className="w-3 h-3" />
-                    Official Document Access
+                    {t.eyebrow}
                   </span>
                 </div>
                 <h3
@@ -249,7 +247,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                    Requested File
+                    {t.fileLabel}
                   </div>
                   <div
                     className="text-xs sm:text-sm font-bold text-[var(--ace-ink)] truncate"
@@ -260,13 +258,13 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 </div>
                 <div className="hidden xs:flex sm:flex shrink-0">
                   <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                    Instant PDF + Email
+                    {t.fileBadge}
                   </span>
                 </div>
               </div>
 
               <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-                Enter your business details below. A verified copy will be emailed directly to your inbox and downloaded to your device immediately.
+                {t.intro}
               </p>
 
               {/* Error Alert */}
@@ -282,7 +280,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                       download
                       className="shrink-0 underline font-bold text-red-800 hover:text-red-900"
                     >
-                      Download Directly
+                      {t.directDownloadText}
                     </a>
                   )}
                 </div>
@@ -294,7 +292,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                   <div>
                     <label className="block text-[11px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
-                      Full Name <span className="text-red-500">*</span>
+                      {t.nameLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <User className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -312,7 +310,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
 
                   <div>
                     <label className="block text-[11px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
-                      Company / Brand <span className="text-red-500">*</span>
+                      {t.companyLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Building2 className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -333,7 +331,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                   <div>
                     <label className="block text-[11px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
-                      Business Email <span className="text-red-500">*</span>
+                      {t.emailLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -351,7 +349,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
 
                   <div>
                     <label className="block text-[11px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
-                      Phone / WhatsApp <span className="text-red-500">*</span>
+                      {t.phoneLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -371,7 +369,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                 {/* Primary Business Type */}
                 <div>
                   <label className="block text-[11px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
-                    Primary Business Type
+                    {t.businessTypeLabel}
                   </label>
                   <select
                     value={formData.industry}
@@ -398,12 +396,12 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                     {loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Sending &amp; Preparing Document...</span>
+                        <span>{t.sendingText}</span>
                       </>
                     ) : (
                       <>
                         <FileDown className="w-4 h-4" />
-                        <span>Email Me &amp; Download Document</span>
+                        <span>{t.submitText}</span>
                       </>
                     )}
                   </button>
@@ -411,7 +409,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
 
                 <p className="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1.5 pt-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#b99750] shrink-0" />
-                  <span>Your information is strictly protected and used only to dispatch official documents.</span>
+                  <span>{t.privacyNote}</span>
                 </p>
               </form>
             </div>
@@ -423,11 +421,11 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               </div>
 
               <span className="inline-block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full mb-3">
-                Dispatched Successfully
+                {t.successBadge}
               </span>
 
               <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-2">
-                Document Dispatched!
+                {t.successHeading}
               </h3>
 
               <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-2 leading-relaxed">
@@ -436,7 +434,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               </p>
 
               <p className="text-[11px] sm:text-xs text-gray-500 mb-6 max-w-sm mx-auto">
-                Your direct browser download should have started automatically. If it didn&apos;t start, click below to download or view the file directly.
+                {t.successNote}
               </p>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3">
@@ -447,7 +445,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                     className="w-full sm:w-auto px-5 py-3 rounded-xl sm:rounded-full bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] hover:bg-white text-[var(--ace-ink)] text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 transition-all shadow-2xs cursor-pointer"
                   >
                     <FileDown className="w-4 h-4 text-[#b99750]" />
-                    <span>Download File Again</span>
+                    <span>{t.downloadAgainText}</span>
                   </a>
                 )}
                 <button
@@ -455,7 +453,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                   onClick={handleClose}
                   className="w-full sm:w-auto px-7 py-3 rounded-xl sm:rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-md shadow-[#b99750]/20 cursor-pointer"
                 >
-                  Close Window
+                  {t.closeText}
                 </button>
               </div>
 
@@ -467,7 +465,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                   className="text-xs text-gray-500 hover:text-[#b99750] font-semibold transition-colors cursor-pointer inline-flex items-center gap-1.5"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Need to download another document or send to another email?</span>
+                  <span>{t.anotherDocumentText}</span>
                 </button>
               </div>
             </div>

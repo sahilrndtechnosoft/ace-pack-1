@@ -3,6 +3,27 @@ import { revalidatePath } from 'next/cache';
 import { getAuthenticatedAdmin } from '@/lib/auth';
 import { getDbPool, initDb, logActivity } from '@/lib/db';
 
+// Event highlights (list of text) and featured products (name, category URL name, description).
+function toHighlightsJson(value: unknown): string | null {
+  if (value === undefined) return null;
+  if (!Array.isArray(value)) return '[]';
+  return JSON.stringify(value.filter((v) => typeof v === 'string').map((v: string) => v.trim()).filter(Boolean).slice(0, 20));
+}
+function toFocusProductsJson(value: unknown): string | null {
+  if (value === undefined) return null;
+  if (!Array.isArray(value)) return '[]';
+  const items = value
+    .filter((v): v is Record<string, unknown> => !!v && typeof v === 'object')
+    .map((v) => ({
+      name: String(v.name ?? '').trim(),
+      slug: String(v.slug ?? '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+      desc: String(v.desc ?? '').trim(),
+    }))
+    .filter((v) => v.name)
+    .slice(0, 20);
+  return JSON.stringify(items);
+}
+
 export async function GET(request: NextRequest) {
   try {
     await initDb();
@@ -44,7 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, slug, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published } = body;
+    const { title, slug, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published, highlights, focus_products } = body;
 
     if (!title || !date || !location) {
       return NextResponse.json({ error: 'Title, date, and location are required.' }, { status: 400 });
@@ -61,8 +82,8 @@ export async function POST(request: NextRequest) {
 
     const db = getDbPool();
     await db.query(
-      `INSERT INTO events (id, slug, title, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO events (id, slug, title, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published, highlights, focus_products, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         id,
         cleanSlug,
@@ -77,6 +98,8 @@ export async function POST(request: NextRequest) {
         category || 'Trade Exhibition',
         is_featured ? 1 : 0,
         is_published !== undefined ? (is_published ? 1 : 0) : 1,
+        toHighlightsJson(highlights),
+        toFocusProductsJson(focus_products),
       ]
     );
 
@@ -106,7 +129,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, title, slug, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published } = body;
+    const { id, title, slug, short_desc, full_desc, date, location, booth, image, gallery, category, is_featured, is_published, highlights, focus_products } = body;
 
     if (!id || !title) {
       return NextResponse.json({ error: 'Event ID and title are required.' }, { status: 400 });
@@ -129,6 +152,8 @@ export async function PUT(request: NextRequest) {
            category = COALESCE(?, category),
            is_featured = COALESCE(?, is_featured),
            is_published = COALESCE(?, is_published),
+           highlights = COALESCE(?, highlights),
+           focus_products = COALESCE(?, focus_products),
            updated_at = NOW()
        WHERE id = ?`,
       [
@@ -144,6 +169,8 @@ export async function PUT(request: NextRequest) {
         category || null,
         is_featured !== undefined ? (is_featured ? 1 : 0) : null,
         is_published !== undefined ? (is_published ? 1 : 0) : null,
+        toHighlightsJson(highlights),
+        toFocusProductsJson(focus_products),
         id,
       ]
     );

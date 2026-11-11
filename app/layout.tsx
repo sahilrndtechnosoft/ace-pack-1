@@ -12,6 +12,9 @@ import { CursorTrail } from "@/components/ui/CursorTrail";
 import { ContentProtection } from "@/components/ui/ContentProtection";
 import { SiteVisitorTracker } from "@/components/analytics/SiteVisitorTracker";
 import { getCmsSettings, getCmsCategories } from "@/lib/db/content";
+import { SiteTextProvider } from "@/components/layout/SiteTextProvider";
+import { withDefaults } from "@/lib/cms/merge";
+import { siteTextDefaults } from "@/lib/cms/site-settings";
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +36,7 @@ export default async function RootLayout({
   ]);
   const headerSettings = settings?.header_settings || null;
   const footerSettings = settings?.footer_settings || null;
+  const siteText = withDefaults(siteTextDefaults, settings?.site_text);
 
   return (
     <html lang="en" data-scroll-behavior="smooth" className="font-sans max-w-full w-full">
@@ -55,9 +59,11 @@ export default async function RootLayout({
         <ContentProtection />
         <SmoothScroll />
         <CursorTrail />
-        <Header initialSettings={headerSettings} initialCategories={categories} />
-        <main className="flex-1 flex flex-col">{children}</main>
-        <Footer initialSettings={footerSettings} initialCategories={categories} />
+        <SiteTextProvider value={siteText}>
+          <Header initialSettings={headerSettings} initialCategories={categories} />
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Footer initialSettings={footerSettings} initialCategories={categories} />
+        </SiteTextProvider>
         <ScrollToTopButton />
       </body>
     </html>

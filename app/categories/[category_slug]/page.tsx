@@ -1,6 +1,6 @@
 import React from 'react';
 import { getCategoryBySlug, getAllCategorySlugs, productCategories } from '@/lib/data/products';
-import { getCmsCategoryBySlug, getCmsCategories } from '@/lib/db/content';
+import { getCmsCategoryBySlug, getCmsCategories, getSiteText } from '@/lib/db/content';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: CategoryDetailPageProps): Pro
 }
 
 export default async function CategoryDetailPage({ params }: CategoryDetailPageProps) {
+  const L = (await getSiteText()).labels;
   const { category_slug } = await params;
   const category = (await getCmsCategoryBySlug(category_slug)) || getCategoryBySlug(category_slug);
 
@@ -77,7 +78,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
               className="text-xs font-bold text-[#b99750] hover:text-[var(--ace-ink)] transition-colors flex items-center gap-1.5 self-start sm:self-auto"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>All Collections</span>
+              <span>{L.categoryAllCollections}</span>
             </Link>
           </div>
 
@@ -107,7 +108,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
 
           {/* Other Categories Strip */}
           <div>
-            <h3 className="text-xl font-bold text-[var(--ace-ink)] mb-6">Explore Other Collections</h3>
+            <h3 className="text-xl font-bold text-[var(--ace-ink)] mb-6">{L.categoryOtherCollections}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {otherCategories.map((other, idx) => (
                 <Reveal key={other.id} type="fade-up" delay={idx * 0.08}>

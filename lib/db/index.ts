@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
 import { seedDatabase } from './seed';
-import { CMS_PAGES } from '../cms/registry';
+import { CMS_PAGES, SEO_ONLY_PAGES } from '../cms/registry';
 
 let pool: mysql.Pool | null = null;
 let initialized = false;
@@ -321,9 +321,22 @@ export async function initDb(): Promise<void> {
     console.log('[CMS MySQL] Initial database seed completed!');
   }
 
+  await addColumnIfMissing(db, 'events', 'highlights', 'LONGTEXT NULL');
+  await addColumnIfMissing(db, 'events', 'focus_products', 'LONGTEXT NULL');
   await syncCmsRegistry(db);
 
   initialized = true;
+}
+
+/** Additive, idempotent schema change (MySQL 8 has no ADD COLUMN IF NOT EXISTS). */
+async function addColumnIfMissing(db: mysql.Pool, table: string, column: string, definition: string): Promise<void> {
+  const [rows] = await db.query(
+    'SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ? LIMIT 1',
+    [table, column]
+  );
+  if ((rows as unknown[]).length === 0) {
+    await db.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+  }
 }
 
 /**
@@ -331,6 +344,14 @@ export async function initDb(): Promise<void> {
  * Insert-only: existing rows (and anything an admin already edited) are never overwritten.
  */
 async function syncCmsRegistry(db: mysql.Pool): Promise<void> {
+  for (const [slug, alias] of Object.entries(SEO_ONLY_PAGES)) {
+    await db.query(
+      `INSERT INTO pages (id, slug, title, is_published, created_at, updated_at)
+       VALUES (?, ?, ?, 1, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE id = id`,
+      ['page_' + slug, slug, alias.title]
+    );
+  }
   for (const [slug, page] of Object.entries(CMS_PAGES)) {
     await db.query(
       `INSERT INTO pages (id, slug, title, is_published, created_at, updated_at)

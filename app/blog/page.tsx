@@ -3,17 +3,21 @@ import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { blogPosts, combineBlogs } from '@/lib/data/blogs';
 import { BlogCatalogClient } from '@/components/sections/BlogCatalogClient';
-import { getCmsBlogs, getPageContent } from '@/lib/db/content';
+import { getCmsBlogs, getPageContent, cmsMetadata } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+const staticMetadata: Metadata = {
   title: 'Packaging Industry Insights & Blogs | Ace Packaging',
   description: 'Stay updated with the latest food packaging trends, polymer material innovations, PP 05 safety guidelines, and cloud kitchen packaging solutions from Ace Packaging.',
   alternates: {
     canonical: 'https://www.acepack.co.in/blogs',
   },
 };
+
+export function generateMetadata(): Promise<Metadata> {
+  return cmsMetadata('blog-old', staticMetadata);
+}
 
 export default async function BlogGridPage() {
   const page = await getPageContent('blog');

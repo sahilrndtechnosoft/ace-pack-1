@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import AboutExperience from '@/components/experience/AboutExperience';
-import { getPageContent } from '@/lib/db/content';
+import { getPageContent, cmsMetadata } from '@/lib/db/content';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+const staticMetadata: Metadata = {
   title: 'About Ace Packaging | Food Packaging Manufacturer',
   description:
     'Ace Packaging makes quality injection moulded thinwall food packaging containers with modern technology. We shape the future of packaging in India.',
@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     url: 'https://www.acepack.co.in/aboutus',
   },
 };
+
+export function generateMetadata(): Promise<Metadata> {
+  return cmsMetadata('aboutus', staticMetadata);
+}
 
 export default async function AboutUsPage() {
   const { content, hidden } = await getPageContent('about');

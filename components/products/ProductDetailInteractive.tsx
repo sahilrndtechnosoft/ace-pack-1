@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -34,6 +35,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
   product,
   initialVariety,
 }) => {
+  const t = useSiteText().productPage;
   const [activeView, setActiveView] = useState<'blank' | 'specs' | 'locking' | 'video'>('blank');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
@@ -103,7 +105,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <div className="w-6 h-6 rounded-lg bg-[#FAF8F4] border border-[#E6DBC6] flex items-center justify-center text-[#b99750] shrink-0">
                     <Palette className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Color Finish:</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">{t.colorFinishLabel}</span>
                   <span className="text-xs font-extrabold text-[var(--ace-ink)]">
                     {activeVariety?.name || 'Selected Finish'}
                   </span>
@@ -174,7 +176,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 1
               </span>
               <Box className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">Product View</span>
+              <span className="whitespace-nowrap font-bold">{t.tabProductView}</span>
             </button>
 
             <button
@@ -194,7 +196,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 2
               </span>
               <Ruler className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">Dimensions</span>
+              <span className="whitespace-nowrap font-bold">{t.tabDimensions}</span>
             </button>
 
             <button
@@ -214,7 +216,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 3
               </span>
               <UtensilsCrossed className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">Food Locking</span>
+              <span className="whitespace-nowrap font-bold">{t.tabFoodLocking}</span>
             </button>
 
             <button
@@ -234,7 +236,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 4
               </span>
               <Video className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">Process Video</span>
+              <span className="whitespace-nowrap font-bold">{t.tabProcessVideo}</span>
             </button>
           </div>
 
@@ -255,7 +257,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 </div>
                 <div className="mt-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] text-[11px] sm:text-xs font-semibold text-gray-700 flex items-center gap-2 text-center">
                   <Sparkles className="w-3.5 h-3.5 text-[#b99750] shrink-0" />
-                  <span>Authentic 100% prime virgin PP 05 food-grade container view</span>
+                  <span>{t.productViewCaption}</span>
                 </div>
               </div>
             )}
@@ -286,15 +288,15 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
                 <div className="mt-3 sm:mt-4 w-full grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-xs">
                   <div className="bg-[#FAF8F4] border border-[#E6DBC6] p-2 rounded-xl">
-                    <span className="text-gray-500 block text-[10px]">Volume</span>
+                    <span className="text-gray-500 block text-[10px]">{t.volumeLabel}</span>
                     <strong className="text-[var(--ace-ink)] text-xs sm:text-sm font-bold truncate block">{product.capacity}</strong>
                   </div>
                   <div className="bg-[#FAF8F4] border border-[#E6DBC6] p-2 rounded-xl">
-                    <span className="text-gray-500 block text-[10px]">Material</span>
-                    <strong className="text-[var(--ace-ink)] text-xs sm:text-sm font-bold truncate block">PP 05 Virgin</strong>
+                    <span className="text-gray-500 block text-[10px]">{t.materialLabel}</span>
+                    <strong className="text-[var(--ace-ink)] text-xs sm:text-sm font-bold truncate block">{t.materialValue}</strong>
                   </div>
                   <div className="bg-[#FAF8F4] border border-[#E6DBC6] p-2 rounded-xl">
-                    <span className="text-gray-500 block text-[10px]">Carton Pack</span>
+                    <span className="text-gray-500 block text-[10px]">{t.cartonLabel}</span>
                     <strong className="text-[var(--ace-ink)] text-xs sm:text-sm font-bold truncate block">{product.packaging ? product.packaging.split(' ')[0] : '500 Pcs'}</strong>
                   </div>
                 </div>
@@ -315,10 +317,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent flex items-end p-3 sm:p-4">
                     <div className="text-white text-left">
                       <span className="bg-[#b99750] text-white text-[10px] sm:text-[11px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1">
-                        Zero-Leak Snap Rim
+                        {t.lockingTitle}
                       </span>
                       <p className="text-[11px] sm:text-xs text-white/90 font-medium leading-relaxed">
-                        Sealed container with food application: airtight lid lock preserves freshness and eliminates delivery spills.
+                        {t.lockingText}
                       </p>
                     </div>
                   </div>
@@ -345,7 +347,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                         aria-label="Stop video and return to preview"
                         className="absolute top-2 right-2 bg-black/75 hover:bg-black text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 transition-colors cursor-pointer shadow-sm border border-white/20"
                       >
-                        ✕ Stop Video
+                        {t.stopVideoText}
                       </button>
                     </div>
                   ) : (
@@ -364,9 +366,9 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                         >
                           <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5 fill-white" />
                         </button>
-                        <h4 className="text-xs sm:text-sm font-bold mb-1">Cleanroom Robotic Moulding</h4>
+                        <h4 className="text-xs sm:text-sm font-bold mb-1">{t.videoTitle}</h4>
                         <p className="text-[10px] sm:text-[11px] text-gray-200 max-w-xs leading-relaxed">
-                          Click to play precision high-speed 2.8s cycle time moulding, zero-defect optical inspection, and cleanroom handling.
+                          {t.videoText}
                         </p>
                       </div>
                     </div>
@@ -482,7 +484,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white ml-0.5" />
                   </span>
                   <span className="text-[10px] sm:text-[11px] font-bold text-white tracking-wide drop-shadow-xs">
-                    Video
+                    {t.videoBadge}
                   </span>
                 </div>
               </div>
@@ -513,7 +515,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5">
                 <ShieldCheck className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
-                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">Material</span>
+                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">{t.materialLabel}</span>
                   <span className="text-xs font-bold text-[var(--ace-ink)]">{product.material}</span>
                 </div>
               </div>
@@ -521,7 +523,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5">
                 <Flame className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
-                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">Thermal Limits</span>
+                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">{t.thermalLabel}</span>
                   <span className="text-xs font-bold text-[var(--ace-ink)]">-20°C to +120°C</span>
                 </div>
               </div>
@@ -529,8 +531,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5 col-span-2 sm:col-span-1">
                 <Layers className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
-                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">Food Contact</span>
-                  <span className="text-xs font-bold text-emerald-600">ISO 9001:2015</span>
+                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">{t.foodContactLabel}</span>
+                  <span className="text-xs font-bold text-emerald-600">{t.foodContactValue}</span>
                 </div>
               </div>
             </div>
@@ -538,22 +540,22 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             {/* Essential Technical Specifications Table */}
             <div className="mb-6">
               <h3 className="text-xs font-extrabold uppercase tracking-wider text-[var(--ace-ink)] mb-3">
-                Important Product Specifications
+                {t.specsHeading}
               </h3>
               <div className="border border-[#E6DBC6] rounded-2xl overflow-hidden text-xs">
                 <table className="w-full text-left border-collapse">
                   <tbody>
                     <tr className="border-b border-[#E6DBC6] bg-[#FAF8F4]">
-                      <td className="p-3 font-bold text-gray-600 w-1/3">Capacity / Volume</td>
+                      <td className="p-3 font-bold text-gray-600 w-1/3">{t.specCapacity}</td>
                       <td className="p-3 font-bold text-[#b99750]">{product.capacity}</td>
                     </tr>
                     <tr className="border-b border-[#E6DBC6]">
-                      <td className="p-3 font-bold text-gray-600">Polymer Resin</td>
-                      <td className="p-3 font-bold text-[var(--ace-ink)]">100% Prime Virgin PP 05 (BPA-Free)</td>
+                      <td className="p-3 font-bold text-gray-600">{t.specResin}</td>
+                      <td className="p-3 font-bold text-[var(--ace-ink)]">{t.specResinValue}</td>
                     </tr>
                     {product.dimensions && (
                       <tr className="border-b border-[#E6DBC6] bg-[#FAF8F4]">
-                        <td className="p-3 font-bold text-gray-600">Dimensions (Top × Bottom × Height)</td>
+                        <td className="p-3 font-bold text-gray-600">{t.specDimensions}</td>
                         <td className="p-3 font-bold text-[var(--ace-ink)]">
                           {product.dimensions.top} (Top)
                           {product.dimensions.bottom ? ` × ${product.dimensions.bottom} (Bottom)` : ''}
@@ -563,22 +565,22 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     )}
                     {product.varieties && product.varieties.length > 0 && (
                       <tr className="border-b border-[#E6DBC6]">
-                        <td className="p-3 font-bold text-gray-600">Color / Finish Varieties</td>
+                        <td className="p-3 font-bold text-gray-600">{t.specVarieties}</td>
                         <td className="p-3 font-bold text-[var(--ace-ink)]">
                           {product.varieties.map((v) => v.name).join(' · ')}
                         </td>
                       </tr>
                     )}
                     <tr className="border-b border-[#E6DBC6]">
-                      <td className="p-3 font-bold text-gray-600">Lid Locking System</td>
-                      <td className="p-3 font-bold text-[var(--ace-ink)]">Airtight Snap-Fit / Hermetic Rim Seal</td>
+                      <td className="p-3 font-bold text-gray-600">{t.specLid}</td>
+                      <td className="p-3 font-bold text-[var(--ace-ink)]">{t.specLidValue}</td>
                     </tr>
                     <tr className="border-b border-[#E6DBC6] bg-[#FAF8F4]">
-                      <td className="p-3 font-bold text-gray-600">Thermal Resistance</td>
-                      <td className="p-3 text-gray-700">-20°C (Deep Freeze) up to +120°C (Microwave)</td>
+                      <td className="p-3 font-bold text-gray-600">{t.specThermal}</td>
+                      <td className="p-3 text-gray-700">{t.specThermalValue}</td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-bold text-gray-600">Master Box Packaging</td>
+                      <td className="p-3 font-bold text-gray-600">{t.specMasterBox}</td>
                       <td className="p-3 text-gray-700">{product.packaging || 'Standard Export Carton'}</td>
                     </tr>
                   </tbody>
@@ -590,7 +592,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             <div className="mb-6 pt-4 border-t border-[#E6DBC6]/60">
               <h3 className="text-xs font-extrabold uppercase tracking-wider text-[var(--ace-ink)] mb-3 flex items-center gap-2">
                 <UtensilsCrossed className="w-4 h-4 text-[#b99750]" />
-                <span>Recommended Food &amp; Culinary Applications</span>
+                <span>{t.applicationsHeading}</span>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {foodApplications.map((app, idx) => (
@@ -612,10 +614,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 className="inline-flex items-center gap-2 text-xs font-bold text-[var(--ace-ink)] bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#b99750] transition-colors cursor-pointer"
               >
                 <FileDown className="w-4 h-4 text-[#b99750]" />
-                <span>Download Technical Datasheet</span>
+                <span>{t.datasheetButtonText}</span>
               </button>
               <span className="text-[11px] text-gray-500">
-                Official specifications and food contact certification documentation.
+                {t.datasheetNote}
               </span>
             </div>
           </div>
@@ -623,10 +625,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
           {/* Factory Sample / Product Inquiry Card (Compliant: zero pricing or wholesale references) */}
           <div className="bg-white p-5 sm:p-7 lg:p-8 rounded-3xl border-2 border-[#b99750]/50 shadow-md">
             <h3 className="text-lg sm:text-xl font-bold text-[var(--ace-ink)] mb-1">
-              Request Physical Samples for {product.name}
+              {t.sampleHeading} {product.name}
             </h3>
             <p className="text-xs text-gray-500 mb-5 leading-relaxed">
-              Fill in your business details to receive physical samples for kitchen, stacking, and motorcycle delivery testing.
+              {t.sampleIntro}
             </p>
 
             {sampleSubmitted ? (
@@ -634,9 +636,9 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-xs">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-[var(--ace-ink)] mb-1">Sample Request Received!</h4>
+                <h4 className="text-base font-bold text-[var(--ace-ink)] mb-1">{t.sampleSuccessHeading}</h4>
                 <p className="text-xs text-gray-600 max-w-sm mx-auto mb-4 leading-relaxed">
-                  Thank you, <strong>{sampleData.name || 'Valued Partner'}</strong>. Our dispatch team will confirm and ship samples of <strong>{product.name} ({product.capacity})</strong> to your destination.
+                  Thank you, <strong>{sampleData.name || 'Valued Partner'}</strong> — <strong>{product.name} ({product.capacity})</strong>. {t.sampleSuccessText}
                 </p>
                 <button
                   type="button"
@@ -646,14 +648,14 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   }}
                   className="text-xs font-bold text-[#b99750] hover:underline cursor-pointer"
                 >
-                  Submit another sample request →
+                  {t.sampleAgainText}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSampleSubmit} className="space-y-3.5 sm:space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Full Name *</label>
+                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleNameLabel}</label>
                     <input
                       type="text"
                       placeholder="Rahul Sharma"
@@ -664,7 +666,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Company / Brand *</label>
+                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleCompanyLabel}</label>
                     <input
                       type="text"
                       placeholder="Ace Cloud Kitchens"
@@ -678,7 +680,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Email Address *</label>
+                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleEmailLabel}</label>
                     <input
                       type="email"
                       placeholder="rahul@company.com"
@@ -689,7 +691,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Phone Number *</label>
+                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.samplePhoneLabel}</label>
                     <input
                       type="tel"
                       placeholder="+91 98251 20023"
@@ -702,7 +704,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">Requirement Notes</label>
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleNotesLabel}</label>
                   <textarea
                     rows={3}
                     placeholder={`Please specify requirements or delivery destination for ${product.name} (${product.capacity})...`}
@@ -718,10 +720,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   className="w-full bg-[#b99750] hover:bg-[#a6843e] active:scale-[0.99] text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-md hover:shadow-lg hover:shadow-[#b99750]/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
                 >
                   {sampleLoading ? (
-                    <span>Processing Request...</span>
+                    <span>{t.sampleSendingText}</span>
                   ) : (
                     <>
-                      <span>Submit Sample Request</span>
+                      <span>{t.sampleSubmitText}</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -744,7 +746,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             <div className="flex items-center gap-2 mb-2">
               <UtensilsCrossed className="w-4 h-4 text-[#b99750]" />
               <span className="text-xs font-bold uppercase tracking-wider text-[#b99750]">
-                Culinary Applications &amp; Food Visuals
+                {t.visualsHeading}
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[var(--ace-ink)] tracking-tight">
@@ -787,7 +789,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               </div>
               <div className="p-3 text-[11px] text-gray-600 flex items-center justify-between">
                 <span>{product.capacity}</span>
-                <span className="text-[#b99750] font-semibold">Zero-Leak Snap Seal</span>
+                <span className="text-[#b99750] font-semibold">{t.snapSealBadge}</span>
               </div>
             </div>
           ))}

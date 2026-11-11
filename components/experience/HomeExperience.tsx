@@ -20,6 +20,7 @@ import { ObserverCollectionShowcase } from './ObserverCollectionShowcase';
 import { CatalogueHero } from '@/components/hero/CatalogueHero';
 import { TrustCardsSection } from './TrustCardsSection';
 import { homePage } from '@/lib/cms/pages/home';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 import type { CmsPageContent } from '@/lib/cms/registry';
 
 const HOME_DEFAULTS = Object.fromEntries(
@@ -59,6 +60,7 @@ function Count({ value, suffix='' }: { value:number; suffix?:string }) {
 export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'home'>; hidden?: string[] } = {}) {
   const show=(key:keyof CmsPageContent<'home'>)=>!hidden.includes(key);
   const { craft, manufacturing } = content;
+  const L = useSiteText().labels;
   const root=useRef<HTMLDivElement>(null),state=useRef(initialSceneState());
   const [mode,setMode]=useState<'pending'|'3d'|'static'>('pending');
   const [ready,setReady]=useState(false),[progress,setProgress]=useState(0),[loadRange,setLoadRange]=useState(false);
@@ -102,8 +104,10 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
           if(start-cursor>bestBottom-bestTop||(start===bottom&&start-cursor>=80)){bestTop=cursor;bestBottom=start;}
           cursor=Math.max(cursor,end);
         }
-        if(bestBottom-bestTop<80)return;
-        top=bestTop;bottom=bestBottom;
+        // No clear gap (short phones): keep the model in the bottom band, behind the
+        // text cards, instead of leaving it at its last/default spot over the copy.
+        if(bestBottom-bestTop<80){top=Math.max(viewport.top+16,bottom-Math.max(140,viewport.height*.34));}
+        else {top=bestTop;bottom=bestBottom;}
       }
       state.current.frame={left:(left-viewport.left)/viewport.width,top:(top-viewport.top)/viewport.height,right:1-16/viewport.width,bottom:(bottom-viewport.top)/viewport.height};
     };
@@ -118,7 +122,10 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
         });
       }
     };
+    // Re-measure during the scroll (once per frame) as well as after it settles, so the
+    // model never sits on stale coordinates while text panels move past it.
     const onScroll = () => {
+      requestMeasure();
       if (scrollTimer) clearTimeout(scrollTimer);
       scrollTimer = setTimeout(requestMeasure, 60);
     };
@@ -226,16 +233,16 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
   return <MotionConfig reducedMotion="user"><div ref={root} className={`xp-home ${live?'xp-live':'xp-static'}`} data-render-reason={fallbackReason}>
     <a href="#main-content" className="xp-skip">Skip to content</a>
     {live&&<div className="xp-scene-layer" style={{ opacity: 0 }} aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure}/></SceneBoundary></div>}
-    <nav className="xp-chapters" aria-label="Homepage chapters">{[['main-content','Start'],['craft','The craft'],['collection','Collection'],['products-showcase','Products'],['manufacturing','Our thinking'],['closing','Sample kit']].map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
+    <nav className="xp-chapters" aria-label="Homepage chapters">{['main-content','craft','collection','products-showcase','manufacturing','closing'].map((id,i)=>[id,L.homeChapters[i]??id]).map(([id,label],i)=><a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter===id?'location':undefined}><span>{label}</span><b>0{i+1}</b></a>)}</nav>
     {show('hero_banner')&&<CatalogueHero content={content.hero_banner} />}
     {show('craft')&&<section id="craft" className="xp-craft"><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">{craft.eyebrow}</span><span className="xp-eyebrow">{craft.sideNote}</span></div><div className="xp-section-heading"><h2 data-split>{craft.heading} <em>{craft.headingHighlight}</em></h2></div><div className="xp-craft-facts">{craft.facts.map((fact,i)=><motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={live&&craftPhase!==i} {...panelMotion(!live||craftPhase===i,24)} transition={{duration:.55,ease:[.22,1,.36,1]}}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line=><span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule"/></motion.div>)}</div>{!live&&<img className="xp-craft-image" src={craft.image} alt={craft.imageAlt} width="1000" height="769" loading="lazy"/>}<span className="xp-craft-measure" aria-hidden="true">+<span>Designed to do more.</span>+</span><div className="xp-story-bottom"><span>One simple form.<br/><b>A world of thought.</b></span><div className="xp-story-steps">{['Consider','Open','Discover'].map((word,i)=><span key={word} className={craftPhase===i?'is-active':''}><b>0{i+1}</b>{word}</span>)}</div><span className="xp-turn-label"><Rotate3D size={20}/>360° of consideration</span></div></div></section>}
     {/* GSAP Observer Dual-Wrapper Counter-Sliding Collection Section */}
-    <ObserverCollectionShowcase />
+    {show('collection')&&<ObserverCollectionShowcase content={content.collection} />}
 
     {/* Immediate Product Offering Prominence: Signature Product Carousel */}
-    <div id="products-showcase">
-      <ProductShowcaseCarousel />
-    </div>
+    {show('product_carousel')&&<div id="products-showcase">
+      <ProductShowcaseCarousel content={content.product_carousel} />
+    </div>}
 
     {show('manufacturing')&&<section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">{manufacturing.eyebrow}</span><Plus size={30}/></div><Reveal><h2 data-split>{manufacturing.heading}<br/><em>{manufacturing.headingHighlight}</em></h2></Reveal><div className="xp-manufacturing-copy"><p>{manufacturing.body}</p><Link href={manufacturing.link.link}>{manufacturing.link.text} <ArrowUpRight size={19}/></Link></div><div className="xp-stats">{manufacturing.stats.map(stat=><div key={stat.label}><Count value={Number(stat.value)||0} suffix={stat.suffix}/><p>{stat.label}</p></div>)}</div><p className="xp-recycling-note">{manufacturing.note}</p></section>}
     

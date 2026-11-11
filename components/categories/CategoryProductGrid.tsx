@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState } from 'react';
 import { Palette } from 'lucide-react';
@@ -18,6 +19,7 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
   basePath,
   productSlugMap,
 }) => {
+  const L = useSiteText().labels;
   // Collect all unique varieties across products in this category
   const allVarietiesMap = new Map<string, { name: string; slug: string; colorHex: string; borderHex?: string }>();
   products.forEach((p) => {
@@ -76,7 +78,7 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
                 Color &amp; Finish Varieties ({availableVarieties.length})
               </span>
               <span className="text-[11px] text-gray-500">
-                Click a color swatch to preview models in that finish
+                {L.finishesHint}
               </span>
             </div>
           </div>
@@ -91,7 +93,7 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
                   : 'bg-[#FAF8F4] text-gray-700 hover:bg-[#F3EFE6] border border-[#E6DBC6]'
               }`}
             >
-              <span>All Finishes</span>
+              <span>{L.finishesAll}</span>
             </button>
 
             {availableVarieties.map((v) => {

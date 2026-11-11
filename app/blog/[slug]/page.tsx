@@ -1,6 +1,6 @@
 import React from 'react';
 import { getBlogPostBySlug, getAllBlogSlugs, blogPosts, combineBlogs } from '@/lib/data/blogs';
-import { getCmsBlogBySlug, getCmsBlogs } from '@/lib/db/content';
+import { getCmsBlogBySlug, getCmsBlogs, getSiteText } from '@/lib/db/content';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -58,6 +58,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
+  const L = (await getSiteText()).labels;
   const { slug } = await params;
   const staticPost = getBlogPostBySlug(slug);
   const cmsPost = await getCmsBlogBySlug(slug);
@@ -158,7 +159,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
-                      Authored by
+                      {L.blogAuthoredBy}
                     </span>
                     <h4 className="text-xs font-bold text-[#1A1D20]">
                       {post.author.name}{' '}
@@ -173,7 +174,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
-                      Date Released
+                      {L.blogDateReleased}
                     </span>
                     <h4 className="text-xs font-bold text-[#1A1D20]">{post.date}</h4>
                   </div>
@@ -185,7 +186,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
-                      Reading Time
+                      {L.blogReadingTime}
                     </span>
                     <h4 className="text-xs font-bold text-[#1A1D20]">{post.readTime}</h4>
                   </div>
@@ -235,7 +236,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   <div className="mt-8 pt-8 border-t border-[#E6DBC6]">
                     <h3 className="text-base font-bold text-[#1A1D20] flex items-center gap-2 mb-4">
                       <CheckCircle2 className="w-5 h-5 text-[#a8812f]" />
-                      <span>Key Packaging Benefits for Food Manufacturers</span>
+                      <span>{L.blogBenefitsHeading}</span>
                     </h3>
                     <ul className="space-y-2.5 text-xs text-gray-700 pl-2">
                       {post.takeaways.map((takeaway, idx) => (
@@ -271,7 +272,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div className="lg:col-span-4 flex flex-col gap-8 sticky top-28">
               <div className="bg-white p-6 rounded-3xl border border-[#E6DBC6] shadow-sm">
                 <h3 className="text-base font-bold text-[#1A1D20] pb-4 mb-4 border-b border-[#E6DBC6] flex items-center justify-between">
-                  <span>Related Posts</span>
+                  <span>{L.blogRelatedPosts}</span>
                   <span className="w-2 h-2 rounded-full bg-[#cfa144]" />
                 </h3>
 
@@ -305,9 +306,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
               <div className="bg-white p-6 rounded-3xl border-2 border-[#cfa144]/60 shadow-md">
                 <div className="pb-4 mb-4 border-b border-[#E6DBC6]">
-                  <h3 className="text-lg font-bold text-[#1A1D20]">Inquiry Form</h3>
+                  <h3 className="text-lg font-bold text-[#1A1D20]">{L.blogInquiryHeading}</h3>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Get in touch for container specifications and samples
+                    {L.blogInquiryText}
                   </p>
                 </div>
 

@@ -5,6 +5,7 @@ import type { ExhibitionEvent } from '../data/events';
 import { productCategories, type ProductCategory, type ProductItem } from '../data/products';
 import { CMS_PAGES, type CmsPageContent, type CmsPageSlug, type CmsSectionDef } from '../cms/registry';
 import { parseContent, withDefaults } from '../cms/merge';
+import { siteTextDefaults, type SiteText } from '../cms/site-settings';
 import { customPageDef, isBuiltInSlug, type CustomPageContent } from '../cms/pages/custom';
 import type { Metadata } from 'next';
 
@@ -161,6 +162,11 @@ export async function getCmsPage(slug: string) {
   }
 }
 
+/** Shared site wording (Site-wide Settings → Forms, Pop-up, 404 & Labels) with live fallbacks. */
+export async function getSiteText(): Promise<SiteText> {
+  return withDefaults(siteTextDefaults, (await getCmsSettings()).site_text);
+}
+
 export async function getCmsSettings(): Promise<Record<string, any>> {
   try {
     await initDb();
@@ -266,6 +272,33 @@ export async function getCmsBlogBySlug(slug: string): Promise<BlogPost | null> {
   }
 }
 
+// Shown for events whose highlights/products haven't been filled in under Events & Expos.
+export const DEFAULT_EVENT_HIGHLIGHTS = [
+  'Live demonstration of high-speed precision injection moulding',
+  'Food-grade virgin PP 05 and IML container samples on display',
+  'Direct interaction with Ace Packaging technical and mould tooling engineers',
+];
+export const DEFAULT_EVENT_FOCUS_PRODUCTS = [
+  { name: 'IML Custom Branded Containers', slug: 'custom-iml', desc: 'Photorealistic in-mould labelling fused directly into polymer.' },
+  { name: 'RE Series Bento Compartments', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
+];
+
+function eventHighlights(r: any): string[] {
+  const list = safeParseJson<unknown>(r.highlights, null);
+  const clean = Array.isArray(list) ? list.filter((h): h is string => typeof h === 'string' && h.trim() !== '') : [];
+  return clean.length ? clean : DEFAULT_EVENT_HIGHLIGHTS;
+}
+
+function eventFocusProducts(r: any): ExhibitionEvent['focusProducts'] {
+  const list = safeParseJson<unknown>(r.focus_products, null);
+  const clean = Array.isArray(list)
+    ? list
+        .filter((p): p is { name: string; slug?: string; desc?: string } => !!p && typeof p === 'object' && typeof (p as { name?: unknown }).name === 'string' && (p as { name: string }).name.trim() !== '')
+        .map((p) => ({ name: p.name, slug: p.slug || '', desc: p.desc || '' }))
+    : [];
+  return clean.length ? clean : DEFAULT_EVENT_FOCUS_PRODUCTS;
+}
+
 function mapRowToExhibitionEvent(r: any): ExhibitionEvent {
   let fullStory: string[] = [];
   if (r.full_desc) {
@@ -311,15 +344,8 @@ function mapRowToExhibitionEvent(r: any): ExhibitionEvent {
     image: r.image || '/images/hero-bg-image.jpg',
     description: r.short_desc || '',
     fullStory: fullStory.length > 0 ? fullStory : undefined,
-    highlights: [
-      'Live demonstration of high-speed precision injection moulding',
-      'Food-grade virgin PP 05 and IML container samples on display',
-      'Direct interaction with Ace Packaging technical and mould tooling engineers',
-    ],
-    focusProducts: [
-      { name: 'IML Custom Branded Containers', slug: 'custom-iml', desc: 'Photorealistic in-mould labelling fused directly into polymer.' },
-      { name: 'RE Series Bento Compartments', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
-    ],
+    highlights: eventHighlights(r),
+    focusProducts: eventFocusProducts(r),
   };
 }
 

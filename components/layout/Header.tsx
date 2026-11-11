@@ -25,7 +25,6 @@ import {
   Calendar,
 } from 'lucide-react';
 import { productCategories, type ProductCategory } from '@/lib/data/products';
-import { resourceLinks } from '@/lib/data/resources';
 import { PackagingIllustration } from '@/components/products/PackagingIllustration';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
@@ -185,6 +184,10 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
 
   const site = withDefaults(headerDefaults, liveSettings);
   const topbarPhone = site.topbarPhone;
+  const menu = site.menu;
+  const resourceLinks = menu.resourceLinks
+    .filter((l) => l.label && l.link)
+    .map((l) => ({ href: l.link, label: l.label, hint: l.hint }));
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -386,7 +389,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
         {/* Desktop Navigation Links (Enabled for lg: >= 1024px) */}
         <nav className="hidden lg:flex items-center justify-center mx-auto px-2 xl:px-4 gap-3 lg:gap-3.5 xl:gap-5 2xl:gap-7 text-[12.5px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap text-[var(--ace-ink)] shrink-0">
           <Link href="/about" className={navLink('/about')} aria-current={isActive('/about') ? 'page' : undefined}>
-            About Us
+            {menu.aboutLabel}
           </Link>
 
           {/* "Our Products" Interactive Master-Detail Mega Menu Trigger */}
@@ -417,7 +420,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
               aria-label="Our Products Menu"
               aria-current={isActive('/categories') ? 'page' : undefined}
             >
-              <span>Our Products</span>
+              <span>{menu.productsLabel}</span>
               <ChevronDown
                 className={`w-3.5 h-3.5 transition-transform duration-200 ${
                   megaMenuOpen ? 'rotate-180 text-[var(--ace-orange)]' : 'opacity-60'
@@ -627,7 +630,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
           </div>
 
           <Link href="/industries" className={navLink('/industries')} aria-current={isActive('/industries') ? 'page' : undefined}>
-            Industries
+            {menu.industriesLabel}
           </Link>
 
           {/* Resources Dropdown */}
@@ -653,7 +656,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                 `inline-flex items-center gap-1.5 cursor-pointer ${resourcesOpen ? 'text-[var(--ace-orange)]' : ''}`
               )}
             >
-              <span>Resources</span>
+              <span>{menu.resourcesLabel}</span>
               <ChevronDown
                 className={`w-3.5 h-3.5 transition-transform duration-200 ${
                   resourcesOpen ? 'rotate-180 text-[var(--ace-orange)]' : 'opacity-60'
@@ -746,11 +749,11 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
           </div>
 
           <Link href="/events" className={navLink('/events')} aria-current={isActive('/events') ? 'page' : undefined}>
-            Exhibitions &amp; Events
+            {menu.eventsLabel}
           </Link>
 
           <Link href="/blogs" className={navLink('/blogs')} aria-current={isActive('/blogs') ? 'page' : undefined}>
-            Blogs
+            {menu.blogsLabel}
           </Link>
         </nav>
 
@@ -1051,7 +1054,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   className={mobileLink('/products')}
                   aria-current={isActive('/products') ? 'page' : undefined}
                 >
-                  <span>All Products Catalog</span>
+                  <span>{menu.mobileCatalogLabel}</span>
                   <ArrowRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
@@ -1061,7 +1064,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   className={mobileLink('/about')}
                   aria-current={isActive('/about') ? 'page' : undefined}
                 >
-                  <span>About Us</span>
+                  <span>{menu.aboutLabel}</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
@@ -1071,7 +1074,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   className={mobileLink('/industries')}
                   aria-current={isActive('/industries') ? 'page' : undefined}
                 >
-                  <span>Industries</span>
+                  <span>{menu.industriesLabel}</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
@@ -1083,7 +1086,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                 >
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-[var(--ace-orange)]" />
-                    <span>Exhibitions &amp; Events</span>
+                    <span>{menu.eventsLabel}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
@@ -1094,7 +1097,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   className={mobileLink('/blogs')}
                   aria-current={isActive('/blogs') ? 'page' : undefined}
                 >
-                  <span>Blogs & Insights</span>
+                  <span>{menu.mobileBlogsLabel}</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
@@ -1104,7 +1107,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   className={mobileLink('/contact')}
                   aria-current={isActive('/contact') ? 'page' : undefined}
                 >
-                  <span>Contact Us</span>
+                  <span>{menu.mobileContactLabel}</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
               </nav>

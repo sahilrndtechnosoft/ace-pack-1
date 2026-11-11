@@ -1,4 +1,5 @@
 'use client';
+import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -6,6 +7,7 @@ import { ArrowRight, Lock, CheckCircle2, Loader2, AlertCircle } from 'lucide-rea
 import { productCategories } from '@/lib/data/products';
 
 export const FactoryInquiryForm: React.FC = () => {
+  const t = useSiteText().inquiryForm;
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -119,20 +121,20 @@ export const FactoryInquiryForm: React.FC = () => {
           <CheckCircle2 className="w-8 h-8" />
         </div>
         <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 inline-block mb-2">
-          Inquiry Successfully Sent &amp; Logged
+          {t.successBadge}
         </span>
         <h3 className="text-xl sm:text-2xl font-extrabold text-[#1A1D20] mb-2">
-          Factory Inquiry Received!
+          {t.successHeading}
         </h3>
         <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-6 leading-relaxed">
-          Thank you, <strong className="text-[#1A1D20]">{formData.name || 'Valued Partner'}</strong>. Your inquiry has been dispatched to Ace Packaging&apos;s production engineers and sales desk in Daman. We will review your application specifications and respond within 24 hours.
+          Thank you, <strong className="text-[#1A1D20]">{formData.name || 'Valued Partner'}</strong>. {t.successMessage}
         </p>
         <button
           type="button"
           onClick={handleReset}
           className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#a8812f] text-white text-xs font-bold py-3 px-6 rounded-xl uppercase tracking-wider transition-all cursor-pointer shadow-sm"
         >
-          <span>Send Another Inquiry</span>
+          <span>{t.againButtonText}</span>
         </button>
       </div>
     );
@@ -150,12 +152,12 @@ export const FactoryInquiryForm: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-            Full Name <span className="text-red-500">*</span>
+            {t.nameLabel} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             required
-            placeholder="John Doe"
+            placeholder={t.namePlaceholder}
             value={formData.name}
             onChange={(e) => {
               setFormData({ ...formData, name: e.target.value });
@@ -173,12 +175,12 @@ export const FactoryInquiryForm: React.FC = () => {
         </div>
         <div>
           <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-            Company / Brand <span className="text-red-500">*</span>
+            {t.companyLabel} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             required
-            placeholder="Ace Cloud Kitchens"
+            placeholder={t.companyPlaceholder}
             value={formData.company}
             onChange={(e) => {
               setFormData({ ...formData, company: e.target.value });
@@ -199,12 +201,12 @@ export const FactoryInquiryForm: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-            Email Address <span className="text-red-500">*</span>
+            {t.emailLabel} <span className="text-red-500">*</span>
           </label>
           <input
             type="email"
             required
-            placeholder="john@company.com"
+            placeholder={t.emailPlaceholder}
             value={formData.email}
             onChange={(e) => {
               setFormData({ ...formData, email: e.target.value });
@@ -222,12 +224,12 @@ export const FactoryInquiryForm: React.FC = () => {
         </div>
         <div>
           <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-            Phone / WhatsApp <span className="text-red-500">*</span>
+            {t.phoneLabel} <span className="text-red-500">*</span>
           </label>
           <input
             type="tel"
             required
-            placeholder="+91 98251 20023"
+            placeholder={t.phonePlaceholder}
             value={formData.phone}
             onChange={(e) => {
               setFormData({ ...formData, phone: e.target.value });
@@ -247,14 +249,14 @@ export const FactoryInquiryForm: React.FC = () => {
 
       <div>
         <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-          Container Category of Interest
+          {t.categoryLabel}
         </label>
         <select
           value={formData.category}
           onChange={(e) => setFormData({ ...formData, category: e.target.value })}
           className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-3 text-xs text-gray-700 focus:outline-none focus:border-[#cfa144] focus:ring-4 focus:ring-[#cfa144]/10 transition-all duration-200"
         >
-          <option value="">Select a container line...</option>
+          <option value="">{t.categoryPrompt}</option>
           {productCategories.map((cat) => (
             <option key={cat.id} value={cat.name}>{cat.name}</option>
           ))}
@@ -263,12 +265,12 @@ export const FactoryInquiryForm: React.FC = () => {
 
       <div>
         <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-          Detailed Message / Order Quantity <span className="text-red-500">*</span>
+          {t.messageLabel} <span className="text-red-500">*</span>
         </label>
         <textarea
           rows={4}
           required
-          placeholder="Please specify container size, monthly volume requirement, and shipping location..."
+          placeholder={t.messagePlaceholder}
           value={formData.message}
           onChange={(e) => {
             setFormData({ ...formData, message: e.target.value });
@@ -295,11 +297,11 @@ export const FactoryInquiryForm: React.FC = () => {
         {loading ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
-            <span>Sending Inquiry to Factory...</span>
+            <span>{t.sendingText}</span>
           </>
         ) : (
           <>
-            <span>Send Factory Inquiry</span>
+            <span>{t.submitText}</span>
             <ArrowRight className="w-4 h-4" />
           </>
         )}
