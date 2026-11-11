@@ -115,6 +115,11 @@ function mapRowToBlogPost(r: any): BlogPost {
     },
     readTime: r.read_time || '5 min read',
     date: r.date || 'October 2026',
+    content_html: r.content_html || undefined,
+    meta_title: r.meta_title || undefined,
+    meta_description: r.meta_description || undefined,
+    canonical: r.canonical || undefined,
+    views: r.views || undefined,
   };
 }
 

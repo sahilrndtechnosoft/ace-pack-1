@@ -15,6 +15,7 @@ import { getCmsSettings, getCmsCategories } from "@/lib/db/content";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acepack.co.in'),
   title: "Ace Packaging | Premium Plastic Food Containers",
   description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
 };

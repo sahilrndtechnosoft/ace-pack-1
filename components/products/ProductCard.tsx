@@ -12,6 +12,8 @@ export interface ProductCardProps {
   activeVarietySlug?: string;
   onVarietySelect?: (productId: string, varietySlug: string) => void;
   delay?: number;
+  basePath?: string;
+  productSlug?: string;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -20,6 +22,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   activeVarietySlug,
   onVarietySelect,
   delay = 0,
+  basePath,
+  productSlug,
 }) => {
   const [localVarietySlug, setLocalVarietySlug] = useState<string>(
     product.varieties?.[0]?.slug || ''
@@ -29,6 +33,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     activeVarietySlug !== undefined ? activeVarietySlug : localVarietySlug;
   const activeVarietyObj = product.varieties?.find((v) => v.slug === currentVarietySlug);
   const activeImage = activeVarietyObj?.image || product.image;
+
+  const targetSlug = productSlug || product.product_slug;
+  const base = basePath ? `${basePath}/${categorySlug}` : `/categories/${categorySlug}`;
+  const targetHref = `${base}/${targetSlug}${
+    currentVarietySlug ? `?variety=${currentVarietySlug}` : ''
+  }`;
 
   const handleCardVarietySelect = (varietySlug: string) => {
     setLocalVarietySlug(varietySlug);
@@ -157,9 +167,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Single Clear Action Button */}
         <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1">
           <Link
-            href={`/categories/${categorySlug}/${product.product_slug}${
-              currentVarietySlug ? `?variety=${currentVarietySlug}` : ''
-            }`}
+            href={targetHref}
             className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold px-3 py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wide sm:tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
           >
             <span>View Specifications &amp; 4-View Studio</span>

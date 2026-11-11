@@ -88,9 +88,11 @@ function getCategoryMeta(category: ProductCategory): CategoryMeta {
 export default function CategoriesExperience({
   initialCategories,
   cmsSections,
+  basePath = '/categories',
 }: {
   initialCategories?: ProductCategory[];
   cmsSections?: Record<string, any>;
+  basePath?: string;
 } = {}) {
   const categories = initialCategories && initialCategories.length > 0 ? initialCategories : productCategories;
   const modelCount = categories.reduce((n, c) => n + c.products.length, 0);
@@ -298,7 +300,7 @@ export default function CategoriesExperience({
                 <li className="xc-row" key={category.id} data-name={category.name}>
                   <div className="xc-row-inner">
                     <Link
-                      href={`/categories/${category.slug}`}
+                      href={`${basePath}/${category.slug}`}
                       className="xc-row-link"
                       aria-label={`View ${category.name} category`}
                     >
@@ -369,7 +371,7 @@ export default function CategoriesExperience({
                           <span key={f}>{f}</span>
                         ))}
                       </div>
-                      <Link href={`/categories/${category.slug}`} className="xc-detail-link">
+                      <Link href={`${basePath}/${category.slug}`} className="xc-detail-link">
                         Explore {category.products.length === 1 ? 'the model' : `all ${category.products.length} models`} in {category.name} <ArrowRight size={14} />
                       </Link>
                     </div>

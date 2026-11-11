@@ -8,11 +8,15 @@ import { ProductCard } from '@/components/products/ProductCard';
 interface CategoryProductGridProps {
   products: ProductItem[];
   categorySlug: string;
+  basePath?: string;
+  productSlugMap?: Record<string, string>;
 }
 
 export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
   products,
   categorySlug,
+  basePath,
+  productSlugMap,
 }) => {
   // Collect all unique varieties across products in this category
   const allVarietiesMap = new Map<string, { name: string; slug: string; colorHex: string; borderHex?: string }>();
@@ -130,6 +134,8 @@ export const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
               key={item.id}
               product={item}
               categorySlug={categorySlug}
+              basePath={basePath}
+              productSlug={productSlugMap ? productSlugMap[item.id] : undefined}
               activeVarietySlug={currentVarietySlug}
               onVarietySelect={handleCardVarietySelect}
               delay={Math.min(idx % 3, 2) * 0.08}

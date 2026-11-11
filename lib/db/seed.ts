@@ -703,16 +703,31 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
   for (const post of blogPosts) {
     const blogId = 'blog_' + post.slug;
     await db.query(
-      `INSERT INTO blogs (id, slug, title, category, summary, content, takeaways, tags, image, author_name, author_role, author_avatar, read_time, date, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE title=VALUES(title), summary=VALUES(summary), content=VALUES(content), image=VALUES(image)`,
+      `INSERT INTO blogs (id, slug, title, category, summary, content, content_html, meta_title, meta_description, canonical, views, takeaways, tags, image, author_name, author_role, author_avatar, read_time, date, is_published, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW(), NOW())
+       ON DUPLICATE KEY UPDATE 
+         title=VALUES(title), 
+         summary=VALUES(summary), 
+         content=VALUES(content), 
+         content_html=VALUES(content_html),
+         meta_title=VALUES(meta_title),
+         meta_description=VALUES(meta_description),
+         canonical=VALUES(canonical),
+         views=VALUES(views),
+         image=VALUES(image),
+         date=VALUES(date)`,
       [
         blogId,
         post.slug,
         post.title,
         post.category,
         post.summary,
-        JSON.stringify(post.content),
+        JSON.stringify(post.content || []),
+        post.content_html || null,
+        post.meta_title || null,
+        post.meta_description || null,
+        post.canonical || null,
+        post.views || null,
         JSON.stringify(post.takeaways || []),
         JSON.stringify(post.tags || []),
         post.image,

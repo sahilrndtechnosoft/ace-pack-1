@@ -9,6 +9,9 @@ import { getCmsSettings } from '@/lib/db/content';
 export const metadata: Metadata = {
   title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
   description: 'Get in touch with Ace Packaging sales team for product information, custom mould R&D, and free sample requests for plastic food containers.',
+  alternates: {
+    canonical: 'https://www.acepack.co.in/contactus',
+  },
 };
 
 export default async function ContactPage() {

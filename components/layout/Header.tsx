@@ -237,10 +237,15 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
   // Which top-level section the current URL belongs to.
   const isActive = (href: string) => {
     const roots =
-      href === '/categories' ? ['/categories', '/products']
-        : href === '/events' ? ['/events', '/exhibitions']
-        : href === '/resources' ? resourceLinks.map((l) => l.href)
-          : [href];
+      href === '/categories' || href === '/plastic-food-containers'
+        ? ['/categories', '/products', '/plastic-food-containers']
+        : href === '/events'
+        ? ['/events', '/exhibitions']
+        : href === '/blog' || href === '/blogs'
+        ? ['/blog', '/blogs']
+        : href === '/resources'
+        ? resourceLinks.map((l) => l.href)
+        : [href];
     return roots.some((root) => pathname === root || pathname.startsWith(`${root}/`));
   };
 
@@ -741,7 +746,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
             Exhibitions &amp; Events
           </Link>
 
-          <Link href="/blog" className={navLink('/blog')} aria-current={isActive('/blog') ? 'page' : undefined}>
+          <Link href="/blogs" className={navLink('/blogs')} aria-current={isActive('/blogs') ? 'page' : undefined}>
             Blogs
           </Link>
         </nav>
@@ -1081,10 +1086,10 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                 </Link>
 
                 <Link
-                  href="/blog"
+                  href="/blogs"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={mobileLink('/blog')}
-                  aria-current={isActive('/blog') ? 'page' : undefined}
+                  className={mobileLink('/blogs')}
+                  aria-current={isActive('/blogs') ? 'page' : undefined}
                 >
                   <span>Blogs & Insights</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />

@@ -1,0 +1,362 @@
+{
+  "categories": [
+    {
+      "slug": "flat-containers",
+      "name": "Flat Containers",
+      "subtitle": "Rectangular Cold Prep & Takeaway Bowls",
+      "description": "Heavy-duty flat food containers designed for salads, meal bowls, cold prep, and take-away service.",
+      "local_category": "flat-containers"
+    },
+    {
+      "slug": "natraj-containers",
+      "name": "Natraj Containers",
+      "subtitle": "Everyday Meal & Mithai Packaging",
+      "description": "Round and rectangular tamper-evident containers trusted across sweet marts, cloud kitchens, and takeaway counters.",
+      "local_category": "natraj-containers"
+    },
+    {
+      "slug": "elite-containers",
+      "name": "Elite Containers",
+      "subtitle": "Modern Sleek Food Packaging",
+      "description": "Premium transparent food containers featuring modern profiles, airtight lid closures, and high stackability.",
+      "local_category": "zen-series"
+    },
+    {
+      "slug": "hinge-containers",
+      "name": "Hinge Containers",
+      "subtitle": "One-Piece Attached Lid Portion Cups",
+      "description": "One-piece hinged lid containers from 25ml to 100ml engineered for gravies, chutneys, dips, and tasting portions.",
+      "local_category": "hinge-cups"
+    },
+    {
+      "slug": "re-series-containers",
+      "name": "RE-Series Containers",
+      "subtitle": "Multi-Compartment Bento Architecture",
+      "description": "Pioneering rectangular multi-compartment food containers engineered with isolated chambers to prevent curry cross-mixing.",
+      "local_category": "re-series"
+    },
+    {
+      "slug": "sweet-box-containers",
+      "name": "Sweet Box Containers",
+      "subtitle": "Crystal-Clear Confectionery Boxes",
+      "description": "Speciality crystal-clear confectionery boxes designed for Indian sweets, cookies, baklava, and dry fruits.",
+      "local_category": "sweet-box-containers"
+    },
+    {
+      "slug": "ro-series-container",
+      "name": "RO-Series Container",
+      "subtitle": "Round Soup, Biryani & Gravy Bowls",
+      "description": "Cylindrical round containers engineered to withstand boiling soup filling up to 120\u00b0C and deep freeze down to -20\u00b0C.",
+      "local_category": "ro-series"
+    },
+    {
+      "slug": "zen-containers",
+      "name": "ZEN Containers",
+      "subtitle": "Ultra-Clear High Rigidity Bowls",
+      "description": "Contemporary design, stackable rims, and optical transparency for brand-conscious quick service restaurants.",
+      "local_category": "zen-series"
+    },
+    {
+      "slug": "round-containers",
+      "name": "Round Containers",
+      "subtitle": "Classic Round Takeaway Tubs",
+      "description": "Universal round food containers from 225ml to 1000ml for hot gravies, dals, curries, and desserts.",
+      "local_category": "round-containers"
+    },
+    {
+      "slug": "deli-container",
+      "name": "Deli Containers",
+      "subtitle": "Heavy-Duty Airtight Storage",
+      "description": "High-impact thick wall containers providing superior thermal insulation and leak-proof transit security.",
+      "local_category": "deli-series"
+    },
+    {
+      "slug": "portion-cups",
+      "name": "Portion Cups",
+      "subtitle": "Sauce, Condiment & Dip Cups",
+      "description": "Compact portion cups from 50ml to 250ml with snap-fit lids for condiments, raitas, and salad dressings.",
+      "local_category": "portion-cups"
+    },
+    {
+      "slug": "glass-series",
+      "name": "Glass Series",
+      "subtitle": "90mm & 80mm Optical Drinkware Cups",
+      "description": "Ultra-clear injection moulded PP cups for iced beverages, bubble tea, frappes, and desserts.",
+      "local_category": "glass-series-80-dia"
+    }
+  ],
+  "products": {
+    "flat-containers-1200ml": {
+      "local_category": "flat-containers",
+      "local_product": "1200ml-flat-container"
+    },
+    "flat-containers-650ml-bowl": {
+      "local_category": "flat-containers",
+      "local_product": "650ml-flat-container"
+    },
+    "flat-containers-750ml": {
+      "local_category": "flat-containers",
+      "local_product": "750ml-flat-container"
+    },
+    "flat-containers-1000ml": {
+      "local_category": "flat-containers",
+      "local_product": "1000ml-flat-container"
+    },
+    "flat-containers-2500ml": {
+      "local_category": "flat-containers",
+      "local_product": "2500ml-flat-container"
+    },
+    "flat-containers-2000ml": {
+      "local_category": "flat-containers",
+      "local_product": "2000ml-flat-container"
+    },
+    "flat-containers-600ml": {
+      "local_category": "flat-containers",
+      "local_product": "600ml-flat-container"
+    },
+    "flat-containers-1500-ml": {
+      "local_category": "flat-containers",
+      "local_product": "1500ml-flat-container"
+    },
+    "natraj-containers-500ml": {
+      "local_category": "natraj-containers",
+      "local_product": "500ml-natraj-container"
+    },
+    "natraj-containers-500g": {
+      "local_category": "natraj-containers",
+      "local_product": "500g-natraj-sweet-box"
+    },
+    "natraj-containers-750ml": {
+      "local_category": "natraj-containers",
+      "local_product": "750ml-natraj-container"
+    },
+    "natraj-containers-250ml": {
+      "local_category": "natraj-containers",
+      "local_product": "250ml-natraj-container"
+    },
+    "elite-containers-500": {
+      "local_category": "zen-series",
+      "local_product": "500ml-zen-container"
+    },
+    "elite-containers-650ml": {
+      "local_category": "zen-series",
+      "local_product": "650ml-zen-container"
+    },
+    "elite-containers-750": {
+      "local_category": "zen-series",
+      "local_product": "750ml-zen-container"
+    },
+    "elite-containers-1000": {
+      "local_category": "zen-series",
+      "local_product": "1000ml-zen-container"
+    },
+    "hinge-containers-25ml": {
+      "local_category": "hinge-cups",
+      "local_product": "25ml-hinge-cup"
+    },
+    "hinge-containers-2oz": {
+      "local_category": "hinge-cups",
+      "local_product": "50ml-hinge-cup"
+    },
+    "hinge-containers-50ml": {
+      "local_category": "hinge-cups",
+      "local_product": "50ml-hinge-cup"
+    },
+    "hinge-containers-100ml": {
+      "local_category": "hinge-cups",
+      "local_product": "100ml-hinge-cup"
+    },
+    "re-series-containers-ap-re-32": {
+      "local_category": "re-series",
+      "local_product": "ap-re-32"
+    },
+    "re-series-containers-ap-re-38": {
+      "local_category": "re-series",
+      "local_product": "ap-re-38"
+    },
+    "re-series-containers-ap-re-28": {
+      "local_category": "re-series",
+      "local_product": "ap-re-28"
+    },
+    "re-series-containers-ap-re-16": {
+      "local_category": "re-series",
+      "local_product": "ap-re-16"
+    },
+    "re-series-containers-ap-re-24": {
+      "local_category": "re-series",
+      "local_product": "ap-re-24"
+    },
+    "re-series-containers-ap-re-8": {
+      "local_category": "re-series",
+      "local_product": "ap-re-08"
+    },
+    "re-series-containers-ap-re-12": {
+      "local_category": "re-series",
+      "local_product": "ap-re-12"
+    },
+    "re-series-containers-ap-re-48": {
+      "local_category": "re-series",
+      "local_product": "ap-re-48"
+    },
+    "re-series-containers-ap-re-58": {
+      "local_category": "re-series",
+      "local_product": "ap-re-58"
+    },
+    "re-series-containers-ap-re-232": {
+      "local_category": "re-series",
+      "local_product": "ap-re-232"
+    },
+    "sweet-box-containers-1000gms": {
+      "local_category": "sweet-box-containers",
+      "local_product": "1000gms-sweet-box"
+    },
+    "sweet-box-containers-500gms": {
+      "local_category": "sweet-box-containers",
+      "local_product": "500gms-sweet-box"
+    },
+    "sweet-box-containers-250gms": {
+      "local_category": "sweet-box-containers",
+      "local_product": "250gm-sweet-box"
+    },
+    "ro-series-container-ap-ro-16": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-16"
+    },
+    "ro-series-container-ap-ro-24": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-24"
+    },
+    "ro-series-container-ap-ro-40": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-40"
+    },
+    "ro-series-container-ap-ro-32": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-32"
+    },
+    "ro-series-container-ap-ro-48": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-48"
+    },
+    "ro-series-container-ap-ro-10": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-10"
+    },
+    "ro-series-container-ap-ro-12": {
+      "local_category": "ro-series",
+      "local_product": "ap-ro-12"
+    },
+    "zen-containers-500": {
+      "local_category": "zen-series",
+      "local_product": "500ml-zen-container"
+    },
+    "zen-containers-650": {
+      "local_category": "zen-series",
+      "local_product": "650ml-zen-container"
+    },
+    "zen-containers-750": {
+      "local_category": "zen-series",
+      "local_product": "750ml-zen-container"
+    },
+    "zen-containers-1000": {
+      "local_category": "zen-series",
+      "local_product": "1000ml-zen-container"
+    },
+    "round-containers-250ml": {
+      "local_category": "round-containers",
+      "local_product": "250ml-round-container"
+    },
+    "round-containers-300-ml": {
+      "local_category": "round-containers",
+      "local_product": "300ml-round-container"
+    },
+    "round-containers-1000ml": {
+      "local_category": "round-containers",
+      "local_product": "1000ml-round-container"
+    },
+    "round-containers-225ml": {
+      "local_category": "round-containers",
+      "local_product": "250ml-round-container"
+    },
+    "round-containers-450ml": {
+      "local_category": "round-containers",
+      "local_product": "450ml-round-container"
+    },
+    "round-containers-500ml": {
+      "local_category": "round-containers",
+      "local_product": "500ml-round-container"
+    },
+    "deli-container32-oz": {
+      "local_category": "deli-series",
+      "local_product": "32oz-deli-container"
+    },
+    "deli-container24-oz": {
+      "local_category": "deli-series",
+      "local_product": "24oz-deli-container"
+    },
+    "deli-container16-oz": {
+      "local_category": "deli-series",
+      "local_product": "16oz-deli-container"
+    },
+    "deli-container8-oz": {
+      "local_category": "deli-series",
+      "local_product": "8oz-deli-container"
+    },
+    "deli-container12-oz": {
+      "local_category": "deli-series",
+      "local_product": "12oz-deli-container"
+    },
+    "portion-cups-50ml": {
+      "local_category": "portion-cups",
+      "local_product": "50ml-portion-cup"
+    },
+    "portion-cups-100ml": {
+      "local_category": "portion-cups",
+      "local_product": "100ml-portion-cup"
+    },
+    "portion-cups-125ml": {
+      "local_category": "portion-cups",
+      "local_product": "125ml-portion-cup"
+    },
+    "portion-cups-150ml": {
+      "local_category": "portion-cups",
+      "local_product": "125ml-portion-cup"
+    },
+    "portion-cups-250ml": {
+      "local_category": "portion-cups",
+      "local_product": "125ml-portion-cup"
+    },
+    "glass-series-80-dia-250ml": {
+      "local_category": "glass-series-80-dia",
+      "local_product": "250ml-glass-80-dia"
+    },
+    "glass-series-80-dia-300ml": {
+      "local_category": "glass-series-80-dia",
+      "local_product": "300ml-glass-80-dia"
+    },
+    "glass-series-80-dia-350ml": {
+      "local_category": "glass-series-80-dia",
+      "local_product": "350ml-glass-80-dia"
+    },
+    "glass-series-80-dia-500ml": {
+      "local_category": "glass-series-80-dia",
+      "local_product": "500ml-glass-80-dia"
+    },
+    "glass-series-90-dia-350ml": {
+      "local_category": "glass-series-90-dia",
+      "local_product": "350ml-glass-90-dia"
+    },
+    "glass-series-90-dia-500ml": {
+      "local_category": "glass-series-90-dia",
+      "local_product": "500ml-glass-90-dia"
+    },
+    "glass-series-90-dia-600ml": {
+      "local_category": "glass-series-90-dia",
+      "local_product": "600ml-glass-90-dia"
+    },
+    "glass-series-90-dia-700ml": {
+      "local_category": "glass-series-90-dia",
+      "local_product": "700ml-glass-90-dia"
+    }
+  }
+}

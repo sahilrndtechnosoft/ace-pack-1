@@ -138,7 +138,7 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
               <li><Link href="/tools" className="hover:text-[#b99750] transition-colors">Tools</Link></li>
               <li><Link href="/events" className="hover:text-[#b99750] transition-colors">Exhibitions &amp; Events</Link></li>
               <li><Link href="/gallery" className="hover:text-[#b99750] transition-colors">Visual Gallery</Link></li>
-              <li><Link href="/blog" className="hover:text-[#b99750] transition-colors">Blog &amp; Articles</Link></li>
+              <li><Link href="/blogs" className="hover:text-[#b99750] transition-colors">Blog &amp; Articles</Link></li>
               <li><Link href="/contact" className="hover:text-[#b99750] transition-colors">Contact Team</Link></li>
             </ul>
           </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Tag, Search, ArrowRight, X, AlertCircle } from 'lucide-react';
+import { Calendar, Tag, Search, ArrowRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
 import { Reveal } from '@/components/ui/Reveal';
 import type { BlogPost } from '@/lib/data/blogs';
 
@@ -10,10 +10,29 @@ interface BlogCatalogClientProps {
   initialPosts: BlogPost[];
 }
 
+const POSTS_PER_PAGE = 12;
+
 export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPosts }) => {
-  const categories = ['All', 'Takeaway Trends', 'Food Safety Standards', 'Branding & Design'];
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // Derive unique categories dynamically from the actual blog dataset
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    initialPosts.forEach((post) => {
+      if (post.category && post.category.trim()) {
+        set.add(post.category.trim());
+      }
+    });
+    const unique = Array.from(set);
+    return unique.length > 1 ? ['All', ...unique] : ['All'];
+  }, [initialPosts]);
+
+  // Reset page to 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchQuery]);
 
   const filteredPosts = useMemo(() => {
     return initialPosts.filter((post) => {
@@ -29,7 +48,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
         post.title.toLowerCase().includes(query) ||
         post.summary.toLowerCase().includes(query) ||
         post.category.toLowerCase().includes(query) ||
-        post.author.name.toLowerCase().includes(query);
+        (post.author?.name && post.author.name.toLowerCase().includes(query));
 
       return matchesCategory && matchesSearch;
     });
@@ -38,9 +57,23 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
   const featuredPost = filteredPosts[0];
   const gridPosts = filteredPosts.slice(1);
 
+  const totalPages = Math.ceil(gridPosts.length / POSTS_PER_PAGE) || 1;
+  const paginatedGridPosts = useMemo(() => {
+    const start = (currentPage - 1) * POSTS_PER_PAGE;
+    return gridPosts.slice(start, start + POSTS_PER_PAGE);
+  }, [gridPosts, currentPage]);
+
   const handleReset = () => {
     setSelectedCategory('All');
     setSearchQuery('');
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -199,10 +232,10 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
           )}
 
           {/* Grid of Remaining Posts */}
-          {gridPosts.length > 0 && (
+          {paginatedGridPosts.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {gridPosts.map((post, idx) => (
-                <Reveal key={post.id} type="fade-up" delay={idx * 0.08}>
+              {paginatedGridPosts.map((post, idx) => (
+                <Reveal key={post.id} type="fade-up" delay={Math.min(idx % 3, 2) * 0.08}>
                   <article className="bg-white rounded-3xl overflow-hidden border border-[#E6DBC6] hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
                     <div>
                       <div className="relative h-56 overflow-hidden bg-slate-900">
@@ -261,6 +294,73 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                   </article>
                 </Reveal>
               ))}
+            </div>
+          )}
+
+          {/* Pagination Navigation */}
+          {totalPages > 1 && (
+            <div className="mt-14 pt-8 border-t border-[#E6DBC6] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-xs text-gray-500 font-medium order-2 sm:order-1">
+                Showing {(currentPage - 1) * POSTS_PER_PAGE + 1}–
+                {Math.min(currentPage * POSTS_PER_PAGE, gridPosts.length)} of {gridPosts.length} articles
+              </span>
+
+              <div className="flex items-center gap-1.5 order-1 sm:order-2">
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3.5 py-2 rounded-xl text-xs font-bold border border-[#E6DBC6] bg-white text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#FAF8F4] flex items-center gap-1 transition-all"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Prev</span>
+                </button>
+
+                {Array.from({ length: totalPages }).map((_, i) => {
+                  const pageNum = i + 1;
+                  if (
+                    totalPages > 7 &&
+                    pageNum !== 1 &&
+                    pageNum !== totalPages &&
+                    Math.abs(pageNum - currentPage) > 2
+                  ) {
+                    if (pageNum === 2 || pageNum === totalPages - 1) {
+                      return (
+                        <span key={pageNum} className="px-2 text-xs text-gray-400">
+                          ...
+                        </span>
+                      );
+                    }
+                    return null;
+                  }
+
+                  const isCurrent = pageNum === currentPage;
+                  return (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`w-9 h-9 rounded-xl text-xs font-bold transition-all ${
+                        isCurrent
+                          ? 'bg-[#cfa144] text-[#1A1D20] shadow-sm font-extrabold ring-2 ring-[#cfa144]/30'
+                          : 'bg-white border border-[#E6DBC6] text-gray-700 hover:bg-[#FAF8F4]'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3.5 py-2 rounded-xl text-xs font-bold border border-[#E6DBC6] bg-white text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#FAF8F4] flex items-center gap-1 transition-all"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           )}
         </>
