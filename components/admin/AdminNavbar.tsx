@@ -25,13 +25,7 @@ export const AdminNavbar: React.FC<NavbarProps> = ({ admin, onToggleSidebar, onL
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs">
-          <span className="font-bold text-gray-400">Admin Control Center</span>
-          <span className="text-gray-600">/</span>
-          <span className="font-extrabold text-[#b99750] uppercase tracking-wider">
-            Live MySQL Persistence
-          </span>
-        </div>
+        <span className="hidden sm:block text-xs font-bold text-gray-400">Ace Packaging · Website Admin</span>
       </div>
 
       {/* Right: Live View, Database status, Admin profile */}
@@ -42,7 +36,7 @@ export const AdminNavbar: React.FC<NavbarProps> = ({ admin, onToggleSidebar, onL
           rel="noopener noreferrer"
           className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161D27] hover:bg-[#b99750] hover:text-[#0A0D12] text-xs font-bold text-gray-300 border border-[#1E2633] transition-all"
         >
-          <span>Live Website</span>
+          <span>View website</span>
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
 

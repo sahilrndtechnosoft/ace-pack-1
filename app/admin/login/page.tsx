@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, Eye, EyeOff, ShieldCheck, KeyRound, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, ShieldCheck, KeyRound, CheckCircle2 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 
 export default function AdminLoginPage() {
@@ -51,12 +51,6 @@ export default function AdminLoginPage() {
       setError('A network error occurred. Please try again.');
       setLoading(false);
     }
-  };
-
-  const fillDemoCredentials = () => {
-    setEmail('admin@acepack.com');
-    setPassword('AcePackaging2026!');
-    setError('');
   };
 
   const handleForgotRequest = async (e: React.FormEvent) => {
@@ -231,29 +225,6 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Quick Demo Credentials Autofill Banner */}
-          <div className="pt-4 border-t border-[#1E2633]">
-            <button
-              type="button"
-              onClick={fillDemoCredentials}
-              className="w-full p-2.5 rounded-xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 text-left transition-all flex items-center justify-between group cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#b99750]" />
-                <div>
-                  <span className="text-[11px] font-extrabold text-white block">
-                    Fill Default Credentials
-                  </span>
-                  <span className="text-[10px] text-gray-400 font-mono block">
-                    admin@acepack.com · AcePackaging2026!
-                  </span>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-[#b99750] group-hover:underline">
-                Use ➔
-              </span>
-            </button>
-          </div>
         </div>
       </div>
 

@@ -104,7 +104,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOp
                 Ace Packaging
               </span>
               <span className="text-[10px] uppercase font-bold text-[#b99750] tracking-wider block mt-1">
-                Admin CMS v2.0
+                Website Admin
               </span>
             </div>
           </Link>
@@ -158,12 +158,6 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOp
 
         {/* Database & User Status Footer */}
         <div className="p-4 border-t border-[#1E2633] bg-[#0A0D12] shrink-0 space-y-3">
-          <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[#131922] border border-[#1E2633] text-[11px] text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-emerald-400 font-bold">MySQL 8.4</span>
-            <span className="text-gray-500">•</span>
-            <span>acepack_cms</span>
-          </div>
 
           <button
             type="button"

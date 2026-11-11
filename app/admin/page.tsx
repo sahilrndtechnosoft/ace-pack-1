@@ -1,39 +1,34 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
-  FileText,
-  Layers,
+  AlertCircle,
+  ArrowRight,
   BookOpen,
   Calendar,
-  Image as ImageIcon,
+  Edit3,
+  ExternalLink,
   FileDown,
-  Activity,
-  ArrowRight,
-  Database,
-  CheckCircle2,
-  Clock,
-  Sparkles,
-  Sliders,
-  Settings,
-  Plus,
-  RefreshCw,
+  FileText,
   Grid,
-  Package,
+  Image as ImageIcon,
+  Inbox,
   Mail,
+  Package,
+  PenLine,
+  RefreshCw,
+  Settings,
   Users,
 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
+import { CMS_PAGES, type CmsSectionDef } from '@/lib/cms/registry';
 
 interface OverviewData {
   stats: {
     totalPages: number;
-    totalSections: number;
-    activeSections: number;
     totalCategories: number;
     totalProducts: number;
-    totalBlogs: number;
     publishedBlogs: number;
     draftBlogs: number;
     totalEvents: number;
@@ -41,590 +36,332 @@ interface OverviewData {
     totalMedia: number;
     totalContacts?: number;
     unreadContacts?: number;
-    totalVisitors?: number;
     newVisitorsToday?: number;
-    maintenanceMode: boolean;
-    siteName: string;
-    logoUrl: string;
+    totalVisitors?: number;
   };
-  recentLogs: Array<{
-    id: string;
-    admin_email: string;
-    action: string;
-    entity_type: string;
-    entity_id: string;
-    details: string;
-    created_at: string;
-  }>;
-  recentSections: Array<{
-    id: string;
-    page_slug: string;
-    section_key: string;
-    title: string;
-    page_title: string;
-    updated_at: string;
-  }>;
-  recentContacts?: Array<{
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    company: string | null;
-    category: string | null;
-    status: string;
-    created_at: string;
-  }>;
+  recentLogs: Array<{ id: string; admin_email: string; action: string; entity_type: string; details: string; created_at: string }>;
+  recentSections: Array<{ id: string; page_slug: string; section_key: string; updated_at: string }>;
+  recentContacts?: Array<{ id: string; name: string; email: string; company: string | null; status: string; created_at: string }>;
+  draftPages: Array<{ page_slug: string; page_title: string; count: number }>;
 }
+
+// Plain-language names for the activity log.
+const ACTION_TEXT: Record<string, string> = {
+  PUBLISH_SECTION: 'published page content',
+  UPDATE_SECTION_DRAFT: 'saved a draft of page content',
+  CREATE_SECTION: 'added page content',
+  DELETE_SECTION: 'deleted old page content',
+  CREATE_PAGE: 'created a page',
+  UPDATE_PAGE: 'updated page settings / SEO',
+  DELETE_PAGE: 'deleted a page',
+  CREATE_BLOG: 'wrote a new blog post',
+  UPDATE_BLOG: 'edited a blog post',
+  DELETE_BLOG: 'deleted a blog post',
+  UPLOAD_MEDIA: 'uploaded a file',
+  REPLACE_MEDIA: 'replaced a file',
+  UPDATE_MEDIA_ALT: 'updated an image description',
+  DELETE_MEDIA: 'deleted a file',
+  UPDATE_SITE_SETTINGS: 'changed site-wide settings',
+  CREATE_EVENT: 'added an event',
+  UPDATE_EVENT: 'edited an event',
+  DELETE_EVENT: 'deleted an event',
+};
+
+const PAGES = Object.entries(CMS_PAGES as Record<string, { title: string; path: string; sections: Record<string, CmsSectionDef> }>);
+
+function timeAgo(iso: string): string {
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return '';
+  const minutes = Math.round((Date.now() - then) / 60000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} h ago`;
+  const days = Math.round(hours / 24);
+  if (days < 7) return `${days} day${days > 1 ? 's' : ''} ago`;
+  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function greeting(): string {
+  const hour = new Date().getHours();
+  return hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+}
+
+const card = 'rounded-2xl bg-[#0D1117] border border-[#1E2633]';
 
 export default function AdminDashboardPage() {
   const { admin } = useAdmin();
   const [data, setData] = useState<OverviewData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
-  const fetchOverview = async () => {
+  const load = async () => {
     setLoading(true);
+    setFailed(false);
     try {
       const res = await fetch('/api/admin/overview');
-      if (res.ok) {
-        const json = await res.json();
-        setData(json);
-      }
-    } catch (err) {
-      console.error('Failed to load overview:', err);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setData(await res.json());
+    } catch {
+      setFailed(true);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchOverview();
+    load();
   }, []);
 
-  const formatDate = (isoString: string) => {
-    try {
-      const d = new Date(isoString);
-      return d.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } catch {
-      return isoString;
-    }
-  };
+  const s = data?.stats;
+  const unread = s?.unreadContacts ?? 0;
+  const draftSections = (data?.draftPages ?? []).reduce((n, p) => n + Number(p.count), 0);
+
+  // Only show edits to sections that appear on the website, labelled the way the editor names them.
+  const recentEdits = useMemo(
+    () =>
+      (data?.recentSections ?? [])
+        .map((row) => {
+          const page = (CMS_PAGES as Record<string, { title: string; sections: Record<string, CmsSectionDef> }>)[row.page_slug];
+          const section = page?.sections[row.section_key];
+          return page && section ? { ...row, pageTitle: page.title, label: section.label } : null;
+        })
+        .filter((row): row is NonNullable<typeof row> => row !== null)
+        .slice(0, 6),
+    [data]
+  );
+
+  const attention = [
+    {
+      show: unread > 0,
+      icon: Inbox,
+      tone: 'text-sky-300 bg-sky-500/10 border-sky-500/30',
+      title: `${unread} new inquir${unread === 1 ? 'y' : 'ies'}`,
+      text: 'Customers are waiting for a reply.',
+      href: '/admin/contacts',
+      action: 'Open inquiries',
+    },
+    {
+      show: draftSections > 0,
+      icon: PenLine,
+      tone: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+      title: `${draftSections} unpublished change${draftSections === 1 ? '' : 's'}`,
+      text: `Saved but not live yet on: ${(data?.draftPages ?? []).map((p) => p.page_title).join(', ')}.`,
+      href: `/admin/pages/${data?.draftPages?.[0]?.page_slug ?? ''}`,
+      action: 'Review & publish',
+    },
+    {
+      show: (s?.draftBlogs ?? 0) > 0,
+      icon: BookOpen,
+      tone: 'text-violet-300 bg-violet-500/10 border-violet-500/30',
+      title: `${s?.draftBlogs} blog draft${s?.draftBlogs === 1 ? '' : 's'}`,
+      text: 'Articles that are not published yet.',
+      href: '/admin/blogs',
+      action: 'Open blog',
+    },
+  ].filter((item) => item.show);
+
+  const stats = [
+    { label: 'Website pages', value: s?.totalPages, href: '/admin/pages', icon: FileText },
+    { label: 'Published blogs', value: s?.publishedBlogs, href: '/admin/blogs', icon: BookOpen },
+    { label: 'Products', value: s?.totalProducts, href: '/admin/products', icon: Package },
+    { label: 'Categories', value: s?.totalCategories, href: '/admin/categories', icon: Grid },
+    { label: 'Events', value: s?.totalEvents, href: '/admin/events', icon: Calendar },
+    { label: 'Downloads', value: s?.totalDownloads, href: '/admin/downloads', icon: FileDown },
+    { label: 'Media files', value: s?.totalMedia, href: '/admin/media', icon: ImageIcon },
+    { label: 'Visitors today', value: s?.newVisitorsToday, href: '/admin/visitors', icon: Users },
+  ];
 
   return (
-    <div className="space-y-8">
-      {/* Welcome & Live Status Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#1E2633]">
+    <div className="space-y-8 max-w-6xl">
+      {/* Greeting */}
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2.5 mb-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
-              Live MySQL Synchronized
-            </span>
-            <span className="text-gray-600">•</span>
-            <span className="text-xs text-gray-400">Database: acepack_cms</span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Welcome back, {admin?.name || 'Administrator'}
+            {greeting()}, {admin?.name?.split(' ')[0] || 'there'}
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Dynamic content control center for Ace Packaging. All changes persist in MySQL and appear live on the website.
-          </p>
+          <p className="text-sm text-gray-400 mt-1">What would you like to update on the website today?</p>
         </div>
-
-        <div className="flex items-center gap-3">
+        <div className="flex gap-2">
           <button
             type="button"
-            onClick={fetchOverview}
+            onClick={load}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#161D27] hover:bg-[#1E2633] text-gray-300 text-xs font-bold border border-[#222C3D] transition-colors cursor-pointer"
+            aria-label="Refresh dashboard"
+            className="inline-flex items-center justify-center w-11 h-11 rounded-xl border border-[#222C3D] text-gray-300 hover:text-white hover:bg-[#161D27] disabled:opacity-50 cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-[#b99750]' : ''}`} />
-            <span>Refresh Stats</span>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
-
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-extrabold uppercase tracking-wider transition-all shadow-md"
+            className="inline-flex items-center gap-2 px-4 h-11 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-sm font-black"
           >
-            <span>Live Site</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            View website <ExternalLink className="w-4 h-4" />
           </a>
         </div>
-      </div>
+      </header>
 
-      {/* Featured Business Highlights: Inquiries & Visitors */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link
-          href="/admin/contacts"
-          className="p-5 rounded-2xl bg-gradient-to-br from-[#161B22] to-[#11161F] border border-[#1E2633] hover:border-[#b99750]/60 transition-all group flex items-center justify-between shadow-lg"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#b99750]/20 text-[#b99750] border border-[#b99750]/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Mail className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Contact &amp; Factory Inquiries</span>
-                {(data?.stats?.unreadContacts ?? 0) > 0 && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
-                    {data?.stats?.unreadContacts} UNREAD
-                  </span>
-                )}
-              </div>
-              <div className="text-2xl font-black text-white mt-0.5">
-                {data?.stats?.totalContacts ?? 0}{' '}
-                <span className="text-xs font-normal text-gray-400">total leads received</span>
-              </div>
-            </div>
-          </div>
-          <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-[#b99750] group-hover:translate-x-1 transition-all" />
-        </Link>
-
-        <Link
-          href="/admin/visitors"
-          className="p-5 rounded-2xl bg-gradient-to-br from-[#161B22] to-[#11161F] border border-[#1E2633] hover:border-emerald-500/60 transition-all group flex items-center justify-between shadow-lg"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Users className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Live Site Visitors</span>
-                {(data?.stats?.newVisitorsToday ?? 0) > 0 && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                    +{data?.stats?.newVisitorsToday} new today
-                  </span>
-                )}
-              </div>
-              <div className="text-2xl font-black text-white mt-0.5">
-                {data?.stats?.totalVisitors ?? 0}{' '}
-                <span className="text-xs font-normal text-gray-400">unique visitor records</span>
-              </div>
-            </div>
-          </div>
-          <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
-        </Link>
-      </div>
-
-      {/* Statistics Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
-        {/* Categories */}
-        <Link
-          href="/admin/categories"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Categories</span>
-            <div className="w-7 h-7 rounded-lg bg-[#b99750]/15 text-[#b99750] flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Grid className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalCategories ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Series & lines</span>
-        </Link>
-
-        {/* Products */}
-        <Link
-          href="/admin/products"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Products</span>
-            <div className="w-7 h-7 rounded-lg bg-teal-500/15 text-teal-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Package className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalProducts ?? '...'}
-          </span>
-          <span className="text-[10px] text-teal-400 font-bold block mt-1">Container models</span>
-        </Link>
-
-        {/* Pages */}
-        <Link
-          href="/admin/pages"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Pages</span>
-            <div className="w-7 h-7 rounded-lg bg-[#b99750]/15 text-[#b99750] flex items-center justify-center group-hover:scale-110 transition-transform">
-              <FileText className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalPages ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Managed routes</span>
-        </Link>
-
-        {/* Sections */}
-        <Link
-          href="/admin/pages"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Sections</span>
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Layers className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalSections ?? '...'}
-          </span>
-          <span className="text-[10px] text-emerald-400 font-bold block mt-1">
-            {data?.stats?.activeSections ?? 0} Live & Active
-          </span>
-        </Link>
-
-        {/* Blogs */}
-        <Link
-          href="/admin/blogs"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Articles</span>
-            <div className="w-7 h-7 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <BookOpen className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.publishedBlogs ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">
-            Published · {data?.stats?.draftBlogs ?? 0} draft{data?.stats?.draftBlogs === 1 ? '' : 's'}
-          </span>
-        </Link>
-
-        {/* Events */}
-        <Link
-          href="/admin/events"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Expos</span>
-            <div className="w-7 h-7 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Calendar className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalEvents ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Trade exhibitions</span>
-        </Link>
-
-        {/* Media */}
-        <Link
-          href="/admin/media"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Media</span>
-            <div className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <ImageIcon className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalMedia ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Assets library</span>
-        </Link>
-
-        {/* Downloads */}
-        <Link
-          href="/admin/downloads"
-          className="p-4 rounded-2xl bg-[#0D1117] border border-[#1E2633] hover:border-[#b99750]/50 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Downloads</span>
-            <div className="w-7 h-7 rounded-lg bg-rose-500/15 text-rose-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <FileDown className="w-3.5 h-3.5" />
-            </div>
-          </div>
-          <span className="text-2xl font-black text-white block">
-            {data?.stats?.totalDownloads ?? '...'}
-          </span>
-          <span className="text-[10px] text-gray-500 block mt-1">Catalogues & PDFs</span>
-        </Link>
-      </div>
-
-      {/* Quick Launchpad Actions */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#0D1117] border border-[#1E2633] space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#b99750]" />
-            <h2 className="text-sm font-extrabold uppercase tracking-wider text-white">
-              Instant CMS Quick Actions
-            </h2>
-          </div>
-          <span className="text-xs text-gray-500 font-medium">Direct management shortcuts</span>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-          <Link
-            href="/admin/categories"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center mb-2">
-              <Grid className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Product Categories
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Series &amp; Lines</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/products"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-teal-500/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center mb-2">
-              <Package className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-teal-400 transition-colors">
-                Container Models
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Products &amp; Specs</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/pages/home"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center mb-2">
-              <Layers className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Edit Homepage Sections
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Hero, Facts, Stats, CTA</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/settings"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2">
-              <Sliders className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Header &amp; Footer
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Logo, Nav, Copyright</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/blogs"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-2">
-              <Plus className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Create Blog Article
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Publish insights</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/media"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-2">
-              <ImageIcon className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Upload Media
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Images, PDFs &amp; Videos</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/settings"
-            className="p-3.5 rounded-2xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-2">
-              <Settings className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block leading-snug group-hover:text-[#b99750] transition-colors">
-                Global Settings
-              </span>
-              <span className="text-[10px] text-gray-500 block mt-0.5">Branding &amp; Contact info</span>
-            </div>
-          </Link>
-        </div>
-      </div>
-
-      {/* Recent Contact Inquiries Banner */}
-      {data?.recentContacts && data.recentContacts.length > 0 && (
-        <div className="p-5 sm:p-6 rounded-3xl bg-[#0D1117] border border-[#1E2633] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
-            <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-[#b99750]" />
-              <h2 className="text-sm font-extrabold text-white">Recent Customer &amp; Factory Leads</h2>
-            </div>
-            <Link
-              href="/admin/contacts"
-              className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
-            >
-              <span>View All Inquiries</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {data.recentContacts.slice(0, 3).map((lead) => (
-              <Link
-                key={lead.id}
-                href="/admin/contacts"
-                className="p-3.5 rounded-xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] hover:border-[#b99750]/50 transition-all flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="font-bold text-white text-xs group-hover:text-[#b99750] transition-colors truncate">
-                      {lead.name}
-                    </span>
-                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
-                      lead.status === 'unread'
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : 'bg-emerald-500/20 text-emerald-300'
-                    }`}>
-                      {lead.status.toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-gray-400 truncate">{lead.email}</div>
-                  <div className="text-[10px] text-gray-500 mt-1">{lead.company || lead.category || 'General Inquiry'}</div>
-                </div>
-                <div className="text-[10px] text-gray-500 font-mono mt-2 pt-2 border-t border-[#1E2633]">
-                  {formatDate(lead.created_at)}
-                </div>
-              </Link>
-            ))}
-          </div>
+      {failed && (
+        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm">
+          <span className="inline-flex items-center gap-2"><AlertCircle className="w-4 h-4" /> The dashboard couldn’t load. Check your connection and try again.</span>
+          <button type="button" onClick={load} className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 font-bold cursor-pointer">Try again</button>
         </div>
       )}
 
-      {/* Two Column Split: Recently Modified Sections & Real-time Audit Logs */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Recently Modified Sections (5 cols) */}
-        <div className="lg:col-span-5 p-5 sm:p-6 rounded-3xl bg-[#0D1117] border border-[#1E2633] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
-            <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#b99750]" />
-              <h2 className="text-sm font-extrabold text-white">Recently Updated Sections</h2>
-            </div>
-            <Link
-              href="/admin/pages"
-              className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
-            >
-              <span>View All</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+      {/* Needs attention */}
+      <section aria-labelledby="attention-heading">
+        <h2 id="attention-heading" className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-3">Needs your attention</h2>
+        {loading && !data ? (
+          <div className="grid gap-3 sm:grid-cols-3">{[0, 1, 2].map((i) => <div key={i} className={`${card} h-28 animate-pulse`} />)}</div>
+        ) : attention.length === 0 ? (
+          <div className={`${card} p-5 text-sm text-gray-300`}>All caught up: no new inquiries, unpublished changes or blog drafts.</div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-3">
+            {attention.map(({ icon: Icon, tone, title, text, href, action }) => (
+              <Link key={title} href={href} className={`group rounded-2xl border p-5 flex flex-col gap-2 hover:brightness-125 transition ${tone}`}>
+                <Icon className="w-5 h-5" />
+                <span className="text-base font-black text-white">{title}</span>
+                <span className="text-xs text-gray-300 line-clamp-2">{text}</span>
+                <span className="mt-auto inline-flex items-center gap-1 text-xs font-bold">{action} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" /></span>
+              </Link>
+            ))}
           </div>
+        )}
+      </section>
 
-          <div className="space-y-2.5">
-            {(!data?.recentSections || data.recentSections.length === 0) ? (
-              <p className="text-xs text-gray-500 py-6 text-center">No section updates recorded yet.</p>
-            ) : (
-              data.recentSections.map((sec) => (
-                <Link
-                  key={sec.id}
-                  href={`/admin/pages/${sec.page_slug}`}
-                  className="p-3 rounded-xl bg-[#141A24] hover:bg-[#1A2230] border border-[#222C3D] flex items-center justify-between transition-colors group"
-                >
-                  <div className="min-w-0 flex-1 pr-3">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#b99750] block">
-                      {sec.page_title || sec.page_slug}
-                    </span>
-                    <span className="text-xs font-bold text-white block truncate group-hover:text-[#b99750] transition-colors">
-                      {sec.title || sec.section_key}
-                    </span>
-                    <span className="text-[10px] text-gray-500 font-mono block mt-0.5">
-                      Key: {sec.section_key}
-                    </span>
+      {/* Edit the website */}
+      <section aria-labelledby="edit-heading">
+        <div className="flex items-end justify-between mb-3">
+          <h2 id="edit-heading" className="text-xs font-extrabold uppercase tracking-wider text-gray-500">Edit your website</h2>
+          <Link href="/admin/pages" className="text-xs font-bold text-[#b99750] hover:underline">All pages & SEO →</Link>
+        </div>
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+          {PAGES.map(([slug, page]) => (
+            <Link key={slug} href={`/admin/pages/${slug}`} className={`${card} group p-4 hover:border-[#b99750]/60 transition-colors`}>
+              <span className="flex items-center justify-between">
+                <span className="font-bold text-white text-sm">{page.title}</span>
+                <Edit3 className="w-4 h-4 text-gray-500 group-hover:text-[#b99750]" />
+              </span>
+              <span className="block text-[11px] text-gray-500 mt-1">
+                {Object.keys(page.sections).length} section{Object.keys(page.sections).length === 1 ? '' : 's'} · {page.path}
+              </span>
+            </Link>
+          ))}
+          <Link href="/admin/settings" className="group p-4 rounded-2xl border border-[#b99750]/40 bg-[#b99750]/10 hover:bg-[#b99750]/20 transition-colors">
+            <span className="flex items-center justify-between">
+              <span className="font-bold text-white text-sm">Header, Footer & Contact</span>
+              <Settings className="w-4 h-4 text-[#b99750]" />
+            </span>
+            <span className="block text-[11px] text-gray-400 mt-1">Shown on every page</span>
+          </Link>
+          <Link href="/admin/blogs" className="group p-4 rounded-2xl border border-[#b99750]/40 bg-[#b99750]/10 hover:bg-[#b99750]/20 transition-colors">
+            <span className="flex items-center justify-between">
+              <span className="font-bold text-white text-sm">Blog articles</span>
+              <BookOpen className="w-4 h-4 text-[#b99750]" />
+            </span>
+            <span className="block text-[11px] text-gray-400 mt-1">Write, edit & publish</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* At a glance */}
+      <section aria-labelledby="glance-heading">
+        <h2 id="glance-heading" className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-3">At a glance</h2>
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+          {stats.map(({ label, value, href, icon: Icon }) => (
+            <Link key={label} href={href} className={`${card} p-4 hover:border-[#b99750]/60 transition-colors`}>
+              <Icon className="w-4 h-4 text-[#b99750]" />
+              <span className="block text-2xl font-black text-white mt-2 tabular-nums">
+                {loading && !data ? <span className="inline-block w-10 h-6 rounded bg-[#1E2633] animate-pulse" /> : value ?? 0}
+              </span>
+              <span className="text-xs text-gray-400">{label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Latest inquiries */}
+        <section aria-labelledby="leads-heading" className={`${card} p-5`}>
+          <div className="flex items-center justify-between mb-4">
+            <h2 id="leads-heading" className="font-bold text-white flex items-center gap-2"><Mail className="w-4 h-4 text-[#b99750]" /> Latest inquiries</h2>
+            <Link href="/admin/contacts" className="text-xs font-bold text-[#b99750] hover:underline">View all</Link>
+          </div>
+          {loading && !data ? (
+            <div className="space-y-2">{[0, 1, 2].map((i) => <div key={i} className="h-12 rounded-xl bg-[#141A24] animate-pulse" />)}</div>
+          ) : !data?.recentContacts?.length ? (
+            <p className="text-sm text-gray-400">No inquiries yet. Messages from the website contact forms will appear here.</p>
+          ) : (
+            <ul className="divide-y divide-[#1A2230]">
+              {data.recentContacts.slice(0, 5).map((lead) => (
+                <li key={lead.id} className="py-2.5 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-white truncate">
+                      {lead.name}{lead.company ? <span className="text-gray-400 font-normal"> · {lead.company}</span> : null}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">{lead.email}</p>
                   </div>
-                  <span className="text-[10px] text-gray-400 font-mono shrink-0">
-                    {formatDate(sec.updated_at)}
-                  </span>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
+                  <div className="text-right shrink-0">
+                    {lead.status === 'unread' && <span className="block text-[10px] font-bold text-sky-300">NEW</span>}
+                    <span className="text-[11px] text-gray-500">{timeAgo(lead.created_at)}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
-        {/* Right Column: Real-time Activity Logs (7 cols) */}
-        <div className="lg:col-span-7 p-5 sm:p-6 rounded-3xl bg-[#0D1117] border border-[#1E2633] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1E2633]">
-            <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-emerald-400" />
-              <h2 className="text-sm font-extrabold text-white">Administrator Activity Trail</h2>
-            </div>
-            <Link
-              href="/admin/activity"
-              className="text-xs font-bold text-[#b99750] hover:underline flex items-center gap-1"
-            >
-              <span>Audit History</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="space-y-2 overflow-x-auto">
-            {(!data?.recentLogs || data.recentLogs.length === 0) ? (
-              <p className="text-xs text-gray-500 py-6 text-center">No activity logged yet.</p>
-            ) : (
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-[#1E2633] text-[10px] font-extrabold uppercase tracking-wider text-gray-500">
-                    <th className="pb-2">Action</th>
-                    <th className="pb-2">Target</th>
-                    <th className="pb-2">Admin</th>
-                    <th className="pb-2 text-right">Timestamp</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1A2230]">
-                  {data.recentLogs.slice(0, 7).map((log) => (
-                    <tr key={log.id} className="hover:bg-[#141A24]/60">
-                      <td className="py-2.5 pr-2 font-mono font-bold text-[#b99750]">
-                        {log.action}
-                      </td>
-                      <td className="py-2.5 pr-2 text-gray-300 font-medium truncate max-w-[140px]">
-                        {log.entity_type} {log.entity_id ? `(${log.entity_id.replace(/^sec_|^page_|^blog_/, '')})` : ''}
-                      </td>
-                      <td className="py-2.5 pr-2 text-gray-400 font-mono text-[11px]">
-                        {log.admin_email}
-                      </td>
-                      <td className="py-2.5 text-right text-[11px] text-gray-500 font-mono">
-                        {formatDate(log.created_at)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
+        {/* Recently edited */}
+        <section aria-labelledby="edits-heading" className={`${card} p-5`}>
+          <h2 id="edits-heading" className="font-bold text-white flex items-center gap-2 mb-4"><PenLine className="w-4 h-4 text-[#b99750]" /> Recently edited content</h2>
+          {loading && !data ? (
+            <div className="space-y-2">{[0, 1, 2].map((i) => <div key={i} className="h-12 rounded-xl bg-[#141A24] animate-pulse" />)}</div>
+          ) : recentEdits.length === 0 ? (
+            <p className="text-sm text-gray-400">Nothing edited yet. Pick a page above to start.</p>
+          ) : (
+            <ul className="divide-y divide-[#1A2230]">
+              {recentEdits.map((row) => (
+                <li key={row.id}>
+                  <Link href={`/admin/pages/${row.page_slug}`} className="py-2.5 flex items-center justify-between gap-3 group">
+                    <span className="min-w-0">
+                      <span className="block text-sm font-semibold text-white truncate group-hover:text-[#b99750]">{row.label}</span>
+                      <span className="block text-xs text-gray-500">{row.pageTitle} page</span>
+                    </span>
+                    <span className="text-[11px] text-gray-500 shrink-0">{timeAgo(row.updated_at)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
+
+      {/* Activity */}
+      <section aria-labelledby="activity-heading" className={`${card} p-5`}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 id="activity-heading" className="font-bold text-white">Recent activity</h2>
+          <Link href="/admin/activity" className="text-xs font-bold text-[#b99750] hover:underline">Full history</Link>
+        </div>
+        {loading && !data ? (
+          <div className="h-24 rounded-xl bg-[#141A24] animate-pulse" />
+        ) : !data?.recentLogs?.length ? (
+          <p className="text-sm text-gray-400">No activity recorded yet.</p>
+        ) : (
+          <ul className="space-y-2">
+            {data.recentLogs.slice(0, 6).map((log) => (
+              <li key={log.id} className="flex items-baseline justify-between gap-3 text-sm">
+                <span className="text-gray-300 min-w-0 truncate">
+                  <span className="font-semibold text-white">{log.admin_email.split('@')[0]}</span>{' '}
+                  {ACTION_TEXT[log.action] ?? log.action.toLowerCase().replace(/_/g, ' ')}
+                </span>
+                <span className="text-[11px] text-gray-500 shrink-0">{timeAgo(log.created_at)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

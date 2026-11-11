@@ -49,7 +49,17 @@ export async function GET(request: NextRequest) {
        FROM sections s
        LEFT JOIN pages p ON s.page_slug = p.slug
        ORDER BY s.updated_at DESC
-       LIMIT 5`
+       LIMIT 12`
+    );
+
+    // Pages with saved drafts that are not published yet
+    const [draftPages]: any = await db.query(
+      `SELECT s.page_slug, COALESCE(p.title, s.page_slug) AS page_title, COUNT(*) AS count
+       FROM sections s
+       LEFT JOIN pages p ON s.page_slug = p.slug
+       WHERE s.draft_content <> s.published_content
+       GROUP BY s.page_slug, p.title
+       ORDER BY count DESC`
     );
 
     // Site settings status
@@ -85,6 +95,7 @@ export async function GET(request: NextRequest) {
       },
       recentLogs: logs,
       recentSections,
+      draftPages: draftPages || [],
       recentContacts: recentContacts || [],
     });
   } catch (error: any) {
