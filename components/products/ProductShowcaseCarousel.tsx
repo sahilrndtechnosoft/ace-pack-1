@@ -579,16 +579,6 @@ export const ProductShowcaseCarousel: React.FC = () => {
                 );
               })}
             </div>
-
-            {/* Carousel Position Progress Bar */}
-            <div className="w-full h-1 bg-[#E6DBC6]/50 rounded-full mt-2 overflow-hidden">
-              <div
-                className="h-full bg-[#b99750] rounded-full transition-all duration-300"
-                style={{
-                  width: `${((currentIndex + 1) / total) * 100}%`,
-                }}
-              />
-            </div>
           </div>
         </div>
       </div>

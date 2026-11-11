@@ -18,6 +18,7 @@ import { ProductShowcaseCarousel } from '@/components/products/ProductShowcaseCa
 import { PreFooterCTA } from '@/components/sections/PreFooterCTA';
 import { ObserverCollectionShowcase } from './ObserverCollectionShowcase';
 import { CatalogueHero } from '@/components/hero/CatalogueHero';
+import { TrustCardsSection } from './TrustCardsSection';
 
 const PackagingScene = dynamic(() => import('./PackagingScene'), { ssr: false });
 gsap.registerPlugin(ScrollTrigger);
@@ -234,7 +235,9 @@ export default function HomeExperience() {
     </div>
 
     <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true"/><div className="xp-manufacturing-top"><span className="xp-eyebrow">03 / Made with intent</span><Plus size={30}/></div><Reveal><h2 data-split>Robotic precision.<br/><em>1.5 million a day.</em></h2></Reveal><div className="xp-manufacturing-copy"><p>Fifteen years of injection moulding across two Daman units — Dori Kadaiya and Dabhel — supplying QSR chains, cloud kitchens and food brands in Australia, the UAE, Europe, Canada and the Middle East. Moulded exclusively from 100% prime virgin PP 05.</p><Link href="/capabilities">Inside our process <ArrowUpRight size={19}/></Link></div><div className="xp-stats"><div><Count value={1500000} suffix="+"/><p>Containers moulded daily</p></div><div><Count value={1000} suffix="+"/><p>Clients served</p></div><div><Count value={12} suffix="+"/><p>Export markets worldwide</p></div></div><p className="xp-recycling-note">ISO 9001:2015 certified manufacturing facility. PP 05 is widely recyclable — check local collection guidance for each format.</p></section>
-    <section className="xp-trust"><div className="xp-trust-heading"><span className="xp-eyebrow">Trusted at scale</span><p>1,000+ brands served across India and 12 export markets.</p></div><div className="xp-marquee" tabIndex={0} aria-label="Packaging for restaurants, cafés, caterers, cloud kitchens, and retail"><div className="xp-marquee-track">{[0,1].map(copy=><div className="xp-marquee-group" aria-hidden={copy===1} key={copy}>{['Restaurants','Dairy','Confectionery','Frozen foods','Bakery','QSR','Pharma','FMCG'].map((name,i)=><span key={name} className={i%2?'xp-serif':''}>{name}<Plus size={23}/></span>)}</div>)}</div></div></section>
+    
+    {/* Trusted at scale - Interactive Scroll-driven Industry Cards */}
+    <TrustCardsSection />
     
     {/* Homepage Certifications & Quality Credentials */}
     <QualityCertificationsSection />

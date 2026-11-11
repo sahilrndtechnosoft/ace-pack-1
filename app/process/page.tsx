@@ -230,7 +230,7 @@ export default function ProcessPage() {
               <div className="w-12 h-12 rounded-2xl bg-white border border-[#E6DBC6] flex items-center justify-center text-[#a8812f] mb-4">
                 <Sparkles className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#1A1D20] mb-2">ISO 9001:2015 &amp; BRCGS</h3>
+              <h3 className="text-lg font-bold text-[#1A1D20] mb-2">ISO 9001:2015 Certified</h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 Audited and certified by SGS United Kingdom Ltd (Certificate IN25/00000652), ensuring 100% prime virgin polymers, zero chemical migration, and food contact safety.
               </p>

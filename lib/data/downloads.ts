@@ -1,5 +1,3 @@
-import { certifications } from './quality';
-
 export interface DownloadItem {
   id: string;
   title: string;
@@ -58,14 +56,6 @@ export const downloadGroups: DownloadGroup[] = [
         file: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
         image: '/images/certifications/ace-packaging-iso-9001-certificate.jpg',
       },
-      ...certifications
-        .filter((c) => c.id !== 'iso-9001')
-        .map((cert) => ({
-          id: cert.id,
-          title: cert.title,
-          description: cert.body,
-          type: 'Certificate' as const,
-        })),
     ],
   },
 ];

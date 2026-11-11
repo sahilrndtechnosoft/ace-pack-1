@@ -13,13 +13,8 @@ export function CatalogueHero() {
     <>
       <section
         id="main-content"
-        className="relative z-10 w-full overflow-hidden bg-gradient-to-b from-[#957033] via-[#89632b] via-[38%] via-[#b5904d] via-[48%] via-[#eec983] via-[62%] via-[#e5bd75] via-[75%] via-[#c5a162] via-[92%] to-[#bf9c5a] text-[#14171A] select-none"
+        className="relative z-10 w-full overflow-hidden bg-gradient-to-b from-[#9e783d] via-[#b89254] via-[50%] to-[#c7a468] text-[#14171A] select-none"
       >
-        {/* Subtle ambient studio lighting accents for seamless visual depth */}
-        <div
-          className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_75%_65%_at_72%_50%,rgba(255,240,200,0.18)_0%,transparent_70%)]"
-          aria-hidden="true"
-        />
 
         {/* =========================================================================
             DESKTOP & TABLET LANDSCAPE VIEW (lg+): Full Side-by-Side Showcase Stage
@@ -128,20 +123,20 @@ export function CatalogueHero() {
                 </motion.div>
               </div>
 
-              {/* Right Column (7 cols): Full Image Showcase with Complete Packaging Spread (No Shadow, No Border) */}
+              {/* Right Column (7 cols): Full Image Showcase with Complete Packaging Spread (Seamlessly Merged) */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="col-span-7 flex items-center justify-center relative"
               >
-                <div className="relative w-full">
-                  <picture>
-                    <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
+                <div className="relative w-full flex items-center justify-center">
+                  <picture className="w-full flex items-center justify-center">
+                    <source srcSet="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.webp" type="image/webp" />
                     <img
-                      src="/images/takeaway-spread-transparent.png"
+                      src="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.png"
                       alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
-                      className="w-full h-auto max-h-[78vh] object-contain block select-none pointer-events-none"
+                      className="w-auto h-auto max-w-full max-h-[58vh] xl:max-h-[66vh] 2xl:max-h-[72vh] object-contain block select-none pointer-events-none"
                       loading="eager"
                       fetchPriority="high"
                     />
@@ -224,14 +219,14 @@ export function CatalogueHero() {
           </div>
 
           {/* Showcase Photography (Full Image, Seamlessly Merged) */}
-          <div className="px-3 sm:px-4 py-2">
-            <div className="relative w-full">
-              <picture>
-                <source srcSet="/images/takeaway-spread-transparent.webp" type="image/webp" />
+          <div className="px-3 sm:px-4 py-2 flex items-center justify-center">
+            <div className="relative w-full max-w-[480px] mx-auto flex items-center justify-center">
+              <picture className="w-full flex items-center justify-center">
+                <source srcSet="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.webp" type="image/webp" />
                 <img
-                  src="/images/takeaway-spread-transparent.png"
+                  src="/images/Golden-Gourmet-Takeaway-Spread-Photoroom.png"
                   alt="Ace Packaging Golden Gourmet Complete Takeaway Spread - Full Range"
-                  className="w-full h-auto object-contain block select-none pointer-events-none"
+                  className="w-auto h-auto max-w-full max-h-[36vh] sm:max-h-[42vh] object-contain block select-none pointer-events-none"
                   loading="eager"
                   fetchPriority="high"
                 />

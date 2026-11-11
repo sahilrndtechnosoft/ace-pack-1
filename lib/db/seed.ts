@@ -100,6 +100,20 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       seo_description: 'Visual gallery of our manufacturing floor in Daman and high-volume container applications.',
       og_image: '/images/gallery/kitchen-set.webp',
     },
+    {
+      slug: 'oem',
+      title: 'OEM & Custom Packaging',
+      seo_title: 'OEM Tooling & Custom Food Packaging Solutions | Ace Packaging',
+      seo_description: 'Precision mould manufacturing, custom container geometry, In-Mould Labelling (IML), and private label food container production in Daman.',
+      og_image: '/images/oem/DSC04469.webp',
+    },
+    {
+      slug: 'customization',
+      title: 'Customization & Private Label',
+      seo_title: 'Custom Packaging & IML Branding | Ace Packaging',
+      seo_description: 'Bespoke container branding, 5-sided In-Mould Labelling (IML), custom polymer formulations, and proprietary tooling in Daman.',
+      og_image: '/images/oem/DSC04469.webp',
+    },
   ];
 
   for (const p of pages) {
@@ -305,8 +319,8 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       content: {
         certificateName: 'ISO 9001:2015 Management System Certification',
         certificateNumber: 'IN25/00000652',
-        downloadUrl: '/downloads/Ace_Packaging_ISO_9001_2015.pdf',
-        previewImage: '/images/DSC03993.JPG',
+        downloadUrl: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
+        previewImage: '/images/certifications/ace-packaging-iso-9001-certificate.jpg',
       },
     },
   ];
@@ -566,6 +580,110 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
         badge: 'Factory Floor & Packaging Showcase',
         heading: 'Precision in Every Frame',
         lead: 'High-speed multi-cavity injection moulds, robotic clean-pack cells, and our commercial food container lines.',
+      },
+    },
+    // OEM Page Sections
+    {
+      page: 'oem',
+      key: 'hero',
+      title: 'OEM & Custom Packaging Solutions.',
+      subtitle: 'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML).',
+      sort_order: 1,
+      content: {
+        eyebrow: 'OEM & Customization',
+        title: 'OEM & Custom Packaging Solutions.',
+        intro: 'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML) and bespoke colour formulations, build your custom packaging programme under one roof at our ISO 9001:2015 Daman facility.',
+        action: 'Discuss an OEM & Custom Project',
+      },
+    },
+    {
+      page: 'oem',
+      key: 'gallery',
+      title: 'Product Gallery',
+      subtitle: 'High-precision Round Glass containers, bespoke colour closures, and precision IML mouldings.',
+      sort_order: 2,
+      content: {
+        badge: 'OEM & CUSTOM GALLERY',
+        heading: 'Round Glass & Custom Product Showcase',
+        lead: 'High-precision injection moulded cups, specialty tethered closures, and vibrant In-Mould Labelling engineered for leading QSR chains and beverage brands.',
+        items: [
+          {
+            id: 'round-glass-range',
+            title: 'Round Glass Multi-Capacity Line',
+            category: 'Round Glass Range',
+            description: 'Custom-tooled 90mm round drinkware and dessert cups in 350ml, 500ml, 600ml, and 700ml capacities with hermetic snap-lock rims.',
+            image: '/images/oem/DSC04469.webp',
+            specs: ['350ml - 700ml', '90mm Rim', '100% Virgin PP 05', 'High Clarity'],
+          },
+          {
+            id: 'custom-lids-closures',
+            title: 'Bespoke Coloured Tethered Lids & Closures',
+            category: 'Tethered Closures',
+            description: 'Vibrant custom Pantone polymer formulation with leak-proof tethered flip caps, sippy spouts, and food-grade silicone plug seals.',
+            image: '/images/oem/DSC04472.webp',
+            specs: ['Custom Pantone Colours', 'Tethered Security', 'Spill-Proof', 'BPA Free'],
+          },
+          {
+            id: 'iml-branding-suite',
+            title: 'Full-Coverage In-Mould Labelling (IML)',
+            category: 'IML Branding',
+            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe, scratch-proof, deep-freeze durable.',
+            image: '/images/oem/DSC04473.webp',
+            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating', 'Deep Freeze -20°C'],
+          },
+        ],
+      },
+    },
+    // Customization Page Sections
+    {
+      page: 'customization',
+      key: 'hero',
+      title: 'Custom Packaging & Private Label Solutions',
+      subtitle: 'Bespoke container branding, 5-sided In-Mould Labelling (IML), custom polymer formulations, and proprietary tooling in Daman.',
+      sort_order: 1,
+      content: {
+        eyebrow: 'OEM & Customization',
+        title: 'Bespoke Packaging Designed for Your Brand.',
+        intro: 'From bespoke Pantone shades and crystal-clear clarity to tamper-evident snap closures and high-definition In-Mould Labelling, deliver unforgettable unboxing for your customers.',
+        action: 'Discuss a Customization Project',
+      },
+    },
+    {
+      page: 'customization',
+      key: 'gallery',
+      title: 'Product Gallery',
+      subtitle: 'High-precision Round Glass containers, bespoke colour closures, and precision IML mouldings.',
+      sort_order: 2,
+      content: {
+        badge: 'CUSTOM PRODUCT GALLERY',
+        heading: 'Custom Round Glass & Closure Showcase',
+        lead: 'High-precision injection moulded cups, specialty tethered closures, and vibrant In-Mould Labelling engineered for leading QSR chains and beverage brands.',
+        items: [
+          {
+            id: 'round-glass-range',
+            title: 'Round Glass Multi-Capacity Line',
+            category: 'Round Glass Range',
+            description: 'Custom-tooled 90mm round drinkware and dessert cups in 350ml, 500ml, 600ml, and 700ml capacities with hermetic snap-lock rims.',
+            image: '/images/oem/DSC04469.webp',
+            specs: ['350ml - 700ml', '90mm Rim', '100% Virgin PP 05', 'High Clarity'],
+          },
+          {
+            id: 'custom-lids-closures',
+            title: 'Bespoke Coloured Tethered Lids & Closures',
+            category: 'Tethered Closures',
+            description: 'Vibrant custom Pantone polymer formulation with leak-proof tethered flip caps, sippy spouts, and food-grade silicone plug seals.',
+            image: '/images/oem/DSC04472.webp',
+            specs: ['Custom Pantone Colours', 'Tethered Security', 'Spill-Proof', 'BPA Free'],
+          },
+          {
+            id: 'iml-branding-suite',
+            title: 'Full-Coverage In-Mould Labelling (IML)',
+            category: 'IML Branding',
+            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe, scratch-proof, deep-freeze durable.',
+            image: '/images/oem/DSC04473.webp',
+            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating', 'Deep Freeze -20°C'],
+          },
+        ],
       },
     },
   ];

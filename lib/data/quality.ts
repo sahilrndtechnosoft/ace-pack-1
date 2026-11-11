@@ -10,40 +10,18 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    id: 'brcgs',
-    badge: 'GLOBAL FOOD SAFETY STANDARD',
-    title: 'BRCGS Packaging Materials Certified',
-    body: 'Ace Packaging adheres to the globally recognized BRCGS Packaging Materials Standard, ensuring stringent hygiene management, contamination prevention, and full traceability for direct food contact packaging.',
-    scope: 'Direct food contact packaging manufacturing',
-    icon: 'ShieldCheck',
-    standards: ['GFSI Benchmark Recognized', 'Hygiene Management Audited', 'Traceability Verified'],
-  },
-  {
-    id: 'haccp',
-    badge: 'CRITICAL CONTROL PROTOCOLS',
-    title: 'HACCP Certified Manufacturing',
-    body: 'Systematic Hazard Analysis and Critical Control Points (HACCP) protocols are actively maintained across raw material intake, extrusion, thermoforming, and cleanroom packing to prevent physical, biological, and chemical hazards.',
-    scope: 'Food safety hazard prevention across production lines',
-    icon: 'CheckCircle2',
-    standards: ['Critical Control Point Monitoring', 'Dust-Free Cleanroom Protocol', 'Zero Cross-Contamination'],
-  },
-  {
-    id: 'food-grade',
-    badge: '100% VIRGIN POLYMERS',
-    title: '100% Food-Grade Virgin Raw Materials',
-    body: 'Manufactured exclusively from prime virgin polypropylene (PP 05) and virgin PET resin from certified petrochemical producers. 100% BPA-free, heavy-metal free, non-toxic, and migration tested for hot foods and microwave reheating.',
-    scope: 'Raw material chemical purity and food contact safety',
-    icon: 'Award',
-    standards: ['100% Prime Virgin PP 05 & PET', 'BPA & Heavy Metal Free', 'Migration Compliance Tested'],
-  },
-  {
     id: 'iso-9001',
     badge: 'SGS UKAS ACCREDITATION',
     title: 'ISO 9001:2015 Quality Management System',
     body: 'Assessed and certified by SGS United Kingdom Ltd (UKAS 0005) under Certificate IN25/00000652 for the manufacturing and supply of precision food packaging articles, with strict in-house toolroom calibration and quality control.',
     scope: 'Plant-wide ISO 9001:2015 quality management system',
-    icon: 'ClipboardCheck',
-    standards: ['Certificate IN25/00000652', 'SGS United Kingdom Ltd Audit', 'UKAS & IAF Accreditations'],
+    icon: 'Award',
+    standards: [
+      'Certificate IN25/00000652',
+      'SGS United Kingdom Ltd Audit',
+      'UKAS & IAF Accreditations',
+      'Valid through August 2028',
+    ],
   },
 ];
 
@@ -102,7 +80,7 @@ export const qualityChecks: QualityCheck[] = [
 
 export const complianceStatements = [
   'Manufactured in an ISO 9001:2015 certified facility in Daman, India (SGS Certificate IN25/00000652)',
-  'Certified BRCGS and HACCP food-contact hygiene protocols implemented across all production floors',
+  'Cleanroom hygiene protocols and automated optical defect inspection implemented across all production floors',
   '100% prime virgin polypropylene (PP 05) and virgin PET — zero regrind, zero filler, 100% BPA-free',
   'Microwave-safe and freezer-safe across the comprehensive −20°C to +120°C operating temperature range',
   'Continuous laser gauge monitoring and ±0.02 mm precision rim snap tolerance for zero transit leakage',
