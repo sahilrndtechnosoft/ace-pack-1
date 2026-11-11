@@ -289,7 +289,7 @@ export function PageContentEditor({ pageSlug }: { pageSlug: string }) {
             </div>
 
             <div className="px-5 py-4 border-t border-[#1E2633] flex flex-wrap items-center justify-between gap-3 bg-[#0D1117]">
-              <p className="text-[11px] text-gray-500 max-w-[14rem]">Empty fields show the original website content.</p>
+              <p className="text-[11px] text-gray-500 max-w-[14rem]">Removed items and cleared text stay removed. A cleared image goes back to the original image.</p>
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => save(false)} disabled={saving !== null} className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-[#222C3D] text-gray-200 hover:bg-[#161D27] text-xs font-bold disabled:opacity-50 cursor-pointer">
                   {saving === 'draft' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />} Save draft

@@ -6,22 +6,25 @@ export function isPlainObject(value: unknown): value is PlainObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function isEmpty(value: unknown): boolean {
-  return (
-    value === undefined ||
-    value === null ||
-    (typeof value === 'string' && value.trim() === '') ||
-    (Array.isArray(value) && value.length === 0)
-  );
+const ASSET_PATH = /\.(png|jpe?g|webp|gif|svg|avif|pdf|mp4|webm|glb)$/i;
+
+/**
+ * Only content that was never saved falls back to the original website content.
+ * Text cleared or lists emptied on purpose stay empty, so removing something works.
+ * Exception: a cleared image/file falls back, so pages never show a broken image.
+ */
+function isMissing(value: unknown, defaults: unknown): boolean {
+  if (value === undefined || value === null) return true;
+  return typeof value === 'string' && value.trim() === '' && typeof defaults === 'string' && ASSET_PATH.test(defaults);
 }
 
 /**
- * Returns CMS content shaped like `defaults`. Any field that is missing, blank, an empty list
- * or of the wrong type falls back to the live default, so the page never renders a hole.
+ * Returns CMS content shaped like `defaults`. Fields that were never saved (or have the wrong
+ * type) use the live default; saved values, including deliberately empty text and lists, win.
  * Lists from the CMS replace the default list as a whole (admins add/remove/reorder items).
  */
 export function withDefaults<T>(defaults: T, value: unknown): T {
-  if (isEmpty(value)) return defaults;
+  if (isMissing(value, defaults)) return defaults;
   if (isPlainObject(defaults)) {
     if (!isPlainObject(value)) return defaults;
     const out: PlainObject = {};

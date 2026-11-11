@@ -4,6 +4,7 @@ import { withDefaults, emptyLike, hasUnsafeUrl } from '../lib/cms/merge';
 
 const defaults = {
   title: 'Default title',
+  image: '/images/default.webp',
   count: 3,
   button: { text: 'Go', link: '/go' },
   items: [{ title: 'A', body: 'a' }],
@@ -16,19 +17,25 @@ assert.deepEqual(withDefaults(defaults, '{bad json'), defaults);
 
 // Stored values win; blanks and wrong types fall back.
 const merged = withDefaults(defaults, {
-  title: '  ',
+  title: '',
+  image: ' ',
   count: 'nope',
   button: { text: 'Buy' },
   items: [{ title: 'B' }, { title: 'C', body: 'c' }],
   tags: [],
   legacyField: 'ignored',
 });
-assert.equal(merged.title, 'Default title');
+// Deliberately cleared text stays cleared; a cleared image falls back so nothing looks broken.
+assert.equal(merged.title, '');
+assert.equal(merged.image, '/images/default.webp');
 assert.equal(merged.count, 3);
 assert.deepEqual(merged.button, { text: 'Buy', link: '/go' });
 // List replaces defaults; a missing item field is blank, not borrowed from another item.
 assert.deepEqual(merged.items, [{ title: 'B', body: '' }, { title: 'C', body: 'c' }]);
-assert.deepEqual(merged.tags, ['x']);
+// Removing every item from a list sticks (this was the "it comes back" bug).
+assert.deepEqual(merged.tags, []);
+// A field that was never saved still uses the original content.
+assert.equal(withDefaults(defaults, { title: 'T' }).count, 3);
 assert.equal('legacyField' in merged, false);
 
 assert.deepEqual(emptyLike({ a: 'x', b: [1], c: { d: 2 } }), { a: '', b: [], c: { d: 0 } });

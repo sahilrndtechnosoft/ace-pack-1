@@ -156,7 +156,7 @@ export default function SiteSettingsPage() {
               <ContentFields value={form} onChange={setForm} template={(editing.id === 'footer' ? FOOTER_TEMPLATE : editing.defaults) as Record<string, unknown>} />
             </div>
             <div className="px-5 py-4 border-t border-[#1E2633] flex items-center justify-between gap-3 bg-[#0D1117]">
-              <p className="text-[11px] text-gray-500">Empty fields show the original website content.</p>
+              <p className="text-[11px] text-gray-500">Removed items and cleared text stay removed. A cleared image goes back to the original image.</p>
               <button type="button" onClick={save} disabled={saving} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black disabled:opacity-50 cursor-pointer">
                 {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />} Save to website
               </button>

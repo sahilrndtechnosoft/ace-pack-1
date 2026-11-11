@@ -70,7 +70,9 @@ export const ProductShowcaseCarousel: React.FC<{ content?: typeof homeProductCar
     setSelectedGalleryImg(null);
   }, [currentIndex]);
 
-  const activeProduct = CAROUSEL_PRODUCTS[currentIndex];
+  const activeProduct = CAROUSEL_PRODUCTS[currentIndex] ?? CAROUSEL_PRODUCTS[0];
+  // Every product was removed in the CMS: show nothing rather than an empty slider.
+  if (!activeProduct) return null;
   const displayImage = selectedGalleryImg || activeProduct.image;
   const isPhoto = displayImage.startsWith('/DSC') || displayImage.endsWith('.JPG') || displayImage.startsWith('/images/products/');
 

@@ -121,6 +121,8 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
     };
   }, [items.length]);
 
+  if (items.length === 0) return null; // all photos removed in the CMS
+
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-[#FAF8F4]">
       <div className="h-[100svh] flex flex-col justify-center pt-24 pb-12 sm:pt-28 sm:pb-14">

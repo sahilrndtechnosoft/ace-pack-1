@@ -114,6 +114,8 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
   // If a card is hovered, that card is shown in the active state; otherwise the scroll-active card is shown.
   const currentHighlightedIdx = hoveredIdx !== null ? hoveredIdx : activeIdx;
 
+  if (SECTOR_CARDS.length === 0) return null; // all cards removed in the CMS
+
   return (
     <section
       ref={sectionRef}
