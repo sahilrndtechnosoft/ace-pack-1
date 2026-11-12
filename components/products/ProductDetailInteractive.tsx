@@ -156,91 +156,37 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             </div>
           )}
 
-          {/* View Selector Tabs - Fully Responsive Across All Breakpoints */}
+          {/* View selector: 2×2 where the column is narrow, one row where it has room. */}
           <div
             role="tablist"
             aria-label="Product display views"
-            className="bg-[#FAF8F4] p-1.5 rounded-2xl border border-[#E6DBC6] grid grid-cols-2 sm:grid-cols-4 lg:max-xl:grid-cols-2 xl:grid-cols-4 gap-1.5 text-xs font-bold"
+            className="grid grid-cols-2 gap-1.5 rounded-2xl border border-[#E6DBC6] bg-[#FAF8F4] p-1.5 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4"
           >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeView === 'blank'}
-              onClick={() => setActiveView('blank')}
-              className={`min-h-[44px] py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-xs ${
-                activeView === 'blank'
-                  ? 'bg-white text-[#b99750] shadow-sm border border-[#E6DBC6] font-extrabold ring-1 ring-[#b99750]/20'
-                  : 'text-gray-600 hover:text-[var(--ace-ink)] hover:bg-white/60 border border-transparent'
-              }`}
-            >
-              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-extrabold shrink-0 ${
-                activeView === 'blank' ? 'bg-[#b99750]/15 text-[#b99750]' : 'bg-black/5 text-gray-500'
-              }`}>
-                1
-              </span>
-              <Box className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">{t.tabProductView}</span>
-            </button>
-
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeView === 'specs'}
-              onClick={() => setActiveView('specs')}
-              className={`min-h-[44px] py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-xs ${
-                activeView === 'specs'
-                  ? 'bg-white text-[#b99750] shadow-sm border border-[#E6DBC6] font-extrabold ring-1 ring-[#b99750]/20'
-                  : 'text-gray-600 hover:text-[var(--ace-ink)] hover:bg-white/60 border border-transparent'
-              }`}
-            >
-              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-extrabold shrink-0 ${
-                activeView === 'specs' ? 'bg-[#b99750]/15 text-[#b99750]' : 'bg-black/5 text-gray-500'
-              }`}>
-                2
-              </span>
-              <Ruler className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">{t.tabDimensions}</span>
-            </button>
-
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeView === 'locking'}
-              onClick={() => setActiveView('locking')}
-              className={`min-h-[44px] py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-xs ${
-                activeView === 'locking'
-                  ? 'bg-white text-[#b99750] shadow-sm border border-[#E6DBC6] font-extrabold ring-1 ring-[#b99750]/20'
-                  : 'text-gray-600 hover:text-[var(--ace-ink)] hover:bg-white/60 border border-transparent'
-              }`}
-            >
-              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-extrabold shrink-0 ${
-                activeView === 'locking' ? 'bg-[#b99750]/15 text-[#b99750]' : 'bg-black/5 text-gray-500'
-              }`}>
-                3
-              </span>
-              <UtensilsCrossed className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">{t.tabFoodLocking}</span>
-            </button>
-
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeView === 'video'}
-              onClick={() => setActiveView('video')}
-              className={`min-h-[44px] py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-xs ${
-                activeView === 'video'
-                  ? 'bg-white text-[#b99750] shadow-sm border border-[#E6DBC6] font-extrabold ring-1 ring-[#b99750]/20'
-                  : 'text-gray-600 hover:text-[var(--ace-ink)] hover:bg-white/60 border border-transparent'
-              }`}
-            >
-              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-extrabold shrink-0 ${
-                activeView === 'video' ? 'bg-[#b99750]/15 text-[#b99750]' : 'bg-black/5 text-gray-500'
-              }`}>
-                4
-              </span>
-              <Video className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap font-bold">{t.tabProcessVideo}</span>
-            </button>
+            {([
+              { view: 'blank', label: t.tabProductView, Icon: Box },
+              { view: 'specs', label: t.tabDimensions, Icon: Ruler },
+              { view: 'locking', label: t.tabFoodLocking, Icon: UtensilsCrossed },
+              { view: 'video', label: t.tabProcessVideo, Icon: Video },
+            ] as const).map(({ view, label, Icon }) => {
+              const isActive = activeView === view;
+              return (
+                <button
+                  key={view}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveView(view)}
+                  className={`flex min-h-[44px] min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-2 py-2 text-xs font-bold transition-colors duration-200 ${
+                    isActive
+                      ? 'border-[#b99750] bg-white text-[#8b6e32] shadow-sm'
+                      : 'border-transparent text-gray-600 hover:bg-white hover:text-[var(--ace-ink)]'
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span className="truncate">{label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Main Stage Display Area */}

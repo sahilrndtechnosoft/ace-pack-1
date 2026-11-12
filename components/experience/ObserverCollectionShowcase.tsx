@@ -53,36 +53,41 @@ export function ObserverCollectionShowcase({ content = homeCollection }: { conte
           });
         });
 
-        // Desktop: panels pin and the next series slides over a shrinking one.
-        mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+        // Every screen: each panel pins and the next series slides over it while it steps back.
+        // A panel taller than the screen (phones) pins only once its bottom reaches the bottom of
+        // the screen, so all of its text has been scrolled past before the next panel covers it.
+        mm.add('(prefers-reduced-motion: no-preference)', () => {
           panels.slice(0, -1).forEach((panel) => {
+            const isTall = () => panel.offsetHeight > window.innerHeight;
             gsap
               .timeline({
-                scrollTrigger: { trigger: panel, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true },
+                scrollTrigger: {
+                  trigger: panel,
+                  start: () => (isTall() ? 'bottom bottom' : 'top top'),
+                  end: () => `+=${window.innerHeight}`,
+                  pin: true,
+                  pinSpacing: false,
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                },
               })
-              .to(panel, { scale: 0.88, opacity: 0.35, ease: 'none', transformOrigin: 'center top' });
+              .to(panel.querySelector('.section-content'), {
+                scale: 0.9,
+                opacity: 0.35,
+                ease: 'none',
+                transformOrigin: 'center bottom',
+              });
           });
         });
 
-        // Phones/tablets: no pinning (a panel is taller than the screen). The photo drifts with
-        // the scroll and each panel steps back as the next one comes up, keeping the stacked feel.
+        // Phones/tablets: the product photo also drifts gently with the scroll.
         mm.add('(max-width: 1023px) and (prefers-reduced-motion: no-preference)', () => {
-          panels.forEach((panel, i) => {
+          panels.forEach((panel) => {
             gsap.fromTo(
               panel.querySelector('[data-product-img]'),
               { yPercent: -6 },
               { yPercent: 6, ease: 'none', scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: true } }
             );
-            const next = panels[i + 1];
-            if (next) {
-              gsap.to(panel.querySelector('.section-content'), {
-                scale: 0.94,
-                opacity: 0.55,
-                ease: 'none',
-                transformOrigin: 'center bottom',
-                scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 35%', scrub: true },
-              });
-            }
           });
         });
 
@@ -105,11 +110,12 @@ export function ObserverCollectionShowcase({ content = homeCollection }: { conte
         return (
           <div
             key={id}
-            className="showcase-panel relative w-full lg:h-screen lg:min-h-[640px]"
+            className="showcase-panel relative w-full"
             style={{ zIndex: 10 + idx }}
           >
             {/* Full-bleed panel: background spans the screen, content keeps the site content width. */}
-            <article className="section-content relative w-full overflow-hidden border-t border-white/5 bg-[#111417] lg:h-full">
+            {/* Grows with its content (never clipped); at least one screen tall on desktop. */}
+            <article className="section-content relative w-full overflow-hidden border-t border-white/5 bg-[#111417] lg:flex lg:min-h-screen lg:items-center">
               {/* Food photo: a soft backdrop, strongest behind the product, faded out behind the text. */}
               <div className="absolute inset-0" aria-hidden="true">
                 <Image
@@ -123,7 +129,7 @@ export function ObserverCollectionShowcase({ content = homeCollection }: { conte
                 <div className="absolute inset-0 bg-gradient-to-b from-[#111417]/30 via-[#111417]/85 to-[#111417] lg:bg-gradient-to-r lg:from-[#111417] lg:via-[#111417]/90 lg:to-[#111417]/40" />
               </div>
 
-              <div className="relative mx-auto grid h-full w-full max-w-7xl grid-cols-1 items-center gap-6 px-5 py-12 sm:gap-8 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:px-12 lg:py-0">
+              <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-6 px-5 py-12 sm:gap-8 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:px-12 lg:py-20">
                 {/* Product stage (first on phones, right on desktop) */}
                 <div className="order-first flex flex-col items-center lg:order-last">
                   <div data-product className="relative aspect-[4/3] w-full max-w-[520px]">
@@ -131,13 +137,14 @@ export function ObserverCollectionShowcase({ content = homeCollection }: { conte
                       className="absolute inset-[8%] rounded-full [background:radial-gradient(circle,rgba(229,192,116,0.32)_0%,rgba(229,192,116,0.08)_45%,transparent_70%)] blur-2xl"
                       aria-hidden="true"
                     />
-                    <div data-product-img className="absolute inset-0">
+                    {/* Rounded frame clips the photo; the shadow sits on the frame since clipping would cut a drop-shadow. */}
+                    <div data-product-img className="absolute inset-0 overflow-hidden rounded-[24px] shadow-[0_28px_60px_-20px_rgba(0,0,0,0.65)] lg:rounded-[32px]">
                       <Image
                         src={cardImage}
                         alt={`${p.title} container`}
                         fill
                         sizes="(max-width: 1024px) 90vw, 520px"
-                        className="object-contain drop-shadow-[0_28px_40px_rgba(0,0,0,0.55)] transition-transform duration-500 ease-out hover:scale-[1.04]"
+                        className="object-contain transition-transform duration-500 ease-out hover:scale-[1.04]"
                         priority={idx === 0}
                       />
                     </div>

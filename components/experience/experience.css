@@ -2710,10 +2710,10 @@
 @media(max-width:767px) { .xp-live .xp-hero h1 { font-size:clamp(32px,8vw,44px); } }
 @media(max-width:767px) and (max-height:740px) { .xp-live .xp-hero h1 { font-size:clamp(28px,7vw,38px); } }
 
-/* Phones, live 3D mode: the container model shares the craft screen with the copy.
-   Keep the copy compact and on a readable card so the model (drawn behind it) never
-   covers the words; the model itself is framed into the free band below. */
-@media(max-width:767px) {
+/* Phones and tablets, live 3D mode: the container model shares the craft screen with the
+   copy. Keep the copy compact and on a readable card; the model is framed into the free band
+   below it (HomeExperience measure()). Screens too short for both use the static layout. */
+@media(max-width:1023px) {
  /* In normal flow under the heading (not pinned at a fixed top), so the card always keeps
     a clear gap below "Unbox the craft." whatever the heading's height. The facts stack on top
     of each other inside it, so it reserves the card's height. */
@@ -2731,9 +2731,91 @@
  .xp-live .xp-fact h3 { font-size:28px; margin:8px 0; }
  .xp-live .xp-fact p { font-size:14px; line-height:1.6; }
 }
-@media(max-width:767px) and (max-height:700px) {
- .xp-live .xp-craft-facts { margin-top:24px; min-height:208px; }
- .xp-live .xp-section-heading h2 { font-size:36px; }
- .xp-live .xp-fact h3 { font-size:24px; }
- .xp-live .xp-fact p { font-size:13.5px; }
+@media(min-width:768px) and (max-width:1023px) {
+ /* Tablets: same card, kept to a readable width. */
+ .xp-live .xp-craft-facts { max-width:560px; }
 }
+@media(max-width:1023px) and (max-height:700px) {
+ /* Short screens: tighter copy so the 3D model gets more of the space below the card. */
+ .xp-live .xp-craft-facts { margin-top:16px; min-height:172px; }
+ .xp-live .xp-section-heading { margin-top:12px; }
+ .xp-live .xp-section-heading h2 { font-size:32px; }
+ .xp-live .xp-fact { padding:10px 14px !important; }
+ .xp-live .xp-fact .xp-eyebrow { font-size:10px; }
+ .xp-live .xp-fact h3 { font-size:22px; margin:4px 0; }
+ .xp-live .xp-fact p { font-size:13px; line-height:1.5; }
+}
+
+/* Phones/tablets, static layout (also used on screens too short for the 3D model):
+   heading, then the photo, then the facts, all in normal flow so they can never overlap. */
+@media(max-width:1023px) {
+ .xp-static .xp-craft-stage { display:flex; flex-direction:column; }
+ .xp-static .xp-craft-stage > .xp-craft-image {
+  order:1; position:relative; inset:auto; top:auto; right:auto;
+  width:100%; height:auto; max-height:320px; object-fit:contain; margin-top:24px;
+ }
+ .xp-static .xp-craft-stage > .xp-craft-facts { order:2; width:100%; margin-top:8px; }
+ .xp-static .xp-craft-stage > .xp-craft-measure,
+ .xp-static .xp-craft-stage > .xp-story-bottom { order:3; }
+}
+
+/* Craft section 3D interaction: drag to rotate + "Inspect in 3D" (full-screen zoom viewer). */
+.xp-craft-drag { position:absolute; inset:0; z-index:1; cursor:grab; touch-action:pan-y; }
+.xp-craft-drag:active { cursor:grabbing; }
+.xp-inspect-3d {
+ position:relative; z-index:4; display:inline-flex; align-items:center; gap:8px;
+ min-height:44px; padding:0 18px; border-radius:999px; border:1px solid var(--xp-line);
+ background:#fff; color:var(--ace-ink, #14171a); font-size:13px; font-weight:700;
+ box-shadow:0 6px 20px rgba(20,23,26,.08); cursor:pointer; transition:background .2s, color .2s;
+}
+.xp-inspect-3d:hover { background:var(--ace-ink, #14171a); color:#fff; }
+.xp-inspect-3d:focus-visible { outline:2px solid var(--ace-orange, #b99750); outline-offset:3px; }
+/* Desktop cinematic layout: centred in the bottom story strip, between its two labels. */
+.xp-live .xp-inspect-3d { position:absolute; left:50%; bottom:30px; transform:translateX(-50%); }
+/* In-page model (phones, tablets, reduced motion): its canvas needs a real size. */
+.xp-static .xp-craft-model { aspect-ratio:4/3; height:auto; }
+@media(max-width:1023px) {
+ .xp-static .xp-craft-stage > .xp-craft-model { height:min(75vw, 420px); max-height:none; aspect-ratio:auto; }
+ .xp-static .xp-craft-stage > .xp-inspect-3d { order:3; align-self:flex-start; margin-top:20px; }
+}
+
+/* Phones/tablets: craft section pinned for three screens of scroll. The stage holds heading,
+   the in-page 3D model (its own area, so it can't cover text) and one fact card at a time. */
+@media(max-width:1023px) {
+ .xp-craft--pinned { height:300svh; }
+ .xp-static .xp-craft--pinned .xp-craft-stage {
+  position:sticky; top:var(--xp-header); height:calc(100svh - var(--xp-header));
+  display:flex; flex-direction:column; overflow:hidden; padding:18px 20px 16px !important;
+ }
+ .xp-craft--pinned .xp-story-top { flex:none; }
+ .xp-craft--pinned .xp-section-heading { flex:none; margin-top:10px; }
+ .xp-craft--pinned .xp-section-heading h2 { font-size:clamp(30px, 9vw, 44px); max-width:none; }
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-model { order:1; flex:1 1 auto; min-height:150px; height:auto; margin-top:4px; }
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-facts { order:2; flex:none; position:relative; min-height:178px; margin-top:6px; }
+ .xp-craft--pinned .xp-fact {
+  position:absolute; inset:0 auto auto 0; width:100%; padding:12px 16px !important; border-bottom:0;
+  background:color-mix(in srgb, var(--ace-paper, #faf8f4) 92%, transparent);
+  border-radius:18px; box-shadow:0 6px 24px rgba(20,23,26,.08);
+ }
+ .xp-craft--pinned .xp-fact h3 { font-size:24px; margin:6px 0; }
+ .xp-craft--pinned .xp-fact p { font-size:14px; line-height:1.55; }
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-inspect-3d { order:3; flex:none; align-self:center; margin-top:10px; }
+}
+@media(max-width:1023px) and (max-height:700px) {
+ .xp-craft--pinned .xp-section-heading h2 { font-size:28px; }
+ .xp-craft--pinned .xp-fact p { font-size:13px; }
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-facts { min-height:160px; }
+}
+@media(min-width:768px) and (max-width:1023px) {
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-facts,
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-model { width:100%; max-width:640px; align-self:center; }
+}
+@media(max-width:1023px) {
+ /* The desktop bottom strip and side ruler don't fit the pinned phone/tablet stage. */
+ .xp-craft--pinned .xp-story-bottom,
+ .xp-craft--pinned .xp-craft-measure { display:none; }
+ .xp-static .xp-craft--pinned .xp-craft-stage > .xp-craft-model { aspect-ratio:auto; }
+}
+
+/* The fixed 3D backdrop must never capture clicks/drags (R3F's canvas wrapper re-enables them). */
+.xp-scene-layer, .xp-scene-layer * { pointer-events:none !important; }

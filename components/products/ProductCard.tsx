@@ -62,22 +62,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
 
-            {/* Capacity badge */}
-            <span className="absolute top-3 right-3 bg-[#b99750] text-white text-[11px] sm:text-xs font-extrabold px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-              {product.capacity}
-            </span>
-
-            {/* Material or active variety badge */}
-            <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[var(--ace-ink)] border border-[#E6DBC6] text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
-              {activeVarietyObj ? activeVarietyObj.name : (product.material || 'Virgin PP 05')}
-            </span>
-
             {/* Interactive Variety Swatches Floating in Bottom Left of image */}
             {product.varieties && product.varieties.length > 0 && (
               <div className="absolute bottom-2.5 left-2.5 bg-white/90 backdrop-blur-md border border-[#E6DBC6] rounded-full px-2 py-1 flex items-center gap-1.5 shadow-xs z-10">
-                <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider mr-0.5 hidden xs:inline">
-                  Finish:
-                </span>
                 {product.varieties.map((v) => {
                   const isSelected = (currentVarietySlug || product.varieties![0].slug) === v.slug;
                   return (
@@ -85,6 +72,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       key={v.slug}
                       type="button"
                       title={`${v.name} Finish`}
+                      aria-label={`${v.name} finish`}
+                      aria-pressed={isSelected}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

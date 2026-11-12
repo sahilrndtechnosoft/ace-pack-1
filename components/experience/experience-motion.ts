@@ -177,7 +177,8 @@ export function buildScrollMotion(scope: HTMLElement, live: boolean): Cleanup {
         });
       };
       parallax('.xp-hero-still img', 6);
-      parallax('.xp-craft-image', 8);
+      // Not in the pinned phone/tablet craft stage: there the 3D model box has a fixed slot.
+      parallax('.xp-craft:not(.xp-craft--pinned) .xp-craft-image', 8);
       parallax('.xp-product > img', 7);
 
       const lineup = gsap.utils.toArray<HTMLElement>('.xp-lineup img');

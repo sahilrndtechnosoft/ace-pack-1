@@ -134,11 +134,13 @@ function Rig({state,onFailure,assembly}:Pick<Props,'state'|'onFailure'>&{assembl
   },-1);
   return <pointLight ref={light} intensity={12} distance={15} color="#e8cf9e"/>;
 }
+// The canvas is a fixed full-screen backdrop above the page; it must not take clicks or drags
+// (R3F's wrapper defaults to pointer-events:auto). Pointer position is read from window instead.
 export default function PackagingScene(props:Props) {
   const assembly=useRef<THREE.Group>(null);
   const compact=useCompactViewport();
   const [quality,setQuality]=useState(1.5);
-  return <><Progress onProgress={props.onProgress}/><Canvas shadows="percentage" frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
+  return <><Progress onProgress={props.onProgress}/><Canvas style={{pointerEvents:'none'}} shadows="percentage" frameloop={props.renderActive?'always':'demand'} dpr={compact?1:quality} camera={{position:[0,2.1,8.1],fov:35,near:.1,far:30}} gl={{antialias:!compact,alpha:true,powerPreference:'high-performance'}}>
     <ambientLight intensity={.65}/><directionalLight position={[-3,6,5]} intensity={2.5} color="#fff5dd" castShadow shadow-mapSize-width={compact?512:1024} shadow-mapSize-height={compact?512:1024} shadow-bias={-.0001} shadow-normalBias={.003}/><directionalLight position={[4,3,-4]} intensity={4} color="#ffffff"/>
     <PerformanceMonitor flipflops={2} onDecline={()=>setQuality(1)} onIncline={()=>setQuality(1.5)} onFallback={()=>setQuality(1)}/>
     <Rig state={props.state} onFailure={props.onFailure} assembly={assembly}/>

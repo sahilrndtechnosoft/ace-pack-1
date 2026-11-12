@@ -10,7 +10,7 @@ const SIZE = [[17.8,15.1],[18,17],[18,16]] as const;
 const HOLD_ANGLES = [0, Math.PI * .6, Math.PI * 1.25];
 const DRIFT = .25;
 export const CRAFT_TURN = HOLD_ANGLES[2] + DRIFT;
-const craftTurn = (craft:number) => {
+export const craftTurn = (craft:number) => {
   const p = clamp(craft) * 3;
   const first = smooth((p - .75) / .5), second = smooth((p - 1.75) / .5);
   return HOLD_ANGLES[1] * first + (HOLD_ANGLES[2] - HOLD_ANGLES[1]) * second + clamp(craft) * DRIFT;

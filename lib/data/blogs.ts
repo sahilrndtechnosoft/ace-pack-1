@@ -1,4 +1,6 @@
 import rawBlogs from './acepack-all-blogs.json';
+import { encodeAssetPath } from '@/lib/asset-url';
+import { blogAuthorAvatar, blogCategory } from './blog-display';
 
 export interface BlogPost {
   id: string;
@@ -32,8 +34,10 @@ export interface BlogPost {
 // scripts/sync_blogs_to_mysql.js so the fallback renders like the database version.
 export const blogPosts: BlogPost[] = rawBlogs.map((raw) => ({
   ...raw,
+  image: encodeAssetPath(raw.image),
   id: `blog_${raw.slug}`,
-  category: 'Industry Trends',
+  category: blogCategory(null, raw.title),
+  author: { ...raw.author, avatar: blogAuthorAvatar(raw.author.avatar) },
   readTime: '5 min read',
   content: [],
 }));

@@ -2,6 +2,7 @@
 import { useSiteText } from '@/components/layout/SiteTextProvider';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   FileDown,
@@ -73,10 +74,13 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    // Lenis drives page scroll itself, so overflow:hidden alone doesn't stop the page moving behind the modal.
+    window.__lenis?.stop();
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
+      window.__lenis?.start();
     };
   }, [isOpen, handleClose]);
 
@@ -87,7 +91,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     }
   }, [isOpen, resetForm]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const isCertificate =
     documentTitle.toLowerCase().includes('certificate') ||
@@ -194,12 +198,15 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     }
   };
 
-  return (
+  // Portalled to <body>: page wrappers (transition transforms, isolated stacking contexts) would
+  // otherwise turn `fixed` into page-relative, letting sections scroll over the modal.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="catalogue-modal-title"
-      className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 backdrop-blur-xs p-3 sm:p-5 md:p-6 transition-all duration-200"
+      data-lenis-prevent
+      className="fixed inset-0 z-[1000] overflow-y-auto overscroll-contain bg-black/70 backdrop-blur-xs p-3 sm:p-5 md:p-6 transition-all duration-200"
       onClick={handleClose}
     >
       {/* Outer flex container ensuring proper centering without vertical clipping */}
@@ -472,6 +479,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

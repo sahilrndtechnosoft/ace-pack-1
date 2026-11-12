@@ -1,4 +1,6 @@
 import { draftMode } from 'next/headers';
+import { encodeAssetPath } from '@/lib/asset-url';
+import { blogAuthorAvatar, blogCategory } from '@/lib/data/blog-display';
 import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
@@ -231,16 +233,16 @@ function mapRowToBlogPost(r: any): BlogPost {
     id: r.id,
     slug: r.slug,
     title: r.title,
-    category: r.category || 'Industry Trends',
+    category: blogCategory(r.category, r.title),
     summary: r.summary || '',
     content,
     takeaways,
     tags,
-    image: r.image || '/images/hero-bg-image.jpg',
+    image: encodeAssetPath(r.image || '/images/hero-bg-image.jpg'),
     author: {
       name: r.author_name || 'Ace Editorial Team',
       role: r.author_role || 'Packaging Technology Specialist',
-      avatar: r.author_avatar || '/images/hero-bg-image.jpg',
+      avatar: blogAuthorAvatar(r.author_avatar),
     },
     readTime: r.read_time || '5 min read',
     date: r.date || 'October 2026',
