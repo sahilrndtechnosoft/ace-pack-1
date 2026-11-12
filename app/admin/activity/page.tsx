@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { History, Search, RefreshCw, Shield, User, Filter, ArrowRight, Eye, Copy, Check, X } from 'lucide-react';
+import { History, Search, RefreshCw, Shield, User, Filter, ArrowRight, Eye, Copy, Check, X, Trash2, Loader2 } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { AdminPagination } from '@/components/admin/AdminPagination';
 
@@ -23,6 +23,8 @@ export default function AdminActivityPage() {
   const [search, setSearch] = useState('');
   const [selectedLog, setSelectedLog] = useState<LogItem | null>(null);
   const [copied, setCopied] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +41,7 @@ export default function AdminActivityPage() {
       if (res.ok) {
         const json = await res.json();
         setLogs(json.logs || []);
+        setSelected(new Set());
       }
     } catch {
       showToast('Failed to load audit logs.', 'error');
@@ -75,6 +78,28 @@ export default function AdminActivityPage() {
       (l.entity_id && l.entity_id.toLowerCase().includes(search.toLowerCase())) ||
       (l.details && l.details.toLowerCase().includes(search.toLowerCase()))
   );
+
+  const deleteSelected = async () => {
+    const ids = [...selected];
+    if (!ids.length) return;
+    if (!window.confirm(`Delete ${ids.length} activity log entr${ids.length === 1 ? 'y' : 'ies'}? This cannot be undone. The deletion itself is recorded.`)) return;
+    setDeleting(true);
+    try {
+      const res = await fetch('/api/admin/activity', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Delete failed.');
+      showToast(`${data.deleted} entr${data.deleted === 1 ? 'y' : 'ies'} deleted.`);
+      fetchLogs();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Delete failed.', 'error');
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   // Pagination calculation
   const totalItems = filteredLogs.length;
@@ -147,9 +172,22 @@ export default function AdminActivityPage() {
 
       {/* Table */}
       <div className="rounded-2xl bg-[#0D1117] border border-[#1E2633] overflow-hidden">
+        {selected.size > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#b99750]/40 bg-[#161D27] px-4 py-3">
+            <span className="text-sm font-bold text-white">{selected.size} selected</span>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setSelected(new Set())} className="px-3 h-9 rounded-xl border border-[#222C3D] text-xs font-bold text-gray-300 hover:text-white cursor-pointer">
+                Clear
+              </button>
+              <button type="button" disabled={deleting} onClick={deleteSelected} className="inline-flex items-center gap-1.5 px-4 h-9 rounded-xl bg-red-500/90 hover:bg-red-500 text-white text-xs font-black disabled:opacity-50 cursor-pointer">
+                {deleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Delete selected
+              </button>
+            </div>
+          </div>
+        )}
         {loading ? (
           <div className="p-12 text-center text-[#b99750] text-xs font-bold animate-pulse">
-            Querying MySQL audit history...
+            Loading activity…
           </div>
         ) : filteredLogs.length === 0 ? (
           <div className="p-12 text-center text-gray-500 text-xs">No audit logs found.</div>
@@ -158,6 +196,24 @@ export default function AdminActivityPage() {
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#1E2633] bg-[#0A0D12] text-[10px] font-extrabold uppercase tracking-wider text-gray-400">
+                  <th className="py-3.5 px-4 w-10">
+                    <input
+                      type="checkbox"
+                      aria-label="Select all entries on this page"
+                      checked={paginatedLogs.length > 0 && paginatedLogs.every((l) => selected.has(l.id))}
+                      onChange={(e) =>
+                        setSelected((prev) => {
+                          const next = new Set(prev);
+                          for (const l of paginatedLogs) {
+                            if (e.target.checked) next.add(l.id);
+                            else next.delete(l.id);
+                          }
+                          return next;
+                        })
+                      }
+                      className="w-4 h-4 accent-[#b99750] cursor-pointer"
+                    />
+                  </th>
                   <th className="py-3.5 px-4">Action</th>
                   <th className="py-3.5 px-4">Entity &amp; Target</th>
                   <th className="py-3.5 px-4">Administrator</th>
@@ -167,7 +223,23 @@ export default function AdminActivityPage() {
               </thead>
               <tbody className="divide-y divide-[#1A2230]">
                 {paginatedLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-[#141A24]/60 transition-colors">
+                  <tr key={log.id} className={`hover:bg-[#141A24]/60 transition-colors ${selected.has(log.id) ? 'bg-[#b99750]/5' : ''}`}>
+                    <td className="py-3.5 px-4">
+                      <input
+                        type="checkbox"
+                        aria-label={`Select ${log.action} entry`}
+                        checked={selected.has(log.id)}
+                        onChange={() =>
+                          setSelected((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(log.id)) next.delete(log.id);
+                            else next.add(log.id);
+                            return next;
+                          })
+                        }
+                        className="w-4 h-4 accent-[#b99750] cursor-pointer"
+                      />
+                    </td>
                     <td className="py-3.5 px-4">
                       <span className="font-mono font-extrabold text-[#b99750] block">
                         {log.action}

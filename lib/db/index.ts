@@ -330,6 +330,8 @@ export async function initDb(): Promise<void> {
 
   await addColumnIfMissing(db, 'events', 'highlights', 'LONGTEXT NULL');
   await addColumnIfMissing(db, 'events', 'focus_products', 'LONGTEXT NULL');
+  // Links an inquiry to the browsing visitor who sent it (lead tracking in Site Visitors).
+  await addColumnIfMissing(db, 'contact_submissions', 'visitor_id', 'VARCHAR(191) NULL');
   await syncCmsRegistry(db);
 
   initialized = true;

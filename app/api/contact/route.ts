@@ -82,14 +82,17 @@ export async function POST(request: NextRequest) {
     const forwarded = request.headers.get('x-forwarded-for');
     const ipAddress = forwarded ? forwarded.split(',')[0].trim() : (request.headers.get('x-real-ip') || 'unknown');
     const userAgent = request.headers.get('user-agent') || '';
+    // Visitor cookie set by SiteVisitorTracker; client-controlled, so only accept the expected format.
+    const rawVisitorId = request.cookies.get('ace_vid')?.value || '';
+    const visitorId = /^vid_[a-z0-9]{4,20}_[a-z0-9]{4,40}$/.test(rawVisitorId) ? rawVisitorId : null;
 
     const id = 'cnt_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
     const db = getDbPool();
 
     await db.query(
       `INSERT INTO contact_submissions 
-       (id, name, email, phone, company, category, subject, message, source_page, status, ip_address, user_agent, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'unread', ?, ?, NOW(), NOW())`,
+       (id, name, email, phone, company, category, subject, message, source_page, status, ip_address, user_agent, visitor_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'unread', ?, ?, ?, NOW(), NOW())`,
       [
         id,
         trimmedName,
@@ -102,6 +105,7 @@ export async function POST(request: NextRequest) {
         trimmedSource,
         ipAddress,
         userAgent,
+        visitorId,
       ]
     );
 

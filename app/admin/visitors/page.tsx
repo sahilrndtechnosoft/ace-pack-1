@@ -1,34 +1,31 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Users,
-  Search,
-  RefreshCw,
   Eye,
-  Trash2,
-  Clock,
+  Flame,
   Globe,
-  Monitor,
+  Laptop,
+  Loader2,
+  Mail,
+  MonitorSmartphone,
+  RefreshCw,
+  Search,
   Smartphone,
   Tablet,
-  Activity,
-  Layers,
-  ArrowUpRight,
-  ExternalLink,
+  Trash2,
+  Users,
   X,
-  Compass,
-  CheckCircle2,
-  Calendar,
-  Sparkles,
 } from 'lucide-react';
+import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { AdminPagination } from '@/components/admin/AdminPagination';
 
-interface SiteVisitor {
-  id: string;
+type LeadTier = 'hot' | 'warm' | 'cold';
+
+interface Visitor {
   visitor_id: string;
   ip_address: string | null;
-  device_type: 'Desktop' | 'Mobile' | 'Tablet';
+  device_type: string;
   browser: string | null;
   os: string | null;
   initial_landing_page: string | null;
@@ -38,792 +35,511 @@ interface SiteVisitor {
   visit_count: number;
   first_visit_at: string;
   last_visit_at: string;
-  created_at: string;
+  pageviews: number;
+  product_views: number;
+  inquiries: number;
+  ip_inquiries: number;
+  lead_name: string | null;
+  lead_company: string | null;
+  lead_email: string | null;
+  same_ip: number;
+  same_device: number;
+  lead_score: number;
+  lead_tier: LeadTier;
+  lead_reasons: string[];
 }
 
-interface VisitorLog {
-  id: string;
-  page_url: string;
-  page_title: string | null;
-  referrer: string | null;
-  is_new_visitor: number;
-  ip_address: string | null;
-  device_type: string;
-  browser: string | null;
-  os: string | null;
-  created_at: string;
-}
-
-interface VisitorStats {
+interface Stats {
   totalVisitors: number;
   newVisitorsToday: number;
-  newVisitorsThisWeek: number;
   returningVisitors: number;
+  hotLeads: number;
+  warmLeads: number;
+  linkedInquiries: number;
   totalPageviews: number;
   pageviewsToday: number;
-  desktopCount: number;
-  mobileCount: number;
-  tabletCount: number;
-  topPages: Array<{ path: string; count: number }>;
-  topBrowsers: Array<{ browser: string; count: number }>;
+}
+
+interface Detail {
+  visitor: Visitor;
+  logs: Array<{ id: string; page_url: string; page_title: string | null; referrer: string | null; created_at: string }>;
+  inquiries: Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    company: string | null;
+    subject: string | null;
+    category: string | null;
+    status: string;
+    created_at: string;
+    match_type: 'visitor' | 'network';
+  }>;
+  related: Array<{ visitor_id: string; device_type: string; browser: string | null; os: string | null; visit_count: number; last_visit_at: string; same_device: number }>;
+}
+
+const TIER_STYLE: Record<LeadTier, string> = {
+  hot: 'bg-red-500/15 text-red-300 border-red-500/30',
+  warm: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  cold: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+};
+
+const DEVICE_ICON: Record<string, React.ComponentType<{ className?: string; 'aria-hidden'?: boolean | 'true' }>> = { Mobile: Smartphone, Tablet: Tablet, Desktop: Laptop };
+
+const fmt = (iso: string) =>
+  new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+const select = 'h-10 rounded-xl border border-[#222C3D] bg-[#141A24] px-3 text-xs text-white focus:outline-none focus:border-[#b99750]';
+
+function LeadBadge({ tier, score }: { tier: LeadTier; score: number }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${TIER_STYLE[tier]}`}>
+      {tier === 'hot' && <Flame className="h-3 w-3" aria-hidden="true" />}
+      {tier} · {score}
+    </span>
+  );
 }
 
 export default function VisitorsAdminPage() {
-  const [visitors, setVisitors] = useState<SiteVisitor[]>([]);
-  const [stats, setStats] = useState<VisitorStats | null>(null);
+  const { showToast } = useAdmin();
+  const [items, setItems] = useState<Visitor[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [visitorType, setVisitorType] = useState('all'); // 'all', 'new', 'returning'
-  const [deviceFilter, setDeviceFilter] = useState('all');
-  const [dateRange, setDateRange] = useState('all'); // 'today', '7days', '30days', 'all'
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
+  const [failed, setFailed] = useState(false);
 
-  // Detail Modal State
-  const [detailModalOpen, setDetailModalOpen] = useState(false);
-  const [selectedVisitor, setSelectedVisitor] = useState<SiteVisitor | null>(null);
-  const [visitorLogs, setVisitorLogs] = useState<VisitorLog[]>([]);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [lead, setLead] = useState('all');
+  const [device, setDevice] = useState('all');
+  const [dateRange, setDateRange] = useState('all');
+  const [sort, setSort] = useState<'recent' | 'score'>('score');
+  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('');
+  const [groupFilter, setGroupFilter] = useState<{ kind: 'ip' | 'device_of'; value: string; label: string } | null>(null);
 
-  const fetchVisitors = async (page = 1) => {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
+  const [detail, setDetail] = useState<Detail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  const load = async () => {
     setLoading(true);
+    setFailed(false);
+    const params = new URLSearchParams({
+      page: String(page),
+      limit: String(pageSize),
+      lead,
+      device_type: device,
+      date_range: dateRange,
+      sort,
+    });
+    if (query) params.set('search', query);
+    if (groupFilter) params.set(groupFilter.kind, groupFilter.value);
     try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: '20',
-        visitor_type: visitorType,
-        device_type: deviceFilter,
-        date_range: dateRange,
-      });
-
-      if (searchTerm.trim()) {
-        params.set('search', searchTerm.trim());
-      }
-
-      const res = await fetch(`/api/admin/visitors?${params.toString()}`);
-      if (res.ok) {
-        const data = await res.json();
-        setVisitors(data.items || []);
-        setTotalPages(data.totalPages || 1);
-        setTotalCount(data.total || 0);
-        setCurrentPage(data.page || 1);
-        if (data.stats) {
-          setStats(data.stats);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching site visitors:', err);
+      const res = await fetch(`/api/admin/visitors?${params}`);
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      setItems(json.items || []);
+      setTotal(json.total || 0);
+      setStats(json.stats || null);
+      setSelected(new Set());
+    } catch {
+      setFailed(true);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchVisitors(currentPage);
-  }, [visitorType, deviceFilter, dateRange, currentPage]);
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, pageSize, lead, device, dateRange, sort, query, groupFilter]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCurrentPage(1);
-    fetchVisitors(1);
-  };
+  // Debounce typing so every keystroke doesn't hit the server.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setPage(1);
+      setQuery(search.trim());
+    }, 350);
+    return () => clearTimeout(t);
+  }, [search]);
 
-  const openVisitorDetail = async (visitor: SiteVisitor) => {
-    setSelectedVisitor(visitor);
-    setDetailModalOpen(true);
-    setLoadingDetail(true);
+  const allOnPageSelected = items.length > 0 && items.every((v) => selected.has(v.visitor_id));
+  const toggleAll = () =>
+    setSelected(allOnPageSelected ? new Set() : new Set(items.map((v) => v.visitor_id)));
+  const toggleOne = (id: string) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
+  const deleteVisitors = async (ids: string[]) => {
+    if (!ids.length) return;
+    if (!window.confirm(`Delete ${ids.length} visitor${ids.length === 1 ? '' : 's'} and their page-view history? Linked inquiries are kept. This cannot be undone.`)) return;
+    setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/visitors?visitor_id=${encodeURIComponent(visitor.visitor_id)}`);
-      if (res.ok) {
-        const data = await res.json();
-        setVisitorLogs(data.logs || []);
-        if (data.visitor) {
-          setSelectedVisitor(data.visitor);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching visitor detail:', err);
-    } finally {
-      setLoadingDetail(false);
-    }
-  };
-
-  const handleDeleteVisitor = async (visitorId: string) => {
-    try {
-      const res = await fetch(`/api/admin/visitors?visitor_id=${encodeURIComponent(visitorId)}`, {
+      const res = await fetch('/api/admin/visitors', {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visitor_ids: ids }),
       });
-
-      if (res.ok) {
-        setVisitors((prev) => prev.filter((v) => v.visitor_id !== visitorId));
-        setDeleteConfirmId(null);
-        if (detailModalOpen && selectedVisitor?.visitor_id === visitorId) {
-          setDetailModalOpen(false);
-          setSelectedVisitor(null);
-        }
-        setToastMessage('Visitor record deleted.');
-        setTimeout(() => setToastMessage(null), 3000);
-      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Delete failed.');
+      showToast(data.message || 'Deleted.');
+      if (detail && ids.includes(detail.visitor.visitor_id)) setDetail(null);
+      load();
     } catch (err) {
-      console.error('Error deleting visitor:', err);
+      showToast(err instanceof Error ? err.message : 'Delete failed.', 'error');
+    } finally {
+      setDeleting(false);
     }
   };
 
-  const formatDate = (iso: string) => {
+  const openDetail = async (visitorId: string) => {
+    setDetailLoading(true);
     try {
-      const d = new Date(iso);
-      return d.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      const res = await fetch(`/api/admin/visitors?visitor_id=${encodeURIComponent(visitorId)}`);
+      if (!res.ok) throw new Error();
+      setDetail(await res.json());
     } catch {
-      return iso;
+      showToast('Could not load this visitor.', 'error');
+    } finally {
+      setDetailLoading(false);
     }
   };
 
-  const getDeviceIcon = (device: string) => {
-    switch (device) {
-      case 'Mobile':
-        return <Smartphone className="w-3.5 h-3.5 text-blue-400" />;
-      case 'Tablet':
-        return <Tablet className="w-3.5 h-3.5 text-purple-400" />;
-      default:
-        return <Monitor className="w-3.5 h-3.5 text-emerald-400" />;
-    }
+  const applyGroup = (kind: 'ip' | 'device_of', value: string, label: string) => {
+    setDetail(null);
+    setPage(1);
+    setGroupFilter({ kind, value, label });
   };
 
-  // Percentages for Devices
-  const totalDev = stats ? (stats.desktopCount + stats.mobileCount + stats.tabletCount) || 1 : 1;
-  const deskPct = stats ? Math.round((stats.desktopCount / totalDev) * 100) : 0;
-  const mobPct = stats ? Math.round((stats.mobileCount / totalDev) * 100) : 0;
-  const tabPct = stats ? Math.round((stats.tabletCount / totalDev) * 100) : 0;
+  const kpis = useMemo(
+    () => [
+      { label: 'Hot leads', value: stats?.hotLeads, icon: Flame, tone: 'text-red-300', onClick: () => { setLead('hot'); setPage(1); } },
+      { label: 'Warm leads', value: stats?.warmLeads, icon: Flame, tone: 'text-amber-300', onClick: () => { setLead('warm'); setPage(1); } },
+      { label: 'Visitors (new today)', value: stats ? `${stats.totalVisitors} (${stats.newVisitorsToday})` : undefined, icon: Users, tone: 'text-[#b99750]' },
+      { label: 'Page views (today)', value: stats ? `${stats.totalPageviews} (${stats.pageviewsToday})` : undefined, icon: Eye, tone: 'text-[#b99750]' },
+    ],
+    [stats]
+  );
 
   return (
-    <div className="space-y-6">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#161B22] border border-emerald-500/40 text-emerald-300 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#161B22] p-6 rounded-2xl border border-[#1E2633]">
+    <div className="space-y-6 max-w-7xl">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#1E2633]">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-              Live Web Traffic
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black text-white">Site Visitors &amp; Audience Logs</h1>
-          <p className="text-xs text-gray-400 mt-1">
-            Real-time tracking of new and returning visitors across all Ace Packaging catalog and product pages.
+          <h1 className="text-2xl font-black text-white">Site Visitors &amp; Leads</h1>
+          <p className="text-sm text-gray-400 mt-1">
+            Who is browsing, how interested they are, and which visitors share a network or device.
           </p>
         </div>
-
-        <button
-          onClick={() => fetchVisitors(currentPage)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1F2733] hover:bg-[#283344] text-gray-200 hover:text-white rounded-xl text-xs font-bold transition-all border border-[#2D3848] shrink-0"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-          <span>Refresh Traffic</span>
+        <button type="button" onClick={load} disabled={loading} aria-label="Refresh" className="inline-flex items-center justify-center w-11 h-11 rounded-xl border border-[#222C3D] text-gray-300 hover:text-white hover:bg-[#161D27] disabled:opacity-50 cursor-pointer">
+          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-[#161B22] p-4 rounded-xl border border-[#1E2633]">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
-            <span className="text-xs font-medium">Total Unique Visitors</span>
-            <Users className="w-4 h-4 text-[#b99750]" />
-          </div>
-          <div className="text-2xl font-black text-white">{stats?.totalVisitors ?? 0}</div>
-          <span className="text-[10px] text-gray-400">Unique visitors identified</span>
-        </div>
-
-        <div className="bg-[#161B22] p-4 rounded-xl border border-emerald-500/30">
-          <div className="flex items-center justify-between text-emerald-400 mb-2">
-            <span className="text-xs font-medium">New Visitors Today</span>
-            <Sparkles className="w-4 h-4 text-emerald-400" />
-          </div>
-          <div className="text-2xl font-black text-emerald-300">{stats?.newVisitorsToday ?? 0}</div>
-          <span className="text-[10px] text-emerald-400/80">
-            {stats?.newVisitorsThisWeek ?? 0} this past week
-          </span>
-        </div>
-
-        <div className="bg-[#161B22] p-4 rounded-xl border border-[#1E2633]">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
-            <span className="text-xs font-medium">Returning Visitors</span>
-            <RefreshCw className="w-4 h-4 text-blue-400" />
-          </div>
-          <div className="text-2xl font-black text-blue-400">{stats?.returningVisitors ?? 0}</div>
-          <span className="text-[10px] text-gray-400">Multi-session repeat clients</span>
-        </div>
-
-        <div className="bg-[#161B22] p-4 rounded-xl border border-[#1E2633]">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
-            <span className="text-xs font-medium">Total Pageviews</span>
-            <Activity className="w-4 h-4 text-amber-400" />
-          </div>
-          <div className="text-2xl font-black text-amber-300">{stats?.totalPageviews ?? 0}</div>
-          <span className="text-[10px] text-gray-400">
-            {stats?.pageviewsToday ?? 0} hits today
-          </span>
-        </div>
+      {/* KPIs */}
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+        {kpis.map(({ label, value, icon: Icon, tone, onClick }) => {
+          const Tag = onClick ? 'button' : 'div';
+          return (
+            <Tag key={label} {...(onClick ? { type: 'button' as const, onClick } : {})} className={`text-left rounded-2xl bg-[#0D1117] border border-[#1E2633] p-4 ${onClick ? 'hover:border-[#b99750]/60 cursor-pointer' : ''}`}>
+              <Icon className={`w-4 h-4 ${tone}`} aria-hidden="true" />
+              <span className="block text-2xl font-black text-white mt-2 tabular-nums">{value ?? '…'}</span>
+              <span className="text-xs text-gray-400">{label}</span>
+            </Tag>
+          );
+        })}
       </div>
 
-      {/* Analytics Insights: Devices & Landing Pages */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Device Breakdown */}
-        <div className="bg-[#161B22] p-5 rounded-2xl border border-[#1E2633]">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block mb-3">
-            Traffic By Device
-          </span>
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-1">
-                <span className="flex items-center gap-1.5 text-gray-300">
-                  <Monitor className="w-3.5 h-3.5 text-emerald-400" /> Desktop
-                </span>
-                <span className="text-emerald-400">{deskPct}% ({stats?.desktopCount ?? 0})</span>
-              </div>
-              <div className="h-1.5 w-full bg-[#0D1117] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                  style={{ width: `${deskPct}%` }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-1">
-                <span className="flex items-center gap-1.5 text-gray-300">
-                  <Smartphone className="w-3.5 h-3.5 text-blue-400" /> Mobile
-                </span>
-                <span className="text-blue-400">{mobPct}% ({stats?.mobileCount ?? 0})</span>
-              </div>
-              <div className="h-1.5 w-full bg-[#0D1117] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-500 rounded-full transition-all duration-500"
-                  style={{ width: `${mobPct}%` }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-1">
-                <span className="flex items-center gap-1.5 text-gray-300">
-                  <Tablet className="w-3.5 h-3.5 text-purple-400" /> Tablet
-                </span>
-                <span className="text-purple-400">{tabPct}% ({stats?.tabletCount ?? 0})</span>
-              </div>
-              <div className="h-1.5 w-full bg-[#0D1117] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-purple-500 rounded-full transition-all duration-500"
-                  style={{ width: `${tabPct}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Top Landing Pages */}
-        <div className="bg-[#161B22] p-5 rounded-2xl border border-[#1E2633]">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block mb-3">
-            Top Landing Pages
-          </span>
-          <div className="space-y-2">
-            {stats?.topPages && stats.topPages.length > 0 ? (
-              stats.topPages.map((page, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs p-2 bg-[#0D1117] rounded-lg border border-[#1E2633]"
-                >
-                  <span className="truncate max-w-[180px] font-mono text-gray-300 text-[11px]" title={page.path}>
-                    {page.path}
-                  </span>
-                  <span className="font-bold text-[#b99750] px-2 py-0.5 rounded bg-[#b99750]/10 text-[11px]">
-                    {page.count} visits
-                  </span>
-                </div>
-              ))
-            ) : (
-              <p className="text-xs text-gray-500">No landing pages recorded yet.</p>
-            )}
-          </div>
-        </div>
-
-        {/* Top Browsers */}
-        <div className="bg-[#161B22] p-5 rounded-2xl border border-[#1E2633]">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block mb-3">
-            Top Browsers
-          </span>
-          <div className="space-y-2">
-            {stats?.topBrowsers && stats.topBrowsers.length > 0 ? (
-              stats.topBrowsers.map((b, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs p-2 bg-[#0D1117] rounded-lg border border-[#1E2633]"
-                >
-                  <span className="text-gray-300 font-medium text-[11px]">
-                    {b.browser}
-                  </span>
-                  <span className="font-bold text-gray-400 px-2 py-0.5 rounded bg-[#1F2733] text-[11px]">
-                    {b.count}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <p className="text-xs text-gray-500">No browser data yet.</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="bg-[#161B22] p-4 rounded-xl border border-[#1E2633] flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Filters */}
+      {/* Filters */}
+      <div className="flex flex-col gap-3 rounded-2xl bg-[#0D1117] border border-[#1E2633] p-4">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Visitor Type Filter */}
-          <div className="flex items-center bg-[#0D1117] p-1 rounded-lg border border-[#1E2633]">
+          <div className="inline-flex rounded-xl border border-[#222C3D] p-1" role="group" aria-label="Lead type">
             {[
-              { id: 'all', label: 'All Visitors' },
-              { id: 'new', label: 'New Only' },
-              { id: 'returning', label: 'Returning' },
-            ].map((btn) => (
+              ['all', 'All'],
+              ['hot', 'Hot'],
+              ['warm', 'Warm'],
+              ['cold', 'Cold'],
+              ['inquired', 'Sent inquiry'],
+            ].map(([value, label]) => (
               <button
-                key={btn.id}
+                key={value}
+                type="button"
+                aria-pressed={lead === value}
                 onClick={() => {
-                  setVisitorType(btn.id);
-                  setCurrentPage(1);
+                  setLead(value);
+                  setPage(1);
                 }}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  visitorType === btn.id
-                    ? 'bg-[#b99750] text-[#0A0D12]'
-                    : 'text-gray-400 hover:text-white'
-                }`}
+                className={`px-3 h-8 rounded-lg text-xs font-bold cursor-pointer ${lead === value ? 'bg-[#b99750] text-[#0A0D12]' : 'text-gray-300 hover:text-white'}`}
               >
-                {btn.label}
+                {label}
               </button>
             ))}
           </div>
-
-          {/* Device Filter */}
-          <select
-            value={deviceFilter}
-            onChange={(e) => {
-              setDeviceFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="bg-[#0D1117] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-[#b99750]"
-          >
-            <option value="all">All Devices</option>
+          <select aria-label="Device" value={device} onChange={(e) => { setDevice(e.target.value); setPage(1); }} className={select}>
+            <option value="all">All devices</option>
             <option value="Desktop">Desktop</option>
             <option value="Mobile">Mobile</option>
             <option value="Tablet">Tablet</option>
           </select>
-
-          {/* Date Filter */}
-          <select
-            value={dateRange}
-            onChange={(e) => {
-              setDateRange(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="bg-[#0D1117] border border-[#1E2633] rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-[#b99750]"
-          >
-            <option value="all">All Time</option>
-            <option value="today">Today</option>
-            <option value="7days">Last 7 Days</option>
-            <option value="30days">Last 30 Days</option>
+          <select aria-label="Last active" value={dateRange} onChange={(e) => { setDateRange(e.target.value); setPage(1); }} className={select}>
+            <option value="all">Any time</option>
+            <option value="today">Active today</option>
+            <option value="7days">Last 7 days</option>
+            <option value="30days">Last 30 days</option>
           </select>
-        </div>
-
-        {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
-          <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value as 'recent' | 'score')} className={select}>
+            <option value="score">Sort: lead score</option>
+            <option value="recent">Sort: most recent</option>
+          </select>
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="w-4 h-4 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
-              type="text"
-              placeholder="Search IP, Visitor ID, OS, URL..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-[#0D1117] border border-[#1E2633] rounded-lg pl-9 pr-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#b99750]"
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search name, email, company, IP, page…"
+              aria-label="Search visitors"
+              className={`${select} w-full pl-9`}
             />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchTerm('');
-                  setCurrentPage(1);
-                  fetchVisitors(1);
-                }}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            )}
           </div>
-          <button
-            type="submit"
-            className="px-3 py-1.5 bg-[#b99750] hover:bg-[#cfa144] text-[#0A0D12] rounded-lg text-xs font-bold transition-all"
-          >
-            Search
-          </button>
-        </form>
-      </div>
-
-      {/* Visitors Table */}
-      <div className="bg-[#161B22] rounded-2xl border border-[#1E2633] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr className="border-b border-[#1E2633] bg-[#0D1117]/60 text-gray-400 font-bold uppercase tracking-wider text-[10px]">
-                <th className="py-3 px-4">Visitor / Client</th>
-                <th className="py-3 px-4">Device &amp; OS</th>
-                <th className="py-3 px-4">Initial Landing Page</th>
-                <th className="py-3 px-4">IP &amp; Location</th>
-                <th className="py-3 px-4">First Visit</th>
-                <th className="py-3 px-4">Last Active</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#1E2633]">
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="text-center py-12 text-gray-400">
-                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#b99750]" />
-                    <span>Analyzing web visitor logs...</span>
-                  </td>
-                </tr>
-              ) : visitors.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="text-center py-12 text-gray-400">
-                    <Users className="w-8 h-8 mx-auto mb-2 opacity-40 text-[#b99750]" />
-                    <p className="font-semibold text-gray-300">No visitors logged matching your filters.</p>
-                    <p className="text-[11px] text-gray-500 mt-1">
-                      As soon as users browse the website, their visits and sessions will automatically appear here.
-                    </p>
-                  </td>
-                </tr>
-              ) : (
-                visitors.map((item) => {
-                  const isNew = item.visit_count <= 1;
-                  return (
-                    <tr key={item.id} className="hover:bg-[#1C2330] transition-colors">
-                      {/* Visitor ID & Status */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-[11px] text-white font-semibold">
-                            {item.visitor_id.substring(0, 16)}...
-                          </span>
-                          {isNew ? (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                              NEW
-                            </span>
-                          ) : (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#b99750]/20 text-[#b99750] border border-[#b99750]/30">
-                              {item.visit_count} visits
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      {/* Device & OS */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-1.5 text-gray-200 font-medium">
-                          {getDeviceIcon(item.device_type)}
-                          <span>{item.device_type}</span>
-                          <span className="text-gray-500">•</span>
-                          <span className="text-gray-400">{item.os || 'Unknown OS'}</span>
-                        </div>
-                        <div className="text-[10px] text-gray-500 mt-0.5">
-                          {item.browser || 'Browser'}
-                        </div>
-                      </td>
-
-                      {/* Initial Landing Page */}
-                      <td className="py-3.5 px-4 max-w-xs">
-                        <span className="font-mono text-gray-300 text-[11px] truncate block" title={item.initial_landing_page || '/'}>
-                          {item.initial_landing_page || '/'}
-                        </span>
-                        {item.initial_referrer && (
-                          <span className="text-[10px] text-gray-500 truncate block mt-0.5">
-                            Ref: {item.initial_referrer}
-                          </span>
-                        )}
-                      </td>
-
-                      {/* IP & Location */}
-                      <td className="py-3.5 px-4">
-                        <span className="font-mono text-gray-300 text-[11px] block">
-                          {item.ip_address || 'unknown'}
-                        </span>
-                        {(item.city || item.country) && (
-                          <span className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
-                            <Globe className="w-2.5 h-2.5 text-[#b99750]" />
-                            {[item.city, item.country].filter(Boolean).join(', ')}
-                          </span>
-                        )}
-                      </td>
-
-                      {/* First Visit */}
-                      <td className="py-3.5 px-4 text-gray-400 text-[11px] whitespace-nowrap">
-                        {formatDate(item.first_visit_at)}
-                      </td>
-
-                      {/* Last Active */}
-                      <td className="py-3.5 px-4 text-gray-300 text-[11px] whitespace-nowrap font-medium">
-                        {formatDate(item.last_visit_at)}
-                      </td>
-
-                      {/* Actions */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => openVisitorDetail(item)}
-                            className="px-2.5 py-1.5 bg-[#1F2733] hover:bg-[#b99750] hover:text-[#0A0D12] text-gray-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1"
-                            title="View Session Activity"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span>Activity</span>
-                          </button>
-
-                          <button
-                            onClick={() => setDeleteConfirmId(item.visitor_id)}
-                            className="p-1.5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded-lg transition-all"
-                            title="Delete Visitor"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
         </div>
-
-        {/* Universal Pagination */}
-        <AdminPagination
-          currentPage={currentPage}
-          totalItems={totalCount}
-          pageSize={20}
-          onPageChange={(page) => {
-            setCurrentPage(page);
-            fetchVisitors(page);
-          }}
-        />
+        {groupFilter && (
+          <div className="flex items-center gap-2 text-xs text-sky-200">
+            <span className="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1">
+              Showing visitors on {groupFilter.label}
+              <button type="button" onClick={() => setGroupFilter(null)} aria-label="Clear filter" className="cursor-pointer hover:text-white">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Visitor Detail Modal */}
-      {detailModalOpen && selectedVisitor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
-          <div className="bg-[#161B22] border border-[#1E2633] rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            {/* Modal Header */}
-            <div className="p-5 border-b border-[#1E2633] flex items-center justify-between bg-[#0D1117]">
-              <div>
-                <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block">
-                  Visitor Session &amp; Journey
-                </span>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <span className="font-mono">{selectedVisitor.visitor_id}</span>
-                  {selectedVisitor.visit_count > 1 ? (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#b99750]/20 text-[#b99750]">
-                      Returning ({selectedVisitor.visit_count} visits)
-                    </span>
-                  ) : (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400">
-                      New Visitor
-                    </span>
-                  )}
-                </h3>
-              </div>
-              <button
-                onClick={() => setDetailModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-[#1F2733] hover:bg-[#283344] text-gray-400 hover:text-white flex items-center justify-center transition-all"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div className="p-6 overflow-y-auto space-y-6 flex-1">
-              {/* Technical Specifications Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">Device</span>
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                    {getDeviceIcon(selectedVisitor.device_type)}
-                    <span>{selectedVisitor.device_type}</span>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">Operating System</span>
-                  <span className="text-xs font-bold text-white">{selectedVisitor.os || 'N/A'}</span>
-                </div>
-
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">Browser</span>
-                  <span className="text-xs font-bold text-white">{selectedVisitor.browser || 'N/A'}</span>
-                </div>
-
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">Total Hits</span>
-                  <span className="text-xs font-bold text-[#b99750]">{selectedVisitor.visit_count} sessions</span>
-                </div>
-              </div>
-
-              {/* Network & Timestamps */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">IP &amp; Geographic Location</span>
-                  <div className="text-xs text-gray-300 font-mono">{selectedVisitor.ip_address || 'unknown'}</div>
-                  {(selectedVisitor.city || selectedVisitor.country) && (
-                    <div className="text-[11px] text-gray-400 mt-1">
-                      {[selectedVisitor.city, selectedVisitor.country].filter(Boolean).join(', ')}
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                  <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">Visitor Timeline</span>
-                  <div className="text-[11px] text-gray-300">
-                    <strong className="text-gray-400">First Seen:</strong> {formatDate(selectedVisitor.first_visit_at)}
-                  </div>
-                  <div className="text-[11px] text-gray-300 mt-0.5">
-                    <strong className="text-gray-400">Last Active:</strong> {formatDate(selectedVisitor.last_visit_at)}
-                  </div>
-                </div>
-              </div>
-
-              {/* Initial Entry URL */}
-              <div className="p-3 bg-[#0D1117] rounded-xl border border-[#1E2633]">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1">
-                  Initial Entry Page &amp; Referrer
-                </span>
-                <div className="text-xs font-mono text-emerald-400">
-                  {selectedVisitor.initial_landing_page || '/'}
-                </div>
-                {selectedVisitor.initial_referrer && (
-                  <div className="text-[11px] text-gray-400 mt-1">
-                    Referred by: {selectedVisitor.initial_referrer}
-                  </div>
-                )}
-              </div>
-
-              {/* Activity Log / Pageviews Timeline */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] font-bold uppercase text-white flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5 text-[#b99750]" />
-                    <span>Pageviews &amp; Actions Log</span>
-                  </span>
-                  <span className="text-[10px] text-gray-500">
-                    Recent {visitorLogs.length} events
-                  </span>
-                </div>
-
-                {loadingDetail ? (
-                  <div className="py-8 text-center text-gray-400 text-xs">
-                    <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#b99750]" />
-                    <span>Loading journey history...</span>
-                  </div>
-                ) : visitorLogs.length === 0 ? (
-                  <div className="p-4 bg-[#0D1117] rounded-xl border border-[#1E2633] text-center text-xs text-gray-500">
-                    No individual pageview logs available for this session.
-                  </div>
-                ) : (
-                  <div className="bg-[#0D1117] rounded-xl border border-[#1E2633] overflow-hidden">
-                    <div className="max-h-60 overflow-y-auto divide-y divide-[#1E2633]">
-                      {visitorLogs.map((log) => (
-                        <div key={log.id} className="p-3 text-xs flex items-center justify-between gap-4 hover:bg-[#161B22]/50">
-                          <div className="min-w-0">
-                            <div className="font-mono text-gray-200 text-[11px] truncate">
-                              {log.page_url}
-                            </div>
-                            {log.page_title && (
-                              <div className="text-[10px] text-gray-400 truncate mt-0.5">
-                                {log.page_title}
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-right shrink-0">
-                            <span className="text-[10px] text-gray-400 block">
-                              {formatDate(log.created_at)}
-                            </span>
-                            {log.is_new_visitor ? (
-                              <span className="text-[9px] font-bold text-emerald-400">First Visit</span>
-                            ) : null}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-[#1E2633] flex items-center justify-between bg-[#0D1117]">
-              <button
-                onClick={() => setDeleteConfirmId(selectedVisitor.visitor_id)}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-300 py-1.5 px-3 rounded-lg hover:bg-red-500/10 transition-colors"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Visitor Record</span>
-              </button>
-
-              <button
-                onClick={() => setDetailModalOpen(false)}
-                className="px-4 py-2 bg-[#1F2733] hover:bg-[#283344] text-white rounded-xl text-xs font-bold transition-all"
-              >
-                Close
-              </button>
-            </div>
+      {/* Bulk actions */}
+      {selected.size > 0 && (
+        <div className="sticky top-16 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#b99750]/40 bg-[#161D27] px-4 py-3">
+          <span className="text-sm font-bold text-white">{selected.size} selected</span>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setSelected(new Set())} className="px-3 h-9 rounded-xl border border-[#222C3D] text-xs font-bold text-gray-300 hover:text-white cursor-pointer">
+              Clear
+            </button>
+            <button type="button" disabled={deleting} onClick={() => deleteVisitors([...selected])} className="inline-flex items-center gap-1.5 px-4 h-9 rounded-xl bg-red-500/90 hover:bg-red-500 text-white text-xs font-black disabled:opacity-50 cursor-pointer">
+              {deleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Delete selected
+            </button>
           </div>
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
-          <div className="bg-[#161B22] border border-[#1E2633] rounded-2xl w-full max-w-sm p-6 shadow-2xl text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mx-auto border border-red-500/20">
-              <Trash2 className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Delete Visitor Record?</h3>
-              <p className="text-xs text-gray-400 mt-1">
-                This will delete this visitor and their pageview history.
-              </p>
-            </div>
-            <div className="flex items-center justify-center gap-3 pt-2">
-              <button
-                onClick={() => setDeleteConfirmId(null)}
-                className="px-4 py-2 bg-[#1F2733] hover:bg-[#283344] text-gray-300 rounded-xl text-xs font-bold transition-all"
-              >
-                Cancel
+      {/* Table */}
+      <div className="rounded-2xl bg-[#0D1117] border border-[#1E2633] overflow-hidden">
+        {failed ? (
+          <div role="alert" className="p-10 text-center text-sm text-red-300">
+            Visitors couldn’t be loaded. <button type="button" onClick={load} className="underline cursor-pointer">Try again</button>
+          </div>
+        ) : loading && items.length === 0 ? (
+          <div className="p-10 text-center text-sm text-[#b99750]"><Loader2 className="w-5 h-5 animate-spin inline mr-2" />Loading visitors…</div>
+        ) : items.length === 0 ? (
+          <div className="p-10 text-center text-sm text-gray-400">No visitors match these filters.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-[#1E2633] bg-[#0A0D12] text-[10px] font-extrabold uppercase tracking-wider text-gray-400">
+                  <th className="py-3 px-4 w-10">
+                    <input type="checkbox" checked={allOnPageSelected} onChange={toggleAll} aria-label="Select all visitors on this page" className="w-4 h-4 accent-[#b99750] cursor-pointer" />
+                  </th>
+                  <th className="py-3 px-3">Lead</th>
+                  <th className="py-3 px-3">Interest</th>
+                  <th className="py-3 px-3">Device</th>
+                  <th className="py-3 px-3">Network</th>
+                  <th className="py-3 px-3">Last active</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#1A2230]">
+                {items.map((v) => {
+                  const DeviceIcon = DEVICE_ICON[v.device_type] ?? MonitorSmartphone;
+                  return (
+                    <tr key={v.visitor_id} className={`hover:bg-[#141A24]/60 ${selected.has(v.visitor_id) ? 'bg-[#b99750]/5' : ''}`}>
+                      <td className="py-3 px-4 align-top">
+                        <input type="checkbox" checked={selected.has(v.visitor_id)} onChange={() => toggleOne(v.visitor_id)} aria-label={`Select visitor ${v.lead_name || v.visitor_id}`} className="w-4 h-4 accent-[#b99750] cursor-pointer" />
+                      </td>
+                      <td className="py-3 px-3 align-top">
+                        <LeadBadge tier={v.lead_tier} score={v.lead_score} />
+                        {v.lead_name ? (
+                          <p className="mt-1.5 font-bold text-white text-sm">
+                            {v.lead_name}
+                            {v.lead_company && <span className="font-normal text-gray-400"> · {v.lead_company}</span>}
+                          </p>
+                        ) : (
+                          <p className="mt-1.5 text-gray-500 font-mono text-[11px]">{v.visitor_id.slice(0, 18)}…</p>
+                        )}
+                        {v.lead_email && <p className="text-[11px] text-gray-400">{v.lead_email}</p>}
+                      </td>
+                      <td className="py-3 px-3 align-top text-gray-300 max-w-[260px]">
+                        <p className="line-clamp-2">{v.lead_reasons.slice(0, 3).join(' · ') || '—'}</p>
+                      </td>
+                      <td className="py-3 px-3 align-top text-gray-300">
+                        <span className="inline-flex items-center gap-1.5"><DeviceIcon className="w-3.5 h-3.5 text-[#b99750]" aria-hidden="true" />{v.device_type}</span>
+                        <p className="text-[11px] text-gray-500">{[v.browser, v.os].filter(Boolean).join(' · ')}</p>
+                        {v.same_device > 0 && (
+                          <button type="button" onClick={() => applyGroup('device_of', v.visitor_id, 'the same device')} className="mt-1 rounded-full border border-violet-500/30 bg-violet-500/10 px-2 py-0.5 text-[10px] font-bold text-violet-200 hover:bg-violet-500/20 cursor-pointer">
+                            Same device ×{v.same_device + 1}
+                          </button>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 align-top text-gray-300">
+                        <span className="font-mono">{v.ip_address || '—'}</span>
+                        <p className="text-[11px] text-gray-500">{[v.city, v.country].filter(Boolean).join(', ') || 'Location unknown'}</p>
+                        {v.same_ip > 0 && v.ip_address && (
+                          <button type="button" onClick={() => applyGroup('ip', v.ip_address as string, `IP ${v.ip_address}`)} className="mt-1 rounded-full border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 hover:bg-sky-500/20 cursor-pointer">
+                            Same IP ×{v.same_ip + 1}
+                          </button>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 align-top text-gray-300 whitespace-nowrap">
+                        {fmt(v.last_visit_at)}
+                        <p className="text-[11px] text-gray-500">{v.visit_count} visit{v.visit_count === 1 ? '' : 's'} · {v.pageviews} pages</p>
+                      </td>
+                      <td className="py-3 px-4 align-top text-right whitespace-nowrap">
+                        <button type="button" onClick={() => openDetail(v.visitor_id)} className="inline-flex items-center gap-1 px-3 h-8 rounded-lg bg-[#b99750] text-[#0A0D12] text-[11px] font-black cursor-pointer">
+                          {detailLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Eye className="w-3 h-3" />} Details
+                        </button>
+                        <button type="button" onClick={() => deleteVisitors([v.visitor_id])} aria-label="Delete visitor" className="ml-1 inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-300 hover:bg-red-500/15 cursor-pointer">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <AdminPagination currentPage={page} totalItems={total} pageSize={pageSize} onPageChange={setPage} onPageSizeChange={(n) => { setPageSize(n); setPage(1); }} pageSizeOptions={[20, 50, 100]} />
+      </div>
+
+      {/* Detail drawer */}
+      {detail && (
+        <div className="fixed inset-0 z-[60] flex justify-end bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="visitor-title" onKeyDown={(e) => e.key === 'Escape' && setDetail(null)}>
+          <div className="w-full max-w-2xl h-full overflow-y-auto bg-[#0A0D12] border-l border-[#1E2633]">
+            <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-[#1E2633] bg-[#0A0D12] px-5 py-4">
+              <div>
+                <LeadBadge tier={detail.visitor.lead_tier} score={detail.visitor.lead_score} />
+                <h2 id="visitor-title" className="mt-2 text-lg font-black text-white">
+                  {detail.visitor.lead_name || 'Anonymous visitor'}
+                  {detail.visitor.lead_company && <span className="text-gray-400 font-semibold"> · {detail.visitor.lead_company}</span>}
+                </h2>
+                <p className="text-[11px] font-mono text-gray-500">{detail.visitor.visitor_id}</p>
+              </div>
+              <button type="button" onClick={() => setDetail(null)} aria-label="Close" autoFocus className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-[#161D27] cursor-pointer">
+                <X className="w-5 h-5" />
               </button>
-              <button
-                onClick={() => handleDeleteVisitor(deleteConfirmId)}
-                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition-all shadow-md"
-              >
-                Yes, Delete
-              </button>
+            </div>
+
+            <div className="space-y-6 px-5 py-5 text-sm">
+              <section>
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b99750] mb-2">Why this score</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {detail.visitor.lead_reasons.map((r) => (
+                    <li key={r} className="rounded-full border border-[#222C3D] bg-[#141A24] px-3 py-1 text-xs text-gray-200">{r}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b99750] mb-2">Inquiries</h3>
+                {detail.inquiries.length === 0 ? (
+                  <p className="text-gray-400">No inquiry from this visitor or network yet.</p>
+                ) : (
+                  <ul className="space-y-2">
+                    {detail.inquiries.map((q) => (
+                      <li key={q.id} className="rounded-xl border border-[#1E2633] bg-[#0D1117] p-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="font-bold text-white">{q.name}{q.company ? <span className="text-gray-400 font-normal"> · {q.company}</span> : null}</span>
+                          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${q.match_type === 'visitor' ? 'bg-emerald-500/15 text-emerald-300' : 'bg-sky-500/15 text-sky-200'}`}>
+                            {q.match_type === 'visitor' ? 'Sent by this visitor' : 'Same network (IP)'}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs text-gray-300">
+                          <a href={`mailto:${q.email}`} className="hover:underline">{q.email}</a> · <a href={`tel:${q.phone}`} className="hover:underline">{q.phone}</a>
+                        </p>
+                        <p className="text-xs text-gray-500">{[q.subject, q.category].filter(Boolean).join(' · ')} · {fmt(q.created_at)}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <a href="/admin/contacts" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#b99750] hover:underline"><Mail className="w-3.5 h-3.5" /> Open Contact Inquiries</a>
+              </section>
+
+              <section>
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b99750] mb-2">Device &amp; network</h3>
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                  <dt className="text-gray-500">Device</dt><dd className="text-gray-200">{detail.visitor.device_type} · {[detail.visitor.browser, detail.visitor.os].filter(Boolean).join(' · ')}</dd>
+                  <dt className="text-gray-500">IP address</dt><dd className="font-mono text-gray-200">{detail.visitor.ip_address || '—'}</dd>
+                  <dt className="text-gray-500">Location</dt><dd className="text-gray-200">{[detail.visitor.city, detail.visitor.country].filter(Boolean).join(', ') || 'Unknown'}</dd>
+                  <dt className="text-gray-500">First seen</dt><dd className="text-gray-200">{fmt(detail.visitor.first_visit_at)}</dd>
+                  <dt className="text-gray-500">Came from</dt><dd className="text-gray-200 break-all">{detail.visitor.initial_referrer || 'Direct / unknown'}</dd>
+                  <dt className="text-gray-500">Landing page</dt><dd className="text-gray-200 break-all">{detail.visitor.initial_landing_page || '—'}</dd>
+                </dl>
+              </section>
+
+              <section>
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b99750] mb-2">
+                  <Globe className="inline w-3.5 h-3.5 mr-1" aria-hidden="true" />Other visitors on this network ({detail.related.length})
+                </h3>
+                {detail.related.length === 0 ? (
+                  <p className="text-gray-400">No other visitors share this IP address.</p>
+                ) : (
+                  <>
+                    <ul className="divide-y divide-[#1A2230] rounded-xl border border-[#1E2633]">
+                      {detail.related.map((r) => (
+                        <li key={r.visitor_id}>
+                          <button type="button" onClick={() => openDetail(r.visitor_id)} className="w-full flex items-center justify-between gap-3 px-3 py-2 text-left hover:bg-[#141A24] cursor-pointer">
+                            <span className="text-xs text-gray-200">
+                              {r.device_type} · {[r.browser, r.os].filter(Boolean).join(' · ')}
+                              {r.same_device ? <span className="ml-2 rounded-full bg-violet-500/15 px-2 py-0.5 text-[10px] font-bold text-violet-200">Same device</span> : null}
+                            </span>
+                            <span className="text-[11px] text-gray-500">{r.visit_count} visits · {fmt(r.last_visit_at)}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    {detail.visitor.ip_address && (
+                      <button type="button" onClick={() => applyGroup('ip', detail.visitor.ip_address as string, `IP ${detail.visitor.ip_address}`)} className="mt-2 text-xs font-bold text-[#b99750] hover:underline cursor-pointer">
+                        Show all of them in the list →
+                      </button>
+                    )}
+                  </>
+                )}
+              </section>
+
+              <section>
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b99750] mb-2">Journey ({detail.logs.length} most recent pages)</h3>
+                {detail.logs.length === 0 ? (
+                  <p className="text-gray-400">No page views recorded.</p>
+                ) : (
+                  <ol className="space-y-1.5 border-l border-[#222C3D] pl-4">
+                    {detail.logs.map((l) => (
+                      <li key={l.id} className="text-xs">
+                        <span className="font-mono text-gray-200 break-all">{l.page_url}</span>
+                        <span className="text-gray-500"> · {fmt(l.created_at)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </section>
+
+              <div className="pt-2 border-t border-[#1E2633]">
+                <button type="button" disabled={deleting} onClick={() => deleteVisitors([detail.visitor.visitor_id])} className="inline-flex items-center gap-1.5 px-4 h-10 rounded-xl border border-red-500/30 text-red-300 hover:bg-red-500/15 text-xs font-bold disabled:opacity-50 cursor-pointer">
+                  <Trash2 className="w-3.5 h-3.5" /> Delete this visitor
+                </button>
+              </div>
             </div>
           </div>
         </div>
