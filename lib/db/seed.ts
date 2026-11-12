@@ -9,8 +9,13 @@ import { certifications, qualityChecks } from '../data/quality';
 export async function seedDatabase(db: mysql.Pool): Promise<void> {
   // 1. Seed Default Super Admin
   const adminId = 'admin_root_1';
-  const email = 'admin@acepack.com';
-  const passwordHash = bcrypt.hashSync('AcePackaging2026!', 10);
+  const email = process.env.ADMIN_EMAIL || 'admin@acepack.com';
+  // Only used when creating the very first admin on an empty database; never a shared default.
+  const initialPassword = process.env.ADMIN_INITIAL_PASSWORD;
+  if (!initialPassword || initialPassword.length < 12) {
+    throw new Error('Set ADMIN_INITIAL_PASSWORD (12+ characters) in the environment to create the first admin account.');
+  }
+  const passwordHash = bcrypt.hashSync(initialPassword, 10);
   const name = 'Ace Administrator';
   const role = 'super_admin';
 

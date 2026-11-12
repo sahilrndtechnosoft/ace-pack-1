@@ -3,9 +3,13 @@ import { cookies } from 'next/headers';
 import { getDbPool, initDb } from '../db';
 
 const COOKIE_NAME = 'ace_admin_token';
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'ace-packaging-super-secure-jwt-secret-cms-2026-production'
-);
+// Signs admin session tokens. A secret baked into the code would let anyone who has seen the
+// source forge an admin login, so it must come from the environment.
+const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret || jwtSecret.length < 32) {
+  throw new Error('JWT_SECRET must be set in the environment (at least 32 characters, see .env.example).');
+}
+const JWT_SECRET = new TextEncoder().encode(jwtSecret);
 
 export interface AdminPayload {
   id: string;

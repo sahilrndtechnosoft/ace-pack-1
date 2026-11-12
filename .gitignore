@@ -12,3 +12,6 @@ out/
 data/cms.db*
 
 *.tsbuildinfo
+
+# PM2 logs
+logs/

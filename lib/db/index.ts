@@ -5,14 +5,21 @@ import { CMS_PAGES, SEO_ONLY_PAGES } from '../cms/registry';
 let pool: mysql.Pool | null = null;
 let initialized = false;
 
+/** Secrets must come from the environment (.env); never fall back to a value baked into the code. */
+function requiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing required environment variable ${name} (see .env.example).`);
+  return value;
+}
+
 export function getDbPool(): mysql.Pool {
   if (pool) return pool;
 
   pool = mysql.createPool({
     host: process.env.MYSQL_HOST || 'localhost',
     port: Number(process.env.MYSQL_PORT) || 3306,
-    user: process.env.MYSQL_USER || 'admin',
-    password: process.env.MYSQL_PASSWORD || 'vihaa@rnd',
+    user: requiredEnv('MYSQL_USER'),
+    password: requiredEnv('MYSQL_PASSWORD'),
     database: process.env.MYSQL_DATABASE || 'acepack_cms',
     waitForConnections: true,
     connectionLimit: 15,
