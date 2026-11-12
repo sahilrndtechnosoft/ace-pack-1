@@ -16,6 +16,14 @@ declare global {
   }
 }
 
+// Lenis must not steal the wheel from boxes that scroll on their own (pop-ups, drawers, long
+// menus): any element with vertical overflow that actually has more content scrolls natively.
+const isOwnScroller = (node: HTMLElement) => {
+  if (!(node instanceof HTMLElement) || node === document.body || node === document.documentElement) return false;
+  const { overflowY } = getComputedStyle(node);
+  return (overflowY === 'auto' || overflowY === 'scroll') && node.scrollHeight > node.clientHeight;
+};
+
 // Dynamically compute header height to avoid landing underneath the sticky navbar
 const getHeaderOffset = () =>
   document.querySelector('body > header')?.getBoundingClientRect().height ?? 88;
@@ -33,6 +41,8 @@ const getHeaderOffset = () =>
 export const SmoothScroll: React.FC = () => {
   const pathname = usePathname();
   const lenisRef = useRef<Lenis | null>(null);
+  // The admin panel scrolls natively (sidebar, modals, drawers); smooth scrolling is site-only.
+  const isAdmin = pathname?.startsWith('/admin') ?? false;
 
   // Initialize Lenis deferred to avoid competing with critical rendering
   useEffect(() => {
@@ -41,7 +51,7 @@ export const SmoothScroll: React.FC = () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isPureTouch = window.matchMedia('(pointer: coarse) and (hover: none)').matches;
 
-    if (prefersReducedMotion || isPureTouch) {
+    if (prefersReducedMotion || isPureTouch || isAdmin) {
       return;
     }
 
@@ -54,6 +64,7 @@ export const SmoothScroll: React.FC = () => {
         lerp: 0.1, // Highly responsive, lag-free momentum
         smoothWheel: true,
         syncTouch: false, // Never intercept touch events; prevents mobile INP degradation
+        prevent: isOwnScroller,
       });
 
       lenisRef.current = instance;
@@ -94,7 +105,7 @@ export const SmoothScroll: React.FC = () => {
         lenisRef.current = null;
       }
     };
-  }, []);
+  }, [isAdmin]);
 
   // Route transition handler: resets scroll position to top and re-measures page height
   useEffect(() => {
