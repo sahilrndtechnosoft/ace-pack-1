@@ -27,20 +27,6 @@ export const downloadGroups: DownloadGroup[] = [
         type: 'Catalog',
         file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
       },
-      {
-        id: 'company-brochure',
-        title: 'Ace Packaging Corporate & Plant Brochure',
-        description: 'Daman manufacturing units, robotic moulding line, cleanroom production, in-house toolroom and export reach at a glance.',
-        type: 'Brochure',
-        file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
-      },
-      {
-        id: 'iml-guide',
-        title: 'Custom In-Mould Labelling (IML) Branding Guide',
-        description: 'Artwork specifications, die-lines, label placement and 5-sided full-color graphics guidance for in-mould labelled containers.',
-        type: 'Brochure',
-        file: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
-      },
     ],
   },
   {

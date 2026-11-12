@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, category, format, file_size, download_url, cover_image, is_published } = body;
+    const { title, description, category, format, file_size, download_url, cover_image, is_published } = body;
 
     if (!title || !download_url) {
       return NextResponse.json({ error: 'Title and download URL are required.' }, { status: 400 });
@@ -44,12 +44,13 @@ export async function POST(request: NextRequest) {
     const nextOrder = maxOrder[0]?.next_order || 1;
 
     await db.query(
-      `INSERT INTO downloads (id, title, category, format, file_size, download_url, cover_image, sort_order, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO downloads (id, title, description, category, format, file_size, download_url, cover_image, sort_order, is_published, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         id,
         title.trim(),
-        category || 'Catalogues & Brochures',
+        description ? description.trim() : null,
+        category || 'Catalogs & Brochures',
         format || 'PDF',
         file_size || '3.5 MB',
         download_url,
@@ -81,7 +82,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, title, category, format, file_size, download_url, cover_image, sort_order, is_published } = body;
+    const { id, title, description, category, format, file_size, download_url, cover_image, sort_order, is_published } = body;
 
     if (!id || !title) {
       return NextResponse.json({ error: 'Download ID and title are required.' }, { status: 400 });
@@ -91,6 +92,7 @@ export async function PUT(request: NextRequest) {
     await db.query(
       `UPDATE downloads
        SET title = ?,
+           description = COALESCE(?, description),
            category = COALESCE(?, category),
            format = COALESCE(?, format),
            file_size = COALESCE(?, file_size),
@@ -102,6 +104,7 @@ export async function PUT(request: NextRequest) {
        WHERE id = ?`,
       [
         title.trim(),
+        description !== undefined ? description : null,
         category || null,
         format || null,
         file_size || null,

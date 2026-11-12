@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Edit, Eye, EyeOff, ExternalLink, Loader2, Send, Save, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Edit, Eye, EyeOff, ExternalLink, FileDown, Loader2, Send, Save, Trash2, X } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { ContentFields, findInvalidLinks } from '@/components/admin/ContentFields';
 import { getCmsPageDef, MANAGED_ELSEWHERE, type CmsSectionDef } from '@/lib/cms/registry';
@@ -190,7 +190,28 @@ export function PageContentEditor({ pageSlug }: { pageSlug: string }) {
         </div>
       </div>
 
-      {MANAGED_ELSEWHERE[pageSlug] && (
+      {pageSlug === 'downloads' ? (
+        <div className="rounded-2xl border border-[#b99750]/40 bg-[#b99750]/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#b99750]/20 text-[#b99750] flex items-center justify-center shrink-0 mt-0.5">
+              <FileDown className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-white text-sm font-bold">Download Center Catalogues &amp; Certificates</h4>
+              <p className="text-xs text-gray-300 mt-1 max-w-xl leading-relaxed">
+                Manage the downloadable PDF catalogue and ISO 9001:2015 compliance certificate, file attachments, descriptions and publishing status.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/downloads"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#b99750] hover:bg-[#a68641] text-[#0A0D12] text-xs font-black shrink-0 transition-colors cursor-pointer"
+          >
+            <FileDown className="w-4 h-4" />
+            <span>Manage Catalogues &amp; Files</span>
+          </Link>
+        </div>
+      ) : MANAGED_ELSEWHERE[pageSlug] && (
         <div className="rounded-2xl border border-sky-500/30 bg-sky-500/10 p-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-sky-100">{MANAGED_ELSEWHERE[pageSlug].text}</p>
           <Link href={MANAGED_ELSEWHERE[pageSlug].href} className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-400 text-[#0A0D12] text-xs font-black">

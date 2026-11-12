@@ -59,11 +59,24 @@ export const downloadsPage = {
   path: '/downloads',
   sections: {
     banner: bannerSection({
-      badge: 'CATALOGS & DATASHEETS',
+      badge: 'OFFICIAL DOCUMENTATION',
       title: 'Download Center',
-      subtitle: 'Catalogs, per-line datasheets, the IML branding guide and compliance certificates — everything a buyer or export auditor needs from one place.',
+      subtitle:
+        'Download the official Ace Packaging product catalogue and ISO 9001:2015 management system compliance certificate.',
       bgImage: DEFAULT_BANNER_IMAGE,
     }),
+    sample_cta: {
+      label: 'Sample Request Card',
+      description: 'Call to action card below the downloadable files.',
+      content: {
+        badge: 'Need a physical sample?',
+        heading: 'Request Free Production Samples',
+        description:
+          'Evaluate clarity, snap-fit seal integrity, and stacking strength in your commercial kitchen or packing line. Free sample dispatch within 48 hours.',
+        buttonText: 'Request Sample Box',
+        buttonLink: '/contact',
+      },
+    },
   },
 };
 

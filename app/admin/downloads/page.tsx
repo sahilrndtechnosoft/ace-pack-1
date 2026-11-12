@@ -25,6 +25,7 @@ import { AdminPagination } from '@/components/admin/AdminPagination';
 interface DownloadItem {
   id: string;
   title: string;
+  description?: string;
   category: string;
   format: string;
   file_size: string;
@@ -76,11 +77,12 @@ export default function AdminDownloadsPage() {
   const openCreateModal = () => {
     setActiveDoc({
       title: '',
-      category: 'Catalogues & Brochures',
-      format: 'PDF',
-      file_size: '4.5 MB',
+      description: '',
+      category: 'Catalogs & Brochures',
+      format: 'Catalog',
+      file_size: '4.2 MB',
       download_url: '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
-      cover_image: '/images/hero-bg-image.jpg',
+      cover_image: '',
       is_published: 1,
     });
     setModalOpen(true);
@@ -243,6 +245,11 @@ export default function AdminDownloadsPage() {
                           <span className="font-bold text-white text-sm block truncate">
                             {doc.title}
                           </span>
+                          {doc.description && (
+                            <span className="text-[11px] text-gray-400 block line-clamp-1 mt-0.5">
+                              {doc.description}
+                            </span>
+                          )}
                           <span className="text-[10px] text-gray-500 font-mono block mt-0.5 truncate">
                             {doc.download_url}
                           </span>
@@ -353,6 +360,11 @@ export default function AdminDownloadsPage() {
                 <div>
                   <h3 className="font-extrabold text-white text-lg leading-tight">{viewingDoc.title}</h3>
                   <span className="text-xs text-[#b99750] font-semibold mt-0.5 block">{viewingDoc.category}</span>
+                  {viewingDoc.description && (
+                    <p className="text-xs text-gray-300 mt-2 leading-relaxed bg-[#141A24] p-3 rounded-xl border border-[#222C3D]">
+                      {viewingDoc.description}
+                    </p>
+                  )}
                 </div>
               </div>
               <button
@@ -476,28 +488,59 @@ export default function AdminDownloadsPage() {
                   required
                   value={activeDoc.title || ''}
                   onChange={(e) => setActiveDoc({ ...activeDoc, title: e.target.value })}
-                  placeholder="e.g. Ace Packaging Full Product Catalog 2026"
+                  placeholder="e.g. Ace Packaging Product Catalog 2026"
                   className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
+                  Document Description
+                </label>
+                <textarea
+                  rows={3}
+                  value={activeDoc.description || ''}
+                  onChange={(e) => setActiveDoc({ ...activeDoc, description: e.target.value })}
+                  placeholder="e.g. Comprehensive product catalog — hinge cups to custom IML containers — with complete volume capacities, dimensions and carton quantities."
+                  className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750] resize-y"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
-                    Category
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-300">
+                      Category
+                    </label>
+                  </div>
                   <input
                     type="text"
                     value={activeDoc.category || ''}
                     onChange={(e) => setActiveDoc({ ...activeDoc, category: e.target.value })}
-                    placeholder="Catalogues & Brochures"
+                    placeholder="Catalogs & Brochures"
                     className="w-full px-3.5 py-2.5 bg-[#141A24] border border-[#222C3D] rounded-xl text-xs text-white focus:outline-none focus:border-[#b99750]"
                   />
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {['Catalogs & Brochures', 'Certifications & Compliance'].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setActiveDoc({ ...activeDoc, category: cat })}
+                        className={`text-[10px] px-2 py-0.5 rounded-md border transition-colors ${
+                          activeDoc.category === cat
+                            ? 'bg-[#b99750]/20 text-[#b99750] border-[#b99750]/40'
+                            : 'bg-[#141A24] text-gray-400 border-[#222C3D] hover:text-white'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
-                    Format (e.g. PDF, CAD)
+                    Format (e.g. Catalog, Certificate, PDF)
                   </label>
                   <input
                     type="text"

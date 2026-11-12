@@ -22,11 +22,21 @@ export interface DownloadsClientGroup {
   items: DownloadItem[];
 }
 
-interface DownloadsClientProps {
-  groups: DownloadsClientGroup[];
+export interface SampleCtaConfig {
+  badge?: string;
+  heading?: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  hidden?: boolean;
 }
 
-export function DownloadsClient({ groups }: DownloadsClientProps) {
+interface DownloadsClientProps {
+  groups: DownloadsClientGroup[];
+  sampleCta?: SampleCtaConfig | null;
+}
+
+export function DownloadsClient({ groups, sampleCta }: DownloadsClientProps) {
   const L = useSiteText().labels;
   const [selectedDoc, setSelectedDoc] = useState<{ title: string; url?: string } | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -119,24 +129,26 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
         ))}
       </div>
 
-      <div className="mt-14 bg-white text-[var(--ace-ink)] p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-md flex flex-col md:flex-row md:items-center gap-6">
-        <div className="flex-1">
-          <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block mb-2">
-            Need a physical sample?
-          </span>
-          <h3 className="text-xl font-extrabold mb-2">{L.downloadsSampleHeading}</h3>
-          <p className="text-xs text-gray-600 leading-relaxed">
-            {L.downloadsSampleText}
-          </p>
+      {(!sampleCta || !sampleCta.hidden) && (
+        <div className="mt-14 bg-white text-[var(--ace-ink)] p-5 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-md flex flex-col md:flex-row md:items-center gap-6">
+          <div className="flex-1">
+            <span className="text-[10px] font-bold text-[#b99750] uppercase tracking-wider block mb-2">
+              {sampleCta?.badge || 'Need a physical sample?'}
+            </span>
+            <h3 className="text-xl font-extrabold mb-2">{sampleCta?.heading || L.downloadsSampleHeading}</h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              {sampleCta?.description || L.downloadsSampleText}
+            </p>
+          </div>
+          <Link
+            href={sampleCta?.buttonLink || '/contact'}
+            className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3 px-5 sm:py-3.5 sm:px-7 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all"
+          >
+            {sampleCta?.buttonText || L.downloadsSampleButton}
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
-        <Link
-          href="/contact"
-          className="inline-flex items-center justify-center gap-2 shrink-0 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3 px-5 sm:py-3.5 sm:px-7 rounded-xl text-xs uppercase tracking-wide sm:tracking-wider text-center transition-all"
-        >
-          {L.downloadsSampleButton}
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
+      )}
 
       {/* Full Document Download / Email Modal */}
       <CatalogueDownloadModal

@@ -151,6 +151,7 @@ export async function initDb(): Promise<void> {
     CREATE TABLE IF NOT EXISTS downloads (
       id VARCHAR(191) PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
+      description TEXT,
       category VARCHAR(100) NOT NULL,
       format VARCHAR(50) NOT NULL,
       file_size VARCHAR(50) NOT NULL,
@@ -332,6 +333,7 @@ export async function initDb(): Promise<void> {
   await addColumnIfMissing(db, 'events', 'focus_products', 'LONGTEXT NULL');
   // Links an inquiry to the browsing visitor who sent it (lead tracking in Site Visitors).
   await addColumnIfMissing(db, 'contact_submissions', 'visitor_id', 'VARCHAR(191) NULL');
+  await addColumnIfMissing(db, 'downloads', 'description', 'TEXT NULL');
   await syncCmsRegistry(db);
 
   initialized = true;

@@ -41,7 +41,7 @@ export const SEO_ONLY_PAGES: Record<string, { title: string; path: string; conte
 export const MANAGED_ELSEWHERE: Record<string, { text: string; href: string; linkText: string }> = {
   products: { text: 'The products shown on this page are managed in Product Catalogue.', href: '/admin/products', linkText: 'Open Products' },
   categories: { text: 'The product lines shown on this page are managed in Product Catalogue.', href: '/admin/categories', linkText: 'Open Categories' },
-  downloads: { text: 'The catalogues and files on this page are managed in Download Center.', href: '/admin/downloads', linkText: 'Open Download Center' },
+  downloads: { text: 'The catalogues and compliance certificates shown on this page are managed in Download Center.', href: '/admin/downloads', linkText: 'Manage Catalogues & Certificates' },
   blog: { text: 'The articles on this page are managed in Blog Management.', href: '/admin/blogs', linkText: 'Open Blog Management' },
   events: { text: 'This page shows your exhibitions and events, which are managed in Events & Expos.', href: '/admin/events', linkText: 'Open Events & Expos' },
 };

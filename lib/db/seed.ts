@@ -775,17 +775,18 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
     for (const doc of group.items) {
       const docId = 'doc_' + doc.id;
       await db.query(
-        `INSERT INTO downloads (id, title, category, format, file_size, download_url, cover_image, sort_order, is_published, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, NOW(), NOW())
-         ON DUPLICATE KEY UPDATE title=VALUES(title), download_url=VALUES(download_url), file_size=VALUES(file_size)`,
+        `INSERT INTO downloads (id, title, description, category, format, file_size, download_url, cover_image, sort_order, is_published, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW(), NOW())
+         ON DUPLICATE KEY UPDATE title=VALUES(title), description=VALUES(description), category=VALUES(category), format=VALUES(format), download_url=VALUES(download_url), file_size=VALUES(file_size)`,
         [
           docId,
           doc.title,
+          doc.description || '',
           group.title,
           doc.type || 'PDF',
           '4.2 MB',
           doc.file || '/downloads/Ace_Packaging_Full_Product_Catalog.pdf',
-          doc.image || '/images/hero-bg-image.jpg',
+          doc.image || null,
           sortOrder++,
         ]
       );
