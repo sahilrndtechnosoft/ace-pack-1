@@ -13,6 +13,8 @@ interface PageBannerProps {
   badge?: string;
   bgImage?: string;
   breadcrumbs?: Breadcrumb[];
+  /** Use "p" when the page has its own <h1> (e.g. blog posts) so there is only one. */
+  titleTag?: 'h1' | 'p';
 }
 
 export const PageBanner: React.FC<PageBannerProps> = ({
@@ -21,6 +23,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({
   badge = 'Ace Packaging',
   bgImage = '/50d728a7-e02c-49d9-b530-58a7db8a6ecc.png',
   breadcrumbs = [],
+  titleTag: TitleTag = 'h1',
 }) => {
   return (
     <div className="relative bg-[#111518] text-white py-14 sm:py-20 md:py-24 overflow-hidden border-b border-[#E6DBC6]/20">
@@ -84,9 +87,9 @@ export const PageBanner: React.FC<PageBannerProps> = ({
         )}
 
         {/* Page Title */}
-        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3 leading-tight break-words">
+        <TitleTag className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3 leading-tight break-words">
           {title}
-        </h1>
+        </TitleTag>
 
         {/* Subtitle */}
         {subtitle && (

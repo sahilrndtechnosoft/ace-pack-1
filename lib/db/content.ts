@@ -243,21 +243,24 @@ function mapRowToBlogPost(r: any): BlogPost {
   };
 }
 
-export async function getCmsBlogs(): Promise<BlogPost[]> {
+/** Published blogs, newest first. `null` only when the database can't be reached. */
+export async function getCmsBlogs(): Promise<BlogPost[] | null> {
   try {
     await initDb();
     const db = getDbPool();
+    // `date` is the display label ("06 Apr, 2023"), so sort on its parsed value.
     const [rows]: any = await db.query(
-      'SELECT * FROM blogs WHERE is_published = 1 ORDER BY date DESC, created_at DESC'
+      "SELECT * FROM blogs WHERE is_published = 1 ORDER BY STR_TO_DATE(date, '%d %b, %Y') DESC, created_at DESC"
     );
     return rows.map(mapRowToBlogPost);
   } catch (err) {
     console.error('getCmsBlogs error:', err);
-    return [];
+    return null;
   }
 }
 
-export async function getCmsBlogBySlug(slug: string): Promise<BlogPost | null> {
+/** The post, `null` if it doesn't exist / isn't published, `undefined` if the database can't be reached. */
+export async function getCmsBlogBySlug(slug: string): Promise<BlogPost | null | undefined> {
   try {
     await initDb();
     const db = getDbPool();
@@ -268,7 +271,7 @@ export async function getCmsBlogBySlug(slug: string): Promise<BlogPost | null> {
     return mapRowToBlogPost(rows[0]);
   } catch (err) {
     console.error(`getCmsBlogBySlug("${slug}") error:`, err);
-    return null;
+    return undefined;
   }
 }
 

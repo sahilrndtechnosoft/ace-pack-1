@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   const { slug } = await params;
   const staticPost = getBlogPostBySlug(slug);
   const cmsPost = await getCmsBlogBySlug(slug);
-  const post = cmsPost ? { ...staticPost, ...cmsPost } : staticPost;
+  const post = cmsPost === undefined ? staticPost : cmsPost; // JSON copy only if the database is down
   if (!post) return { title: 'Article Not Found | Ace Packaging' };
 
   const title = post.meta_title || `${post.title} | Ace Packaging`;
@@ -62,17 +62,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const staticPost = getBlogPostBySlug(slug);
   const cmsPost = await getCmsBlogBySlug(slug);
-  const post = cmsPost
-    ? {
-        ...staticPost,
-        ...cmsPost,
-        content_html: cmsPost.content_html || staticPost?.content_html,
-        meta_title: cmsPost.meta_title || staticPost?.meta_title,
-        meta_description: cmsPost.meta_description || staticPost?.meta_description,
-        canonical: cmsPost.canonical || staticPost?.canonical,
-        views: cmsPost.views || staticPost?.views,
-      }
-    : staticPost;
+  // Deleted/unpublished posts 404; the crawled JSON copy is only used if the database is down.
+  const post = cmsPost === undefined ? staticPost : cmsPost;
 
   if (!post) {
     notFound();
@@ -93,7 +84,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     headline: post.title,
     description: post.meta_description || post.summary,
     image: imageUrl,
-    datePublished: post.date,
+    datePublished: Number.isNaN(Date.parse(post.date)) ? undefined : new Date(Date.parse(post.date)).toISOString().slice(0, 10),
     author: {
       '@type': 'Person',
       name: post.author?.name || 'Ace Packaging',
@@ -116,10 +107,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // Escape "<" so text such as "</script>" inside a post can't end the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <PageBanner
+        titleTag="p"
         title="Blog Details"
         subtitle={post.title}
         badge="PACKAGING INSIGHTS & ARTICLES"

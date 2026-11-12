@@ -28,7 +28,15 @@ export interface BlogPost {
   tags?: string[];
 }
 
-export const blogPosts: BlogPost[] = rawBlogs as BlogPost[];
+// Crawled copy of www.acepack.co.in/blogs (scripts/crawl_acepack_full.py). Same defaults as
+// scripts/sync_blogs_to_mysql.js so the fallback renders like the database version.
+export const blogPosts: BlogPost[] = rawBlogs.map((raw) => ({
+  ...raw,
+  id: `blog_${raw.slug}`,
+  category: 'Industry Trends',
+  readTime: '5 min read',
+  content: [],
+}));
 
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined => {
   const normalized = slug.trim().toLowerCase();
@@ -39,38 +47,10 @@ export const getAllBlogSlugs = (): string[] => {
   return blogPosts.map((post) => post.slug);
 };
 
-export function combineBlogs(
-  staticList: BlogPost[],
-  cmsList: BlogPost[] | null | undefined
-): BlogPost[] {
-  if (!cmsList || cmsList.length === 0) return staticList;
-  const cmsMap = new Map<string, BlogPost>();
-  for (const b of cmsList) {
-    cmsMap.set(b.slug.toLowerCase(), b);
-  }
-
-  const combined: BlogPost[] = [];
-  for (const s of staticList) {
-    const cmsItem = cmsMap.get(s.slug.toLowerCase());
-    if (cmsItem) {
-      combined.push({
-        ...s,
-        ...cmsItem,
-        content_html: cmsItem.content_html || s.content_html,
-        meta_title: cmsItem.meta_title || s.meta_title,
-        meta_description: cmsItem.meta_description || s.meta_description,
-        canonical: cmsItem.canonical || s.canonical,
-        views: cmsItem.views || s.views,
-      });
-      cmsMap.delete(s.slug.toLowerCase());
-    } else {
-      combined.push(s);
-    }
-  }
-
-  for (const remaining of cmsMap.values()) {
-    combined.push(remaining);
-  }
-
-  return combined;
+/**
+ * The database is the source of truth (admins add, edit, unpublish and delete there).
+ * The crawled JSON copy is only used when the database can't be reached (`null`).
+ */
+export function combineBlogs(staticList: BlogPost[], cmsList: BlogPost[] | null | undefined): BlogPost[] {
+  return cmsList ?? staticList;
 }

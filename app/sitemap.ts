@@ -1,10 +1,13 @@
 import type { MetadataRoute } from 'next';
-import { blogPosts } from '@/lib/data/blogs';
+import { blogPosts, combineBlogs } from '@/lib/data/blogs';
+import { getCmsBlogs } from '@/lib/db/content';
 import { getAllLiveCategorySlugs, getAllLiveProductPaths } from '@/lib/data/live-routing';
 
-export const dynamic = 'force-static';
+// Dynamic so new, edited and deleted blog posts are reflected without a rebuild.
+export const dynamic = 'force-dynamic';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = combineBlogs(blogPosts, await getCmsBlogs());
   const baseUrl = 'https://www.acepack.co.in';
 
   // 1. Static main pages
@@ -46,8 +49,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // 4. Blogs (all 129 live articles)
-  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => {
+  // 4. Blogs (from the database)
+  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => {
     let date = new Date();
     if (post.date) {
       const parsed = Date.parse(post.date);

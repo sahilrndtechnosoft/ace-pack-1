@@ -14,6 +14,20 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**" }
     ],
   },
+  // Same 301s as www.acepack.co.in: old hinge-container posts were merged into one article.
+  async redirects() {
+    return [
+      'hinge-cups-for-food-packaging-uses-and-benefits',
+      'maximizing-kitchen-efficiency-with-hinge-containers',
+      'the-role-of-hinge-containers-in-food-packaging',
+      'hinged-plastic-sauce-containers',
+      'three-perks-of-hinge-containers',
+    ].map((slug) => ({
+      source: `/blog/${slug}`,
+      destination: '/blog/why-hinge-cups-are-useful-for-sauce-and-topping-packaging',
+      statusCode: 301 as const,
+    }));
+  },
   async headers() {
     return [
       {

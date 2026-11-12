@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
 import re
 import os
@@ -13,10 +14,14 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 IMG_DIR = os.path.join(os.getcwd(), "public", "admin", "images", "blog")
 os.makedirs(IMG_DIR, exist_ok=True)
 
-def fetch_url(url, timeout=20):
+def fetch_url(url, timeout=20, allow_redirect=True):
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
+            # Old slugs 301 to another post; that post is crawled under its own URL.
+            if not allow_redirect and resp.geturl().rstrip("/") != url.rstrip("/"):
+                print(f"[SKIP] {url} redirects to {resp.geturl()}")
+                return None
             return resp.read().decode("utf-8", errors="ignore")
     except Exception as e:
         print(f"[ERROR] Failed to fetch {url}: {e}")
@@ -25,7 +30,9 @@ def fetch_url(url, timeout=20):
 def fetch_image(img_url, dest_path):
     if os.path.exists(dest_path) and os.path.getsize(dest_path) > 100:
         return True
-    req = urllib.request.Request(img_url, headers={"User-Agent": USER_AGENT})
+    # Live filenames contain spaces, commas and curly quotes; encode them, keeping existing %XX escapes.
+    safe_url = urllib.parse.quote(img_url, safe=":/?&=%#")
+    req = urllib.request.Request(safe_url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
             content = resp.read()
@@ -43,8 +50,28 @@ def get_sitemap_urls(sitemap_url):
     root = ET.fromstring(html)
     return [loc.text.strip() for loc in root.findall(".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
 
+def resolve_url(src):
+    src = src.strip()
+    if src.startswith("http"):
+        return src
+    if src.startswith("//"):
+        return "https:" + src
+    return BASE_URL + "/" + re.sub(r"^(\.\./|/)+", "", src)
+
+def localize_inline_images(content_html):
+    """Download images used inside the article and point them at the local copy."""
+    def swap(m):
+        full = resolve_url(m.group(2))
+        if "acepack.co.in" not in full:
+            return m.group(0)  # third-party image: keep original link
+        name = full.split("/")[-1].split("?")[0]
+        if fetch_image(full, os.path.join(IMG_DIR, name)):
+            return f'{m.group(1)}/admin/images/blog/{name}{m.group(3)}'
+        return f"{m.group(1)}{full}{m.group(3)}"
+    return re.sub(r'(<img[^>]*?\ssrc=["\'])([^"\']+)(["\'])', swap, content_html, flags=re.IGNORECASE)
+
 def parse_blog(slug, url):
-    html = fetch_url(url)
+    html = fetch_url(url, allow_redirect=False)
     if not html:
         return None
     
@@ -112,6 +139,11 @@ def parse_blog(slug, url):
     
     # Clean up empty paragraphs or weird artifacts from content_html
     content_html = re.sub(r"<p>&nbsp;</p>", "", content_html)
+    content_html = localize_inline_images(content_html)
+
+    # Publish date from the post's BlogPosting schema (more reliable than the visible label)
+    ld_m = re.search(r'"datePublished"\s*:\s*"([^"]+)"', html)
+    date_published = ld_m.group(1).strip() if ld_m else ""
     
     # Extract plain text summary
     clean_text = re.sub(r"<[^>]+>", " ", content_html)
@@ -136,13 +168,14 @@ def parse_blog(slug, url):
         "image_remote": full_img_url,
         "image_alt": img_alt or title,
         "date": date_str,
+        "date_published": date_published,
         "views": views_str,
         "summary": summary,
         "content_html": content_html,
         "author": {
             "name": "Acepack",
             "role": "Packaging Team",
-            "avatar": "/images/ace-logo.svg"
+            "avatar": "/Ace_New_Update_Logo-01.png"
         }
     }
 
@@ -154,6 +187,12 @@ def main():
     blog_sitemap_urls = get_sitemap_urls(f"{BASE_URL}/blogs-sitemap.xml")
     
     blog_urls = [u for u in blog_sitemap_urls if "/blog/" in u]
+    # The /blogs listing links newer posts that the sitemap does not list yet.
+    listing = fetch_url(f"{BASE_URL}/blogs") or ""
+    for href in re.findall(r'href=["\'](?:https://www\.acepack\.co\.in/)?(blog/[^"\'#?]+)["\']', listing):
+        u = f"{BASE_URL}/{href}"
+        if u not in blog_urls:
+            blog_urls.append(u)
     print(f"Discovered: {len(main_urls)} main, {len(cat_urls)} categories, {len(prod_urls)} products, {len(blog_urls)} blogs")
     
     inventory = {
