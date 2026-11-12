@@ -3,7 +3,7 @@ import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
 import { productCategories, type ProductCategory, type ProductItem } from '../data/products';
-import { CMS_PAGES, type CmsPageContent, type CmsPageSlug, type CmsSectionDef } from '../cms/registry';
+import { CMS_PAGES, SEO_ONLY_PAGES, getCmsPageDef, type CmsPageContent, type CmsPageSlug, type CmsSectionDef } from '../cms/registry';
 import { parseContent, withDefaults } from '../cms/merge';
 import { siteTextDefaults, type SiteText } from '../cms/site-settings';
 import { customPageDef, isBuiltInSlug, type CustomPageContent } from '../cms/pages/custom';
@@ -89,7 +89,16 @@ export async function getPageSeo(slug: string): Promise<CmsPageSeo | null> {
 }
 
 /** Page metadata: SEO fields filled in under Website Pages → SEO win; empty ones keep the built-in values. */
-export async function cmsMetadata(slug: string, fallback: Metadata): Promise<Metadata> {
+/** Path of a CMS page (built-in, second URL or custom), used for its default canonical. */
+function pagePath(slug: string): string {
+  return SEO_ONLY_PAGES[slug]?.path ?? getCmsPageDef(slug)?.path ?? (slug === 'home' ? '/' : `/${slug}`);
+}
+
+export async function cmsMetadata(slug: string, given: Metadata): Promise<Metadata> {
+  // Every page gets a canonical: the page's own URL unless one is set in code or the CMS.
+  const fallback: Metadata = given.alternates?.canonical
+    ? given
+    : { ...given, alternates: { ...given.alternates, canonical: `https://www.acepack.co.in${pagePath(slug)}` } };
   const seo = await getPageSeo(slug);
   if (!seo) return fallback;
   const title = seo.seo_title?.trim() || fallback.title;

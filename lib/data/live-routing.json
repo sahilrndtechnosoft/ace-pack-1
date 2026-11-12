@@ -19,7 +19,7 @@
       "name": "Elite Containers",
       "subtitle": "Modern Sleek Food Packaging",
       "description": "Premium transparent food containers featuring modern profiles, airtight lid closures, and high stackability.",
-      "local_category": "zen-series"
+      "local_category": "elite-containers"
     },
     {
       "slug": "hinge-containers",
@@ -46,7 +46,7 @@
       "slug": "ro-series-container",
       "name": "RO-Series Container",
       "subtitle": "Round Soup, Biryani & Gravy Bowls",
-      "description": "Cylindrical round containers engineered to withstand boiling soup filling up to 120\u00b0C and deep freeze down to -20\u00b0C.",
+      "description": "Cylindrical round containers engineered to withstand boiling soup filling up to 120°C and deep freeze down to -20°C.",
       "local_category": "ro-series"
     },
     {
@@ -82,7 +82,10 @@
       "name": "Glass Series",
       "subtitle": "90mm & 80mm Optical Drinkware Cups",
       "description": "Ultra-clear injection moulded PP cups for iced beverages, bubble tea, frappes, and desserts.",
-      "local_category": "glass-series-80-dia"
+      "local_category": "glass-series-80-dia",
+      "extra_local_categories": [
+        "glass-series-90-dia"
+      ]
     }
   ],
   "products": {
@@ -135,20 +138,20 @@
       "local_product": "250ml-natraj-container"
     },
     "elite-containers-500": {
-      "local_category": "zen-series",
-      "local_product": "500ml-zen-container"
+      "local_category": "elite-containers",
+      "local_product": "elite-containers-500"
     },
     "elite-containers-650ml": {
-      "local_category": "zen-series",
-      "local_product": "650ml-zen-container"
+      "local_category": "elite-containers",
+      "local_product": "elite-containers-650ml"
     },
     "elite-containers-750": {
-      "local_category": "zen-series",
-      "local_product": "750ml-zen-container"
+      "local_category": "elite-containers",
+      "local_product": "elite-containers-750"
     },
     "elite-containers-1000": {
-      "local_category": "zen-series",
-      "local_product": "1000ml-zen-container"
+      "local_category": "elite-containers",
+      "local_product": "elite-containers-1000"
     },
     "hinge-containers-25ml": {
       "local_category": "hinge-cups",

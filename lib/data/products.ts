@@ -1,3 +1,4 @@
+import { eliteContainers } from './elite-containers';
 export interface ProductVariety {
   name: string;
   slug: string;
@@ -2140,7 +2141,7 @@ export const productCategories: ProductCategory[] = [
       }
     ]
   },
-
+  eliteContainers,
 ];
 
 export const getCategoryBySlug = (slug: string): ProductCategory | undefined => {

@@ -1,3 +1,4 @@
+import { withLiveSeo } from '@/lib/data/live-routing';
 import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
@@ -23,7 +24,7 @@ const staticMetadata: Metadata = {
 };
 
 export function generateMetadata(): Promise<Metadata> {
-  return cmsMetadata('blog', staticMetadata);
+  return cmsMetadata('blog', withLiveSeo('/blogs', staticMetadata));
 }
 
 export default async function BlogsListingPage() {

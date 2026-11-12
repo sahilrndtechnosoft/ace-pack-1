@@ -10,8 +10,7 @@ import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import {
   getAllLiveProductPaths,
   resolveLiveProduct,
-  getLiveProductSlug,
-} from '@/lib/data/live-routing';
+  getLiveProductSlug, getLiveSeo } from '@/lib/data/live-routing';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -41,8 +40,11 @@ export async function generateMetadata({ params }: LiveProductPageProps): Promis
 
   const { category, product } = result;
   const canonicalUrl = `https://www.acepack.co.in/plastic-food-containers/${category_slug}/${product_slug}`;
-  const title = `${product.name} | ${category.name} | Ace Packaging`;
-  const description = `${product.name} (${product.capacity}) moulded from 100% virgin food-grade PP 05 polymer. Leak-proof seal, microwave and freezer safe. Available at Ace Packaging!`;
+  const live = getLiveSeo(`/plastic-food-containers/${category_slug}/${product_slug}`);
+  const title = live?.title || `${product.name} | ${category.name} | Ace Packaging`;
+  const description =
+    live?.description ||
+    `${product.name} (${product.capacity}) moulded from 100% virgin food-grade PP 05 polymer. Leak-proof seal, microwave and freezer safe. Available at Ace Packaging!`;
 
   return {
     title,
@@ -107,10 +109,11 @@ export default async function LiveProductPage({ params }: LiveProductPageProps) 
     <div className="bg-[#FAF8F4] min-h-screen text-[var(--ace-ink)] pb-24">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <PageBanner
+        titleTag="p"
         title={product.name}
         subtitle={`${category.name} — ${product.capacity} volume, 100% virgin food-grade polymer PP 05, zero-leak snap rim.`}
         badge={`MODEL: ${product.capacity}`}
@@ -141,7 +144,11 @@ export default async function LiveProductPage({ params }: LiveProductPageProps) 
           </div>
 
           {/* Interactive Specification & Studio View Component */}
-          <ProductDetailInteractive category={category} product={product} />
+          <ProductDetailInteractive
+            category={category}
+            product={product}
+            heading={getLiveSeo(`/plastic-food-containers/${category_slug}/${product_slug}`)?.h1}
+          />
 
           {/* Related Models in this Category */}
           {relatedCategoryProducts.length > 0 && (

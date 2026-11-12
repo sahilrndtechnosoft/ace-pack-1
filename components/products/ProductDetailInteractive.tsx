@@ -28,12 +28,15 @@ interface ProductDetailInteractiveProps {
   category: ProductCategory;
   product: ProductItem;
   initialVariety?: string;
+  /** Page H1; defaults to the product name (live URLs pass the live site's H1). */
+  heading?: string;
 }
 
 export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> = ({
   category,
   product,
   initialVariety,
+  heading,
 }) => {
   const t = useSiteText().productPage;
   const [activeView, setActiveView] = useState<'blank' | 'specs' | 'locking' | 'video'>('blank');
@@ -504,7 +507,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               CATEGORY: {category.name} ({category.subtitleName})
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--ace-ink)] mb-3">
-              {product.name}
+              {heading || product.name}
             </h1>
             <p className="text-sm text-gray-600 leading-relaxed mb-6">
               Precision injection-moulded packaging engineered from 100% prime virgin PP 05. Features zero-leak rim closure, high stacking rigidity, and microwave &amp; deep-freeze thermal tolerance.

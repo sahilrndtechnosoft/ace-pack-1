@@ -1,3 +1,4 @@
+import { withLiveSeo } from '@/lib/data/live-routing';
 import type { Metadata } from 'next';
 import AboutExperience from '@/components/experience/AboutExperience';
 import { getPageContent, cmsMetadata } from '@/lib/db/content';
@@ -20,7 +21,7 @@ const staticMetadata: Metadata = {
 };
 
 export function generateMetadata(): Promise<Metadata> {
-  return cmsMetadata('aboutus', staticMetadata);
+  return cmsMetadata('aboutus', withLiveSeo('/aboutus', staticMetadata));
 }
 
 export default async function AboutUsPage() {

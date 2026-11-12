@@ -42,8 +42,6 @@ export const homeCollection = {
   chips: ['−20°C to +120°C Safe', 'Hermetic Snap-Lock Rim', '100% Virgin Food-Grade'],
   pairingLabel: 'Recommended Culinary Pairing',
   samplesButton: { text: 'Request Samples', link: '/contact' },
-  imageCardLabel: 'Container Architecture',
-  imageCardBadge: 'ISO 9001:2015',
   formatsLabel: 'Available Formats:',
   series: products.map((p) => ({
     title: p.title,

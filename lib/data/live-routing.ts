@@ -1,4 +1,23 @@
 import liveRoutingData from './live-routing.json';
+import type { Metadata } from 'next';
+import liveCatalog from './acepack-live-catalog.json';
+
+export interface LiveSeo {
+  title: string;
+  description: string;
+  canonical: string;
+  h1: string;
+}
+
+/** Title, meta description, canonical and H1 of a www.acepack.co.in page, as crawled. */
+export function getLiveSeo(path: string): LiveSeo | undefined {
+  return (liveCatalog as Record<string, LiveSeo>)[path];
+}
+
+/** Every live category and product URL, exactly as the live sitemaps list them. */
+export function getLiveCatalogPaths(): string[] {
+  return Object.keys(liveCatalog).filter((p) => p.startsWith('/plastic-food-containers/'));
+}
 import {
   productCategories,
   getCategoryBySlug,
@@ -13,6 +32,8 @@ export interface LiveCategoryMeta {
   subtitle: string;
   description: string;
   local_category: string;
+  /** Live categories that combine several local lines (Glass Series = 80-Dia + 90-Dia). */
+  extra_local_categories?: string[];
 }
 
 export const LIVE_CATEGORIES: LiveCategoryMeta[] = liveRoutingData.categories;
@@ -43,8 +64,10 @@ export function resolveLiveCategory(
 ): { meta: LiveCategoryMeta; category: ProductCategory } | undefined {
   const meta = LIVE_CATEGORIES.find((c) => c.slug === categorySlug);
   const localSlug = meta ? meta.local_category : categorySlug;
-  const category = getCategoryBySlug(localSlug);
-  if (!category) return undefined;
+  const base = getCategoryBySlug(localSlug);
+  if (!base) return undefined;
+  const extra = (meta?.extra_local_categories ?? []).flatMap((slug) => getCategoryBySlug(slug)?.products ?? []);
+  const category = extra.length ? { ...base, products: [...base.products, ...extra] } : base;
   return {
     meta: meta || {
       slug: categorySlug,
@@ -80,10 +103,41 @@ export function resolveLiveProduct(
 }
 
 export function getLiveProductSlug(localCategory: string, localProductSlug: string): string {
+  // Products of a merged line (e.g. Glass 90-Dia inside Glass Series) are matched by product slug alone.
   for (const [liveSlug, mapping] of Object.entries(LIVE_PRODUCTS_MAP)) {
-    if (mapping.local_category === localCategory && mapping.local_product === localProductSlug) {
+    if (mapping.local_product === localProductSlug && (mapping.local_category === localCategory || LIVE_CATEGORIES.some((c) => c.local_category === localCategory && c.extra_local_categories?.includes(mapping.local_category)))) {
       return liveSlug;
     }
   }
   return localProductSlug;
+}
+
+const SITE = 'https://www.acepack.co.in';
+
+/** Canonical URL for a local category: its live /plastic-food-containers/... page when one exists. */
+export function canonicalCategoryUrl(localCategory: string): string {
+  const live = LIVE_CATEGORIES.find((c) => c.local_category === localCategory || c.extra_local_categories?.includes(localCategory));
+  return live ? `${SITE}/plastic-food-containers/${live.slug}` : `${SITE}/categories/${localCategory}`;
+}
+
+/** Canonical URL for a local product: its live product page when one exists. */
+export function canonicalProductUrl(localCategory: string, localProduct: string): string {
+  const liveSlug = getLiveProductSlug(localCategory, localProduct);
+  const live = LIVE_CATEGORIES.find((c) => c.local_category === localCategory || c.extra_local_categories?.includes(localCategory));
+  // Live and local slugs can be identical (Elite), so check the mapping rather than comparing slugs.
+  return live && LIVE_PRODUCTS_MAP[liveSlug]
+    ? `${SITE}/plastic-food-containers/${live.slug}/${liveSlug}`
+    : `${SITE}/categories/${localCategory}/${localProduct}`;
+}
+
+/** Use the live page's title, description and canonical (SEO continuity); anything else stays. */
+export function withLiveSeo(path: string, meta: Metadata): Metadata {
+  const live = getLiveSeo(path);
+  if (!live) return meta;
+  return {
+    ...meta,
+    title: live.title || meta.title,
+    description: live.description || meta.description,
+    alternates: { ...meta.alternates, canonical: live.canonical || `${SITE}${path === '/' ? '/' : path}` },
+  };
 }

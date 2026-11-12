@@ -1,3 +1,4 @@
+import { withLiveSeo } from '@/lib/data/live-routing';
 import { Metadata } from 'next';
 import { cmsMetadata } from '@/lib/db/content';
 import { ContactPageBody } from '@/components/sections/ContactPageBody';
@@ -20,7 +21,7 @@ const staticMetadata: Metadata = {
 };
 
 export function generateMetadata(): Promise<Metadata> {
-  return cmsMetadata('contactus', staticMetadata);
+  return cmsMetadata('contactus', withLiveSeo('/contactus', staticMetadata));
 }
 
 export default function ContactUsPage() {

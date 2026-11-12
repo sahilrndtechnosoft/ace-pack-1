@@ -1,3 +1,4 @@
+import { canonicalProductUrl } from '@/lib/data/live-routing';
 import React from 'react';
 import { getProductBySlugs, getAllProductPaths } from '@/lib/data/products';
 import { getCmsProductBySlugs } from '@/lib/db/content';
@@ -36,6 +37,7 @@ export async function generateMetadata({ params }: SpecificProductPageProps): Pr
   return {
     title: `${result.product.name} - ${result.category.name} | Ace Packaging`,
     description: `${result.product.name} (${result.product.capacity}) moulded from 100% virgin food-grade PP 05 polymer. Leak-proof seal, microwave and freezer safe.`,
+    alternates: { canonical: canonicalProductUrl(result.category.slug, result.product.product_slug) },
   };
 }
 
@@ -53,6 +55,7 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[var(--ace-ink)] pb-24">
       <PageBanner
+        titleTag="p"
         title={product.name}
         subtitle={`${category.name} — ${product.capacity} volume, 100% virgin food-grade polymer PP 05, zero-leak snap rim.`}
         badge={`MODEL: ${product.capacity}`}

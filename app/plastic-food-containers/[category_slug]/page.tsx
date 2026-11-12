@@ -8,6 +8,7 @@ import { CategoryProductGrid } from '@/components/categories/CategoryProductGrid
 import {
   getAllLiveCategorySlugs,
   resolveLiveCategory,
+  getLiveSeo,
   getLiveProductSlug,
   LIVE_CATEGORIES,
 } from '@/lib/data/live-routing';
@@ -37,8 +38,10 @@ export async function generateMetadata({ params }: LiveCategoryPageProps): Promi
     return { title: 'Category Not Found | Ace Packaging' };
   }
 
-  const title = `${cat.name} | Food Storage Packaging | Ace Packaging`;
+  const live = getLiveSeo(`/plastic-food-containers/${category_slug}`);
+  const title = live?.title || `${cat.name} | Food Storage Packaging | Ace Packaging`;
   const description =
+    live?.description ||
     res?.meta.description ||
     cat.description ||
     `Shop ${cat.name} for meal prep, takeaway, and food packaging. High-clarity, microwave-safe, virgin food-grade PP 05.`;
@@ -77,6 +80,7 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
 
   const otherCategories = LIVE_CATEGORIES.filter((c) => c.slug !== category_slug).slice(0, 4);
 
+  const liveH1 = getLiveSeo(`/plastic-food-containers/${category_slug}`)?.h1;
   const productSlugMap: Record<string, string> = {};
   for (const p of category.products) {
     productSlugMap[p.id] = getLiveProductSlug(category.slug, p.product_slug);
@@ -106,10 +110,11 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
     <div className="bg-[#FAF8F4] min-h-screen text-[var(--ace-ink)] pb-24">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <PageBanner
+        titleTag="p"
         title={category.name}
         subtitle={res?.meta.description || category.description}
         badge={`COLLECTION: ${(category.subtitleName || category.name).toUpperCase()}`}
@@ -127,9 +132,7 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
             <div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--ace-ink)] flex items-center gap-2.5">
                 <Box className="w-6 h-6 text-[#b99750]" />
-                <span>
-                  {category.name} ({category.products.length} Models)
-                </span>
+                <span>{liveH1 || `${category.name} (${category.products.length} Models)`}</span>
               </h1>
               <p className="text-xs text-gray-500 mt-1 max-w-2xl">
                 Precision-engineered from 100% prime virgin PP 05. Food-safe, microwaveable, deep-freeze ready, and 100% recyclable.

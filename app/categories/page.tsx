@@ -6,6 +6,8 @@ export const dynamic = 'force-dynamic';
 
 const staticMetadata: Metadata = {
   title: 'All Product Categories | Ace Packaging Plastic Food Packaging',
+  // Same listing as the live /plastic-food-containers page.
+  alternates: { canonical: 'https://www.acepack.co.in/plastic-food-containers' },
   description: 'Explore Ace Packaging\'s official plastic food container range: Hinge Cups, Portion Cups, RO-Series, RE-Series Bento Boxes, Round Containers, Natraj Containers, ZEN Series, Glass Series 80/90-Dia, Flat Containers, and Deli Series.',
 };
 

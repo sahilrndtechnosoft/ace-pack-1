@@ -26,7 +26,14 @@ const nextConfig: NextConfig = {
       source: `/blog/${slug}`,
       destination: '/blog/why-hinge-cups-are-useful-for-sauce-and-topping-packaging',
       statusCode: 301 as const,
-    }));
+    })).concat(
+      // The live menu's export brochure viewer; our catalogues live in the Download Center.
+      ['/Catalogues/Ace_Packaging_Export_Brochure.php', '/Catalogues/Ace_Packaging_Export_Brochure'].map((source) => ({
+        source,
+        destination: '/downloads',
+        statusCode: 301 as const,
+      }))
+    );
   },
   async headers() {
     return [

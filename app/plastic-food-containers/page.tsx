@@ -1,3 +1,4 @@
+import { withLiveSeo } from '@/lib/data/live-routing';
 import type { Metadata } from 'next';
 import CategoriesExperience from '@/components/experience/CategoriesExperience';
 import { getCmsCategories, getPageContent, cmsMetadata } from '@/lib/db/content';
@@ -20,7 +21,7 @@ const staticMetadata: Metadata = {
 };
 
 export function generateMetadata(): Promise<Metadata> {
-  return cmsMetadata('plastic-food-containers', staticMetadata);
+  return cmsMetadata('plastic-food-containers', withLiveSeo('/plastic-food-containers', staticMetadata));
 }
 
 export default async function PlasticFoodContainersIndexPage() {

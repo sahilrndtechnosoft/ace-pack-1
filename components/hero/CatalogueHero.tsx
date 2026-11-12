@@ -189,12 +189,13 @@ export function CatalogueHero({ content = homeHero }: { content?: typeof homeHer
               <span>{c.badge}</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-[1.12] mb-2 font-sans">
+            {/* Mobile copy of the headline: one real <h1> per page (desktop), still a level-1 heading for screen readers. */}
+            <p role="heading" aria-level={1} className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-[1.12] mb-2 font-sans">
               {c.heading}{' '}
               <span className="font-serif italic font-normal text-[#faeac7]">
                 {c.headingHighlight}
               </span>
-            </h1>
+            </p>
 
             <p className="text-xs sm:text-sm text-white/90 font-normal leading-relaxed mb-3.5 max-w-sm">
               {c.mobileDescription}

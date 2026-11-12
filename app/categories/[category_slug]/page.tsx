@@ -1,4 +1,5 @@
 import React from 'react';
+import { canonicalCategoryUrl } from '@/lib/data/live-routing';
 import { getCategoryBySlug, getAllCategorySlugs, productCategories } from '@/lib/data/products';
 import { getCmsCategoryBySlug, getCmsCategories, getSiteText } from '@/lib/db/content';
 import Link from 'next/link';
@@ -31,6 +32,8 @@ export async function generateMetadata({ params }: CategoryDetailPageProps): Pro
   return {
     title: `${category.name} (${category.subtitleName}) | Ace Packaging Food Packaging`,
     description: category.description,
+    // Same products as the live /plastic-food-containers/... page, which keeps the ranking.
+    alternates: { canonical: canonicalCategoryUrl(category.slug) },
   };
 }
 
