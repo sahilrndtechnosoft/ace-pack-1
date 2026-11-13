@@ -2,9 +2,10 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Tag, Search, ArrowRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
+import { Calendar, Eye, Tag, Search, ArrowRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
 import { Reveal } from '@/components/ui/Reveal';
 import type { BlogPost } from '@/lib/data/blogs';
+import { formatBlogViews } from '@/lib/data/blog-display';
 
 interface BlogCatalogClientProps {
   initialPosts: BlogPost[];
@@ -209,6 +210,14 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                         <span className="inline-flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5 text-[#a8812f]" /> {featuredPost.date}
                         </span>
+                        {formatBlogViews(featuredPost.views) && (
+                          <>
+                            <span>•</span>
+                            <span className="inline-flex items-center gap-1">
+                              <Eye className="w-3.5 h-3.5 text-[#a8812f]" aria-hidden="true" /> {formatBlogViews(featuredPost.views)}
+                            </span>
+                          </>
+                        )}
                       </div>
 
                       <Link href={`/blog/${featuredPost.slug}`}>
@@ -276,6 +285,11 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3.5 h-3.5 text-[#a8812f]" /> {post.date}
                           </span>
+                          {formatBlogViews(post.views) && (
+                            <span className="flex items-center gap-1">
+                              <Eye className="w-3.5 h-3.5 text-[#a8812f]" aria-hidden="true" /> {formatBlogViews(post.views)}
+                            </span>
+                          )}
                         </div>
 
                         <Link href={`/blog/${post.slug}`}>

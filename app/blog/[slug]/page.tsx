@@ -7,6 +7,8 @@ import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { User, Calendar, Clock, Eye, CheckCircle2 } from 'lucide-react';
 import { BlogInquiryForm } from '@/components/sections/BlogInquiryForm';
+import { BlogViewTracker } from '@/components/sections/BlogViewTracker';
+import { formatBlogViews } from '@/lib/data/blog-display';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -111,6 +113,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
+      <BlogViewTracker slug={post.slug} />
       <PageBanner
         titleTag="p"
         title="Blog Details"
@@ -185,7 +188,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                 </div>
 
-                {post.views && (
+                {formatBlogViews(post.views) && (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#cfa144]/15 text-[#a8812f] flex items-center justify-center shrink-0">
                       <Eye className="w-5 h-5" />
@@ -194,7 +197,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
                         Views
                       </span>
-                      <h4 className="text-xs font-bold text-[#1A1D20]">{post.views}</h4>
+                      <h4 className="text-xs font-bold text-[#1A1D20]">{formatBlogViews(post.views)}</h4>
                     </div>
                   </div>
                 )}

@@ -32,3 +32,16 @@ export function blogAuthorAvatar(avatar: string | null | undefined): string {
   const value = avatar?.trim();
   return value && !WORDMARK_AVATARS.has(value) ? value : BRAND_MARK;
 }
+
+/** Read count from the stored label ("1101 Views", "1,101"); 0 when there is none. */
+export function blogViewCount(views: string | null | undefined): number {
+  const digits = views?.replace(/,/g, '').match(/\d+/)?.[0];
+  return digits ? Number(digits) : 0;
+}
+
+/** "1,101 views" with Indian digit grouping, or null when the post has no reads yet. */
+export function formatBlogViews(views: string | null | undefined): string | null {
+  const count = blogViewCount(views);
+  if (count === 0) return null;
+  return `${count.toLocaleString('en-IN')} ${count === 1 ? 'view' : 'views'}`;
+}

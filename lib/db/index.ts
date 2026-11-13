@@ -334,6 +334,8 @@ export async function initDb(): Promise<void> {
   // Links an inquiry to the browsing visitor who sent it (lead tracking in Site Visitors).
   await addColumnIfMissing(db, 'contact_submissions', 'visitor_id', 'VARCHAR(191) NULL');
   await addColumnIfMissing(db, 'downloads', 'description', 'TEXT NULL');
+  // Blog read counter ("1101 Views"); added by the blog import script, but older databases may lack it.
+  await addColumnIfMissing(db, 'blogs', 'views', 'VARCHAR(50) NULL');
   await syncCmsRegistry(db);
 
   initialized = true;
