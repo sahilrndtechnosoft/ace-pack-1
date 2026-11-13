@@ -36,9 +36,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const targetSlug = productSlug || product.product_slug;
   const base = basePath ? `${basePath}/${categorySlug}` : `/categories/${categorySlug}`;
-  const targetHref = `${base}/${targetSlug}${
-    currentVarietySlug ? `?variety=${currentVarietySlug}` : ''
-  }`;
+  const targetHref = `${base}/${targetSlug}${currentVarietySlug ? `?variety=${currentVarietySlug}` : ''
+    }`;
 
   const handleCardVarietySelect = (varietySlug: string) => {
     setLocalVarietySlug(varietySlug);
@@ -79,11 +78,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         e.stopPropagation();
                         handleCardVarietySelect(v.slug);
                       }}
-                      className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
-                        isSelected
+                      className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${isSelected
                           ? 'ring-2 ring-[#b99750] scale-110 shadow-xs'
                           : 'hover:scale-105 opacity-80 hover:opacity-100'
-                      }`}
+                        }`}
                       style={{
                         backgroundColor: v.colorHex,
                         border: `1.5px solid ${v.borderHex || '#cbd5e1'}`,
@@ -91,9 +89,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     >
                       {isSelected && (
                         <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            v.slug === 'black' ? 'bg-white' : 'bg-gray-800'
-                          }`}
+                          className={`w-1.5 h-1.5 rounded-full ${v.slug === 'black' ? 'bg-white' : 'bg-gray-800'
+                            }`}
                         />
                       )}
                     </button>
@@ -159,7 +156,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             href={targetHref}
             className="w-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold px-3 py-3 sm:py-3.5 rounded-xl text-center uppercase tracking-wide sm:tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-[#b99750]/20"
           >
-            <span>View Specifications &amp; 4-View Studio</span>
+            <span>View Product</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
