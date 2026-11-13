@@ -33,15 +33,21 @@
 
 /* ── OEM / Customization gallery: Flip "caterpillar" carousel ─────────────── */
 .oem-row{--per-view:3;position:relative;display:flex;gap:16px;touch-action:pan-y}
-.oem-card{position:relative;display:flex;flex-direction:column;flex:0 0 calc((100% - (var(--per-view) - 1) * 16px) / var(--per-view));aspect-ratio:4/5;max-height:72svh;border-radius:24px;overflow:hidden;background:#1a1d20;outline:1px solid rgba(255,255,255,.08);transition:outline-color .4s,box-shadow .5s}
+.oem-card{position:relative;display:flex;flex-direction:column;flex:0 0 calc((100% - (var(--per-view) - 1) * 16px) / var(--per-view));border-radius:24px;overflow:hidden;background:#1a1d20;outline:1px solid rgba(255,255,255,.08);transition:outline-color .4s,box-shadow .5s}
 .oem-card:hover,.oem-card:focus-within{outline-color:rgba(207,161,68,.6);box-shadow:0 30px 80px -30px rgba(207,161,68,.35)}
 .oem-card--leaving{display:none}
+.oem-card-media{position:relative;aspect-ratio:4/3;overflow:hidden}
+.oem-card-scrim{opacity:.35}
+.oem-card-body{flex:1}
 .oem-card-index{position:absolute;top:14px;right:22px;z-index:11;pointer-events:none;font-size:clamp(48px,5vw,76px);font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.4)}
 .oem-card-more{display:grid;grid-template-rows:1fr;transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1)}
 .oem-card-more>div{overflow:hidden}
 @media (min-width:1024px){
   .oem-row{gap:24px}
-  .oem-card{flex-basis:calc((100% - (var(--per-view) - 1) * 24px) / var(--per-view));border-radius:32px}
+  .oem-card{flex-basis:calc((100% - (var(--per-view) - 1) * 24px) / var(--per-view));aspect-ratio:4/5;max-height:72svh;border-radius:32px}
+  .oem-card-media{position:absolute;inset:0;aspect-ratio:auto}
+  .oem-card-scrim{opacity:1}
+  .oem-card-body{flex:0 0 auto}
 }
 /* With a mouse, details slide open on hover; touch screens always show them. */
 @media (hover:hover) and (min-width:1024px){

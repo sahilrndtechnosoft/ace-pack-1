@@ -184,16 +184,19 @@ export function OemProductGallery({
           tabIndex={hidden ? -1 : undefined}
           className="absolute inset-0 z-10 cursor-zoom-in"
         />
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 400px"
-          className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
-        />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
-        <span aria-hidden="true" className="oem-card-index">{pad(idx + 1)}</span>
-        <div className="pointer-events-none relative z-[11] mt-auto p-6 sm:p-7">
+        {/* Phones/tablets: photo on top, text below it. Desktop: photo fills the card, text overlays it. */}
+        <div className="oem-card-media">
+          <Image
+            src={item.image}
+            alt={item.title}
+            fill
+            sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 400px"
+            className="object-contain lg:object-cover transition-transform duration-[1.2s] ease-out lg:group-hover:scale-110"
+          />
+          <div aria-hidden="true" className="oem-card-scrim absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+          <span aria-hidden="true" className="oem-card-index">{pad(idx + 1)}</span>
+        </div>
+        <div className="oem-card-body pointer-events-none relative z-[11] p-5 sm:p-6 lg:mt-auto lg:p-7">
           <span className="inline-block rounded-full border border-[#cfa144]/40 bg-[#cfa144]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#e9cf93] backdrop-blur-sm">
             {item.category}
           </span>
