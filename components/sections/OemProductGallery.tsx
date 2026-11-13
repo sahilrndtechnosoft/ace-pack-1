@@ -1,20 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
-import {
-  ZoomIn,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  ShieldCheck,
-  ArrowUpRight,
-  Maximize2,
-  CheckCircle2,
-} from 'lucide-react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Flip } from 'gsap/Flip';
+import { X, ChevronLeft, ChevronRight, ShieldCheck, ArrowUpRight, Maximize2 } from 'lucide-react';
 import { OEM_GALLERY_ITEMS } from '@/lib/cms/pages/oem';
+
+if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger, Flip);
 
 export interface OemGalleryItem {
   id: string | number;
@@ -42,41 +38,97 @@ export function OemProductGallery({
   kind = 'oem',
 }: OemProductGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const flipState = useRef<Flip.FlipState | null>(null);
+  const swipeStart = useRef<number | null>(null);
+  const didSwipe = useRef(false);
 
   const galleryItems = items && items.length > 0 ? items : OEM_GALLERY_ITEMS;
+  const total = galleryItems.length;
   const [activeModalIdx, setActiveModalIdx] = useState<number | null>(null);
+  const [start, setStart] = useState(0);
+  const [perView, setPerView] = useState(3);
+  // The card that just left the row stays mounted (hidden) so Flip can shrink it away.
+  const [leaving, setLeaving] = useState<{ slot: number; forward: boolean } | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  // Initial GSAP Smooth Staggered Entrance
+  // `start` counts steps without wrapping, so every card position (slot) has its own Flip id. Like the
+  // original caterpillar, the product that leaves one end can re-enter at the other.
+  const itemAt = (slot: number) => ((slot % total) + total) % total;
+  const visible = Math.max(1, Math.min(perView, total));
+  const slots = Array.from({ length: visible }, (_, i) => start + i);
+  const current = itemAt(start);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!gridRef.current) return;
-      const cards = gridRef.current.querySelectorAll('.oem-gallery-card');
-      if (cards.length > 0) {
-        gsap.from(cards, {
-          opacity: 0.2,
-          y: 20,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: 'power2.out',
-          clearProps: 'all',
-        });
-      }
-    }, 50);
-
-    return () => clearTimeout(timer);
+    const queries = [window.matchMedia('(min-width: 1024px)'), window.matchMedia('(min-width: 640px)')];
+    const update = () => setPerView(queries[0].matches ? 3 : queries[1].matches ? 2 : 1);
+    update();
+    queries.forEach((q) => q.addEventListener('change', update));
+    return () => queries.forEach((q) => q.removeEventListener('change', update));
   }, []);
+
+  // Intro: heading words rise, cards and CTA fade up when the section scrolls into view.
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+    const ctx = gsap.context(() => {
+      gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
+        const intro = { trigger: root, start: 'top 75%' };
+        gsap.from('[data-word]', { yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.05, scrollTrigger: intro });
+        gsap.from('[data-fade]', { y: 24, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1, scrollTrigger: intro });
+        gsap.from('[data-flip-id]', { y: 80, opacity: 0, scale: 0.92, duration: 1, ease: 'power3.out', stagger: 0.12, scrollTrigger: intro, clearProps: 'transform,opacity' });
+        gsap.from('.oem-cta', { y: 60, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.oem-cta', start: 'top 85%' } });
+      });
+    }, root);
+    return () => ctx.revert();
+  }, []);
+
+  const step = useCallback(
+    (forward: boolean) => {
+      if (isAnimating || total < 2 || !rowRef.current) return;
+      setIsAnimating(true);
+      flipState.current = Flip.getState(rowRef.current.querySelectorAll('[data-flip-id]'));
+      setLeaving({ slot: forward ? start : start + visible - 1, forward });
+      setStart((s) => (forward ? s + 1 : s - 1));
+    },
+    [isAnimating, total, start, visible]
+  );
+
+  // After React re-renders the row: animate from the recorded layout (the "caterpillar" step).
+  useLayoutEffect(() => {
+    const state = flipState.current;
+    if (!state || !leaving || !rowRef.current) return;
+    flipState.current = null;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const { forward } = leaving;
+    Flip.from(state, {
+      targets: rowRef.current.querySelectorAll('[data-flip-id]'),
+      duration: reduce ? 0 : 0.7,
+      ease: 'power3.inOut',
+      absoluteOnLeave: true,
+      onEnter: (els) =>
+        gsap.fromTo(els, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: reduce ? 0 : 0.7, ease: 'power3.out', transformOrigin: forward ? 'bottom right' : 'bottom left' }),
+      onLeave: (els) =>
+        gsap.to(els, {
+          opacity: 0,
+          scale: 0,
+          duration: reduce ? 0 : 0.6,
+          ease: 'power3.in',
+          transformOrigin: forward ? 'bottom left' : 'bottom right',
+        }),
+      onComplete: () => {
+        setLeaving(null);
+        setIsAnimating(false);
+      },
+    });
+  }, [start, leaving]);
 
   // GSAP Modal entrance animation
   useEffect(() => {
     if (activeModalIdx !== null && modalRef.current && modalContentRef.current) {
-      gsap.fromTo(
-        modalRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.2, ease: 'power2.out' }
-      );
+      gsap.fromTo(modalRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power2.out' });
       gsap.fromTo(
         modalContentRef.current,
         { opacity: 0, scale: 0.95, y: 12 },
@@ -85,146 +137,159 @@ export function OemProductGallery({
     }
   }, [activeModalIdx]);
 
+  // Lightbox: pause page scrolling while it is open.
+  const isModalOpen = activeModalIdx !== null;
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.__lenis?.stop();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.__lenis?.start();
+    };
+  }, [isModalOpen]);
+
   // Keyboard navigation for lightbox modal
   useEffect(() => {
     if (activeModalIdx === null) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setActiveModalIdx(null);
-      } else if (e.key === 'ArrowRight') {
-        setActiveModalIdx((prev) =>
-          prev !== null ? (prev + 1) % galleryItems.length : 0
-        );
-      } else if (e.key === 'ArrowLeft') {
-        setActiveModalIdx((prev) =>
-          prev !== null ? (prev - 1 + galleryItems.length) % galleryItems.length : 0
-        );
-      }
+      if (e.key === 'Escape') setActiveModalIdx(null);
+      else if (e.key === 'ArrowRight') setActiveModalIdx((prev) => (prev !== null ? (prev + 1) % total : 0));
+      else if (e.key === 'ArrowLeft') setActiveModalIdx((prev) => (prev !== null ? (prev - 1 + total) % total : 0));
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalIdx, galleryItems.length]);
+  }, [activeModalIdx, total]);
 
   const activeItem = activeModalIdx !== null ? galleryItems[activeModalIdx] : null;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const navButton =
+    'flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-[#cfa144] hover:bg-[#cfa144] hover:text-[#111518] disabled:opacity-40 cursor-pointer';
+
+  const card = (slot: number, hidden = false) => {
+    const idx = itemAt(slot);
+    const item = galleryItems[idx];
+    return (
+      <article
+        key={`slot-${slot}`}
+        data-flip-id={`oem-${slot}`}
+        aria-hidden={hidden || undefined}
+        className={`oem-card group ${hidden ? 'oem-card--leaving' : ''}`}
+      >
+        <button
+          type="button"
+          onClick={() => !didSwipe.current && setActiveModalIdx(idx)}
+          aria-label={`View ${item.title}`}
+          tabIndex={hidden ? -1 : undefined}
+          className="absolute inset-0 z-10 cursor-zoom-in"
+        />
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 400px"
+          className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
+        />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+        <span aria-hidden="true" className="oem-card-index">{pad(idx + 1)}</span>
+        <div className="pointer-events-none relative z-[11] mt-auto p-6 sm:p-7">
+          <span className="inline-block rounded-full border border-[#cfa144]/40 bg-[#cfa144]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#e9cf93] backdrop-blur-sm">
+            {item.category}
+          </span>
+          <h3 className="mt-3 text-xl font-extrabold leading-tight text-white sm:text-2xl">{item.title}</h3>
+          <div className="oem-card-more">
+            <div className="min-h-0">
+              <p className="pt-3 text-sm leading-relaxed text-white/75 line-clamp-3">{item.description}</p>
+              {item.specs && item.specs.length > 0 && (
+                <ul className="mt-4 flex flex-wrap gap-1.5">
+                  {item.specs.map((spec, sIdx) => (
+                    <li key={sIdx} className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur-sm">
+                      <ShieldCheck size={11} className="text-[#cfa144]" aria-hidden="true" />
+                      {spec}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+          <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#cfa144]">
+            <Maximize2 size={13} aria-hidden="true" /> View details
+          </span>
+        </div>
+      </article>
+    );
+  };
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-[#FAF8F4] text-[#1A1D20]">
-      <div className="container-custom">
-        {/* Section Heading matching website standard typography */}
-        <div className="max-w-3xl mb-10 text-left">
-          <span className="text-[10px] sm:text-xs font-bold text-[#a8812f] uppercase tracking-wider block mb-2">
-            {badge}
-          </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1A1D20] tracking-tight">
-            {heading}
-          </h2>
-          <p className="text-xs sm:text-sm text-gray-600 mt-2.5 leading-relaxed">
-            {lead}
-          </p>
-        </div>
+    <section ref={sectionRef} className="overflow-hidden bg-[#FAF8F4] text-[#1A1D20]">
+      <div className="relative bg-[#111518] py-16 text-white sm:py-20">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(207,161,68,0.16),transparent_65%)] blur-3xl" />
 
-        {/* Gallery Cards Grid (Direct 3-column display without cluttering tabs) */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {galleryItems.map((item, idx) => (
-            <article
-              key={`${item.id}-${idx}`}
-              className="oem-gallery-card group relative flex flex-col rounded-2xl bg-white border border-[#E6DBC6] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 opacity-100"
-            >
-              {/* Image Frame with Click to Zoom */}
-              <div
-                onClick={() => setActiveModalIdx(idx)}
-                className="relative aspect-[4/3] w-full overflow-hidden bg-[#FAF8F4] cursor-pointer flex items-center justify-center p-3 group"
-              >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-                  priority={idx === 0}
-                />
+        <div className="container-custom relative">
+          <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <span data-fade className="mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#cfa144] sm:text-xs">
+                <span className="h-px w-8 bg-[#cfa144]" aria-hidden="true" />
+                {badge}
+              </span>
+              <h2 className="text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl" aria-label={heading}>
+                {heading.split(' ').map((word, i) => (
+                  <span key={i} aria-hidden="true" className="inline-block overflow-hidden pb-[0.08em] align-bottom">
+                    <span data-word className="inline-block">{word}&nbsp;</span>
+                  </span>
+                ))}
+              </h2>
+              <p data-fade className="mt-4 text-sm leading-relaxed text-white/60 sm:text-base">
+                {lead}
+              </p>
+            </div>
 
-                {/* Ambient Scrim Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#1A1D20] text-xs font-semibold shadow-xs">
-                    <Maximize2 size={13} />
-                    <span>View High-Res</span>
-                  </span>
-                  <span className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-[#1A1D20] shadow-xs">
-                    <ZoomIn size={16} />
-                  </span>
-                </div>
-
-                {/* Category Pill Tag */}
-                <div className="absolute top-3 left-3">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-md text-[10px] font-bold text-[#8B6E32] uppercase tracking-wider shadow-xs border border-[#E6DBC6]">
-                    {item.category}
-                  </span>
-                </div>
-
-                {/* Certification pill */}
-                <div className="absolute top-3 right-3">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-[10px] font-medium text-emerald-800 border border-emerald-200">
-                    <CheckCircle2 size={10} /> ISO 9001
-                  </span>
-                </div>
+            {total > 1 && (
+              <div data-fade className="flex shrink-0 items-center gap-4">
+                <p className="text-sm font-semibold tabular-nums text-white/50" aria-live="polite">
+                  <span className="text-2xl font-black text-white">{pad(current + 1)}</span> / {pad(total)}
+                </p>
+                <button type="button" onClick={() => step(false)} disabled={isAnimating} aria-label="Previous product" className={navButton}>
+                  <ChevronLeft size={20} />
+                </button>
+                <button type="button" onClick={() => step(true)} disabled={isAnimating} aria-label="Next product" className={navButton}>
+                  <ChevronRight size={20} />
+                </button>
               </div>
+            )}
+          </div>
 
-              {/* Card Content */}
-              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-[#1A1D20] leading-snug mb-2 group-hover:text-[#8B6E32] transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                    {item.description}
-                  </p>
-                </div>
+          <div
+            ref={rowRef}
+            className="oem-row"
+            style={{ ['--per-view' as string]: visible }}
+            onPointerDown={(e) => (swipeStart.current = e.pointerType === 'mouse' ? null : e.clientX)}
+            onPointerUp={(e) => {
+              const from = swipeStart.current;
+              swipeStart.current = null;
+              didSwipe.current = from !== null && Math.abs(e.clientX - from) > 40;
+              if (from !== null && didSwipe.current) step(e.clientX < from);
+            }}
+          >
+            {leaving?.forward && card(leaving.slot, true)}
+            {slots.map((slot) => card(slot))}
+            {leaving && !leaving.forward && card(leaving.slot, true)}
+          </div>
 
-                {/* Technical Spec Badges */}
-                {item.specs && item.specs.length > 0 && (
-                  <div className="pt-3 border-t border-[#F0EAE1]">
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {item.specs.map((spec, sIdx) => (
-                        <span
-                          key={sIdx}
-                          className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-[#FAF8F4] text-gray-700 border border-[#E6DBC6]/70"
-                        >
-                          <ShieldCheck size={11} className="text-[#a8812f]" />
-                          <span>{spec}</span>
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-1">
-                      <button
-                        type="button"
-                        onClick={() => setActiveModalIdx(idx)}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-[#a8812f] hover:text-[#1A1D20] transition-colors cursor-pointer"
-                      >
-                        <span>Inspect Details</span>
-                        <ArrowUpRight size={13} />
-                      </button>
-
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#1A1D20] hover:text-[#a8812f] transition-colors"
-                      >
-                        <span>Request Quote</span>
-                        <ArrowUpRight size={12} />
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+          {total > 1 && (
+            <div className="mt-8 flex items-center justify-center gap-2" aria-hidden="true">
+              {galleryItems.map((_, i) => (
+                <span key={i} className={`h-1 rounded-full transition-all duration-500 ${i === current ? 'w-8 bg-[#cfa144]' : 'w-2 bg-white/25'}`} />
+              ))}
+            </div>
+          )}
         </div>
+      </div>
 
+      <div className="container-custom pb-16 sm:pb-20">
         {/* Global CTA Band matching website standard */}
-        <div className="mt-14 sm:mt-20 rounded-[32px] bg-[#111518] text-white px-8 sm:px-14 py-12 sm:py-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-xl">
+        <div className="oem-cta relative overflow-hidden mt-14 sm:mt-20 rounded-[32px] bg-[#111518] text-white px-8 sm:px-14 py-12 sm:py-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-xl">
           <div className="max-w-xl">
             <span className="text-xs font-extrabold text-[#cfa144] uppercase tracking-[0.16em] block mb-3">
               Bespoke Mould Tooling & Private Label
@@ -256,13 +321,14 @@ export function OemProductGallery({
       </div>
 
       {/* Lightbox Modal */}
-      {activeItem && (
+      {activeItem && typeof document !== 'undefined' && createPortal(
         <div
           ref={modalRef}
           role="dialog"
           aria-modal="true"
           aria-label={activeItem.title}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md"
+          data-lenis-prevent
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md"
           onClick={() => setActiveModalIdx(null)}
         >
           <div
@@ -374,7 +440,8 @@ export function OemProductGallery({
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );
