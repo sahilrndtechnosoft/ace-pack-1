@@ -119,7 +119,7 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
   return (
     <section
       ref={sectionRef}
-      className="xp-trust relative w-full h-[calc(100svh-var(--site-header,72px))] min-h-[580px] max-h-[100svh] overflow-hidden bg-[#FAF8F4] text-[#14171A] border-b border-[#E6DBC6]/60 select-none py-4 sm:py-6 flex flex-col justify-between"
+      className="xp-trust relative w-full h-[calc(100svh-var(--site-header,72px))] min-h-[460px] max-h-[100svh] overflow-hidden bg-[#FAF8F4] text-[#14171A] border-b border-[#E6DBC6]/60 select-none py-4 sm:py-6 flex flex-col justify-between"
     >
       {/* Subtle Ambient Radial Lighting */}
       <div
@@ -142,7 +142,7 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-[#14171A] leading-tight">
               {content.heading}
             </h2>
-            <p className="text-[11px] sm:text-xs text-gray-600 mt-1 leading-relaxed max-w-xl">
+            <p className="text-[11px] sm:text-xs text-gray-600 mt-1 leading-relaxed max-w-xl [@media(max-height:620px)]:hidden">
               {content.description}
             </p>
           </div>
@@ -177,10 +177,10 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
         </div>
 
         {/* Horizontal Moving Cards Track (Full-size tall cards matching the screenshot) */}
-        <div className="w-full overflow-hidden my-auto flex-1 flex items-center min-h-0 py-2">
+        <div className="w-full overflow-hidden flex-1 flex min-h-0 py-2">
           <div
             ref={trackRef}
-            className="flex gap-4 sm:gap-6 will-change-transform items-center"
+            className="flex h-full gap-4 sm:gap-6 will-change-transform items-center"
           >
             {SECTOR_CARDS.map((card, idx) => {
               const isActive = idx === currentHighlightedIdx;
@@ -191,7 +191,7 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   onClick={() => setActiveIdx(idx)}
-                  className={`group relative shrink-0 w-[280px] sm:w-[320px] md:w-[340px] lg:w-[360px] h-[450px] sm:h-[480px] md:h-[510px] max-h-[62svh] rounded-[24px] sm:rounded-[28px] overflow-hidden select-none cursor-pointer transition-all duration-500 ease-out ${isActive
+                  className={`group relative shrink-0 w-[min(280px,82vw)] sm:w-[320px] md:w-[340px] lg:w-[360px] h-full max-h-[510px] min-h-[300px] rounded-[24px] sm:rounded-[28px] overflow-hidden select-none cursor-pointer transition-all duration-500 ease-out ${isActive
                       ? 'shadow-2xl shadow-[#ce1b2f]/25 scale-[1.01]'
                       : 'shadow-md hover:shadow-xl'
                     }`}
@@ -222,20 +222,20 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
                   />
 
                   {/* Content Layer (Top-aligned exactly like screenshot) */}
-                  <div className="relative z-10 w-full h-full p-7 sm:p-8 flex flex-col justify-start">
+                  <div className="relative z-10 w-full h-full p-[clamp(1.25rem,3.2svh,2rem)] flex flex-col">
                     {/* Bold Title */}
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                    <h3 className="shrink-0 text-[clamp(1.375rem,3.6svh,1.875rem)] font-extrabold text-white tracking-tight leading-tight">
                       {card.title}
                     </h3>
 
                     {/* Active State View: Narrative Description + White Circular Arrow Button */}
                     <div
                       className={`transition-all duration-500 ease-out ${isActive
-                          ? 'opacity-100 translate-y-0 max-h-[280px] mt-4 sm:mt-5'
+                          ? 'opacity-100 translate-y-0 flex min-h-0 flex-1 flex-col mt-[clamp(0.75rem,2svh,1.25rem)]'
                           : 'opacity-0 -translate-y-2 max-h-0 pointer-events-none overflow-hidden'
                         }`}
                     >
-                      <p className="text-xs sm:text-sm text-white/95 font-normal leading-relaxed mb-6 max-w-[270px]">
+                      <p className="mb-4 min-h-0 overflow-hidden text-xs sm:text-sm text-white/95 font-normal leading-relaxed line-clamp-[8] [@media(max-height:760px)]:line-clamp-5 [@media(max-height:620px)]:line-clamp-3">
                         {card.description}
                       </p>
 
@@ -244,7 +244,7 @@ export function TrustCardsSection({ content = homeIndustries }: { content?: type
                         href={card.link}
                         aria-label={`Explore ${card.title} packaging`}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#ce1b2f] flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 group/btn"
+                        className="mt-auto shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#ce1b2f] flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 group/btn"
                       >
                         <ArrowRight size={19} strokeWidth={2.4} className="group-hover/btn:translate-x-0.5 transition-transform" />
                       </Link>

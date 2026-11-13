@@ -2819,3 +2819,12 @@
 
 /* The fixed 3D backdrop must never capture clicks/drags (R3F's canvas wrapper re-enables them). */
 .xp-scene-layer, .xp-scene-layer * { pointer-events:none !important; }
+
+/* Short viewports (zoomed-in laptops): the industries section is pinned to one screen, so its
+   65px padding would eat the space the cards need. */
+@media (max-height: 760px) {
+   .xp-trust {
+      padding-top: 12px;
+      padding-bottom: 12px
+   }
+}
