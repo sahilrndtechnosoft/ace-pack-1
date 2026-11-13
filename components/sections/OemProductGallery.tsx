@@ -129,7 +129,7 @@ export function OemProductGallery({
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {galleryItems.map((item, idx) => (
             <article
-              key={item.id}
+              key={`${item.id}-${idx}`}
               className="oem-gallery-card group relative flex flex-col rounded-2xl bg-white border border-[#E6DBC6] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 opacity-100"
             >
               {/* Image Frame with Click to Zoom */}

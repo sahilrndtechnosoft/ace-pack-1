@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, Copy, Plus, Trash2 } from 'lucide-react';
 import { MediaInput } from './MediaInput';
 import { emptyLike, isPlainObject } from '@/lib/cms/merge';
 
@@ -186,12 +186,25 @@ function ListField({ name, items, onChange, template, depth }: { name: string; i
     if (!window.confirm(`Remove "${itemTitle(items[index], index)}"?`)) return;
     onChange(items.filter((_, i) => i !== index));
   };
+  const duplicate = (index: number) => {
+    const copy = structuredClone(items[index]);
+    // Items with an `id` (e.g. gallery products) need a unique one, since the site uses it as a key.
+    if (isPlainObject(copy) && typeof copy.id === 'string') {
+      const ids = new Set(items.map((item) => (isPlainObject(item) ? item.id : undefined)));
+      let n = 2;
+      while (ids.has(`${copy.id}-${n}`)) n += 1;
+      copy.id = `${copy.id}-${n}`;
+    }
+    onChange([...items.slice(0, index + 1), copy, ...items.slice(index + 1)]);
+  };
   const update = (index: number, next: unknown) => onChange(items.map((item, i) => (i === index ? next : item)));
 
   const controls = (index: number) => (
-    <div className="flex items-center gap-1 shrink-0">
+    // preventDefault: these sit inside <summary>, where a click would also open/close the item.
+    <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.preventDefault()}>
       <button type="button" onClick={() => move(index, index - 1)} disabled={index === 0} aria-label="Move up" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#1E2633] disabled:opacity-30 cursor-pointer"><ArrowUp className="w-3.5 h-3.5" /></button>
       <button type="button" onClick={() => move(index, index + 1)} disabled={index === items.length - 1} aria-label="Move down" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#1E2633] disabled:opacity-30 cursor-pointer"><ArrowDown className="w-3.5 h-3.5" /></button>
+      <button type="button" onClick={() => duplicate(index)} aria-label="Duplicate" title="Duplicate" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#1E2633] cursor-pointer"><Copy className="w-3.5 h-3.5" /></button>
       <button type="button" onClick={() => remove(index)} aria-label="Remove" className="p-1.5 rounded-lg text-red-400 hover:text-white hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
     </div>
   );
