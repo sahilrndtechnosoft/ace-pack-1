@@ -33,7 +33,7 @@ export const contactPage = {
     form: {
       label: 'Inquiry Form',
       content: {
-        heading: 'Send Factory Inquiry',
+        heading: 'Send Inquiry',
         description: 'Tell us about your application and request product information or a sample kit.',
       },
     },

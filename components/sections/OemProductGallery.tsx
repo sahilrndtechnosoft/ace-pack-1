@@ -7,7 +7,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/Flip';
-import { X, ChevronLeft, ChevronRight, ShieldCheck, ArrowUpRight, Maximize2 } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ShieldCheck, Maximize2 } from 'lucide-react';
 import { OEM_GALLERY_ITEMS } from '@/lib/cms/pages/oem';
 
 if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger, Flip);
@@ -69,7 +69,7 @@ export function OemProductGallery({
     return () => queries.forEach((q) => q.removeEventListener('change', update));
   }, []);
 
-  // Intro: heading words rise, cards and CTA fade up when the section scrolls into view.
+  // Intro: heading words rise and cards fade up when the section scrolls into view.
   useEffect(() => {
     const root = sectionRef.current;
     if (!root) return;
@@ -79,7 +79,6 @@ export function OemProductGallery({
         gsap.from('[data-word]', { yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.05, scrollTrigger: intro });
         gsap.from('[data-fade]', { y: 24, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1, scrollTrigger: intro });
         gsap.from('[data-flip-id]', { y: 80, opacity: 0, scale: 0.92, duration: 1, ease: 'power3.out', stagger: 0.12, scrollTrigger: intro, clearProps: 'transform,opacity' });
-        gsap.from('.oem-cta', { y: 60, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.oem-cta', start: 'top 85%' } });
       });
     }, root);
     return () => ctx.revert();
@@ -165,7 +164,7 @@ export function OemProductGallery({
   const activeItem = activeModalIdx !== null ? galleryItems[activeModalIdx] : null;
   const pad = (n: number) => String(n).padStart(2, '0');
   const navButton =
-    'flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-[#cfa144] hover:bg-[#cfa144] hover:text-[#111518] disabled:opacity-40 cursor-pointer';
+    'flex h-12 w-12 items-center justify-center rounded-full border border-[#1A1D20]/20 bg-white text-[#1A1D20] transition-colors hover:border-[#cfa144] hover:bg-[#cfa144] hover:text-[#111518] disabled:opacity-40 cursor-pointer';
 
   const card = (slot: number, hidden = false) => {
     const idx = itemAt(slot);
@@ -197,17 +196,17 @@ export function OemProductGallery({
           <span aria-hidden="true" className="oem-card-index">{pad(idx + 1)}</span>
         </div>
         <div className="oem-card-body pointer-events-none relative z-[11] p-5 sm:p-6 lg:mt-auto lg:p-7">
-          <span className="inline-block rounded-full border border-[#cfa144]/40 bg-[#cfa144]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#e9cf93] backdrop-blur-sm">
+          <span className="inline-block rounded-full border border-[#cfa144]/40 bg-[#cfa144]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#a8812f] lg:text-[#e9cf93] backdrop-blur-sm">
             {item.category}
           </span>
-          <h3 className="mt-3 text-xl font-extrabold leading-tight text-white sm:text-2xl">{item.title}</h3>
+          <h3 className="mt-3 text-xl font-extrabold leading-tight text-[#1A1D20] lg:text-white sm:text-2xl">{item.title}</h3>
           <div className="oem-card-more">
             <div className="min-h-0">
-              <p className="pt-3 text-sm leading-relaxed text-white/75 line-clamp-3">{item.description}</p>
+              <p className="pt-3 text-sm leading-relaxed text-gray-600 lg:text-white/75 line-clamp-3">{item.description}</p>
               {item.specs && item.specs.length > 0 && (
                 <ul className="mt-4 flex flex-wrap gap-1.5">
                   {item.specs.map((spec, sIdx) => (
-                    <li key={sIdx} className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur-sm">
+                    <li key={sIdx} className="inline-flex items-center gap-1 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] lg:border-transparent lg:bg-white/10 px-2.5 py-1 text-[11px] font-medium text-[#1A1D20] lg:text-white/90 backdrop-blur-sm">
                       <ShieldCheck size={11} className="text-[#cfa144]" aria-hidden="true" />
                       {spec}
                     </li>
@@ -216,7 +215,7 @@ export function OemProductGallery({
               )}
             </div>
           </div>
-          <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#cfa144]">
+          <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#a8812f] lg:text-[#cfa144]">
             <Maximize2 size={13} aria-hidden="true" /> View details
           </span>
         </div>
@@ -226,13 +225,13 @@ export function OemProductGallery({
 
   return (
     <section ref={sectionRef} className="overflow-hidden bg-[#FAF8F4] text-[#1A1D20]">
-      <div className="relative bg-[#111518] py-16 text-white sm:py-20">
-        <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(207,161,68,0.16),transparent_65%)] blur-3xl" />
+      <div className="relative bg-[#FAF8F4] py-16 text-[#1A1D20] sm:py-20">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(207,161,68,0.14),transparent_65%)] blur-3xl" />
 
         <div className="container-custom relative">
           <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <span data-fade className="mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#cfa144] sm:text-xs">
+              <span data-fade className="mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#a8812f] sm:text-xs">
                 <span className="h-px w-8 bg-[#cfa144]" aria-hidden="true" />
                 {badge}
               </span>
@@ -243,15 +242,15 @@ export function OemProductGallery({
                   </span>
                 ))}
               </h2>
-              <p data-fade className="mt-4 text-sm leading-relaxed text-white/60 sm:text-base">
+              <p data-fade className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
                 {lead}
               </p>
             </div>
 
             {total > 1 && (
               <div data-fade className="flex shrink-0 items-center gap-4">
-                <p className="text-sm font-semibold tabular-nums text-white/50" aria-live="polite">
-                  <span className="text-2xl font-black text-white">{pad(current + 1)}</span> / {pad(total)}
+                <p className="text-sm font-semibold tabular-nums text-gray-500" aria-live="polite">
+                  <span className="text-2xl font-black text-[#1A1D20]">{pad(current + 1)}</span> / {pad(total)}
                 </p>
                 <button type="button" onClick={() => step(false)} disabled={isAnimating} aria-label="Previous product" className={navButton}>
                   <ChevronLeft size={20} />
@@ -283,43 +282,10 @@ export function OemProductGallery({
           {total > 1 && (
             <div className="mt-8 flex items-center justify-center gap-2" aria-hidden="true">
               {galleryItems.map((_, i) => (
-                <span key={i} className={`h-1 rounded-full transition-all duration-500 ${i === current ? 'w-8 bg-[#cfa144]' : 'w-2 bg-white/25'}`} />
+                <span key={i} className={`h-1 rounded-full transition-all duration-500 ${i === current ? 'w-8 bg-[#cfa144]' : 'w-2 bg-[#1A1D20]/20'}`} />
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      <div className="container-custom pb-16 sm:pb-20">
-        {/* Global CTA Band matching website standard */}
-        <div className="oem-cta relative overflow-hidden mt-14 sm:mt-20 rounded-[32px] bg-[#111518] text-white px-8 sm:px-14 py-12 sm:py-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-xl">
-          <div className="max-w-xl">
-            <span className="text-xs font-extrabold text-[#cfa144] uppercase tracking-[0.16em] block mb-3">
-              Bespoke Mould Tooling & Private Label
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug">
-              Ready to mould your proprietary container line?
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-400 leading-relaxed mt-2.5">
-              Our Daman toolroom manufactures multi-cavity injection moulds, customized Pantone polymer colours, and 5-sided In-Mould Labelling with rapid 14-day sample turnarounds.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-[#cfa144] hover:bg-[#1A1D20] hover:text-[#faf8f4] text-[#1A1D20] text-xs font-bold px-6 py-3.5 sm:px-7 sm:py-4 rounded-full uppercase tracking-wide transition-colors shadow-md"
-            >
-              <span>Discuss Custom Tooling</span>
-              <ArrowUpRight size={15} />
-            </Link>
-            <Link
-              href="/downloads"
-              className="inline-flex items-center gap-2 border border-white/25 hover:border-[#cfa144] hover:text-[#a8812f] text-white text-xs font-bold px-6 py-3.5 sm:px-7 sm:py-4 rounded-full uppercase tracking-wide transition-colors"
-            >
-              <span>Download OEM Specs</span>
-            </Link>
-          </div>
         </div>
       </div>
 

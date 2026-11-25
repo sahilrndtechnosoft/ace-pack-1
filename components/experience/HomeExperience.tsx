@@ -283,7 +283,9 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
     {show('faq') && <FaqSection content={content.faq} />}
 
     {/* Pre-Footer Call to Action & Gated Catalogue Download */}
+    {/* Closing call to action (free sample kit band) hidden from the home page on request.
     {show('closing_cta') && <PreFooterCTA content={content.closing_cta} />}
+    */}
 
     <div id="footer" aria-hidden="true" />
     {inspectorOpen && <ModelInspector open onClose={closeInspector} title={`${craft.heading} ${craft.headingHighlight}`.trim()} />}

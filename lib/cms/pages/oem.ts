@@ -41,7 +41,7 @@ function resourcePage(title: string, path: string, bannerBadge: string) {
         title: 'OEM & Custom Packaging Solutions.',
         subtitle:
           'Your brand, our precision manufacturing. From custom mould tooling and proprietary container geometry to 5-sided In-Mould Labelling (IML) and bespoke colour formulations, build your custom packaging programme under one roof at our ISO 9001:2015 Daman facility.',
-        bgImage: '/images/oem/DSC04469.webp',
+        bgImage: '/images/oem/oem-food-banner.webp',
       }),
       gallery_heading: {
         label: 'Gallery Heading',

@@ -25,6 +25,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import { productCategories, type ProductCategory } from '@/lib/data/products';
+import { productImageFit } from '@/lib/data/product-image-fit';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
 const FEATURED_MOBILE_CATEGORIES = [
@@ -100,7 +101,6 @@ const MEGA_PREVIEW_EDGE = 16;
 
 interface MegaPreview {
   image: string;
-  title: string;
   href: string;
   // Product photos sit small on a large backdrop, so they get zoomed; category photos don't.
   isProduct: boolean;
@@ -439,7 +439,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                                 <Link
                                   href={categoryHref}
                                   onClick={() => setMegaMenuOpen(false)}
-                                  onMouseEnter={() => showMegaPreview({ image: category.heroImage, title: category.name, href: categoryHref, isProduct: false })}
+                                  onMouseEnter={() => showMegaPreview({ image: category.heroImage, href: categoryHref, isProduct: false })}
                                   onMouseLeave={hideMegaPreview}
                                   className="flex items-baseline justify-between gap-2 pb-1.5 mb-2 border-b border-[var(--ace-line)] text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors"
                                 >
@@ -450,7 +450,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                                   {category.products.slice(0, MEGA_MENU_MODELS_PER_CATEGORY).map((product) => {
                                     const href = `${categoryHref}/${product.product_slug}`;
                                     const isPreviewed = isMegaPreviewVisible && megaPreview?.href === href;
-                                    const preview: MegaPreview = { image: product.image, title: product.name, href, isProduct: true };
+                                    const preview: MegaPreview = { image: product.image, href, isProduct: true };
                                     return (
                                       <li key={product.id}>
                                         <Link
@@ -701,17 +701,13 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
           }`}
         >
         {megaPreview && (
-          <>
-            <img
-              key={megaPreview.image}
-              src={megaPreview.image}
-              alt=""
-              className={`absolute inset-0 w-full h-full object-cover ${megaPreview.isProduct ? 'scale-[1.9] origin-[50%_70%]' : ''}`}
-            />
-            <span className="absolute left-3 bottom-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-[rgba(26,29,32,0.85)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-white backdrop-blur-sm">
-              {megaPreview.title}
-            </span>
-          </>
+          <img
+            key={megaPreview.image}
+            src={megaPreview.image}
+            alt=""
+            style={megaPreview.isProduct ? productImageFit(megaPreview.image) : undefined}
+            className="absolute inset-0 w-full h-full object-cover [transform:scale(var(--fit-scale,1))]"
+          />
         )}
         </div>
       </div>

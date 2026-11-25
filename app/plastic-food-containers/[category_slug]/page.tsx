@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
+import { foodBannerFor } from '@/lib/data/food-banners';
 import { ArrowLeft, Box } from 'lucide-react';
 import { CategoryProductGrid } from '@/components/categories/CategoryProductGrid';
 import {
@@ -118,7 +119,7 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
         title={category.name}
         subtitle={res?.meta.description || category.description}
         badge={`COLLECTION: ${(category.subtitleName || category.name).toUpperCase()}`}
-        bgImage={category.heroImage || '/b9d572a7-af59-4e63-92e8-2971440edffe.png'}
+        bgImage={foodBannerFor(category.slug)}
         breadcrumbs={[
           { name: 'Plastic Food Containers', href: '/plastic-food-containers' },
           { name: category.name, href: `/plastic-food-containers/${category_slug}` },

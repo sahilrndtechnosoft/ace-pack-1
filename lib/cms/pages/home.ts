@@ -122,7 +122,7 @@ export const homeFaq = {
   phoneLine: '+91 99250 15906 / +91 99251 55799',
   salesEmail: 'sales@acepack.co.in',
   formEyebrow: 'Get in touch with Ace Packaging',
-  formHeading: 'Send Factory Inquiry',
+  formHeading: 'Send  Inquiry',
   formDescription: 'Tell us about your application and request product specifications or a custom sample kit.',
 };
 

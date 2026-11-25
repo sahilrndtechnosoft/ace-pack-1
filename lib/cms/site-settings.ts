@@ -87,7 +87,7 @@ export const siteTextDefaults = {
     categoryPrompt: 'Select a container line...',
     messageLabel: 'Detailed Message / Order Quantity',
     messagePlaceholder: 'Please specify container size, monthly volume requirement, and shipping location...',
-    submitText: 'Send Factory Inquiry',
+    submitText: 'Send Inquiry',
     sendingText: 'Sending Inquiry to Factory...',
     successBadge: 'Inquiry Successfully Sent & Logged',
     successHeading: 'Factory Inquiry Received!',

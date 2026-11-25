@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { type ProductCategory, type ProductItem } from '@/lib/data/products';
 import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
+import { PRODUCT_IMAGE_ZOOM_CLASS, productImageFit } from '@/lib/data/product-image-fit';
 
 interface ProductDetailInteractiveProps {
   category: ProductCategory;
@@ -219,7 +220,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     alt={`${product.name} Blank Empty Container Structure`}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover scale-[1.6] origin-[50%_70%] group-hover:scale-[1.7] transition-transform duration-500"
+                    style={productImageFit(blankImage)}
+                    className={`w-full h-full ${PRODUCT_IMAGE_ZOOM_CLASS}`}
                   />
                 </div>
                 <div className="mt-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] text-[11px] sm:text-xs font-semibold text-gray-700 flex items-center gap-2 text-center">

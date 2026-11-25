@@ -321,6 +321,31 @@ export async function initDb(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   `);
 
+  // Catalogue/document requests wait here until an admin approves them; approval emails a
+  // private, expiring download link (download_token) to the requester.
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS document_requests (
+      id VARCHAR(191) PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      company VARCHAR(255),
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(100) NOT NULL,
+      industry VARCHAR(150),
+      document_title VARCHAR(255) NOT NULL,
+      document_url VARCHAR(500) NOT NULL,
+      source_page VARCHAR(255),
+      status VARCHAR(20) NOT NULL DEFAULT 'pending',
+      download_token VARCHAR(100) UNIQUE,
+      token_expires_at DATETIME,
+      decided_by VARCHAR(255),
+      decided_at DATETIME,
+      ip_address VARCHAR(100),
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_docreq_status (status, created_at DESC),
+      INDEX idx_docreq_email (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `);
+
   // Check if admin exists; if not, seed complete initial website data
   const [rows]: any = await db.query('SELECT count(*) as count FROM admins');
   if (rows && rows[0] && rows[0].count === 0) {

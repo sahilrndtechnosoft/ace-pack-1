@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { type ProductItem } from '@/lib/data/products';
 import { Reveal } from '@/components/ui/Reveal';
+import { PRODUCT_IMAGE_ZOOM_CLASS, productImageFit } from '@/lib/data/product-image-fit';
 
 export interface ProductCardProps {
   product: ProductItem;
@@ -51,14 +52,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="bg-white rounded-3xl border border-[#E6DBC6] hover:border-[#b99750] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full">
         <div>
           {/* Clean Light Image Surface */}
-          <div className="relative h-56 sm:h-64 bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center border-b border-[#E6DBC6]/60">
+          <div className="relative aspect-[4/3] bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center border-b border-[#E6DBC6]/60">
             <img
               key={activeImage}
               src={activeImage}
               alt={`${product.name} ${activeVarietyObj ? `- ${activeVarietyObj.name}` : ''}`}
               loading="lazy"
               decoding="async"
-              className="w-full h-full object-cover scale-[1.6] origin-[50%_70%] group-hover:scale-[1.7] transition-transform duration-500"
+              style={productImageFit(activeImage)}
+              className={`w-full h-full ${PRODUCT_IMAGE_ZOOM_CLASS}`}
             />
 
             {/* Interactive Variety Swatches Floating in Bottom Left of image */}

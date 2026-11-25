@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
+import { foodBannerFor } from '@/lib/data/food-banners';
 import { ProductDetailInteractive } from '@/components/products/ProductDetailInteractive';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Reveal } from '@/components/ui/Reveal';
@@ -59,7 +60,7 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
         title={product.name}
         subtitle={`${category.name} — ${product.capacity} volume, 100% virgin food-grade polymer PP 05, zero-leak snap rim.`}
         badge={`MODEL: ${product.capacity}`}
-        bgImage={product.image}
+        bgImage={foodBannerFor(category.slug)}
         breadcrumbs={[
           { name: 'Categories', href: '/categories' },
           { name: category.name, href: `/categories/${category.slug}` },

@@ -1,0 +1,652 @@
+{
+ "/images/products/cups/glass-80dia-hero.webp": {
+  "s": 1.27,
+  "ox": 53.3,
+  "oy": 55.3
+ },
+ "/images/products/cups/glass-90dia-hero.webp": {
+  "s": 1.26,
+  "ox": 52.9,
+  "oy": 47.5
+ },
+ "/images/products/deli/deli-12oz.webp": {
+  "s": 1.64,
+  "ox": 50.4,
+  "oy": 62.2
+ },
+ "/images/products/deli/deli-16oz.webp": {
+  "s": 1.53,
+  "ox": 50.2,
+  "oy": 59.2
+ },
+ "/images/products/deli/deli-24oz.webp": {
+  "s": 1.41,
+  "ox": 49.8,
+  "oy": 54.2
+ },
+ "/images/products/deli/deli-32oz.webp": {
+  "s": 1.23,
+  "ox": 50.2,
+  "oy": 48.3
+ },
+ "/images/products/deli/deli-8oz.webp": {
+  "s": 1.79,
+  "ox": 50.6,
+  "oy": 65.3
+ },
+ "/images/products/deli/deli-series-hero.webp": {
+  "s": 1.53,
+  "ox": 50.2,
+  "oy": 59.2
+ },
+ "/images/products/elite-containers/Image-14650_elite-750.png": {
+  "s": 1.1,
+  "ox": 51.5,
+  "oy": 66.5
+ },
+ "/images/products/elite-containers/Image-31076_Untitled-design-68-.png": {
+  "s": 1,
+  "ox": 51.2,
+  "oy": 69.4
+ },
+ "/images/products/elite-containers/Image-34683_Untitled-design-73-.png": {
+  "s": 1.02,
+  "ox": 54.8,
+  "oy": 72.5
+ },
+ "/images/products/elite-containers/Image-391_Untitled-design-71-.png": {
+  "s": 1.14,
+  "ox": 51.7,
+  "oy": 71.7
+ },
+ "/images/products/elite-containers/Image-41828_Untitled-design-69-.png": {
+  "s": 1.17,
+  "ox": 51.3,
+  "oy": 67.1
+ },
+ "/images/products/elite-containers/Image-43101_elite-750-B.png": {
+  "s": 1.12,
+  "ox": 52.5,
+  "oy": 68.8
+ },
+ "/images/products/elite-containers/Image-70085_Untitled-design-74-.png": {
+  "s": 1.03,
+  "ox": 51.9,
+  "oy": 65.8
+ },
+ "/images/products/elite-containers/Image-74964_Product-22780_1.png": {
+  "s": 1.22,
+  "ox": 50.4,
+  "oy": 66.7
+ },
+ "/images/products/elite-containers/Image-89623_Untitled-design-75-.png": {
+  "s": 1,
+  "ox": 51.2,
+  "oy": 65.2
+ },
+ "/images/products/elite-containers/Image-92113_Untitled-design-68-.png": {
+  "s": 1,
+  "ox": 51.2,
+  "oy": 69.4
+ },
+ "/images/products/flat/flat-1000ml-black.webp": {
+  "s": 1.24,
+  "ox": 50.6,
+  "oy": 56.9
+ },
+ "/images/products/flat/flat-1000ml-transparent.webp": {
+  "s": 1.35,
+  "ox": 50.6,
+  "oy": 55.6
+ },
+ "/images/products/flat/flat-1000ml.webp": {
+  "s": 1.35,
+  "ox": 50.6,
+  "oy": 55.6
+ },
+ "/images/products/flat/flat-1200ml-black.webp": {
+  "s": 1.24,
+  "ox": 50.2,
+  "oy": 57.2
+ },
+ "/images/products/flat/flat-1200ml-transparent.webp": {
+  "s": 1.24,
+  "ox": 50,
+  "oy": 50.6
+ },
+ "/images/products/flat/flat-1200ml.webp": {
+  "s": 1.24,
+  "ox": 50,
+  "oy": 50.6
+ },
+ "/images/products/flat/flat-1500ml-black.webp": {
+  "s": 1.15,
+  "ox": 49.4,
+  "oy": 52.2
+ },
+ "/images/products/flat/flat-1500ml-transparent.webp": {
+  "s": 1,
+  "ox": 49.8,
+  "oy": 47.2
+ },
+ "/images/products/flat/flat-1500ml.webp": {
+  "s": 1,
+  "ox": 49.8,
+  "oy": 47.2
+ },
+ "/images/products/flat/flat-2000ml.webp": {
+  "s": 1,
+  "ox": 49.6,
+  "oy": 42.5
+ },
+ "/images/products/flat/flat-2500ml.webp": {
+  "s": 1.32,
+  "ox": 50.4,
+  "oy": 51.7
+ },
+ "/images/products/flat/flat-450ml.webp": {
+  "s": 1.49,
+  "ox": 50.2,
+  "oy": 61.9
+ },
+ "/images/products/flat/flat-600ml-black.webp": {
+  "s": 1.39,
+  "ox": 50.8,
+  "oy": 65.8
+ },
+ "/images/products/flat/flat-600ml-transparent.webp": {
+  "s": 1.61,
+  "ox": 50.6,
+  "oy": 64.2
+ },
+ "/images/products/flat/flat-600ml.webp": {
+  "s": 1.61,
+  "ox": 50.6,
+  "oy": 64.2
+ },
+ "/images/products/flat/flat-650ml-black.webp": {
+  "s": 1.39,
+  "ox": 49.8,
+  "oy": 62.5
+ },
+ "/images/products/flat/flat-650ml-transparent.webp": {
+  "s": 1.56,
+  "ox": 50.6,
+  "oy": 62.8
+ },
+ "/images/products/flat/flat-650ml.webp": {
+  "s": 1.56,
+  "ox": 50.6,
+  "oy": 62.8
+ },
+ "/images/products/flat/flat-750ml-black.webp": {
+  "s": 1.34,
+  "ox": 51,
+  "oy": 63.6
+ },
+ "/images/products/flat/flat-750ml-transparent.webp": {
+  "s": 1.37,
+  "ox": 50.6,
+  "oy": 56.9
+ },
+ "/images/products/flat/flat-750ml.webp": {
+  "s": 1.37,
+  "ox": 50.6,
+  "oy": 56.9
+ },
+ "/images/products/flat/flat-containers-hero.webp": {
+  "s": 1.35,
+  "ox": 50.6,
+  "oy": 55.6
+ },
+ "/images/products/glass-80/glass-80-200ml.webp": {
+  "s": 1.62,
+  "ox": 44.8,
+  "oy": 60.6
+ },
+ "/images/products/glass-80/glass-80-250ml.webp": {
+  "s": 1.52,
+  "ox": 50.6,
+  "oy": 57.2
+ },
+ "/images/products/glass-80/glass-80-300ml.webp": {
+  "s": 1.44,
+  "ox": 50.4,
+  "oy": 54.2
+ },
+ "/images/products/glass-80/glass-80-350ml.webp": {
+  "s": 1.38,
+  "ox": 50.6,
+  "oy": 50.8
+ },
+ "/images/products/glass-80/glass-80-500ml.webp": {
+  "s": 1,
+  "ox": 50.4,
+  "oy": 43.6
+ },
+ "/images/products/glass-80/glass-80-hero.webp": {
+  "s": 1.27,
+  "ox": 53.3,
+  "oy": 55.3
+ },
+ "/images/products/glass-90/glass-90-350ml-frost.webp": {
+  "s": 1.42,
+  "ox": 52.9,
+  "oy": 52.8
+ },
+ "/images/products/glass-90/glass-90-350ml-plain.webp": {
+  "s": 1.44,
+  "ox": 53.1,
+  "oy": 52.5
+ },
+ "/images/products/glass-90/glass-90-350ml.webp": {
+  "s": 1.44,
+  "ox": 53.1,
+  "oy": 52.5
+ },
+ "/images/products/glass-90/glass-90-500ml-frost.webp": {
+  "s": 1.23,
+  "ox": 53.3,
+  "oy": 48.1
+ },
+ "/images/products/glass-90/glass-90-500ml-plain.webp": {
+  "s": 1.25,
+  "ox": 52.9,
+  "oy": 47.8
+ },
+ "/images/products/glass-90/glass-90-500ml.webp": {
+  "s": 1.25,
+  "ox": 52.9,
+  "oy": 47.8
+ },
+ "/images/products/glass-90/glass-90-600ml-frost.webp": {
+  "s": 1.05,
+  "ox": 52.3,
+  "oy": 50.3
+ },
+ "/images/products/glass-90/glass-90-600ml-plain.webp": {
+  "s": 1.07,
+  "ox": 52.3,
+  "oy": 50
+ },
+ "/images/products/glass-90/glass-90-600ml.webp": {
+  "s": 1.07,
+  "ox": 52.3,
+  "oy": 50
+ },
+ "/images/products/glass-90/glass-90-700ml-frost.webp": {
+  "s": 1,
+  "ox": 52.1,
+  "oy": 49.2
+ },
+ "/images/products/glass-90/glass-90-700ml-plain.webp": {
+  "s": 1,
+  "ox": 52.1,
+  "oy": 49.7
+ },
+ "/images/products/glass-90/glass-90-700ml.webp": {
+  "s": 1,
+  "ox": 52.1,
+  "oy": 49.7
+ },
+ "/images/products/glass-90/glass-90-hero.webp": {
+  "s": 1.26,
+  "ox": 52.9,
+  "oy": 47.5
+ },
+ "/images/products/hinge/hinge-100ml.webp": {
+  "s": 2.04,
+  "ox": 50.2,
+  "oy": 68.6
+ },
+ "/images/products/hinge/hinge-25ml.webp": {
+  "s": 2.2,
+  "ox": 50,
+  "oy": 70.8
+ },
+ "/images/products/hinge/hinge-2oz.webp": {
+  "s": 2.2,
+  "ox": 50,
+  "oy": 70
+ },
+ "/images/products/hinge/hinge-50ml.webp": {
+  "s": 2.2,
+  "ox": 50,
+  "oy": 70
+ },
+ "/images/products/hinge/hinge-cups-hero.webp": {
+  "s": 2.04,
+  "ox": 50.2,
+  "oy": 68.6
+ },
+ "/images/products/natraj/natraj-250ml.webp": {
+  "s": 1.71,
+  "ox": 49.6,
+  "oy": 56.7
+ },
+ "/images/products/natraj/natraj-450ml.webp": {
+  "s": 1.68,
+  "ox": 50,
+  "oy": 56.9
+ },
+ "/images/products/natraj/natraj-500ml.webp": {
+  "s": 1.5,
+  "ox": 51,
+  "oy": 55.3
+ },
+ "/images/products/natraj/natraj-750ml.webp": {
+  "s": 1.17,
+  "ox": 50.8,
+  "oy": 57.2
+ },
+ "/images/products/natraj/natraj-containers-hero.webp": {
+  "s": 1.71,
+  "ox": 49.6,
+  "oy": 56.7
+ },
+ "/images/products/portion/portion-100ml.webp": {
+  "s": 2.08,
+  "ox": 50.4,
+  "oy": 65
+ },
+ "/images/products/portion/portion-125ml.webp": {
+  "s": 1.99,
+  "ox": 50.6,
+  "oy": 63.9
+ },
+ "/images/products/portion/portion-150ml.webp": {
+  "s": 1.84,
+  "ox": 50.4,
+  "oy": 63.9
+ },
+ "/images/products/portion/portion-200ml.webp": {
+  "s": 1.74,
+  "ox": 50.6,
+  "oy": 63.3
+ },
+ "/images/products/portion/portion-250ml.webp": {
+  "s": 1.74,
+  "ox": 50.6,
+  "oy": 63.3
+ },
+ "/images/products/portion/portion-50ml.webp": {
+  "s": 2.08,
+  "ox": 50.4,
+  "oy": 65
+ },
+ "/images/products/portion/portion-b100ml.webp": {
+  "s": 1.98,
+  "ox": 50.4,
+  "oy": 65.8
+ },
+ "/images/products/portion/portion-b150ml.webp": {
+  "s": 1.79,
+  "ox": 50.8,
+  "oy": 64.2
+ },
+ "/images/products/portion/portion-cups-hero.webp": {
+  "s": 1.99,
+  "ox": 50.6,
+  "oy": 63.9
+ },
+ "/images/products/portion/portion-t150ml.webp": {
+  "s": 1.98,
+  "ox": 50.6,
+  "oy": 62.8
+ },
+ "/images/products/re-series/ap-re-08.webp": {
+  "s": 1.78,
+  "ox": 50.2,
+  "oy": 67.5
+ },
+ "/images/products/re-series/ap-re-12.webp": {
+  "s": 1.65,
+  "ox": 50.2,
+  "oy": 65
+ },
+ "/images/products/re-series/ap-re-16.webp": {
+  "s": 1.4,
+  "ox": 50.8,
+  "oy": 66.9
+ },
+ "/images/products/re-series/ap-re-232.webp": {
+  "s": 1.14,
+  "ox": 51.2,
+  "oy": 63.1
+ },
+ "/images/products/re-series/ap-re-24.webp": {
+  "s": 1.4,
+  "ox": 50.6,
+  "oy": 64.2
+ },
+ "/images/products/re-series/ap-re-28.webp": {
+  "s": 1.14,
+  "ox": 50.4,
+  "oy": 64.7
+ },
+ "/images/products/re-series/ap-re-32.webp": {
+  "s": 1.14,
+  "ox": 50.4,
+  "oy": 62.5
+ },
+ "/images/products/re-series/ap-re-38.webp": {
+  "s": 1.16,
+  "ox": 50.6,
+  "oy": 58.1
+ },
+ "/images/products/re-series/ap-re-48.webp": {
+  "s": 1.13,
+  "ox": 50.8,
+  "oy": 60.6
+ },
+ "/images/products/re-series/ap-re-58.webp": {
+  "s": 1,
+  "ox": 50,
+  "oy": 59.4
+ },
+ "/images/products/re-series/re-series-hero.webp": {
+  "s": 1.14,
+  "ox": 50.4,
+  "oy": 62.5
+ },
+ "/images/products/ro-series/ap-ro-10.webp": {
+  "s": 1.9,
+  "ox": 49.8,
+  "oy": 60.6
+ },
+ "/images/products/ro-series/ap-ro-12.webp": {
+  "s": 1.74,
+  "ox": 49.8,
+  "oy": 58.6
+ },
+ "/images/products/ro-series/ap-ro-16.webp": {
+  "s": 1.48,
+  "ox": 49.4,
+  "oy": 55.8
+ },
+ "/images/products/ro-series/ap-ro-24.webp": {
+  "s": 1.47,
+  "ox": 49.6,
+  "oy": 53.6
+ },
+ "/images/products/ro-series/ap-ro-32.webp": {
+  "s": 1.73,
+  "ox": 49.2,
+  "oy": 59.2
+ },
+ "/images/products/ro-series/ap-ro-40.webp": {
+  "s": 1.47,
+  "ox": 50.2,
+  "oy": 58.6
+ },
+ "/images/products/ro-series/ap-ro-48.webp": {
+  "s": 1.22,
+  "ox": 49.6,
+  "oy": 54.4
+ },
+ "/images/products/ro-series/ro-series-hero.webp": {
+  "s": 1.73,
+  "ox": 49.2,
+  "oy": 59.2
+ },
+ "/images/products/round/round-1000ml-black.webp": {
+  "s": 1.29,
+  "ox": 50.6,
+  "oy": 51.4
+ },
+ "/images/products/round/round-1000ml-transparent.webp": {
+  "s": 1.4,
+  "ox": 50.4,
+  "oy": 49.7
+ },
+ "/images/products/round/round-1000ml-white.webp": {
+  "s": 1.29,
+  "ox": 50.2,
+  "oy": 51.1
+ },
+ "/images/products/round/round-250ml-black.webp": {
+  "s": 1.66,
+  "ox": 50.6,
+  "oy": 66.4
+ },
+ "/images/products/round/round-250ml-transparent.webp": {
+  "s": 1.86,
+  "ox": 50.4,
+  "oy": 65.3
+ },
+ "/images/products/round/round-250ml-white.webp": {
+  "s": 1.66,
+  "ox": 50,
+  "oy": 66.4
+ },
+ "/images/products/round/round-300ml-black.webp": {
+  "s": 1.61,
+  "ox": 50.4,
+  "oy": 65.3
+ },
+ "/images/products/round/round-300ml-transparent.webp": {
+  "s": 1.81,
+  "ox": 50.6,
+  "oy": 64.4
+ },
+ "/images/products/round/round-300ml-white.webp": {
+  "s": 1.65,
+  "ox": 50.2,
+  "oy": 65
+ },
+ "/images/products/round/round-450ml-black.webp": {
+  "s": 1.52,
+  "ox": 50.4,
+  "oy": 62.8
+ },
+ "/images/products/round/round-450ml-transparent.webp": {
+  "s": 1.7,
+  "ox": 50.6,
+  "oy": 61.1
+ },
+ "/images/products/round/round-450ml-white.webp": {
+  "s": 1.51,
+  "ox": 50.2,
+  "oy": 62.5
+ },
+ "/images/products/round/round-500ml-black.webp": {
+  "s": 1.51,
+  "ox": 51,
+  "oy": 61.1
+ },
+ "/images/products/round/round-500ml-transparent.webp": {
+  "s": 1.61,
+  "ox": 50.4,
+  "oy": 60.3
+ },
+ "/images/products/round/round-500ml-white.webp": {
+  "s": 1.47,
+  "ox": 50.4,
+  "oy": 61.4
+ },
+ "/images/products/round/round-750ml-black.webp": {
+  "s": 1.44,
+  "ox": 50.4,
+  "oy": 54.2
+ },
+ "/images/products/round/round-750ml-transparent.webp": {
+  "s": 1.44,
+  "ox": 50.4,
+  "oy": 54.2
+ },
+ "/images/products/round/round-750ml-white.webp": {
+  "s": 1.34,
+  "ox": 50.4,
+  "oy": 55
+ },
+ "/images/products/round/round-containers-hero.webp": {
+  "s": 1.61,
+  "ox": 50.4,
+  "oy": 60.3
+ },
+ "/images/products/sweet-box/sweet-box-hero.webp": {
+  "s": 1.37,
+  "ox": 50.2,
+  "oy": 62.5
+ },
+ "/images/products/sweet-box/sweetbox-1000g.webp": {
+  "s": 1.08,
+  "ox": 50.6,
+  "oy": 59.7
+ },
+ "/images/products/sweet-box/sweetbox-250g.webp": {
+  "s": 1.74,
+  "ox": 50.4,
+  "oy": 64.4
+ },
+ "/images/products/sweet-box/sweetbox-500g.webp": {
+  "s": 1.37,
+  "ox": 50.2,
+  "oy": 62.5
+ },
+ "/images/products/zen/zen-1000ml.webp": {
+  "s": 1.6,
+  "ox": 51,
+  "oy": 58.3
+ },
+ "/images/products/zen/zen-500ml.webp": {
+  "s": 1.62,
+  "ox": 51,
+  "oy": 64.7
+ },
+ "/images/products/zen/zen-650ml.webp": {
+  "s": 1.51,
+  "ox": 51,
+  "oy": 63.3
+ },
+ "/images/products/zen/zen-750ml.webp": {
+  "s": 1.6,
+  "ox": 51.2,
+  "oy": 61.1
+ },
+ "/images/products/zen/zen-black-1000ml.webp": {
+  "s": 1.33,
+  "ox": 50.2,
+  "oy": 61.7
+ },
+ "/images/products/zen/zen-black-500ml.webp": {
+  "s": 1.5,
+  "ox": 50.2,
+  "oy": 68.1
+ },
+ "/images/products/zen/zen-black-650ml.webp": {
+  "s": 1.44,
+  "ox": 50.2,
+  "oy": 66.1
+ },
+ "/images/products/zen/zen-black-750ml.webp": {
+  "s": 1.41,
+  "ox": 50.2,
+  "oy": 65.3
+ },
+ "/images/products/zen/zen-series-hero.webp": {
+  "s": 1.6,
+  "ox": 51.2,
+  "oy": 61.1
+ }
+}

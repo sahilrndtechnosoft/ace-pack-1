@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles, CheckCircle2, PackageCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { homeProductCarousel, type ProductCarouselItem } from '@/lib/cms/pages/home-carousel';
+import { PRODUCT_IMAGE_ZOOM_CLASS, productImageFit } from '@/lib/data/product-image-fit';
 
 export type { ProductCarouselItem };
 
@@ -207,7 +208,8 @@ export const ProductShowcaseCarousel: React.FC<{ content?: typeof homeProductCar
                   alt={activeProduct.name}
                   loading="lazy"
                   decoding="async"
-                  className={`w-full h-full ${isPhoto ? 'object-cover scale-[1.2] group-hover:scale-[1.27]' : 'object-contain group-hover:scale-105'} transition-transform duration-700 ease-out`}
+                  style={isPhoto ? productImageFit(displayImage) : undefined}
+                  className={`w-full h-full ${isPhoto ? PRODUCT_IMAGE_ZOOM_CLASS : 'object-contain group-hover:scale-105 transition-transform duration-700 ease-out'}`}
                 />
                 {isPhoto && (
                   <span className="absolute top-2.5 left-2.5 bg-[#b99750]/90 backdrop-blur-xs text-[9px] font-extrabold uppercase tracking-wider text-white px-2 py-0.5 rounded-full shadow-xs">
@@ -322,7 +324,8 @@ export const ProductShowcaseCarousel: React.FC<{ content?: typeof homeProductCar
                         alt={item.name}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover scale-[1.2]"
+                        style={productImageFit(item.image)}
+                        className="w-full h-full object-cover [transform:scale(var(--fit-scale,1))]"
                       />
                       {isActive && (
                         <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#b99750] ring-3 ring-white" />

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
+import { foodBannerFor } from '@/lib/data/food-banners';
 import { Reveal } from '@/components/ui/Reveal';
 import { ArrowLeft, ArrowRight, HelpCircle, Box, ShieldCheck, Ruler, Layers } from 'lucide-react';
 import { CategoryProductGrid } from '@/components/categories/CategoryProductGrid';
@@ -55,7 +56,7 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
         title={category.name}
         subtitle={category.description}
         badge={`COLLECTION: ${category.subtitleName.toUpperCase()}`}
-        bgImage={category.heroImage}
+        bgImage={foodBannerFor(category.slug)}
         breadcrumbs={[
           { name: 'Categories', href: '/categories' },
           { name: category.name, href: `/categories/${category.slug}` },
