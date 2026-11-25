@@ -6,12 +6,10 @@ import { Reveal } from '@/components/ui/Reveal';
 import {
   ShieldCheck,
   CheckCircle2,
-  FileDown,
   Eye,
   Award,
   X,
 } from 'lucide-react';
-import { CatalogueDownloadModal } from '@/components/ui/CatalogueDownloadModal';
 import { qualityPage } from '@/lib/cms/pages/quality';
 import type { CmsPageContent } from '@/lib/cms/registry';
 
@@ -22,14 +20,7 @@ const QUALITY_DEFAULTS = {
 
 export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidden?: string[] }> = ({ content = QUALITY_DEFAULTS, hidden = [] }) => {
   const { banner, certificate: c } = content;
-  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState<{ title: string; url: string }>({ title: c.certificateTitle, url: c.certificateFile });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const handleDownloadCertificate = () => {
-    setSelectedDoc({ title: c.certificateTitle, url: c.certificateFile });
-    setDownloadModalOpen(true);
-  };
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">
@@ -120,31 +111,12 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
                       ))}
                     </div>
                   </div>
-                  {/* Action Button: Only one button with text "Download" */}
-                  <div className="pt-4 border-t border-gray-100 flex items-center">
-                    <button
-                      type="button"
-                      onClick={handleDownloadCertificate}
-                      className="inline-flex items-center justify-center gap-2 bg-[#b99750] hover:bg-[#a6843e] text-white font-bold py-3.5 px-8 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md shadow-[#b99750]/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-                    >
-                      <FileDown className="w-4 h-4" />
-                      <span>{c.downloadButtonText}</span>
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
           </Reveal>
         </div>
       </section>}
-
-      {/* Catalogue & Certificate Download / Email Modal */}
-      <CatalogueDownloadModal
-        isOpen={downloadModalOpen}
-        onClose={() => setDownloadModalOpen(false)}
-        documentTitle={selectedDoc.title}
-        downloadUrl={selectedDoc.url}
-      />
 
       {/* High-Resolution Certificate Lightbox */}
       {previewImage && (
@@ -178,21 +150,10 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
                 className="max-h-[72vh] w-auto object-contain rounded-lg shadow-sm"
               />
             </div>
-            <div className="p-3 border-t border-gray-100 flex items-center justify-between gap-3 bg-[#FAF8F4]">
+            <div className="p-3 border-t border-gray-100 bg-[#FAF8F4]">
               <span className="text-[11px] text-gray-600 font-semibold">
                 {c.validityNote}
               </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setPreviewImage(null);
-                  handleDownloadCertificate();
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] cursor-pointer"
-              >
-                <FileDown className="w-3.5 h-3.5" />
-                <span>Download</span>
-              </button>
             </div>
           </div>
         </div>

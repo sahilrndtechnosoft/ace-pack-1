@@ -190,24 +190,10 @@ export function DownloadsClient({ groups, sampleCta }: DownloadsClientProps) {
                 className="max-h-[75vh] w-auto object-contain rounded-lg shadow-sm"
               />
             </div>
-            <div className="p-3 border-t border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 bg-[#FAF8F4]">
-              <span className="text-[11px] text-gray-500 text-center sm:text-left">
+            <div className="p-3 border-t border-gray-100 bg-[#FAF8F4]">
+              <span className="text-[11px] text-gray-500">
                 Certificate IN25/00000652 · Valid through Aug 2028
               </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setPreviewImage(null);
-                  setSelectedDoc({
-                    title: 'ISO 9001:2015 Management System Certificate',
-                    url: '/downloads/certificates/Ace_Packaging_ISO_9001_2015_Certificate.jpg',
-                  });
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#b99750] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#a6843e] cursor-pointer"
-              >
-                <FileDown className="w-3.5 h-3.5" />
-                <span>{L.downloadsCertificateButton}</span>
-              </button>
             </div>
           </div>
         </div>

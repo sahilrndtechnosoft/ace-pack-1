@@ -34,9 +34,9 @@ export const PageBanner: React.FC<PageBannerProps> = ({
           alt={title}
           fetchPriority="high"
           decoding="async"
-          className="w-full h-full object-cover opacity-25 filter brightness-75"
+          className="w-full h-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/35" />
       </div>
 
       <div className="container-custom relative z-10 text-left">

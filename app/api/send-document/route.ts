@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
+import { isCertificateDownload } from '@/lib/data/downloads';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +15,10 @@ export async function POST(request: NextRequest) {
 
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Full name is required.' }, { status: 400 });
+    }
+
+    if (isCertificateDownload({ file: typeof downloadUrl === 'string' ? downloadUrl : '' })) {
+      return NextResponse.json({ error: 'Certificates are not available for download.' }, { status: 403 });
     }
 
     const docName = documentTitle || 'Ace Packaging Product Catalog 2026';

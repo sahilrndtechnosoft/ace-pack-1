@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   },
   // Same 301s as www.acepack.co.in: old hinge-container posts were merged into one article.
   async redirects() {
-    return [
+    const legacyRedirects = [
       'hinge-cups-for-food-packaging-uses-and-benefits',
       'maximizing-kitchen-efficiency-with-hinge-containers',
       'the-role-of-hinge-containers-in-food-packaging',
@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
         statusCode: 301 as const,
       }))
     );
+    return [
+      ...legacyRedirects,
+      // Certificates are view-only: block the direct file link (307 so browsers don't cache it forever).
+      { source: '/downloads/certificates/:path*', destination: '/quality', statusCode: 307 as const },
+    ];
   },
   async headers() {
     return [

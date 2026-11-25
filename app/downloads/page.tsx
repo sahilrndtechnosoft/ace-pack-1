@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { PageBanner } from '@/components/ui/PageBanner';
-import { downloadGroups, type DownloadItem } from '@/lib/data/downloads';
+import { downloadGroups, isCertificateDownload, type DownloadItem } from '@/lib/data/downloads';
 import { getCmsDownloads, cmsMetadata, getPageContent, getSiteText } from '@/lib/db/content';
 import { DownloadsClient, type DownloadsClientGroup } from '@/components/sections/DownloadsClient';
 
@@ -58,6 +58,10 @@ export default async function DownloadsPage() {
       };
     });
   }
+
+  groups = groups
+    .map((group) => ({ ...group, items: group.items.filter((item) => !isCertificateDownload(item)) }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <div className="bg-[#FAF8F4] min-h-screen text-[#1A1D20] pb-24">

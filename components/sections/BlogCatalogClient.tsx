@@ -187,7 +187,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
             <Reveal type="fade-up">
               <div className="mb-14">
                 <div className="bg-white rounded-3xl overflow-hidden border-2 border-[#cfa144]/60 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-0 group">
-                  <div className="lg:col-span-7 relative h-72 lg:h-[400px] overflow-hidden bg-slate-900">
+                  <div className="lg:col-span-7 relative aspect-[2/1] lg:self-center overflow-hidden bg-slate-900">
                     <img
                       src={featuredPost.image}
                       alt={featuredPost.title}
@@ -267,7 +267,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                 <Reveal key={post.id} type="fade-up" delay={Math.min(idx % 3, 2) * 0.08}>
                   <article className="bg-white rounded-3xl overflow-hidden border border-[#E6DBC6] hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
                     <div>
-                      <div className="relative h-56 overflow-hidden bg-slate-900">
+                      <div className="relative aspect-[2/1] overflow-hidden bg-slate-900">
                         <img
                           src={post.image}
                           alt={post.title}

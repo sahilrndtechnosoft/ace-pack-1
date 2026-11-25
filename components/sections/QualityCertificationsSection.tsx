@@ -1,20 +1,16 @@
 'use client';
 
 import { homeCertifications } from '@/lib/cms/pages/home';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Award, FileCheck2, ArrowRight, CheckCircle2, FlaskConical, Sparkles, FileDown, Eye } from 'lucide-react';
+import { ShieldCheck, Award, FileCheck2, ArrowRight, CheckCircle2, FlaskConical, Sparkles } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Reveal } from '../ui/Reveal';
 import { SplitHeading } from '../ui/SplitHeading';
-import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 
 const CARD_ICONS = [Award, ShieldCheck, FlaskConical, FileCheck2];
 
 export const QualityCertificationsSection: React.FC<{ content?: typeof homeCertifications }> = ({ content: c = homeCertifications }) => {
-  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-
-
   return (
     <section id="certifications-quality" className="relative py-20 bg-gradient-to-b from-[#FAF8F4] to-[#f4f1e8] text-[var(--ace-ink)] border-b border-[#E6DBC6]/50 overflow-hidden">
       {/* Background radial gold glow */}
@@ -42,15 +38,6 @@ export const QualityCertificationsSection: React.FC<{ content?: typeof homeCerti
             </div>
 
             <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
-              <button
-                type="button"
-                onClick={() => setDownloadModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider text-center shadow-lg shadow-[#b99750]/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
-              >
-                <FileDown className="w-4 h-4" />
-                <span>{c.downloadButtonText}</span>
-              </button>
-
               <Link
                 href={c.specsButton.link}
                 className="inline-flex items-center justify-center gap-1.5 px-4 py-3 sm:py-3.5 rounded-full border border-[#E6DBC6] hover:border-[#b99750] bg-white text-[var(--ace-ink)] text-xs sm:text-sm font-bold uppercase tracking-wide transition-colors"
@@ -97,10 +84,7 @@ export const QualityCertificationsSection: React.FC<{ content?: typeof homeCerti
                     </p>
 
                     {idx === 0 && c.certificateThumbnail && (
-                      <div
-                        onClick={() => setDownloadModalOpen(true)}
-                        className="mb-4 p-2 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] transition-colors flex items-center gap-3 cursor-pointer group/thumb"
-                      >
+                      <div className="mb-4 p-2 rounded-xl bg-[#FAF8F4] border border-[#E6DBC6] flex items-center gap-3">
                         <div className="w-10 h-14 rounded-md bg-white border border-gray-200 overflow-hidden shrink-0">
                           <img
                             src={c.certificateThumbnail}
@@ -110,9 +94,8 @@ export const QualityCertificationsSection: React.FC<{ content?: typeof homeCerti
                         </div>
                         <div className="min-w-0 flex-1">
                           <span className="text-[10px] font-bold text-[#a8812f] uppercase block">Official SGS Certificate</span>
-                          <span className="text-[11px] font-semibold text-[var(--ace-ink)] block truncate">Click to Download &amp; Email</span>
+                          <span className="text-[11px] font-semibold text-[var(--ace-ink)] block truncate">ISO 9001:2015 · Verified by SGS</span>
                         </div>
-                        <FileDown className="w-4 h-4 text-[#b99750] group-hover/thumb:translate-y-0.5 transition-transform" />
                       </div>
                     )}
                   </div>
@@ -144,14 +127,6 @@ export const QualityCertificationsSection: React.FC<{ content?: typeof homeCerti
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => setDownloadModalOpen(true)}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#b99750] hover:bg-[#a6843e] text-white text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer shadow-sm"
-            >
-              <FileDown className="w-4 h-4" />
-              <span>{c.bannerButtonText}</span>
-            </button>
             <Link
               href={c.bannerLink.link}
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border-2 border-[#b99750] hover:bg-[#b99750] hover:text-white text-[#b99750] text-xs font-bold uppercase tracking-wide sm:tracking-wider text-center transition-colors"
@@ -163,14 +138,6 @@ export const QualityCertificationsSection: React.FC<{ content?: typeof homeCerti
         </div>
 
       </Container>
-
-      {/* Catalogue & Certificate Download / Email Modal */}
-      <CatalogueDownloadModal
-        isOpen={downloadModalOpen}
-        onClose={() => setDownloadModalOpen(false)}
-        documentTitle={c.certificateTitle}
-        downloadUrl={c.certificateFile}
-      />
     </section>
   );
 };

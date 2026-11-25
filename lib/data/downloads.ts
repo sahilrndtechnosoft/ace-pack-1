@@ -7,6 +7,11 @@ export interface DownloadItem {
   image?: string;
 }
 
+// Certificates are view-only on request: the site never offers them for download or email.
+export function isCertificateDownload(item: { type?: string; file?: string }): boolean {
+  return item.type === 'Certificate' || /certificat/i.test(item.file ?? '');
+}
+
 export interface DownloadGroup {
   id: 'catalogs' | 'datasheets' | 'certifications';
   title: string;

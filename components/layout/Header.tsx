@@ -6,6 +6,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import gsap from 'gsap';
 import {
   Menu,
   X,
@@ -22,57 +23,9 @@ import {
   Layers,
   Factory,
   Image as ImageIcon,
-  Calendar,
 } from 'lucide-react';
 import { productCategories, type ProductCategory } from '@/lib/data/products';
-import { PackagingIllustration } from '@/components/products/PackagingIllustration';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
-
-export interface CategoryGroup {
-  id: string;
-  label: string;
-  shortLabel: string;
-  icon: string;
-  categorySlugs: string[];
-}
-
-export const CATEGORY_GROUPS: CategoryGroup[] = [
-  {
-    id: 'all',
-    label: 'All Lines',
-    shortLabel: 'All',
-    icon: '',
-    categorySlugs: productCategories.map((c) => c.slug),
-  },
-  {
-    id: 'meal-bento',
-    label: 'Meal & Bento Boxes',
-    shortLabel: 'Bento & Meals',
-    icon: '',
-    categorySlugs: ['re-series', 'zen-series', 'meal-boxes', 'elite-containers'],
-  },
-  {
-    id: 'round-deli',
-    label: 'Round Bowls & Deli',
-    shortLabel: 'Round Bowls',
-    icon: '',
-    categorySlugs: ['ro-series', 'round-containers', 'deli-series'],
-  },
-  {
-    id: 'cups-portion',
-    label: 'Cups & Portions',
-    shortLabel: 'Cups & Dips',
-    icon: '',
-    categorySlugs: ['hinge-cups', 'portion-cups', 'glass-series-80-dia', 'glass-series-90-dia'],
-  },
-  {
-    id: 'sweets-special',
-    label: 'Sweets & Specialty',
-    shortLabel: 'Sweets & Special',
-    icon: '',
-    categorySlugs: ['sweet-box-containers', 'natraj-containers', 'flat-containers', 'tamper-evident', 'ice-cream-tubs', 'custom-iml'],
-  },
-];
 
 const FEATURED_MOBILE_CATEGORIES = [
   {
@@ -139,6 +92,20 @@ const getResourceIcon = (href: string) => {
   }
 };
 
+const MEGA_MENU_MODELS_PER_CATEGORY = 3;
+
+// Floating photo that trails the cursor over the Products menu, like the /categories list.
+const MEGA_PREVIEW_OFFSET = 28;
+const MEGA_PREVIEW_EDGE = 16;
+
+interface MegaPreview {
+  image: string;
+  title: string;
+  href: string;
+  // Product photos sit small on a large backdrop, so they get zoomed; category photos don't.
+  isProduct: boolean;
+}
+
 export interface HeaderProps {
   initialSettings?: any;
   initialCategories?: ProductCategory[];
@@ -195,14 +162,43 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
   const [resourcesOpen, setResourcesOpen] = useState(false);
 
   // Mega-menu and mobile drawer interactive states
-  const [activeCategorySlug, setActiveCategorySlug] = useState<string>('re-series');
-  const [desktopSegment, setDesktopSegment] = useState<string>('all');
-  const [desktopSearch, setDesktopSearch] = useState<string>('');
+  const [megaPreview, setMegaPreview] = useState<MegaPreview | null>(null);
+  // Kept apart from the content so the photo stays put while the card fades out.
+  const [isMegaPreviewVisible, setIsMegaPreviewVisible] = useState(false);
+  const showMegaPreview = (preview: MegaPreview) => {
+    setMegaPreview(preview);
+    setIsMegaPreviewVisible(true);
+  };
+  const hideMegaPreview = () => setIsMegaPreviewVisible(false);
   const [mobileSearch, setMobileSearch] = useState<string>('');
   const [mobileShowAllCats, setMobileShowAllCats] = useState<boolean>(false);
   const megaMenuContainerRef = useRef<HTMLDivElement>(null);
   const resourcesContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const megaPreviewRef = useRef<HTMLDivElement>(null);
+  const megaPreviewMove = useRef<{ x: (v: number) => void; y: (v: number) => void } | null>(null);
+
+  useEffect(() => {
+    const card = megaPreviewRef.current;
+    if (!card) return;
+    const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.45;
+    megaPreviewMove.current = {
+      x: gsap.quickTo(card, 'x', { duration, ease: 'power3' }),
+      y: gsap.quickTo(card, 'y', { duration, ease: 'power3' }),
+    };
+  }, []);
+
+  // Same placement as the /categories list: right of the cursor, flipped left near the edge.
+  const placeMegaPreview = (e: React.PointerEvent) => {
+    const card = megaPreviewRef.current;
+    const move = megaPreviewMove.current;
+    if (!card || !move || e.pointerType !== 'mouse') return;
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    const x = e.clientX + MEGA_PREVIEW_OFFSET + w > window.innerWidth ? e.clientX - w - MEGA_PREVIEW_OFFSET : e.clientX + MEGA_PREVIEW_OFFSET;
+    move.x(x);
+    move.y(Math.min(window.innerHeight - h - MEGA_PREVIEW_EDGE, Math.max(MEGA_PREVIEW_EDGE, e.clientY - h / 2)));
+  };
 
   // Publish the live header height so sticky/pinned sections sit flush under it
   // (it varies by breakpoint and shrinks once the page scrolls).
@@ -263,33 +259,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
     `py-2.5 px-3 rounded-xl flex items-center justify-between font-bold text-sm transition-colors hover:bg-white hover:text-[var(--ace-orange)] ${isActive(href) ? 'bg-white text-[var(--ace-orange)] font-extrabold shadow-2xs' : 'text-[var(--ace-ink)]'
     }`;
 
-  // Filtered categories for desktop mega menu
-  const desktopFilteredCategories = useMemo(() => {
-    let list = categories;
-    if (desktopSegment !== 'all') {
-      const grp = CATEGORY_GROUPS.find((g) => g.id === desktopSegment);
-      if (grp) {
-        list = list.filter((c) => grp.categorySlugs.includes(c.slug));
-      }
-    }
-    if (desktopSearch.trim()) {
-      const q = desktopSearch.toLowerCase().trim();
-      list = list.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.subtitleName.toLowerCase().includes(q) ||
-          c.products.some((p) => p.name.toLowerCase().includes(q) || p.capacity.toLowerCase().includes(q))
-      );
-    }
-    return list;
-  }, [categories, desktopSegment, desktopSearch]);
-
-  // Ensure activeCategorySlug is valid when filters change
-  const activeCategory: ProductCategory = useMemo(() => {
-    const found = desktopFilteredCategories.find((c) => c.slug === activeCategorySlug);
-    if (found) return found;
-    return desktopFilteredCategories[0] || categories[0] || productCategories[0];
-  }, [desktopFilteredCategories, activeCategorySlug, categories]);
+  const totalModels = categories.reduce((sum, c) => sum + c.products.length, 0);
 
   // Sorted categories for the mobile drawer full A-Z directory
   const sortedAllCategories = useMemo(() => {
@@ -428,200 +398,107 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
               />
             </button>
 
-            {/* Premium Master-Detail Mega Menu */}
+            {/* Category mega menu: categories flow into balanced columns; hovering a model previews its photo */}
             <AnimatePresence>
               {megaMenuOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[95vw] max-w-[1160px] z-50 pt-2">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[calc(100vw-2rem)] max-w-[1200px] z-50 pt-2">
                   <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.99 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.99 }}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="bg-white border border-[#E6DBC6] rounded-2xl shadow-[0_24px_70px_rgba(20,23,26,0.18)] overflow-hidden flex flex-col tracking-normal normal-case whitespace-normal origin-top"
+                    className="bg-white border border-[#E6DBC6] rounded-2xl shadow-[0_24px_70px_rgba(20,23,26,0.18)] overflow-hidden flex flex-col tracking-normal normal-case whitespace-normal"
                   >
-                    {/* Mega-Menu Top Navigation Bar */}
-                    <div className="px-6 py-3.5 border-b border-[var(--ace-line)] bg-[#FAF8F4] flex items-center justify-between gap-4 shrink-0">
-                      {/* Segment Filter Tabs */}
-                      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
-                        {CATEGORY_GROUPS.map((grp) => (
-                          <button
-                            key={grp.id}
-                            type="button"
-                            onClick={() => setDesktopSegment(grp.id)}
-                            className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all shrink-0 cursor-pointer ${desktopSegment === grp.id
-                                ? 'bg-[var(--ace-orange)] text-white shadow-xs'
-                                : 'bg-white/90 text-gray-700 hover:text-[var(--ace-ink)] border border-[var(--ace-line)] hover:border-gray-300'
-                              }`}
-                          >
-                            <span>{grp.label}</span>
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Right Header Utilities: Instant Search + Catalog Link */}
-                      <div className="flex items-center gap-3 shrink-0">
-                        <div className="relative w-48 xl:w-56">
-                          <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                          <input
-                            type="text"
-                            value={desktopSearch}
-                            onChange={(e) => setDesktopSearch(e.target.value)}
-                            placeholder="Search container lines..."
-                            className="w-full pl-8 pr-6 py-1.5 text-xs bg-white border border-[var(--ace-line)] rounded-full text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)] transition-colors"
-                          />
-                          {desktopSearch && (
-                            <button
-                              type="button"
-                              onClick={() => setDesktopSearch('')}
-                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
-                            >
-                              ✕
-                            </button>
-                          )}
-                        </div>
-
-                        <Link
-                          href="/products"
-                          onClick={() => setMegaMenuOpen(false)}
-                          className="text-xs font-bold text-gray-800 hover:text-[var(--ace-orange)] flex items-center gap-1 transition-colors shrink-0"
-                        >
-                          <span>Full Catalog (100+)</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-                        </Link>
-                      </div>
+                    <div className="px-6 xl:px-7 py-3.5 border-b border-[var(--ace-line)] flex items-center justify-between gap-4">
+                      <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--brand-gold)]">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Product Categories &amp; Model Variants
+                      </span>
+                      <Link
+                        href="/products"
+                        onClick={() => setMegaMenuOpen(false)}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--ace-ink)] hover:text-[var(--brand-gold)] transition-colors"
+                      >
+                        View All {totalModels} Products
+                        <ArrowRight className="w-3.5 h-3.5 text-[var(--brand-gold)]" />
+                      </Link>
                     </div>
 
-                    {/* Master-Detail Split Workspace */}
-                    <div className="flex overflow-hidden min-h-[380px] max-h-[460px]">
-                      {/* Left Sidebar: Categories Navigation Rail */}
-                      <div
-                        className="w-72 xl:w-80 shrink-0 border-r border-[var(--ace-line)] bg-[#FAF8F4]/70 overflow-y-auto p-3 space-y-1"
-                        data-lenis-prevent
-                      >
-                        {desktopFilteredCategories.length === 0 ? (
-                          <div className="p-6 text-center text-xs text-gray-500">
-                            No matching category found for &quot;{desktopSearch}&quot;
-                          </div>
-                        ) : (
-                          desktopFilteredCategories.map((category) => {
-                            const isSelected = activeCategory.slug === category.slug;
+                    <div
+                      className="max-h-[calc(100dvh-190px)] overflow-y-auto overscroll-contain px-6 xl:px-7 pt-5 pb-1"
+                      data-lenis-prevent
+                      onPointerMove={placeMegaPreview}
+                      onPointerLeave={hideMegaPreview}
+                    >
+                        <div className="columns-4 xl:columns-5 gap-6 xl:gap-7">
+                          {categories.map((category) => {
+                            const extraModels = category.products.length - MEGA_MENU_MODELS_PER_CATEGORY;
+                            const categoryHref = `/categories/${category.slug}`;
                             return (
-                              <button
-                                key={category.id}
-                                type="button"
-                                onMouseEnter={() => setActiveCategorySlug(category.slug)}
-                                onClick={() => setActiveCategorySlug(category.slug)}
-                                className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-center justify-between gap-3 group cursor-pointer ${isSelected
-                                    ? 'bg-white text-[var(--ace-orange)] shadow-xs font-bold border border-[var(--ace-orange)]/40 ring-1 ring-[var(--ace-orange)]/15'
-                                    : 'text-[var(--ace-ink)] hover:bg-white/80 hover:text-[var(--ace-orange)] border border-transparent'
-                                  }`}
-                              >
-                                <div className="flex items-center gap-2.5 min-w-0">
-                                  <PackagingIllustration
-                                    slug={category.slug}
-                                    className={`w-5 h-5 shrink-0 transition-colors ${isSelected ? 'text-[var(--ace-orange)]' : 'text-gray-500 group-hover:text-[var(--ace-orange)]'
-                                      }`}
-                                  />
-                                  <span className="text-[13.5px] truncate font-medium">{category.name}</span>
-                                </div>
-
-                                <div className="flex items-center gap-1.5 shrink-0">
-                                  <span className="text-[10px] font-semibold text-gray-500 bg-black/5 px-2 py-0.5 rounded-full">
-                                    {category.products.length}
-                                  </span>
-                                  <ChevronRight
-                                    className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-[var(--ace-orange)] translate-x-0.5' : 'text-gray-400 group-hover:text-gray-600'
-                                      }`}
-                                  />
-                                </div>
-                              </button>
-                            );
-                          })
-                        )}
-                      </div>
-
-                      {/* Right Panel: Interactive Model Explorer */}
-                      <div
-                        className="flex-1 overflow-y-auto p-5 sm:p-6 flex flex-col justify-between bg-white"
-                        data-lenis-prevent
-                      >
-                        <div>
-                          {/* Active Category Header */}
-                          <div className="flex items-center justify-between gap-4 pb-3.5 mb-4 border-b border-[var(--ace-line)]">
-                            <div>
-                              <div className="flex items-center gap-2.5">
-                                <PackagingIllustration slug={activeCategory.slug} className="w-5 h-5 text-[var(--brand-gold)]" />
-                                <h3 className="text-lg font-bold text-[var(--ace-ink)] leading-snug">
-                                  {activeCategory.name}
-                                </h3>
-                                <span className="text-[11px] font-semibold text-[var(--brand-gold)] bg-[#FAF8F4] px-2.5 py-0.5 rounded-full border border-[var(--ace-line)]">
-                                  {activeCategory.products.length} Models
-                                </span>
-                              </div>
-                              <p className="text-xs text-[var(--ace-muted)] mt-1">
-                                {activeCategory.subtitleName} · 100% Prime Virgin PP 05 Food Grade Polymer
-                              </p>
-                            </div>
-
-                            <Link
-                              href={`/categories/${activeCategory.slug}`}
-                              onClick={() => setMegaMenuOpen(false)}
-                              className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-gold)] hover:underline shrink-0 bg-[#FAF8F4] px-3.5 py-2 rounded-xl border border-[var(--ace-line)] hover:border-[var(--brand-gold)] transition-colors"
-                            >
-                              <span>Explore All {activeCategory.products.length} Sizes</span>
-                              <ArrowRight className="w-3.5 h-3.5" />
-                            </Link>
-                          </div>
-
-                          {/* Model Grid - Clean 4-card showcase */}
-                          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-                            {activeCategory.products.slice(0, 4).map((product) => (
-                              <Link
-                                key={product.id}
-                                href={`/categories/${activeCategory.slug}/${product.product_slug}`}
-                                onClick={() => setMegaMenuOpen(false)}
-                                className="group relative flex flex-col justify-between rounded-xl border border-[var(--ace-line)] bg-white p-3 hover:border-[var(--brand-gold)] hover:shadow-md transition-all text-left"
-                              >
-                                <div className="relative h-24 w-full flex items-center justify-center bg-[#FAF8F4] rounded-lg mb-2 overflow-hidden group-hover:bg-[#f6f2e8] transition-colors">
-                                  <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                    loading="lazy"
-                                  />
-                                </div>
-
-                                <div className="min-w-0">
-                                  <h4 className="text-[13px] font-bold text-[var(--ace-ink)] group-hover:text-[var(--brand-gold)] transition-colors truncate leading-tight">
-                                    {product.name}
-                                  </h4>
-                                  {product.dimensions && (
-                                    <p className="text-[11px] text-[var(--ace-muted)] truncate mt-0.5">
-                                      {product.dimensions.top} × {product.dimensions.height}
-                                    </p>
+                              <div key={category.id} className="inline-block w-full break-inside-avoid mb-4">
+                                <Link
+                                  href={categoryHref}
+                                  onClick={() => setMegaMenuOpen(false)}
+                                  onMouseEnter={() => showMegaPreview({ image: category.heroImage, title: category.name, href: categoryHref, isProduct: false })}
+                                  onMouseLeave={hideMegaPreview}
+                                  className="flex items-baseline justify-between gap-2 pb-1.5 mb-2 border-b border-[var(--ace-line)] text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors"
+                                >
+                                  <span className="truncate">{category.name}</span>
+                                  <span className="text-[10px] font-semibold text-[var(--ace-muted)] tracking-normal shrink-0">{category.products.length}</span>
+                                </Link>
+                                <ul className="space-y-0.5">
+                                  {category.products.slice(0, MEGA_MENU_MODELS_PER_CATEGORY).map((product) => {
+                                    const href = `${categoryHref}/${product.product_slug}`;
+                                    const isPreviewed = isMegaPreviewVisible && megaPreview?.href === href;
+                                    const preview: MegaPreview = { image: product.image, title: product.name, href, isProduct: true };
+                                    return (
+                                      <li key={product.id}>
+                                        <Link
+                                          href={href}
+                                          onClick={() => setMegaMenuOpen(false)}
+                                          onMouseEnter={() => showMegaPreview(preview)}
+                                          onMouseLeave={hideMegaPreview}
+                                          className={`group/item flex items-start gap-1.5 py-[3px] text-[12.5px] font-medium transition-colors ${
+                                            isPreviewed ? 'text-[var(--brand-gold)]' : 'text-[var(--ace-ink)] hover:text-[var(--brand-gold)]'
+                                          }`}
+                                        >
+                                          <ChevronRight className="w-3 h-3 mt-[3px] shrink-0 text-[var(--brand-gold)] transition-transform group-hover/item:translate-x-0.5" />
+                                          <span className="leading-snug">{product.name}</span>
+                                        </Link>
+                                      </li>
+                                    );
+                                  })}
+                                  {extraModels > 0 && (
+                                    <li>
+                                      <Link
+                                        href={categoryHref}
+                                        onClick={() => setMegaMenuOpen(false)}
+                                        className="inline-flex items-center gap-1 pl-[18px] py-[3px] text-[12px] font-semibold text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors"
+                                      >
+                                        +{extraModels} more models
+                                      </Link>
+                                    </li>
                                   )}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
+                                </ul>
+                              </div>
+                            );
+                          })}
                         </div>
+                    </div>
 
-                        {/* Minimal Quality Guarantee & PDF Link Strip */}
-                        <div className="mt-4 pt-3 border-t border-[var(--ace-line)] flex items-center justify-between text-xs text-[var(--ace-muted)]">
-                          <div className="flex items-center gap-1.5">
-                            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                            <span>ISO 9001:2015 Certified · Deep Freeze (−20°C) to Microwave (+120°C) Safe</span>
-                          </div>
-                          <Link
-                            href="/downloads"
-                            onClick={() => setMegaMenuOpen(false)}
-                            className="font-bold text-[var(--brand-gold)] hover:underline flex items-center gap-1 shrink-0"
-                          >
-                            <FileDown className="w-3.5 h-3.5" />
-                            <span>Download Catalog (PDF)</span>
-                          </Link>
-                        </div>
-                      </div>
+                    <div className="px-6 xl:px-7 py-3 border-t border-[var(--ace-line)] bg-[#FAF8F4] flex items-center justify-between gap-4 text-[11px] font-bold uppercase tracking-[0.04em]">
+                      <span className="inline-flex items-center gap-1.5 text-[var(--ace-ink)] min-w-0">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand-gold)] shrink-0" />
+                        <span className="truncate">All containers are manufactured from 100% virgin PP 05 food grade plastic.</span>
+                      </span>
+                      <Link
+                        href="/contact"
+                        onClick={() => setMegaMenuOpen(false)}
+                        className="inline-flex items-center gap-1 text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors shrink-0"
+                      >
+                        Request Bulk Factory Quote
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
                   </motion.div>
                 </div>
@@ -748,9 +625,11 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
             </AnimatePresence>
           </div>
 
+          {/* Exhibitions & Events hidden from the menu on request; the /events page still works.
           <Link href="/events" className={navLink('/events')} aria-current={isActive('/events') ? 'page' : undefined}>
             {menu.eventsLabel}
           </Link>
+          */}
 
           <Link href="/blogs" className={navLink('/blogs')} aria-current={isActive('/blogs') ? 'page' : undefined}>
             {menu.blogsLabel}
@@ -814,6 +693,29 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
         </div>
       </div>
 
+      {/* Cursor-following product photo for the Products menu (styled like the /categories preview) */}
+      <div ref={megaPreviewRef} aria-hidden="true" className="hidden lg:block fixed left-0 top-0 z-[60] pointer-events-none">
+        <div
+          className={`relative w-[260px] aspect-[4/3] rounded-2xl overflow-hidden border border-white/80 bg-[radial-gradient(circle_at_center,#ffffff_0%,#f4f0e6_100%)] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] transition duration-300 ease-out ${
+            megaMenuOpen && isMegaPreviewVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.94]'
+          }`}
+        >
+        {megaPreview && (
+          <>
+            <img
+              key={megaPreview.image}
+              src={megaPreview.image}
+              alt=""
+              className={`absolute inset-0 w-full h-full object-cover ${megaPreview.isProduct ? 'scale-[1.9] origin-[50%_70%]' : ''}`}
+            />
+            <span className="absolute left-3 bottom-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-[rgba(26,29,32,0.85)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-white backdrop-blur-sm">
+              {megaPreview.title}
+            </span>
+          </>
+        )}
+        </div>
+      </div>
+
       {/* Mobile & Tablet Navigation Drawer (< 1024px) */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -836,7 +738,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   >
                     <div className="flex items-center gap-2">
                       <Box className="w-4 h-4 text-[var(--ace-orange)]" />
-                      <span>Product </span>
+                      <span>{menu.productsLabel}</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 text-[var(--ace-orange)] transition-transform duration-300 ${mobileProductsOpen ? 'rotate-180' : ''
@@ -930,7 +832,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                             )}
                           </div>
                         ) : (
-                          /* Normal State: Dual Direct Actions + 6 Popular Lines + Full 17 A-Z Directory */
+                          /* Normal State: direct actions, popular lines and the full A-Z directory */
                           <div className="space-y-3">
                             {/* Quick Direct Catalog Shortcuts */}
                             <div className="grid grid-cols-2 gap-2">
@@ -944,7 +846,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <span className="text-[11px] font-extrabold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] block leading-tight truncate">
-                                    All 17 Series
+                                    All {categories.length} Series
                                   </span>
                                   <span className="text-[9.5px] text-gray-500 font-medium block truncate">
                                     Browse Categories
@@ -962,7 +864,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <span className="text-[11px] font-extrabold text-[var(--ace-ink)] group-hover:text-[var(--ace-orange)] block leading-tight truncate">
-                                    Full 89 Catalog
+                                    All {totalModels} Models
                                   </span>
                                   <span className="text-[9.5px] text-gray-500 font-medium block truncate">
                                     Filter by Capacity
@@ -1006,7 +908,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                               </div>
                             </div>
 
-                            {/* Browse All 17 Series (A-Z) Flat Toggle */}
+                            {/* Browse all series (A-Z) toggle */}
                             <div className="pt-2 border-t border-[var(--ace-line)]">
                               <button
                                 type="button"
@@ -1015,7 +917,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                               >
                                 <div className="flex items-center gap-1.5">
                                   <UtensilsCrossed className="w-3.5 h-3.5 text-[var(--ace-orange)]" />
-                                  <span>Browse All 17 Series (A–Z)</span>
+                                  <span>Browse All {categories.length} Series (A–Z)</span>
                                 </div>
                                 <ChevronDown
                                   className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${mobileShowAllCats ? 'rotate-180' : ''
@@ -1078,6 +980,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
 
+                {/* Exhibitions & Events hidden from the menu on request.
                 <Link
                   href="/events"
                   onClick={() => setMobileMenuOpen(false)}
@@ -1090,6 +993,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
                 </Link>
+                */}
 
                 <Link
                   href="/blogs"

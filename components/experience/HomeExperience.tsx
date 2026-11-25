@@ -11,7 +11,6 @@ import { products, containerFinishes, initialSceneState, defaultFinish } from '.
 import { buildScrollMotion, buildTextReveals, refreshOnSettle } from './experience-motion';
 import './experience.css';
 import CountUp from 'react-countup';
-import { QualityCertificationsSection } from '@/components/sections/QualityCertificationsSection';
 import { ExportMarketingSection } from '@/components/sections/ExportMarketingSection';
 import { FaqSection } from '@/components/sections/FaqSection';
 import { ProductShowcaseCarousel } from '@/components/products/ProductShowcaseCarousel';
@@ -19,6 +18,7 @@ import { PreFooterCTA } from '@/components/sections/PreFooterCTA';
 import { ObserverCollectionShowcase } from './ObserverCollectionShowcase';
 import { CatalogueHero } from '@/components/hero/CatalogueHero';
 import { TrustCardsSection } from './TrustCardsSection';
+import { ScrollVideoHero } from './ScrollVideoHero';
 import { homePage } from '@/lib/cms/pages/home';
 import { useSiteText } from '@/components/layout/SiteTextProvider';
 import type { CmsPageContent } from '@/lib/cms/registry';
@@ -33,6 +33,9 @@ const PackagingScene = dynamic(() => import('./PackagingScene'), { ssr: false })
 const InlineModelViewer = dynamic(() => import('./InlineModelViewer'), { ssr: false });
 const ModelInspector = dynamic(() => import('./ModelInspector'), { ssr: false });
 gsap.registerPlugin(ScrollTrigger);
+// The scroll-played product video replaces the hero banner and the 3D container for now.
+// Set to false (and uncomment the hero/craft/scene markup below) to bring the 3D experience back.
+const USE_SCROLL_VIDEO_HERO = true;
 class SceneBoundary extends Component<{ children: ReactNode; onError: () => void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -164,6 +167,7 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
     // webglcontextlost handler catches one that dies, and the load timeout
     // catches one that never arrives. All three fall back to stills.
     const detect = () => {
+      if (USE_SCROLL_VIDEO_HERO) { setFallbackReason('scroll-video-hero'); setMode('static'); setReady(true); return; }
       if (media.matches) { setFallbackReason('motion-preference'); setMode('static'); setReady(true); return; }
       if (compact.matches) { setFallbackReason('in-page-model'); setMode('static'); setReady(true); return; }
       setFallbackReason(''); setMode('3d'); setReady(false);
@@ -249,10 +253,16 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
     : { animate: { opacity: visible ? 1 : 0, y: visible ? 0 : offset } };
   return <MotionConfig reducedMotion="user"><div ref={root} className={`xp-home ${live ? 'xp-live' : 'xp-static'}`} data-render-reason={fallbackReason}>
     <a href="#main-content" className="xp-skip">Skip to content</a>
+    {/* 3D scene paused while the scroll video hero is in use (see USE_SCROLL_VIDEO_HERO).
     {live && <div className="xp-scene-layer" style={{ opacity: 0 }} aria-hidden="true"><SceneBoundary onError={onFailure}><PackagingScene state={state} renderActive={renderActive} loadRange={loadRange} onReady={onReady} onProgress={setProgress} onFailure={onFailure} /></SceneBoundary></div>}
+    */}
     <nav className="xp-chapters" aria-label="Homepage chapters">{['main-content', 'craft', 'collection', 'products-showcase', 'manufacturing', 'closing'].map((id, i) => [id, L.homeChapters[i] ?? id]).map(([id, label], i) => <a key={id} href={`#${id}`} aria-label={`Jump to ${label}`} aria-current={chapter === id ? 'location' : undefined}><span>{label}</span><b>0{i + 1}</b></a>)}</nav>
+    {/* Hero banner and 3D container section commented out for the scroll video hero.
     {show('hero_banner') && <CatalogueHero content={content.hero_banner} />}
     {show('craft') && <section id="craft" className={`xp-craft${pinnedCraft ? ' xp-craft--pinned' : ''}`}><div className="xp-craft-stage"><div className="xp-story-top"><span className="xp-eyebrow">{craft.eyebrow}</span><span className="xp-eyebrow">{craft.sideNote}</span></div><div className="xp-section-heading"><h2 data-split>{craft.heading} <em>{craft.headingHighlight}</em></h2></div><div className="xp-craft-facts">{craft.facts.map((fact, i) => <motion.div key={`${fact.title}-${revealMotion}`} className="xp-fact" aria-hidden={(live || pinnedCraft) && craftPhase !== i} {...(pinnedCraft ? { animate: { opacity: craftPhase === i ? 1 : 0, y: craftPhase === i ? 0 : 24 } } : panelMotion(!live || craftPhase === i, 24))} transition={{ duration: .55, ease: [.22, 1, .36, 1] }}><span className="xp-eyebrow">{fact.tag}</span><h3>{fact.title.split('\n').map(line => <span key={line}>{line}</span>)}</h3><p>{fact.body}</p><span className="xp-detail-rule" /></motion.div>)}</div>{!live && <InlineModelViewer className="xp-craft-image" fallbackSrc={craft.image} fallbackAlt={craft.imageAlt} animate={!reduced} pinned={pinnedCraft} onProgress={pinnedCraft ? onCraftProgress : undefined} triggerSelector="#craft" />}{live && <div className="xp-craft-drag" aria-hidden="true" onPointerDown={e => { dragging.current = e.clientX; e.currentTarget.setPointerCapture(e.pointerId); }} onPointerMove={e => { if (dragging.current === null) return; state.current.drag += (e.clientX - dragging.current) * .01; dragging.current = e.clientX; }} onPointerUp={() => { dragging.current = null; }} onPointerCancel={() => { dragging.current = null; }} />}<button type="button" className="xp-inspect-3d" onClick={() => setInspectorOpen(true)}><Rotate3D size={16} aria-hidden="true" />Inspect in 3D · drag &amp; zoom</button></div></section>}
+    */}
+    {/* Thermal-range fact left out of the video captions on request. */}
+    <ScrollVideoHero hero={content.hero_banner} facts={craft.facts.filter(fact => !/thermal|°C/i.test(`${fact.tag} ${fact.title}`))} />
     {/* GSAP Observer Dual-Wrapper Counter-Sliding Collection Section */}
     {show('collection') && <ObserverCollectionShowcase content={content.collection} />}
 
@@ -265,9 +275,6 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
 
     {/* Trusted at scale - Interactive Scroll-driven Industry Cards */}
     {show('industries') && <TrustCardsSection content={content.industries} />}
-
-    {/* Homepage Certifications & Quality Credentials */}
-    {show('certifications') && <QualityCertificationsSection content={content.certifications} />}
 
     {/* Dedicated Export Marketing Section ("Every container we ship for export is carefully planned/prepared for delivery") */}
     {show('export') && <ExportMarketingSection content={content.export} />}

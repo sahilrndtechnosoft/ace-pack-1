@@ -58,7 +58,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               alt={`${product.name} ${activeVarietyObj ? `- ${activeVarietyObj.name}` : ''}`}
               loading="lazy"
               decoding="async"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover scale-[1.6] origin-[50%_70%] group-hover:scale-[1.7] transition-transform duration-500"
             />
 
             {/* Interactive Variety Swatches Floating in Bottom Left of image */}
@@ -134,11 +134,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   </span>
                 </div>
               )}
-
-              <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
-                <span className="text-gray-500 font-medium">Thermal Range:</span>
-                <span className="font-semibold text-emerald-600">-20°C to +120°C</span>
-              </div>
 
               <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
                 <span className="text-gray-500 font-medium">Case Pack:</span>

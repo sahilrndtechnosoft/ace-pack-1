@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
-  Flame,
   Layers,
   ArrowRight,
   CheckCircle2,
@@ -44,9 +43,9 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [sampleSubmitted, setSampleSubmitted] = useState(false);
   const [sampleLoading, setSampleLoading] = useState(false);
+  const [sampleError, setSampleError] = useState('');
   const [sampleData, setSampleData] = useState({
     name: '',
-    company: '',
     email: '',
     phone: '',
     notes: '',
@@ -77,21 +76,42 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
   const lockingFoodImage =
     product.lockingFoodImage ||
     (category.gallery?.find((g) => g.toLowerCase().includes('lifestyle')) ||
-     category.gallery?.[category.gallery.length - 1] ||
-     category.heroImage ||
-     product.image);
+      category.gallery?.[category.gallery.length - 1] ||
+      category.heroImage ||
+      product.image);
 
   const foodApplications = product.applications && product.applications.length > 0
     ? product.applications
     : ['Cloud Kitchen Combos', 'Hot Gravy & Curry Delivery', 'Salads & Cold Meals', 'Microwave Reheating'];
 
-  const handleSampleSubmit = (e: React.FormEvent) => {
+  const handleSampleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSampleLoading(true);
-    setTimeout(() => {
-      setSampleLoading(false);
+    setSampleError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: sampleData.name.trim(),
+          email: sampleData.email.trim(),
+          phone: sampleData.phone.trim(),
+          subject: `Sample request: ${product.name}`,
+          message: [`Sample request for ${product.name} (${product.capacity}).`, sampleData.notes.trim()].filter(Boolean).join('\n\n'),
+          source_page: typeof window !== 'undefined' ? window.location.pathname : '/products',
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const firstFieldError = data.fieldErrors ? Object.values(data.fieldErrors)[0] : '';
+        throw new Error(String(firstFieldError || data.error || 'Could not send your request. Please try again.'));
+      }
       setSampleSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setSampleError(err instanceof Error ? err.message : 'Could not send your request. Please try again.');
+    } finally {
+      setSampleLoading(false);
+    }
   };
 
   return (
@@ -99,7 +119,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Left Column: 4-View Visual Studio */}
         <div className="lg:col-span-6 flex flex-col gap-4 lg:sticky lg:top-24 self-start">
-          
+
           {/* Color Variety Selector Panel (if product has multiple varieties) */}
           {product.varieties && product.varieties.length > 0 && (
             <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E6DBC6] shadow-xs flex flex-col gap-2.5">
@@ -129,11 +149,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                         setSelectedVarietySlug(v.slug);
                         if (activeView === 'video') setActiveView('blank');
                       }}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-[var(--ace-ink)] text-white shadow-xs ring-2 ring-[#b99750]'
-                          : 'bg-[#FAF8F4] text-gray-700 hover:bg-[#F3EFE6] border border-[#E6DBC6]'
-                      }`}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${isSelected
+                        ? 'bg-[var(--ace-ink)] text-white shadow-xs ring-2 ring-[#b99750]'
+                        : 'bg-[#FAF8F4] text-gray-700 hover:bg-[#F3EFE6] border border-[#E6DBC6]'
+                        }`}
                     >
                       <span
                         className="w-3.5 h-3.5 rounded-full border inline-block shrink-0 shadow-2xs"
@@ -176,11 +195,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveView(view)}
-                  className={`flex min-h-[44px] min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-2 py-2 text-xs font-bold transition-colors duration-200 ${
-                    isActive
-                      ? 'border-[#b99750] bg-white text-[#8b6e32] shadow-sm'
-                      : 'border-transparent text-gray-600 hover:bg-white hover:text-[var(--ace-ink)]'
-                  }`}
+                  className={`flex min-h-[44px] min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-2 py-2 text-xs font-bold transition-colors duration-200 ${isActive
+                    ? 'border-[#b99750] bg-white text-[#8b6e32] shadow-sm'
+                    : 'border-transparent text-gray-600 hover:bg-white hover:text-[var(--ace-ink)]'
+                    }`}
                 >
                   <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   <span className="truncate">{label}</span>
@@ -191,7 +209,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
           {/* Main Stage Display Area */}
           <div className="relative rounded-3xl border-2 border-[#E6DBC6] bg-white p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[340px] sm:min-h-[420px] lg:min-h-[460px] shadow-lg overflow-hidden group">
-            
+
             {/* View 1: Blank / Empty Container (Clear view of shape and structure) */}
             {activeView === 'blank' && (
               <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in">
@@ -201,7 +219,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     alt={`${product.name} Blank Empty Container Structure`}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover scale-[1.6] origin-[50%_70%] group-hover:scale-[1.7] transition-transform duration-500"
                   />
                 </div>
                 <div className="mt-4 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#FAF8F4] border border-[#E6DBC6] text-[11px] sm:text-xs font-semibold text-gray-700 flex items-center gap-2 text-center">
@@ -339,11 +357,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               type="button"
               onClick={() => setActiveView('blank')}
               aria-label="View Product Structure"
-              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
-                activeView === 'blank'
-                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
-                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
-              }`}
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${activeView === 'blank'
+                ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
+                }`}
             >
               <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
                 <img
@@ -364,11 +381,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               type="button"
               onClick={() => setActiveView('specs')}
               aria-label="View Dimensions Blueprint"
-              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
-                activeView === 'specs'
-                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
-                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
-              }`}
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${activeView === 'specs'
+                ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
+                }`}
             >
               <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
                 <img
@@ -389,11 +405,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               type="button"
               onClick={() => setActiveView('locking')}
               aria-label="View Food Locking Seal"
-              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
-                activeView === 'locking'
-                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
-                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
-              }`}
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${activeView === 'locking'
+                ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
+                }`}
             >
               <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex items-center justify-center relative border border-[#E6DBC6]/50">
                 <img
@@ -414,11 +429,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               type="button"
               onClick={() => setActiveView('video')}
               aria-label="View Manufacturing Video"
-              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${
-                activeView === 'video'
-                  ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
-                  : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
-              }`}
+              className={`w-full aspect-[4/3] rounded-2xl border p-1.5 sm:p-2 bg-white flex items-center justify-center transition-all cursor-pointer relative overflow-hidden group ${activeView === 'video'
+                ? 'border-[#b99750] ring-2 ring-[#b99750] shadow-md scale-[1.02]'
+                : 'border-[#E6DBC6] hover:border-[#b99750]/60 opacity-90 hover:opacity-100 hover:shadow-xs'
+                }`}
             >
               <div className="w-full h-full rounded-xl bg-gradient-to-b from-white to-[#F7F4EC] overflow-hidden flex flex-col items-center justify-center relative border border-[#E6DBC6]/50">
                 <img
@@ -446,12 +460,12 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
         {/* Right Column: Specifications, Food Applications, and Inquiry Form */}
         <div className="lg:col-span-6 flex flex-col gap-6 text-left">
-          
+
           {/* Main Info Card */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E6DBC6] shadow-sm">
-            <span className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider block mb-1">
+            {/* <span className="text-xs font-extrabold text-[#b99750] uppercase tracking-wider block mb-1">
               CATEGORY: {category.name} ({category.subtitleName})
-            </span>
+            </span> */}
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--ace-ink)] mb-3">
               {heading || product.name}
             </h1>
@@ -460,7 +474,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             </p>
 
             {/* Core Trust Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
               <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5">
                 <ShieldCheck className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
@@ -470,21 +484,13 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               </div>
 
               <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5">
-                <Flame className="w-5 h-5 text-[#b99750] shrink-0" />
-                <div>
-                  <span className="text-[10px] text-gray-500 uppercase block font-semibold">{t.thermalLabel}</span>
-                  <span className="text-xs font-bold text-[var(--ace-ink)]">-20°C to +120°C</span>
-                </div>
-              </div>
-
-              <div className="bg-[#FAF8F4] p-3 rounded-2xl border border-[#E6DBC6] flex items-center gap-2.5 col-span-2 sm:col-span-1">
                 <Layers className="w-5 h-5 text-[#b99750] shrink-0" />
                 <div>
                   <span className="text-[10px] text-gray-500 uppercase block font-semibold">{t.foodContactLabel}</span>
                   <span className="text-xs font-bold text-emerald-600">{t.foodContactValue}</span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Essential Technical Specifications Table */}
             <div className="mb-6">
@@ -520,7 +526,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                         </td>
                       </tr>
                     )}
-                    <tr className="border-b border-[#E6DBC6]">
+                    {/* <tr className="border-b border-[#E6DBC6]">
                       <td className="p-3 font-bold text-gray-600">{t.specLid}</td>
                       <td className="p-3 font-bold text-[var(--ace-ink)]">{t.specLidValue}</td>
                     </tr>
@@ -531,7 +537,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     <tr>
                       <td className="p-3 font-bold text-gray-600">{t.specMasterBox}</td>
                       <td className="p-3 text-gray-700">{product.packaging || 'Standard Export Carton'}</td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>
@@ -557,7 +563,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             </div>
 
             {/* Direct Brochure Download Action */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 onClick={() => setCatalogueOpen(true)}
                 className="inline-flex items-center gap-2 text-xs font-bold text-[var(--ace-ink)] bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-4 py-2.5 hover:border-[#b99750] transition-colors cursor-pointer"
@@ -568,7 +574,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               <span className="text-[11px] text-gray-500">
                 {t.datasheetNote}
               </span>
-            </div>
+            </div> */}
           </div>
 
           {/* Factory Sample / Product Inquiry Card (Compliant: zero pricing or wholesale references) */}
@@ -593,7 +599,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   type="button"
                   onClick={() => {
                     setSampleSubmitted(false);
-                    setSampleData({ name: '', company: '', email: '', phone: '', notes: '' });
+                    setSampleData({ name: '', email: '', phone: '', notes: '' });
                   }}
                   className="text-xs font-bold text-[#b99750] hover:underline cursor-pointer"
                 >
@@ -602,29 +608,16 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               </div>
             ) : (
               <form onSubmit={handleSampleSubmit} className="space-y-3.5 sm:space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleNameLabel}</label>
-                    <input
-                      type="text"
-                      placeholder="Rahul Sharma"
-                      required
-                      value={sampleData.name}
-                      onChange={(e) => setSampleData({ ...sampleData, name: e.target.value })}
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[var(--ace-ink)] focus:outline-none focus:border-[#b99750] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleCompanyLabel}</label>
-                    <input
-                      type="text"
-                      placeholder="Ace Cloud Kitchens"
-                      required
-                      value={sampleData.company}
-                      onChange={(e) => setSampleData({ ...sampleData, company: e.target.value })}
-                      className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[var(--ace-ink)] focus:outline-none focus:border-[#b99750] transition-colors"
-                    />
-                  </div>
+                <div>
+                  <label className="text-[11px] font-bold text-gray-700 uppercase block mb-1">{t.sampleNameLabel}</label>
+                  <input
+                    type="text"
+                    placeholder="Rahul Sharma"
+                    required
+                    value={sampleData.name}
+                    onChange={(e) => setSampleData({ ...sampleData, name: e.target.value })}
+                    className="w-full bg-[#FAF8F4] border border-[#E6DBC6] rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[var(--ace-ink)] focus:outline-none focus:border-[#b99750] transition-colors"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -663,6 +656,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                   ></textarea>
                 </div>
 
+                {sampleError && (
+                  <p role="alert" className="text-xs font-semibold text-red-600">{sampleError}</p>
+                )}
+
                 <button
                   type="submit"
                   disabled={sampleLoading}
@@ -672,7 +669,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     <span>{t.sampleSendingText}</span>
                   ) : (
                     <>
-                      <span>{t.sampleSubmitText}</span>
+                      <span>{t.sampleContactText}</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -722,10 +719,10 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     idx === 0
                       ? lockingFoodImage
                       : idx === 1
-                      ? '/images/gallery/bento-meal.webp'
-                      : idx === 2
-                      ? '/images/gallery/kitchen-set.webp'
-                      : '/images/gallery/studio-range.webp'
+                        ? '/images/gallery/bento-meal.webp'
+                        : idx === 2
+                          ? '/images/gallery/kitchen-set.webp'
+                          : '/images/gallery/studio-range.webp'
                   }
                   alt={app}
                   loading="lazy"

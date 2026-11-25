@@ -15,9 +15,10 @@ const LABELS: Record<string, string> = {
   text: 'Button text',
   cta: 'Button',
   faqs: 'Questions & answers',
+  favicon_url: 'Favicon (browser tab icon): square PNG, 512×512 recommended',
 };
 
-const IMAGE_KEY = /(image|img|photo|portrait|logo|thumbnail|thumb|cover|banner|avatar|poster|src)$/i;
+const IMAGE_KEY = /(image|img|photo|portrait|logo|thumbnail|thumb|cover|banner|avatar|poster|src|favicon_url)$/i;
 const FILE_KEY = /(file|pdf|document|download(url)?|brochure)$/i;
 const LINK_KEY = /(link|href|url)$/i;
 const SHORT_KEY = /(^text$|buttontext$|label$|title$|heading$|badge$|eyebrow$|name$|alt$)/i;

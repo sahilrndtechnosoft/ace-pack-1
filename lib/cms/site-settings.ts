@@ -58,6 +58,11 @@ export const footerDefaults = {
 };
 
 /** Shown on the Contact page cards. */
+// Stored as its own site_settings row (seeded as favicon_url).
+export const brandingDefaults = {
+  favicon_url: '/favicon.ico',
+};
+
 export const contactDefaults = {
   contact_phone_domestic: '+91 98251 20023 / +91 98251 47525',
   contact_email_domestic: 'acepack2011@gmail.com',
@@ -130,7 +135,6 @@ export const siteTextDefaults = {
     videoText: 'Click to play precision high-speed 2.8s cycle time moulding, zero-defect optical inspection, and cleanroom handling.',
     stopVideoText: '✕ Stop Video',
     videoBadge: 'Video',
-    thermalLabel: 'Thermal Limits',
     foodContactLabel: 'Food Contact',
     foodContactValue: 'ISO 9001:2015',
     specsHeading: 'Important Product Specifications',
@@ -153,12 +157,11 @@ export const siteTextDefaults = {
     sampleSuccessText: 'Our dispatch team will confirm and ship samples to your destination.',
     sampleAgainText: 'Submit another sample request →',
     sampleNameLabel: 'Full Name *',
-    sampleCompanyLabel: 'Company / Brand *',
     sampleEmailLabel: 'Email Address *',
     samplePhoneLabel: 'Phone Number *',
     sampleNotesLabel: 'Requirement Notes',
     sampleSendingText: 'Processing Request...',
-    sampleSubmitText: 'Submit Sample Request',
+    sampleContactText: 'Contact',
     visualsHeading: 'Culinary Applications & Food Visuals',
     snapSealBadge: 'Zero-Leak Snap Seal',
   },

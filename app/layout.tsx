@@ -18,11 +18,23 @@ import { siteTextDefaults } from "@/lib/cms/site-settings";
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acepack.co.in'),
-  title: "Ace Packaging | Premium Plastic Food Containers",
-  description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
-};
+const DEFAULT_ICONS = [
+  { url: '/favicon.ico', sizes: 'any' },
+  { url: '/icon.png', type: 'image/png' },
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getCmsSettings();
+  const favicon = typeof settings.favicon_url === 'string' ? settings.favicon_url.trim() : '';
+  // Favicon is editable in Admin > Site-wide Settings; the built-in icons are the fallback.
+  const hasCustomFavicon = /^(\/|https:\/\/)/.test(favicon) && favicon !== '/favicon.ico';
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acepack.co.in'),
+    title: "Ace Packaging | Premium Plastic Food Containers",
+    description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
+    icons: { icon: hasCustomFavicon ? favicon : DEFAULT_ICONS, apple: '/apple-icon.png' },
+  };
+}
 
 export default async function RootLayout({
   children,

@@ -131,7 +131,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-8 flex flex-col gap-8">
               {/* Featured Image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-xl border-2 border-[#cfa144]/60 bg-slate-900 h-[340px] sm:h-[450px]">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border-2 border-[#cfa144]/60 bg-slate-900 aspect-[2/1]">
                 <img
                   src={post.image}
                   alt={post.image_alt || post.title}
@@ -279,7 +279,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       href={`/blog/${rel.slug}`}
                       className="flex items-center gap-3.5 group hover:bg-[#FAF8F4] p-2 rounded-2xl transition-colors"
                     >
-                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-[#E6DBC6]">
+                      <div className="w-28 aspect-[2/1] rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-[#E6DBC6]">
                         <img
                           src={rel.image}
                           alt={rel.title}

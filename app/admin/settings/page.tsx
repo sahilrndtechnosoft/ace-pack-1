@@ -5,7 +5,7 @@ import { Edit, Loader2, Save, X } from 'lucide-react';
 import { useAdmin } from '@/components/admin/AdminLayoutClient';
 import { ContentFields, findInvalidLinks } from '@/components/admin/ContentFields';
 import { isPlainObject, withDefaults } from '@/lib/cms/merge';
-import { contactDefaults, footerDefaults, headerDefaults, siteTextDefaults } from '@/lib/cms/site-settings';
+import { brandingDefaults, contactDefaults, footerDefaults, headerDefaults, siteTextDefaults } from '@/lib/cms/site-settings';
 
 type Settings = Record<string, unknown>;
 
@@ -14,6 +14,13 @@ const FOOTER_TEMPLATE = { ...footerDefaults, socialLinks: [{ label: 'LinkedIn', 
 
 // Each card edits shared content that appears on every page (or on several pages).
 const GROUPS = [
+  {
+    id: 'branding',
+    label: 'Favicon',
+    description: 'The small icon shown in the browser tab, bookmarks and search results. Upload a square PNG (512×512 works best).',
+    storageKey: null, // stored as a separate setting
+    defaults: brandingDefaults,
+  },
   {
     id: 'header',
     label: 'Header',
