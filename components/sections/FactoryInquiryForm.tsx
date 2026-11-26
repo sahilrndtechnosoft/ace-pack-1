@@ -6,7 +6,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Lock, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { productCategories } from '@/lib/data/products';
 
-export const FactoryInquiryForm: React.FC = () => {
+// The home page form leaves out Company / Brand; the Contact page keeps it.
+export const FactoryInquiryForm: React.FC<{ showCompany?: boolean }> = ({ showCompany = true }) => {
   const t = useSiteText().inquiryForm;
   const [formData, setFormData] = useState({
     name: '',
@@ -29,7 +30,7 @@ export const FactoryInquiryForm: React.FC = () => {
       errs.name = 'Name must be at least 2 characters.';
     }
 
-    if (!formData.company.trim()) {
+    if (showCompany && !formData.company.trim()) {
       errs.company = 'Company / Brand name is required.';
     }
 
@@ -149,7 +150,7 @@ export const FactoryInquiryForm: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid grid-cols-1 gap-4 ${showCompany ? 'sm:grid-cols-2' : ''}`}>
         <div>
           <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
             {t.nameLabel} <span className="text-red-500">*</span>
@@ -173,29 +174,31 @@ export const FactoryInquiryForm: React.FC = () => {
             <p className="text-[10px] text-red-600 mt-1">{fieldErrors.name}</p>
           )}
         </div>
-        <div>
-          <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
-            {t.companyLabel} <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            required
-            placeholder={t.companyPlaceholder}
-            value={formData.company}
-            onChange={(e) => {
-              setFormData({ ...formData, company: e.target.value });
-              if (fieldErrors.company) setFieldErrors({ ...fieldErrors, company: '' });
-            }}
-            className={`w-full bg-[#FAF8F4] border rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-4 transition-all duration-200 ${
-              fieldErrors.company
-                ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                : 'border-[#E6DBC6] focus:border-[#cfa144] focus:ring-[#cfa144]/10'
-            }`}
-          />
-          {fieldErrors.company && (
-            <p className="text-[10px] text-red-600 mt-1">{fieldErrors.company}</p>
-          )}
-        </div>
+        {showCompany && (
+          <div>
+            <label className="text-[11px] font-bold text-[#1A1D20] uppercase block mb-1">
+              {t.companyLabel} <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              required
+              placeholder={t.companyPlaceholder}
+              value={formData.company}
+              onChange={(e) => {
+                setFormData({ ...formData, company: e.target.value });
+                if (fieldErrors.company) setFieldErrors({ ...fieldErrors, company: '' });
+              }}
+              className={`w-full bg-[#FAF8F4] border rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-4 transition-all duration-200 ${
+                fieldErrors.company
+                  ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+                  : 'border-[#E6DBC6] focus:border-[#cfa144] focus:ring-[#cfa144]/10'
+              }`}
+            />
+            {fieldErrors.company && (
+              <p className="text-[10px] text-red-600 mt-1">{fieldErrors.company}</p>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

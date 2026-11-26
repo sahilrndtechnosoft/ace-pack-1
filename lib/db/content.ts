@@ -1,6 +1,6 @@
 import { draftMode } from 'next/headers';
 import { encodeAssetPath } from '@/lib/asset-url';
-import { blogAuthorAvatar, blogCategory } from '@/lib/data/blog-display';
+import { blogAuthorAvatar, blogAuthorName, blogCategory } from '@/lib/data/blog-display';
 import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
@@ -240,7 +240,7 @@ function mapRowToBlogPost(r: any): BlogPost {
     tags,
     image: encodeAssetPath(r.image || '/images/hero-bg-image.jpg'),
     author: {
-      name: r.author_name || 'Ace Editorial Team',
+      name: blogAuthorName(r.author_name),
       role: r.author_role || 'Packaging Technology Specialist',
       avatar: blogAuthorAvatar(r.author_avatar),
     },

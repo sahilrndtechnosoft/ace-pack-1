@@ -27,14 +27,14 @@ export const contactPage = {
         whatsappLabel: 'WhatsApp Sales',
         whatsappButtonText: 'Chat on WhatsApp',
         whatsappMessage: "Hello Ace Packaging, I'd like product information for food containers.",
-        trustNote: 'Product Specifications & Sample Kits',
+        trustNote: 'Product Specifications & Pricing Support',
       },
     },
     form: {
       label: 'Inquiry Form',
       content: {
         heading: 'Send Inquiry',
-        description: 'Tell us about your application and request product information or a sample kit.',
+        description: 'Tell us about your application and request product information.',
       },
     },
     map: {
@@ -62,21 +62,9 @@ export const downloadsPage = {
       badge: 'OFFICIAL DOCUMENTATION',
       title: 'Download Center',
       subtitle:
-        'Download the official Ace Packaging product catalogue and ISO 9001:2015 management system compliance certificate.',
+        'Download the official Ace Packaging product catalogue and technical datasheets.',
       bgImage: DEFAULT_BANNER_IMAGE,
     }),
-    sample_cta: {
-      label: 'Sample Request Card',
-      description: 'Call to action card below the downloadable files.',
-      content: {
-        badge: 'Need a physical sample?',
-        heading: 'Request Free Production Samples',
-        description:
-          'Evaluate clarity, snap-fit seal integrity, and stacking strength in your commercial kitchen or packing line. Free sample dispatch within 48 hours.',
-        buttonText: 'Request Sample Box',
-        buttonLink: '/contact',
-      },
-    },
   },
 };
 

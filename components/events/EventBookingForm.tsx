@@ -190,7 +190,7 @@ export const EventBookingForm: React.FC<EventBookingFormProps> = ({ event }) => 
 
             <p className="text-[10.5px] text-gray-400 text-center flex items-center justify-center gap-1.5 pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>Complimentary VIP visitor passes and sample kits issued upon registration.</span>
+              <span>Complimentary VIP visitor passes issued upon registration.</span>
             </p>
           </form>
         </div>

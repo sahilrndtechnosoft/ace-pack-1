@@ -21,7 +21,7 @@ export const productsPage = {
       label: 'Closing Call to Action',
       description: 'Band below the catalogue.',
       content: {
-        eyebrow: 'Product information & sample kit',
+        eyebrow: 'Product information',
         heading: 'Need a customized shape, volume or IML decoration?',
         lead: 'Our in-house mould tooling engineers in Daman develop bespoke packaging for restaurant chains and food brands.',
         button_text: 'Contact Engineering Team',
@@ -77,7 +77,7 @@ export const categoriesPage = {
     closing: {
       label: 'Closing Call to Action',
       content: {
-        eyebrow: 'Catalog & Sample Kit',
+        eyebrow: 'Product Catalog',
         heading: 'Specify it',
         headingHighlight: 'in hand.',
         primaryButton: { text: 'Discuss your requirements', link: '/contact' },

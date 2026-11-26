@@ -117,7 +117,7 @@ export const processPage = {
         eyebrow: 'Factory Verification',
         heading: 'Inspect Our Manufacturing Lines in Person',
         description:
-          'We welcome corporate procurement heads, brand managers, and export buyers for scheduled on-site audits at our Daman manufacturing campus. Request free physical sample kits or review our official ISO 9001:2015 audit file.',
+          'We welcome corporate procurement heads, brand managers, and export buyers for scheduled on-site audits at our Daman manufacturing campus. Contact us to schedule a visit or review our official ISO 9001:2015 audit file.',
         primaryButton: { text: 'View Quality & Certifications', link: '/quality' },
         secondaryButton: { text: 'Schedule Plant Audit', link: '/contact' },
       },

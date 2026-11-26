@@ -64,10 +64,10 @@ export const galleryPage = {
     cta: {
       label: 'Closing Call to Action',
       content: {
-        eyebrow: 'Samples & Specifications',
+        eyebrow: 'Custom Branding & Specifications',
         heading: 'Want these in your own branding?',
-        description: 'We ship physical samples and full technical spec sheets for every model in the range.',
-        primaryButton: { text: 'Request Samples', link: '/contact' },
+        description: 'Full technical specifications are available for every model in the range. Talk to our team about custom branding.',
+        primaryButton: { text: 'Contact Sales', link: '/contact' },
         secondaryButton: { text: 'All Categories', link: '/categories' },
       },
     },

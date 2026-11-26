@@ -115,9 +115,8 @@ export default async function LiveProductPage({ params }: LiveProductPageProps) 
 
       <PageBanner
         titleTag="p"
-        title={product.name}
-        subtitle={`${category.name} — ${product.capacity} volume, 100% virgin food-grade polymer PP 05, zero-leak snap rim.`}
-        badge={`MODEL: ${product.capacity}`}
+        title={category.name}
+        badge=""
         bgImage={foodBannerFor(category.slug)}
         breadcrumbs={[
           { name: 'Plastic Food Containers', href: '/plastic-food-containers' },

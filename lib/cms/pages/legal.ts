@@ -24,7 +24,6 @@ export const privacyPage = {
       "text": "We collect business information when you:",
       "bullets": [
         "Submit factory quotation and product inquiry forms.",
-        "Request physical sample kits for cloud kitchens, QSRs, or food brands.",
         "Download technical datasheets, CAD specifications, or product catalogues.",
         "Subscribe to catalog updates and export announcements."
       ],
@@ -40,7 +39,7 @@ export const privacyPage = {
       "title": "3. How We Use Collected Information",
       "text": "The information you provide is used strictly for:",
       "bullets": [
-        "Fulfilling sample kit shipments and providing factory freight estimates.",
+        "Providing freight estimates for orders.",
         "Responding to container volume requests, MOQ pricing, and export container loadings.",
         "Sending requested PDF technical datasheets and regulatory compliance certificates.",
         "Technical follow-up by our Daman engineering and dispatch teams."
@@ -78,7 +77,7 @@ export const termsPage = {
     document: { label: 'Terms Text', description: 'Intro, numbered clauses and the contact box.', content: {
   "updatedLabel": "Effective Date: October 2026",
   "heading": "Standard Commercial & Supply Terms",
-  "intro": "These terms govern all quotations, sample dispatches, bulk production orders, and export container shipments supplied by Ace Packaging Solutions from our manufacturing units in Daman, India.",
+  "intro": "These terms govern all quotations, bulk production orders, and export container shipments supplied by Ace Packaging Solutions from our manufacturing units in Daman, India.",
   "clauses": [
     {
       "title": "1. Material Authenticity & Prime Virgin PP 05",
@@ -87,13 +86,7 @@ export const termsPage = {
       "closing": ""
     },
     {
-      "title": "2. Sample Evaluations & Kitchen Testing",
-      "text": "Ace Packaging provides physical sample kits to verified corporate buyers, cloud kitchens, and brand owners to evaluate thermal performance (-20°C deep freeze to +120°C microwave), lid snap tolerances, stackability, and zero-leak integrity under transit. Sample evaluation carries no binding wholesale obligation.",
-      "bullets": [],
-      "closing": ""
-    },
-    {
-      "title": "3. Dispatch, Packaging & Freight Tolerances",
+      "title": "2. Dispatch, Packaging & Freight Tolerances",
       "text": "Containers are hygienically sleeved in dust-free poly bags and packed in export-grade heavy-duty corrugated cartons to prevent rim deformation during transit:",
       "bullets": [
         "Domestic Dispatch (India): Ex-factory Daman or delivered via trusted freight partners.",
@@ -103,13 +96,13 @@ export const termsPage = {
       "closing": ""
     },
     {
-      "title": "4. Custom Moulds & In-Mould Labelling (IML)",
+      "title": "3. Custom Moulds & In-Mould Labelling (IML)",
       "text": "Toolroom lead times for proprietary custom injection moulds and high-definition IML artwork approval are confirmed upon technical drawing sign-off. Proprietary tool ownership and exclusivity terms remain protected under signed client agreements.",
       "bullets": [],
       "closing": ""
     },
     {
-      "title": "5. Quality Claims & Inspection",
+      "title": "4. Quality Claims & Inspection",
       "text": "Our automated robotic production utilizes optical defect inspection. In the event of transit damage or manufacturing discrepancy, claims must be reported within 15 business days of consignment receipt along with carton batch identifiers for QA verification.",
       "bullets": [],
       "closing": ""

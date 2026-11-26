@@ -21,9 +21,6 @@ export default async function DownloadsPage() {
   const L = (await getSiteText()).labels;
   const page = await getPageContent('downloads');
   const banner = { ...page.content.banner, hidden: page.hidden.includes('banner') };
-  const sampleCta = (page.content as any).sample_cta
-    ? { ...(page.content as any).sample_cta, hidden: page.hidden.includes('sample_cta') }
-    : null;
   const cmsRows = await getCmsDownloads();
 
   let groups: DownloadsClientGroup[] = downloadGroups as DownloadsClientGroup[];
@@ -77,7 +74,7 @@ export default async function DownloadsPage() {
 
       <section className="py-10 md:py-12">
         <div className="container-custom">
-          <DownloadsClient groups={groups} sampleCta={sampleCta} />
+          <DownloadsClient groups={groups} />
         </div>
       </section>
     </div>

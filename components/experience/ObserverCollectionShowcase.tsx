@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, ArrowRight, Box, ShieldCheck, Sparkles, Utensils } from 'lucide-react';
+import { ArrowUpRight, Box, ShieldCheck, Sparkles, Utensils } from 'lucide-react';
 import { homeCollection } from '@/lib/cms/pages/home-collection';
 
 if (typeof window !== 'undefined') {
@@ -216,20 +216,13 @@ export function ObserverCollectionShowcase({ content = homeCollection }: { conte
                     </span>
                   </p>
 
-                  <div data-reveal className="mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:gap-3">
+                  <div data-reveal className="mt-7 flex flex-wrap gap-3">
                     <Link
                       href={p.link}
                       className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-[#b99750] px-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-[#b99750]/25 transition-colors hover:bg-[#a6843e] sm:px-6 sm:text-sm"
                     >
                       <span className="truncate">{p.buttonText}</span>
                       <ArrowUpRight size={15} aria-hidden="true" className="shrink-0" />
-                    </Link>
-                    <Link
-                      href={c.samplesButton.link}
-                      className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-white/20 bg-white/[0.06] px-4 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/15 sm:px-6 sm:text-sm"
-                    >
-                      <span className="truncate">{c.samplesButton.text}</span>
-                      <ArrowRight size={14} aria-hidden="true" className="shrink-0" />
                     </Link>
                   </div>
                 </div>

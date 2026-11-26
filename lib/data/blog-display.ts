@@ -33,6 +33,14 @@ export function blogAuthorAvatar(avatar: string | null | undefined): string {
   return value && !WORDMARK_AVATARS.has(value) ? value : BRAND_MARK;
 }
 
+const BLOG_BYLINE = 'Food Packaging Industries';
+
+/** Byline for a post: imported posts carry the brand name ("Acepack") as the author; show a neutral byline instead. */
+export function blogAuthorName(name: string | null | undefined): string {
+  const value = name?.trim();
+  return value && !/^ace\s*pack(aging)?$/i.test(value) ? value : BLOG_BYLINE;
+}
+
 /** Read count from the stored label ("1101 Views", "1,101"); 0 when there is none. */
 export function blogViewCount(views: string | null | undefined): number {
   const digits = views?.replace(/,/g, '').match(/\d+/)?.[0];

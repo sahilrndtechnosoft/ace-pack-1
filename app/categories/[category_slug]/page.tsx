@@ -70,11 +70,8 @@ export default async function CategoryDetailPage({ params }: CategoryDetailPageP
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--ace-ink)] flex items-center gap-2.5">
                 <Box className="w-6 h-6 text-[#b99750]" />
-                <span>Available Models in {category.name} ({category.products.length})</span>
+                <span>Available Models ({category.products.length})</span>
               </h2>
-              <p className="text-xs text-gray-500 mt-1">
-                Precision-engineered from 100% prime virgin PP 05. Food-safe, microwaveable and deep-freeze ready.
-              </p>
             </div>
 
             <Link

@@ -36,7 +36,7 @@ export const aboutPage = {
     closing: {
       label: 'Closing Call to Action',
       content: {
-        eyebrow: 'Product catalog & sample kit',
+        eyebrow: 'Product catalog',
         heading: 'Let’s make',
         headingHighlight: 'something good.',
         button: { text: 'Discuss your requirements', link: '/contact' },

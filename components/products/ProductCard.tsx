@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { type ProductItem } from '@/lib/data/products';
+import { capacityLabel, type ProductItem } from '@/lib/data/products';
 import { Reveal } from '@/components/ui/Reveal';
 import { PRODUCT_IMAGE_ZOOM_CLASS, productImageFit } from '@/lib/data/product-image-fit';
 
@@ -114,7 +114,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <div className="bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-3.5 sm:p-4 space-y-2 text-xs">
               <div className="flex items-center justify-between">
                 <span className="text-gray-500 font-medium">Capacity:</span>
-                <span className="font-bold text-[#b99750]">{product.capacity}</span>
+                <span className="font-bold text-[#b99750]">{capacityLabel(product.capacity)}</span>
               </div>
 
               {product.dimensions && (
@@ -137,12 +137,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
               )}
 
-              <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
-                <span className="text-gray-500 font-medium">Case Pack:</span>
-                <span className="font-semibold text-[var(--ace-ink)]">
-                  {product.packaging || '500 Pcs/set'}
-                </span>
-              </div>
             </div>
           </div>
         </div>

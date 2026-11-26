@@ -1,6 +1,6 @@
 import rawBlogs from './acepack-all-blogs.json';
 import { encodeAssetPath } from '@/lib/asset-url';
-import { blogAuthorAvatar, blogCategory } from './blog-display';
+import { blogAuthorAvatar, blogAuthorName, blogCategory } from './blog-display';
 
 export interface BlogPost {
   id: string;
@@ -37,7 +37,7 @@ export const blogPosts: BlogPost[] = rawBlogs.map((raw) => ({
   image: encodeAssetPath(raw.image),
   id: `blog_${raw.slug}`,
   category: blogCategory(null, raw.title),
-  author: { ...raw.author, avatar: blogAuthorAvatar(raw.author.avatar) },
+  author: { ...raw.author, name: blogAuthorName(raw.author.name), avatar: blogAuthorAvatar(raw.author.avatar) },
   readTime: '5 min read',
   content: [],
 }));

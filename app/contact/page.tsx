@@ -4,7 +4,7 @@ import { cmsMetadata } from '@/lib/db/content';
 
 const staticMetadata: Metadata = {
   title: 'Contact Us | Ace Packaging Plastic Food Packaging Manufacturer',
-  description: 'Get in touch with Ace Packaging sales team for product information, custom mould R&D, and free sample requests for plastic food containers.',
+  description: 'Get in touch with Ace Packaging sales team for product information, and custom mould R&D for plastic food containers.',
   alternates: {
     canonical: 'https://www.acepack.co.in/contactus',
   },

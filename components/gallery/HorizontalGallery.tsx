@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MoveRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MoveRight, X } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +42,32 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const isOpen = openIdx !== null;
+  const step = (delta: number) => setOpenIdx((i) => (i === null ? i : (i + delta + items.length) % items.length));
+
+  // Lightbox: keyboard control, focus on close, and the page (Lenis) held still behind it.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpenIdx(null);
+      else if (e.key === 'ArrowRight') step(1);
+      else if (e.key === 'ArrowLeft') step(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.__lenis?.stop();
+    closeRef.current?.focus();
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      window.__lenis?.start();
+    };
+    // step only reads items.length, which the effect does not need to track.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -171,6 +198,12 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
               // the screen it has taken over rather than floating in it.
               className="gallery-card group relative shrink-0 aspect-[3/4] w-[86vw] sm:aspect-[4/3] sm:w-auto sm:h-[54svh] sm:max-h-[540px] sm:min-h-[340px] overflow-hidden rounded-[24px] sm:rounded-[28px] bg-[#0B0D0F] shadow-[0_30px_60px_-38px_rgba(26,29,32,0.7)]"
             >
+              <button
+                type="button"
+                onClick={() => setOpenIdx(idx)}
+                aria-label={`View larger: ${item.title}`}
+                className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-3 focus-visible:outline-[#cfa144] focus-visible:-outline-offset-4 rounded-[inherit]"
+              />
               <div className="relative h-full w-full overflow-hidden">
                 <img
                   src={item.image}
@@ -228,6 +261,62 @@ export const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ items, kic
         </div>
 
       </div>
+
+      {isOpen && typeof document !== 'undefined' && createPortal(
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={items[openIdx].title}
+          data-lenis-prevent
+          onClick={() => setOpenIdx(null)}
+          className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-8"
+        >
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={() => setOpenIdx(null)}
+            aria-label="Close"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <figure className="flex max-h-full max-w-6xl flex-col items-center" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={items[openIdx].image}
+              alt={items[openIdx].title}
+              className="max-h-[78svh] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
+            />
+            <figcaption className="mt-4 text-center">
+              <span className="block text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#d9b978]">{items[openIdx].category}</span>
+              <span className="mt-1 block text-base sm:text-lg font-bold text-white">{items[openIdx].title}</span>
+              <span className="mt-1 block text-xs text-white/50 tabular-nums">{openIdx + 1} / {items.length}</span>
+            </figcaption>
+          </figure>
+
+          {items.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); step(-1); }}
+                aria-label="Previous photo"
+                className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/25 bg-black/55 text-white hover:bg-[#cfa144] hover:text-[#111518] cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); step(1); }}
+                aria-label="Next photo"
+                className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/25 bg-black/55 text-white hover:bg-[#cfa144] hover:text-[#111518] cursor-pointer"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+        </div>,
+        document.body
+      )}
     </section>
   );
 };

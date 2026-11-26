@@ -41,7 +41,6 @@ const productVariants: Record<string, { label: string; src: string }[]> = {
 export const homeCollection = {
   chips: ['−20°C to +120°C Safe', 'Hermetic Snap-Lock Rim', '100% Virgin Food-Grade'],
   pairingLabel: 'Recommended Culinary Pairing',
-  samplesButton: { text: 'Request Samples', link: '/contact' },
   formatsLabel: 'Available Formats:',
   series: products.map((p) => ({
     title: p.title,

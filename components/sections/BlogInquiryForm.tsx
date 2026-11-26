@@ -51,7 +51,7 @@ export const BlogInquiryForm: React.FC = () => {
           Thank You, {formData.name || 'Valued Reader'}!
         </h4>
         <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-          Your inquiry has been received. Our technical team will reach out with packaging specs and samples within 24 hours.
+          Your inquiry has been received. Our technical team will reach out with packaging specifications within 24 hours.
         </p>
         <button
           type="button"

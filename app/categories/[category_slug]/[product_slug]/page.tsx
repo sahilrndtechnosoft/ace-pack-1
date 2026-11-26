@@ -57,9 +57,8 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
     <div className="bg-[#FAF8F4] min-h-screen text-[var(--ace-ink)] pb-24">
       <PageBanner
         titleTag="p"
-        title={product.name}
-        subtitle={`${category.name} — ${product.capacity} volume, 100% virgin food-grade polymer PP 05, zero-leak snap rim.`}
-        badge={`MODEL: ${product.capacity}`}
+        title={category.name}
+        badge=""
         bgImage={foodBannerFor(category.slug)}
         breadcrumbs={[
           { name: 'Categories', href: '/categories' },
@@ -70,19 +69,16 @@ export default async function SpecificProductPage({ params }: SpecificProductPag
 
       <section className="py-6 sm:py-10 md:py-16">
         <div className="container-custom">
-          {/* Back to category button & Certification status */}
+          {/* Back to category */}
           <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-2">
             <Link
               href={`/categories/${category.slug}`}
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b99750] hover:text-[var(--ace-ink)] transition-colors group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Back to {category.name} Collection</span>
+              <span>Back to collection</span>
             </Link>
 
-            <span className="text-[11px] sm:text-xs text-gray-500 font-medium bg-white/70 px-3 py-1 rounded-full border border-[#E6DBC6]/70">
-              ISO 9001:2015 Certified
-            </span>
           </div>
 
           {/* Interactive 4-View Showcase (Blank, Specs, Food Locking, Video) */}

@@ -2191,3 +2191,8 @@ export const getAllProductPaths = (): { category_slug: string; product_slug: str
   });
   return paths;
 };
+
+/** "AP-RE-08 (250ml / 8oz)" → "250ml / 8oz": the model code is already in the product name next to it. */
+export function capacityLabel(capacity: string): string {
+  return capacity.match(/^[A-Z][A-Z0-9-]*\s*\((.+)\)$/)?.[1] ?? capacity;
+}

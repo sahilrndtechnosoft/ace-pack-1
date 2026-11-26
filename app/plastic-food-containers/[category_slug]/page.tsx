@@ -135,9 +135,6 @@ export default async function LiveCategoryPage({ params }: LiveCategoryPageProps
                 <Box className="w-6 h-6 text-[#b99750]" />
                 <span>{liveH1 || `${category.name} (${category.products.length} Models)`}</span>
               </h1>
-              <p className="text-xs text-gray-500 mt-1 max-w-2xl">
-                Precision-engineered from 100% prime virgin PP 05. Food-safe, microwaveable, deep-freeze ready, and 100% recyclable.
-              </p>
             </div>
 
             <Link

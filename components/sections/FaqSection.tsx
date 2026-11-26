@@ -83,7 +83,7 @@ export const FaqSection: React.FC<{ content?: typeof homeFaq }> = ({ content: c 
             <div className="mt-8 p-5 bg-white rounded-2xl border border-[#E6DBC6] flex flex-wrap items-center justify-between gap-4 text-xs shadow-sm">
               <div className="flex items-center gap-2 text-gray-700">
                 <PhoneCall className="w-4 h-4 text-[#b99750]" />
-                <span>Factory Hotline: <strong>{c.phoneLine}</strong></span>
+                <span>Hotline: <strong>{c.phoneLine}</strong></span>
               </div>
               <div className="flex items-center gap-2 text-gray-700">
                 <Mail className="w-4 h-4 text-[#b99750]" />
@@ -104,7 +104,7 @@ export const FaqSection: React.FC<{ content?: typeof homeFaq }> = ({ content: c 
             <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1A1D20] mb-2">{c.formHeading}</h3>
             <p className="text-xs text-gray-500 mb-8">{c.formDescription}</p>
 
-            <FactoryInquiryForm />
+            <FactoryInquiryForm showCompany={false} />
           </div>
           </Reveal>
 

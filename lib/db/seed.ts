@@ -572,7 +572,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       content: {
         badge: 'Global Trade Presence',
         heading: 'Meet Ace Packaging Worldwide',
-        lead: 'Visit our expo booths to test physical container samples, discuss volume contracts, and review mould innovations.',
+        lead: 'Visit our expo booths to see our containers up close, discuss volume contracts, and review mould innovations.',
       },
     },
     {
