@@ -47,6 +47,8 @@ export const mdDesk = {
   name: '',
   role: 'Managing Director, Ace Packaging',
   portrait: '',
+  image: '/images/gallery/kitchen-set.webp',
+  imageAlt: 'Ace Packaging containers filled with fresh meals',
 };
 
 export const values = [
@@ -54,19 +56,6 @@ export const values = [
   { num: '02', title: 'Our vision', body: 'To achieve the highest level of standards in manufacturing for providing a unique range of food packaging solutions to our esteemed distributors, channel partners, and institutional customers.' },
   { num: '03', title: 'Core values', body: 'To develop and maintain the bond and trust with our Channel Partners and focus on continuous evolution for the long-term sustainability of the company by focusing on the strengths to deliver the promises.' },
 ];
-
-export const plant = {
-  eyebrow: '03 / Infrastructure',
-  title: ['Two Daman units.', 'One moulding standard.'],
-  body: 'Robotic injection presses, in-house CAD toolroom and cleanroom conveyors across Unit 1 at Dori Kadaiya and Unit 2 at Dabhel — moulding exclusively from 100% prime virgin PP 05.',
-  stats: [
-    { value: '180T – 450T', label: 'Press tonnage range' },
-    { value: '2.8s', label: 'Cycle time' },
-    { value: '±0.02 mm', label: 'Wall tolerance' },
-    { value: '1.5M+', label: 'Units per day' },
-  ],
-};
-
 
 export const leadership = [
   { role: 'Managing Director', remit: 'Sets overall strategy and oversees plant operations across both Daman manufacturing units.', name: 'Rohan Mehta', portrait: '', linkedin: 'https://www.linkedin.com/' },

@@ -32,7 +32,7 @@ export function buildAboutMotion(scope: HTMLElement): Cleanup {
       .fromTo(lines, { yPercent: 112 }, { yPercent: 0, duration: 1.15, stagger: 0.14 }, 0.05)
       .from('.xa-hero .xp-eyebrow', { opacity: 0, y: 12, duration: 0.7 }, 0)
       .from('.xa-hero-lead', { opacity: 0, y: 18, duration: 0.8 }, 0.55)
-      .from('.xa-hero-media', { opacity: 0, y: 40 * depth, scale: 0.98, duration: 1.1 }, 0.35)
+      .from('.xa-hero-media', { opacity: 0, duration: 1.1 }, 0.1)
       .from('.xa-hero-chip', { opacity: 0, y: 16, duration: 0.6 }, 0.95)
       .from('.xa-hero-bottom', { opacity: 0, duration: 0.6 }, 1.0);
 
@@ -54,22 +54,6 @@ export function buildAboutMotion(scope: HTMLElement): Cleanup {
       gsap.from(stats, {
         y: 34 * depth, opacity: 0, duration: 0.75, ease: 'power2.out', stagger: 0.1,
         scrollTrigger: enter('.xa-stats'),
-      });
-    }
-
-    // --- Overview ----------------------------------------------------------------
-    gsap.fromTo('.xa-overview-media img',
-      { yPercent: -7 * depth },
-      { yPercent: 7 * depth, ease: 'none',
-        scrollTrigger: { trigger: '.xa-overview-media', start: 'top bottom', end: 'bottom top', scrub: true } });
-    gsap.from('.xa-overview-media', {
-      opacity: 0, y: 40 * depth, duration: 0.9, ease: 'power2.out', scrollTrigger: enter('.xa-overview-media'),
-    });
-    const checks = gsap.utils.toArray<HTMLElement>('.xa-checks li');
-    if (checks.length) {
-      gsap.from(checks, {
-        opacity: 0, x: -14, duration: 0.55, ease: 'power2.out', stagger: 0.08,
-        scrollTrigger: enter('.xa-checks', 'top 90%'),
       });
     }
 
@@ -177,18 +161,10 @@ export function buildAboutMotion(scope: HTMLElement): Cleanup {
       opacity: 0, y: 14, duration: 0.7, ease: 'power2.out', delay: 0.25, scrollTrigger: enter('.xa-desk-sign', 'top 92%'),
     });
 
-    // --- Plant backdrop -----------------------------------------------------------------
-    gsap.to('.xa-pattern', {
-      yPercent: 20 * depth, rotation: 15 * depth, ease: 'none',
-      scrollTrigger: { trigger: '.xa-plant', start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-
     // --- Staggered groups ------------------------------------------------------------------
     for (const [container, item] of [
       ['.xa-values-grid', '.xa-value'],
-      ['.xa-plant-grid', '.xa-plant-stat'],
       ['.xa-lead-grid', '.xa-lead'],
-      ['.xa-certs-grid', '.xa-cert'],
     ] as const) {
       const items = gsap.utils.toArray<HTMLElement>(item);
       if (!items.length) continue;
@@ -197,7 +173,6 @@ export function buildAboutMotion(scope: HTMLElement): Cleanup {
         scrollTrigger: enter(container),
       });
     }
-    gsap.from('.xa-plant-copy', { opacity: 0, y: 24 * depth, duration: 0.75, ease: 'power2.out', scrollTrigger: enter('.xa-plant-copy') });
     gsap.from('.xa-closing-note', { opacity: 0, y: 14, duration: 0.6, ease: 'power2.out', scrollTrigger: enter('.xa-closing-note', 'top 95%') });
 
     return () => cleanups.forEach(fn => fn());

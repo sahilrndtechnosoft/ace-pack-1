@@ -109,26 +109,6 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
       ? '/downloads/datasheets/Ace_Packaging_Technical_Datasheet.pdf'
       : '/downloads/Ace_Packaging_Full_Product_Catalog.pdf');
 
-  // Direct browser download helper
-  const triggerBrowserDownload = (url: string, title: string) => {
-    try {
-      const link = document.createElement('a');
-      link.href = url;
-      const cleanTitle =
-        title.endsWith('.pdf') || title.endsWith('.jpg') || title.endsWith('.png')
-          ? title
-          : url.endsWith('.jpg')
-          ? `${title.replace(/\s+/g, '_')}.jpg`
-          : `${title.replace(/\s+/g, '_')}.pdf`;
-      link.download = cleanTitle;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (e) {
-      console.warn('Direct download trigger fallback:', e);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -156,7 +136,7 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
     setLoading(true);
 
     try {
-      // Call backend API to email the document to the user and notify sales
+      // Saves a pending request; the document is emailed only after an admin approves it.
       const res = await fetch('/api/send-document', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -174,18 +154,13 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to dispatch document. Please try again.');
+        throw new Error(data.error || 'Failed to submit your request. Please try again.');
       }
 
       // Preserve sent email for confirmation view, then CLEAR form state
       setSubmittedEmail(emailTrimmed);
       setFormData(INITIAL_FORM_STATE);
       setSubmitted(true);
-
-      // Trigger automatic direct browser download
-      if (targetPdf) {
-        triggerBrowserDownload(targetPdf, documentTitle);
-      }
     } catch (err: unknown) {
       console.error('Error requesting document:', err);
       const message =
@@ -281,15 +256,6 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
                     <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
                     <span>{error}</span>
                   </div>
-                  {targetPdf && (
-                    <a
-                      href={targetPdf}
-                      download
-                      className="shrink-0 underline font-bold text-red-800 hover:text-red-900"
-                    >
-                      {t.directDownloadText}
-                    </a>
-                  )}
                 </div>
               )}
 
@@ -436,7 +402,8 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               </h3>
 
               <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-2 leading-relaxed">
-                We have emailed a verified copy of <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> to{' '}
+                Your request for <strong className="text-[var(--ace-ink)]">{documentTitle}</strong> has been sent to our team.
+                Once approved, a secure download link will be emailed to{' '}
                 <strong className="text-[#a8812f] break-all">{submittedEmail}</strong>.
               </p>
 
@@ -445,16 +412,6 @@ export const CatalogueDownloadModal: React.FC<CatalogueDownloadModalProps> = ({
               </p>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3">
-                {targetPdf && (
-                  <a
-                    href={targetPdf}
-                    download
-                    className="w-full sm:w-auto px-5 py-3 rounded-xl sm:rounded-full bg-[#FAF8F4] border border-[#E6DBC6] hover:border-[#b99750] hover:bg-white text-[var(--ace-ink)] text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 transition-all shadow-2xs cursor-pointer"
-                  >
-                    <FileDown className="w-4 h-4 text-[#b99750]" />
-                    <span>{t.downloadAgainText}</span>
-                  </a>
-                )}
                 <button
                   type="button"
                   onClick={handleClose}

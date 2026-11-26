@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
       ...legacyRedirects,
       // Certificates are view-only: block the direct file link (307 so browsers don't cache it forever).
       { source: '/downloads/certificates/:path*', destination: '/quality', statusCode: 307 as const },
+      // Documents are released only through an approved request's emailed link (/api/documents/download).
+      { source: '/downloads/:path+', destination: '/downloads', statusCode: 307 as const },
     ];
   },
   async headers() {

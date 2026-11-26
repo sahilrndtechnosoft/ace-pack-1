@@ -2631,11 +2631,11 @@
 .xp-orbit>span,.xp-hero-bottom,.xp-down,.xp-hero-caption .xp-caption-rule { border-color:var(--ace-aqua-line); }
 .xp-craft,.xp-closing { background:var(--ace-aqua-soft); }
 .xp-collection,.xp-trust { background:var(--ace-paper); border-color:var(--ace-line); }
-.xp-manufacturing { background:var(--ace-ink); }
-.xp-manufacturing h2 { color:#fafbf7; }
-.xp-manufacturing-copy p,.xp-recycling-note,.xp-stats p { color:var(--ace-light-text); }
-.xp-stats>div>span,.xp-counter-number { color:#fafbf7 !important; }
-.xp-manufacturing em,.xp-manufacturing-top { color:var(--ace-aqua); }
+.xp-manufacturing { background:var(--ace-paper); }
+.xp-manufacturing h2 { color:var(--ace-ink); }
+.xp-manufacturing-copy p,.xp-recycling-note,.xp-stats p { color:var(--ace-muted); }
+.xp-stats>div>span,.xp-counter-number { color:var(--ace-ink) !important; }
+.xp-manufacturing em,.xp-manufacturing-top { color:var(--brand-gold); }
 .xp-hero-description { font-size:18px; line-height:1.8; }
 .xp-fact p,.xp-product-copy p,.xp-manufacturing-copy p { font-size:17px; line-height:1.75; }
 .xp-product-copy dd,.xp-product-tabs>a,.xp-collection-heading>a { color:var(--ace-ink); }

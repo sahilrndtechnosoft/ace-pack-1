@@ -1,6 +1,5 @@
 // About Us page (/about and /aboutus).
-import { aboutHero, aboutStats, aboutOverview, milestones, mdDesk, values, plant, leadership } from '@/lib/data/about';
-import { certifications } from '@/lib/data/quality';
+import { aboutHero, aboutStats, milestones, mdDesk, values, leadership } from '@/lib/data/about';
 
 export const aboutPage = {
   title: 'About Us',
@@ -8,7 +7,6 @@ export const aboutPage = {
   sections: {
     hero: { label: 'Hero Banner', description: 'Page headline, intro text and main photo.', content: aboutHero },
     stats: { label: 'Key Numbers', description: 'Animated counters under the hero.', content: { stats: aboutStats } },
-    overview: { label: 'Who We Are', description: 'Company overview text, highlights and photo.', content: aboutOverview },
     milestones: {
       label: 'Our Journey (Timeline)',
       description: 'Year-by-year milestones.',
@@ -20,15 +18,10 @@ export const aboutPage = {
         hint: 'Swipe or scroll to travel · tap a year to jump',
       },
     },
-    md_desk: { label: "Managing Director's Message", description: 'Quote, name and portrait.', content: mdDesk },
+    md_desk: { label: "Managing Director's Message", description: 'Quote, name, portrait and the photo on the right.', content: mdDesk },
     values: {
       label: 'Mission, Vision & Values',
       content: { eyebrow: 'What we stand for', heading: 'Safest container.', headingHighlight: 'Highest clarity.', headingEnd: 'Zero leaks.', items: values },
-    },
-    plant: {
-      label: 'Infrastructure',
-      description: 'Plant description and machine numbers.',
-      content: { ...plant, link: { text: 'Inside our capabilities', link: '/capabilities' } },
     },
     team: {
       label: 'Leadership Team',
@@ -38,15 +31,6 @@ export const aboutPage = {
         headingHighlight: 'every container.',
         note: 'Seasoned polymer engineers, toolmakers, and packaging specialists leading precision injection moulding operations across Daman.',
         members: leadership,
-      },
-    },
-    certifications: {
-      label: 'Certifications',
-      content: {
-        eyebrow: '05 / Certifications',
-        heading: 'Certified at the material, the facility and the process.',
-        link: { text: 'Quality & testing', link: '/quality' },
-        items: certifications.map(({ id, scope, title, body }) => ({ id, scope, title, body })),
       },
     },
     closing: {

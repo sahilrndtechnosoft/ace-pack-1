@@ -57,6 +57,7 @@ const NAV_GROUPS = [
     heading: 'Leads & Analytics',
     items: [
       { label: 'Contact Inquiries', href: '/admin/contacts', icon: Mail },
+      { label: 'Download Requests', href: '/admin/download-requests', icon: FileDown },
       { label: 'Site Visitors', href: '/admin/visitors', icon: Users },
     ],
   },

@@ -43,7 +43,7 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
   const show = (key: keyof CmsPageContent<'about'>) => !hidden.includes(key);
   const root = useRef<HTMLDivElement>(null);
 
-  const { hero, overview, plant, values, team, certifications, closing } = content;
+  const { hero, values, team, closing } = content;
   const stats = content.stats.stats;
   const journey = content.milestones.milestones;
   const desk = content.md_desk;
@@ -64,9 +64,13 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
       {/* 00 — Hero */}
       {show('hero') && (
       <section className="xa-hero" id="about-hero">
+        {/* Full-bleed photo: food sits on the right, the copy reads over the faded left side. */}
+        <div className="xa-hero-media">
+          <img src={hero.image} alt={hero.imageAlt || 'Ace Packaging'} width="1200" height="900" fetchPriority="high" />
+        </div>
         <div className="xa-wrap">
           <div className="xa-hero-grid">
-            <div>
+            <div className="xa-hero-copy">
               <span className="xp-eyebrow">{hero.eyebrow}</span>
               <h1 aria-label={Array.isArray(hero.title) ? hero.title.join(' ') : hero.title}>
                 {(Array.isArray(hero.title) ? hero.title : [hero.title]).map((line: string, i: number) => (
@@ -75,10 +79,7 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
               </h1>
               <p className="xa-hero-lead">{hero.lead}</p>
             </div>
-            <div className="xa-hero-media">
-              <img src={hero.image} alt={hero.imageAlt || 'Ace Packaging'} width="1200" height="900" fetchPriority="high" />
-              {hero.chip && <div className="xa-hero-chip"><b>{hero.chip.value}</b><span>{hero.chip.label}</span></div>}
-            </div>
+            {hero.chip && <div className="xa-hero-chip"><b>{hero.chip.value}</b><span>{hero.chip.label}</span></div>}
           </div>
           <div className="xa-hero-bottom">
             <a href="#about-stats" className="xa-scroll-cue"><span><ArrowDown size={15} /></span>Scroll to discover</a>
@@ -99,29 +100,6 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
                 <p>{stat.label}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* 01 — Overview */}
-      {show('overview') && (
-      <section className="xa-overview" id="overview">
-        <div className="xa-wrap">
-          <div className="xa-overview-grid">
-            <div>
-              <span className="xp-eyebrow">{overview.eyebrow}</span>
-              <h2 data-split>{Array.isArray(overview.title) ? overview.title[0] : overview.title} <em>{Array.isArray(overview.title) ? overview.title[1] : ''}</em></h2>
-              {(Array.isArray(overview.paragraphs) ? overview.paragraphs : [overview.paragraphs || '']).map((text: string) => <p key={text.slice(0, 24)}>{text}</p>)}
-              {overview.points && (
-                <ul className="xa-checks">
-                  {overview.points.map((point: string) => <li key={point}><i />{point}</li>)}
-                </ul>
-              )}
-            </div>
-            <div className="xa-overview-media">
-              <img src={overview.image} alt={overview.imageAlt || 'Ace Overview'} width="1200" height="900" loading="lazy" />
-            </div>
           </div>
         </div>
       </section>
@@ -171,7 +149,7 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
       {/* MD's desk */}
       {show('md_desk') && (
       <section className="xa-desk" id="md-desk">
-        <div className="xa-wrap">
+        <div className="xa-wrap xa-desk-grid">
           <div className="xa-desk-inner">
             <span className="xp-eyebrow">{desk.eyebrow}</span>
             <blockquote>{desk.quote}”</blockquote>
@@ -180,6 +158,11 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
               <span>{desk.name && <b>{desk.name}</b>}{desk.role}</span>
             </div>
           </div>
+          {desk.image && (
+            <div className="xa-desk-media">
+              <img src={desk.image} alt={desk.imageAlt || ''} width="1200" height="900" loading="lazy" />
+            </div>
+          )}
         </div>
       </section>
       )}
@@ -203,26 +186,6 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
       </section>
       )}
 
-      {/* 03 — Plant */}
-      {show('plant') && (
-      <section className="xa-plant" id="infrastructure">
-        <div className="xa-pattern" aria-hidden="true" />
-        <div className="xa-wrap xa-plant-inner">
-          <span className="xp-eyebrow">{plant.eyebrow}</span>
-          <h2 data-split>{plant.title[0]}<br /><em>{plant.title[1]}</em></h2>
-          <div className="xa-plant-copy">
-            <p>{plant.body}</p>
-            <Link href={plant.link.link}>{plant.link.text} <ArrowUpRight size={18} /></Link>
-          </div>
-          <div className="xa-plant-grid">
-            {plant.stats.map(stat => (
-              <div className="xa-plant-stat" key={stat.label}><b>{stat.value}</b><p>{stat.label}</p></div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
       {/* Leadership */}
       {show('team') && (
       <section className="xa-leadership" id="leadership">
@@ -239,30 +202,6 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
                 <span className="xa-lead-name">{person.role}</span>
                 <p>{person.remit}</p>
                 {person.linkedin && <a className="xa-team-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn for ${person.name}`}>Connect on LinkedIn <ArrowUpRight size={16} /></a>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Certifications */}
-      {show('certifications') && (
-      <section className="xa-certs" id="certifications">
-        <div className="xa-wrap">
-          <div className="xa-certs-head">
-            <div>
-              <span className="xp-eyebrow">{certifications.eyebrow}</span>
-              <h2 data-split>{certifications.heading}</h2>
-            </div>
-            <Link href={certifications.link.link}>{certifications.link.text} <ArrowUpRight size={16} /></Link>
-          </div>
-          <div className="xa-certs-grid">
-            {certifications.items.map((cert, i) => (
-              <div className="xa-cert" key={`${cert.title}-${i}`}>
-                <span className="xp-eyebrow">{cert.scope}</span>
-                <h3>{cert.title}</h3>
-                <p>{cert.body}</p>
               </div>
             ))}
           </div>
