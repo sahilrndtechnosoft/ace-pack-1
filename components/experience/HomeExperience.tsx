@@ -18,6 +18,7 @@ import { ObserverCollectionShowcase } from './ObserverCollectionShowcase';
 import { CatalogueHero } from '@/components/hero/CatalogueHero';
 import { TrustCardsSection } from './TrustCardsSection';
 import { ScrollVideoHero } from './ScrollVideoHero';
+import { ClientLogosSection } from '@/components/sections/ClientLogosSection';
 import { homePage } from '@/lib/cms/pages/home';
 import { useSiteText } from '@/components/layout/SiteTextProvider';
 import type { CmsPageContent } from '@/lib/cms/registry';
@@ -265,6 +266,8 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
 
     {/* Plant scale and stats right after the opening video. */}
     {show('manufacturing') && <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true" /><div className="xp-manufacturing-top"><span className="xp-eyebrow">{manufacturing.eyebrow}</span><Plus size={30} /></div><Reveal><h2 data-split>{manufacturing.heading}<br /><em>{manufacturing.headingHighlight}</em></h2></Reveal><div className="xp-manufacturing-copy"><p>{manufacturing.body}</p><Link href={manufacturing.link.link}>{manufacturing.link.text} <ArrowUpRight size={19} /></Link></div><div className="xp-stats">{manufacturing.stats.map(stat => <div key={stat.label}><Count value={Number(stat.value) || 0} suffix={stat.suffix} /><p>{stat.label}</p></div>)}</div><p className="xp-recycling-note">{manufacturing.note}</p></section>}
+
+    {show('clients') && <ClientLogosSection content={content.clients} />}
     {/* GSAP Observer Dual-Wrapper Counter-Sliding Collection Section */}
     {show('collection') && <ObserverCollectionShowcase content={content.collection} />}
 

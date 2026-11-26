@@ -92,6 +92,14 @@ export const homeCertifications = {
   bannerLink: { text: 'Full Quality Page', link: '/quality' },
 };
 
+export const homeClients = {
+  eyebrow: 'Our Clients',
+  heading: 'Trusted by food brands across India and abroad',
+  intro: '',
+  // One blank row gives the editor the fields for "Add logo"; rows without an image are not shown.
+  logos: [{ name: '', image: '' }],
+};
+
 export const homeExport = {
   badge: 'International Logistics & Export Infrastructure',
   heading: 'Every container we ship for export is carefully planned and prepared for delivery.',
@@ -143,6 +151,7 @@ export const homePage = {
   sections: {
     hero_banner: { label: 'Hero Banner', description: 'First screen: headline, buttons, main image and quick stats.', content: homeHero },
     manufacturing: { label: 'Manufacturing Highlight', description: 'Production numbers band, right after the opening video.', content: homeManufacturing },
+    clients: { label: 'Our Clients', description: 'Client logo strip after the production numbers. Upload each logo with the client name; hidden until a logo is added.', content: homeClients },
     craft: { label: 'Unbox the Craft', description: 'Three key product facts shown with the 3D container.', content: homeCraft },
     collection: { label: 'Product Series Showcase', description: 'Dark stacked panels, one per product series, with photos and size options.', content: homeCollection },
     product_carousel: { label: 'Signature Product Carousel', description: 'Product slider with photos, capacities and highlights.', content: homeProductCarousel },
