@@ -50,7 +50,7 @@ export const exhibitionEvents: ExhibitionEvent[] = [
       'Live demonstration of 5-sided photorealistic IML container branding with zero label peel',
       'Leak-proof snap fit trials for high-heat soup and biryani deliveries under transport vibration',
       'Rapid order scheduling for custom brand mould tooling (±0.02mm tolerance CAD)',
-      'Free physical sample kit distribution with technical specification datasheets',
+      'Technical specification datasheets for every container line',
     ],
     focusProducts: [
       { name: 'IML Custom Branded Containers', slug: 'custom-iml', desc: 'Photorealistic in-mould labelling fused directly into virgin PP 05 polymer.' },
@@ -155,7 +155,7 @@ export const exhibitionEvents: ExhibitionEvent[] = [
       'The showcase resulted in over 45 long-term corporate supply partnerships across leading QSR franchises, cloud kitchen networks, and sweets manufacturers in North and West India.',
     ],
     highlights: [
-      'Over 1,200 physical sample kits delivered to restaurant chains and QSRs',
+      'Container range showcased to restaurant chains and QSRs',
       'In-person rim seal drop testing demonstrating zero leakage during transit',
       'Signed supply commitments across 40+ premier QSR dining brands',
       'Showcased one-piece hinge sauce cups with attached leak-proof lids',

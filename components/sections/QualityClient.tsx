@@ -9,6 +9,8 @@ import {
   Eye,
   Award,
   X,
+  HelpCircle,
+  ChevronDown,
 } from 'lucide-react';
 import { qualityPage } from '@/lib/cms/pages/quality';
 import type { CmsPageContent } from '@/lib/cms/registry';
@@ -16,10 +18,11 @@ import type { CmsPageContent } from '@/lib/cms/registry';
 const QUALITY_DEFAULTS = {
   banner: qualityPage.sections.banner.content,
   certificate: qualityPage.sections.certificate.content,
+  faq: qualityPage.sections.faq.content,
 };
 
 export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidden?: string[] }> = ({ content = QUALITY_DEFAULTS, hidden = [] }) => {
-  const { banner, certificate: c } = content;
+  const { banner, certificate: c, faq } = content;
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   return (
@@ -117,6 +120,34 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
           </Reveal>
         </div>
       </section>}
+
+      {/* Quality FAQ (editable in Admin → Pages → Quality → Quality FAQ) */}
+      {!hidden.includes('faq') && faq.faqs.length > 0 && (
+        <section className="pb-16 md:pb-20">
+          <div className="container-custom max-w-4xl">
+            <span className="text-[10px] font-bold text-[#a8812f] uppercase tracking-wider block mb-2">{faq.eyebrow}</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1A1D20] tracking-tight mb-8">{faq.heading}</h2>
+            <div className="space-y-3">
+              {faq.faqs.map((item, idx) => (
+                <details
+                  key={`${idx}-${item.question}`}
+                  open={idx === 0}
+                  className="group rounded-2xl border border-[#E6DBC6] bg-white shadow-xs open:border-[#b99750]"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6 text-sm sm:text-base font-bold text-[#1A1D20] [&::-webkit-details-marker]:hidden">
+                    <span className="flex items-start gap-3">
+                      <HelpCircle className="w-5 h-5 text-[#b99750] shrink-0 mt-0.5" aria-hidden="true" />
+                      {item.question}
+                    </span>
+                    <ChevronDown className="w-4 h-4 shrink-0 text-gray-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+                  </summary>
+                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 pl-[3.25rem] sm:pl-14 text-xs sm:text-sm text-gray-600 leading-relaxed">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* High-Resolution Certificate Lightbox */}
       {previewImage && (

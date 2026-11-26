@@ -262,10 +262,11 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
     */}
     {/* Thermal-range fact left out of the video captions on request. */}
     <ScrollVideoHero hero={content.hero_banner} facts={craft.facts.filter(fact => !/thermal|°C/i.test(`${fact.tag} ${fact.title}`))} />
+
+    {/* Plant scale and stats right after the opening video. */}
+    {show('manufacturing') && <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true" /><div className="xp-manufacturing-top"><span className="xp-eyebrow">{manufacturing.eyebrow}</span><Plus size={30} /></div><Reveal><h2 data-split>{manufacturing.heading}<br /><em>{manufacturing.headingHighlight}</em></h2></Reveal><div className="xp-manufacturing-copy"><p>{manufacturing.body}</p><Link href={manufacturing.link.link}>{manufacturing.link.text} <ArrowUpRight size={19} /></Link></div><div className="xp-stats">{manufacturing.stats.map(stat => <div key={stat.label}><Count value={Number(stat.value) || 0} suffix={stat.suffix} /><p>{stat.label}</p></div>)}</div><p className="xp-recycling-note">{manufacturing.note}</p></section>}
     {/* GSAP Observer Dual-Wrapper Counter-Sliding Collection Section */}
     {show('collection') && <ObserverCollectionShowcase content={content.collection} />}
-
-    {show('manufacturing') && <section id="manufacturing" className="xp-manufacturing"><div className="xp-pattern" aria-hidden="true" /><div className="xp-manufacturing-top"><span className="xp-eyebrow">{manufacturing.eyebrow}</span><Plus size={30} /></div><Reveal><h2 data-split>{manufacturing.heading}<br /><em>{manufacturing.headingHighlight}</em></h2></Reveal><div className="xp-manufacturing-copy"><p>{manufacturing.body}</p><Link href={manufacturing.link.link}>{manufacturing.link.text} <ArrowUpRight size={19} /></Link></div><div className="xp-stats">{manufacturing.stats.map(stat => <div key={stat.label}><Count value={Number(stat.value) || 0} suffix={stat.suffix} /><p>{stat.label}</p></div>)}</div><p className="xp-recycling-note">{manufacturing.note}</p></section>}
 
     {/* Trusted at scale - Interactive Scroll-driven Industry Cards */}
     {show('industries') && <TrustCardsSection content={content.industries} />}
@@ -277,7 +278,7 @@ export default function HomeExperience({ content = HOME_DEFAULTS, hidden = [] }:
     {show('faq') && <FaqSection content={content.faq} />}
 
     {/* Pre-Footer Call to Action & Gated Catalogue Download */}
-    {/* Closing call to action (free sample kit band) hidden from the home page on request.
+    {/* Closing call to action band hidden from the home page on request.
     {show('closing_cta') && <PreFooterCTA content={content.closing_cta} />}
     */}
 

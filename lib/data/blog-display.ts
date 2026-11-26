@@ -41,6 +41,14 @@ export function blogAuthorName(name: string | null | undefined): string {
   return value && !/^ace\s*pack(aging)?$/i.test(value) ? value : BLOG_BYLINE;
 }
 
+const WORDS_PER_MINUTE = 200;
+
+/** "3 min read" from the article text (HTML allowed); short posts still read as 1 min. */
+export function blogReadTime(text: string | null | undefined): string {
+  const words = (text ?? '').replace(/<[^>]*>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / WORDS_PER_MINUTE))} min read`;
+}
+
 /** Read count from the stored label ("1101 Views", "1,101"); 0 when there is none. */
 export function blogViewCount(views: string | null | undefined): number {
   const digits = views?.replace(/,/g, '').match(/\d+/)?.[0];

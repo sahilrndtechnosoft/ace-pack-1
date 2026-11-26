@@ -1,0 +1,53 @@
+{
+  "sections": [
+    {
+      "id": "sec_home_closing_cta",
+      "page_slug": "home",
+      "section_key": "closing_cta",
+      "title": "Closing Call to Action",
+      "subtitle": "",
+      "draft_content": "{\"badge\":\"Complimentary Factory Samples\",\"heading\":\"Ready to Upgrade Your Food Delivery Packaging?\",\"description\":\"Test our zero-leak snap seals and extreme thermal durability in your own kitchen or packaging line. We dispatch curated sample kits across India and global ports within 24 hours.\",\"primaryButton\":{\"text\":\"Request Free Sample Kit\",\"link\":\"/contact\"},\"catalogueButtonText\":\"Download Product Catalogue\",\"highlights\":[\"Zero Commitment Evaluation\",\"Dispatch Within 24 Hours\",\"ISO 9001:2015 Certified Facility\"],\"footerLine\":\"Daman, India · sales@acepack.co.in · +91 99250 15906\"}",
+      "published_content": "{\"badge\":\"Complimentary Factory Samples\",\"heading\":\"Ready to Upgrade Your Food Delivery Packaging?\",\"description\":\"Test our zero-leak snap seals and extreme thermal durability in your own kitchen or packaging line. We dispatch curated sample kits across India and global ports within 24 hours.\",\"primaryButton\":{\"text\":\"Request Free Sample Kit\",\"link\":\"/contact\"},\"catalogueButtonText\":\"Download Product Catalogue\",\"highlights\":[\"Zero Commitment Evaluation\",\"Dispatch Within 24 Hours\",\"ISO 9001:2015 Certified Facility\"],\"footerLine\":\"Daman, India · sales@acepack.co.in · +91 99250 15906\"}",
+      "is_enabled": 1,
+      "is_published": 1,
+      "sort_order": 8,
+      "created_at": "2026-11-11T12:22:30.000Z",
+      "updated_at": "2026-11-11T15:41:12.000Z"
+    },
+    {
+      "id": "sec_home_pre_footer_cta",
+      "page_slug": "home",
+      "section_key": "pre_footer_cta",
+      "title": "Ready to elevate your packaging programme?",
+      "subtitle": "Request physical sample kits or speak directly with our factory tooling specialists.",
+      "draft_content": "{\"heading\":\"Ready to elevate your packaging programme?\",\"lead\":\"Request physical sample kits, discuss bespoke mould tooling, or get competitive volume pricing for wholesale container supply.\",\"primaryButton\":{\"text\":\"Contact Our Team\",\"link\":\"/contact\"},\"secondaryButton\":{\"text\":\"Download Full Catalog\",\"link\":\"/downloads\"},\"phone\":\"+91 99250 15906\"}",
+      "published_content": "{\"heading\":\"Ready to elevate your packaging programme?\",\"lead\":\"Request physical sample kits, discuss bespoke mould tooling, or get competitive volume pricing for wholesale container supply.\",\"primaryButton\":{\"text\":\"Contact Our Team\",\"link\":\"/contact\"},\"secondaryButton\":{\"text\":\"Download Full Catalog\",\"link\":\"/downloads\"},\"phone\":\"+91 99250 15906\"}",
+      "is_enabled": 1,
+      "is_published": 1,
+      "sort_order": 6,
+      "created_at": "2026-11-02T11:08:23.000Z",
+      "updated_at": "2026-11-02T11:08:23.000Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "event_aahar-international-hospitality-fair-2026",
+      "slug": "aahar-international-hospitality-fair-2026",
+      "title": "AAHAR · The International Food & Hospitality Fair",
+      "short_desc": "India’s flagship food and hospitality convention. Over 1,800 hospitality procurement directors and cloud kitchen operators visited the Ace Packaging pavilion to experience our airtight gravy tubs and multi-cavity bento trays.",
+      "full_desc": "Organized by the India Trade Promotion Organisation (ITPO), AAHAR is the epicenter of India’s culinary, catering, and institutional hospitality sector.\n\nAce Packaging showcased the complete 100+ model product line, with live food service simulations demonstrating how our containers maintain food presentation during heavy-duty bike courier transit.\n\nThe showcase resulted in over 45 long-term corporate supply partnerships across leading QSR franchises, cloud kitchen networks, and sweets manufacturers in North and West India.",
+      "date": "March 03–07, 2026",
+      "location": "Pragati Maidan, New Delhi, India",
+      "booth": "Hall 14 · Stall F-22",
+      "image": "/images/gallery/kitchen-set.webp",
+      "gallery": "[\"Over 1,200 physical sample kits delivered to restaurant chains and QSRs\",\"In-person rim seal drop testing demonstrating zero leakage during transit\",\"Signed supply commitments across 40+ premier QSR dining brands\",\"Showcased one-piece hinge sauce cups with attached leak-proof lids\"]",
+      "category": "expo",
+      "is_featured": 0,
+      "is_published": 1,
+      "created_at": "2026-11-02T11:08:23.000Z",
+      "updated_at": "2026-11-11T13:09:12.000Z",
+      "highlights": null,
+      "focus_products": null
+    }
+  ]
+}

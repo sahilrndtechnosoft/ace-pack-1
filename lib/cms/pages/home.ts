@@ -127,13 +127,13 @@ export const homeFaq = {
 };
 
 export const homeClosingCta = {
-  badge: 'Complimentary Factory Samples',
+  badge: 'Talk to Our Team',
   heading: 'Ready to Upgrade Your Food Delivery Packaging?',
   description:
-    'Test our zero-leak snap seals and extreme thermal durability in your own kitchen or packaging line. We dispatch curated sample kits across India and global ports within 24 hours.',
-  primaryButton: { text: 'Request Free Sample Kit', link: '/contact' },
+    'Tell us about your containers, volumes and delivery locations, and our team will get back to you within 24 hours.',
+  primaryButton: { text: 'Contact Us', link: '/contact' },
   catalogueButtonText: 'Download Product Catalogue',
-  highlights: ['Zero Commitment Evaluation', 'Dispatch Within 24 Hours', 'ISO 9001:2015 Certified Facility'],
+  highlights: ['Response Within 24 Hours', 'ISO 9001:2015 Certified Facility'],
   footerLine: 'Daman, India · sales@acepack.co.in · +91 99250 15906',
 };
 
@@ -142,14 +142,14 @@ export const homePage = {
   path: '/',
   sections: {
     hero_banner: { label: 'Hero Banner', description: 'First screen: headline, buttons, main image and quick stats.', content: homeHero },
+    manufacturing: { label: 'Manufacturing Highlight', description: 'Production numbers band, right after the opening video.', content: homeManufacturing },
     craft: { label: 'Unbox the Craft', description: 'Three key product facts shown with the 3D container.', content: homeCraft },
     collection: { label: 'Product Series Showcase', description: 'Dark stacked panels, one per product series, with photos and size options.', content: homeCollection },
     product_carousel: { label: 'Signature Product Carousel', description: 'Product slider with photos, capacities and highlights.', content: homeProductCarousel },
-    manufacturing: { label: 'Manufacturing Highlight', description: 'Dark band with production numbers.', content: homeManufacturing },
     industries: { label: 'Industries We Serve', description: 'Scrolling industry cards ("Trusted at scale").', content: homeIndustries },
     certifications: { label: 'Certifications & Quality', description: 'ISO certificate cards and download banner.', content: homeCertifications },
     export: { label: 'Export & Shipping', description: 'Four export steps and global shipping routes.', content: homeExport },
     faq: { label: 'FAQ & Inquiry Form', description: 'Common questions next to the inquiry form.', content: homeFaq },
-    closing_cta: { label: 'Closing Call to Action', description: 'Free sample kit band above the footer.', content: homeClosingCta },
+    closing_cta: { label: 'Closing Call to Action', description: 'Contact band above the footer.', content: homeClosingCta },
   },
 };

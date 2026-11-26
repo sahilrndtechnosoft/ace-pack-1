@@ -24,9 +24,8 @@ import {
   Factory,
   Image as ImageIcon,
 } from 'lucide-react';
-import { capacityLabel, productCategories, type ProductCategory } from '@/lib/data/products';
+import { productCategories, type ProductCategory } from '@/lib/data/products';
 import { productImageFit } from '@/lib/data/product-image-fit';
-import { splitBalanced } from '@/lib/utils/split-balanced';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
 const FEATURED_MOBILE_CATEGORIES = [
@@ -94,9 +93,7 @@ const getResourceIcon = (href: string) => {
   }
 };
 
-const MEGA_MENU_COLUMNS = 4;
-// "AP-RE-08 (250ml / 8oz)" → "250ml", "8 Oz (240ml)" → "8 Oz": short enough for a chip.
-const modelChipLabel = (capacity: string) => capacityLabel(capacity).split(/\s*[/(]/)[0] || capacity;
+const MEGA_MENU_MODELS_PER_CATEGORY = 3;
 
 // Floating photo that trails the cursor over the Products menu, like the /categories list.
 const MEGA_PREVIEW_OFFSET = 28;
@@ -191,14 +188,14 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
     };
   }, []);
 
-  // Left of the cursor when it fits, so the chips still to be read (to the right) stay visible.
+  // Same placement as the /categories list: right of the cursor, flipped left near the edge.
   const placeMegaPreview = (e: React.PointerEvent) => {
     const card = megaPreviewRef.current;
     const move = megaPreviewMove.current;
     if (!card || !move || e.pointerType !== 'mouse') return;
     const w = card.offsetWidth;
     const h = card.offsetHeight;
-    const x = e.clientX - w - MEGA_PREVIEW_OFFSET >= MEGA_PREVIEW_EDGE ? e.clientX - w - MEGA_PREVIEW_OFFSET : e.clientX + MEGA_PREVIEW_OFFSET;
+    const x = e.clientX + MEGA_PREVIEW_OFFSET + w > window.innerWidth ? e.clientX - w - MEGA_PREVIEW_OFFSET : e.clientX + MEGA_PREVIEW_OFFSET;
     move.x(x);
     move.y(Math.min(window.innerHeight - h - MEGA_PREVIEW_EDGE, Math.max(MEGA_PREVIEW_EDGE, e.clientY - h / 2)));
   };
@@ -263,11 +260,6 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
     }`;
 
   const totalModels = categories.reduce((sum, c) => sum + c.products.length, 0);
-  // Header row plus one row per ~4 size chips: the rough height of a category block.
-  const megaMenuColumns = useMemo(
-    () => splitBalanced(categories, MEGA_MENU_COLUMNS, (c) => 1.6 + Math.ceil(c.products.length / 4)),
-    [categories]
-  );
 
   // Sorted categories for the mobile drawer full A-Z directory
   const sortedAllCategories = useMemo(() => {
@@ -438,36 +430,24 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                       onPointerMove={placeMegaPreview}
                       onPointerLeave={hideMegaPreview}
                     >
-                        {/* Each line: photo + name, then every model as a size chip (the chip says what differs). */}
-                        <div className="grid grid-cols-4 gap-x-5 items-start">
-                          {megaMenuColumns.map((column, columnIdx) => (
-                          <div key={columnIdx} className="flex flex-col gap-1">
-                          {column.map((category) => {
+                        <div className="columns-4 xl:columns-5 gap-6 xl:gap-7">
+                          {categories.map((category) => {
+                            const extraModels = category.products.length - MEGA_MENU_MODELS_PER_CATEGORY;
                             const categoryHref = `/categories/${category.slug}`;
                             return (
-                              <div key={category.id} className="group/cat rounded-2xl p-2.5 -mx-1 hover:bg-[#FAF8F4] transition-colors">
+                              <div key={category.id} className="inline-block w-full break-inside-avoid mb-4">
                                 <Link
                                   href={categoryHref}
                                   onClick={() => setMegaMenuOpen(false)}
                                   onMouseEnter={() => showMegaPreview({ image: category.heroImage, href: categoryHref, isProduct: false })}
                                   onMouseLeave={hideMegaPreview}
-                                  className="flex items-center gap-3 mb-2.5"
+                                  className="flex items-baseline justify-between gap-2 pb-1.5 mb-2 border-b border-[var(--ace-line)] text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors"
                                 >
-                                  <img
-                                    src={category.heroImage}
-                                    alt=""
-                                    loading="lazy"
-                                    className="w-10 h-10 shrink-0 rounded-xl object-cover border border-[var(--ace-line)] bg-[#FAF8F4]"
-                                  />
-                                  <span className="min-w-0">
-                                    <span className="block text-[13px] font-bold leading-tight text-[var(--ace-ink)] group-hover/cat:text-[var(--brand-gold)] transition-colors truncate">
-                                      {category.name}
-                                    </span>
-                                    <span className="block text-[11px] text-[var(--ace-muted)] mt-0.5">{category.products.length} models</span>
-                                  </span>
+                                  <span className="truncate">{category.name}</span>
+                                  <span className="text-[10px] font-semibold text-[var(--ace-muted)] tracking-normal shrink-0">{category.products.length}</span>
                                 </Link>
-                                <ul className="flex flex-wrap gap-1.5">
-                                  {category.products.map((product) => {
+                                <ul className="space-y-0.5">
+                                  {category.products.slice(0, MEGA_MENU_MODELS_PER_CATEGORY).map((product) => {
                                     const href = `${categoryHref}/${product.product_slug}`;
                                     const isPreviewed = isMegaPreviewVisible && megaPreview?.href === href;
                                     const preview: MegaPreview = { image: product.image, href, isProduct: true };
@@ -475,28 +455,34 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                                       <li key={product.id}>
                                         <Link
                                           href={href}
-                                          title={product.name}
-                                          aria-label={product.name}
                                           onClick={() => setMegaMenuOpen(false)}
                                           onMouseEnter={() => showMegaPreview(preview)}
                                           onMouseLeave={hideMegaPreview}
-                                          className={`inline-block rounded-full border px-2.5 py-1 text-[11.5px] font-semibold tabular-nums transition-colors ${
-                                            isPreviewed
-                                              ? 'border-[var(--brand-gold)] bg-[var(--brand-gold)] text-white'
-                                              : 'border-[var(--ace-line)] bg-white text-[var(--ace-ink)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]'
+                                          className={`group/item flex items-start gap-1.5 py-[3px] text-[12.5px] font-medium transition-colors ${
+                                            isPreviewed ? 'text-[var(--brand-gold)]' : 'text-[var(--ace-ink)] hover:text-[var(--brand-gold)]'
                                           }`}
                                         >
-                                          {modelChipLabel(product.capacity)}
+                                          <ChevronRight className="w-3 h-3 mt-[3px] shrink-0 text-[var(--brand-gold)] transition-transform group-hover/item:translate-x-0.5" />
+                                          <span className="leading-snug">{product.name}</span>
                                         </Link>
                                       </li>
                                     );
                                   })}
+                                  {extraModels > 0 && (
+                                    <li>
+                                      <Link
+                                        href={categoryHref}
+                                        onClick={() => setMegaMenuOpen(false)}
+                                        className="inline-flex items-center gap-1 pl-[18px] py-[3px] text-[12px] font-semibold text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors"
+                                      >
+                                        +{extraModels} more models
+                                      </Link>
+                                    </li>
+                                  )}
                                 </ul>
                               </div>
                             );
                           })}
-                          </div>
-                          ))}
                         </div>
                     </div>
 
@@ -510,7 +496,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                         onClick={() => setMegaMenuOpen(false)}
                         className="inline-flex items-center gap-1 text-[var(--brand-gold)] hover:text-[var(--ace-ink)] transition-colors shrink-0"
                       >
-                        Request a Quote
+                        Request Bulk Factory Quote
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -710,7 +696,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
       {/* Cursor-following product photo for the Products menu (styled like the /categories preview) */}
       <div ref={megaPreviewRef} aria-hidden="true" className="hidden lg:block fixed left-0 top-0 z-[60] pointer-events-none">
         <div
-          className={`relative w-[230px] aspect-[4/3] rounded-2xl overflow-hidden border border-white/80 bg-[radial-gradient(circle_at_center,#ffffff_0%,#f4f0e6_100%)] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] transition duration-300 ease-out ${
+          className={`relative w-[260px] aspect-[4/3] rounded-2xl overflow-hidden border border-white/80 bg-[radial-gradient(circle_at_center,#ffffff_0%,#f4f0e6_100%)] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] transition duration-300 ease-out ${
             megaMenuOpen && isMegaPreviewVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.94]'
           }`}
         >

@@ -686,7 +686,7 @@ export default function ContactsAdminPage() {
                 </span>
                 <textarea
                   rows={3}
-                  placeholder="Add internal notes about client meeting, quotation sent, sample kit dispatched, etc..."
+                  placeholder="Add internal notes about client meeting, quotation sent, follow-up call, etc..."
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
                   className="w-full bg-[#0D1117] border border-[#1E2633] rounded-xl p-3 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#b99750] resize-none"

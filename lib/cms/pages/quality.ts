@@ -30,6 +30,33 @@ export const qualityCertificate = {
   validityNote: 'Certificate IN25/00000652 · Valid through August 2028',
 };
 
+export const qualityFaq = {
+  eyebrow: 'Quality FAQ',
+  heading: 'Questions about our quality & certifications',
+  faqs: [
+    {
+      question: 'Is Ace Packaging ISO 9001:2015 certified?',
+      answer: 'Yes. Our Daman manufacturing facility is certified to ISO 9001:2015 by SGS (Certificate IN25/00000652), valid through August 2028.',
+    },
+    {
+      question: 'What material are your containers made from?',
+      answer: 'All containers are moulded from 100% prime virgin polypropylene (PP 05) — no regrind or fillers — and are BPA-free and safe for food contact.',
+    },
+    {
+      question: 'How do you make sure containers do not leak?',
+      answer: 'Every sealing rim is calibrated for a snap-tight lid fit and checked during production, so containers stay leak-proof during delivery.',
+    },
+    {
+      question: 'How consistent is the wall thickness?',
+      answer: 'Continuous laser and micrometer monitoring keeps wall and base thickness within ±0.02 mm, so there are no thin spots or weak corners.',
+    },
+    {
+      question: 'Can you trace a batch if there is a quality concern?',
+      answer: 'Yes. Every pack carries a serialized batch code logging the resin lot, moulding press and production time, from resin intake to dispatch.',
+    },
+  ],
+};
+
 export const qualityPage = {
   title: 'Quality & Certifications',
   path: '/quality',
@@ -41,6 +68,7 @@ export const qualityPage = {
         'Every container is moulded from certified virgin PP 05 in our ISO 9001:2015 certified facility in Daman, with 100% leak testing and ±0.02 mm precision tolerance across every production batch.',
       bgImage: DEFAULT_BANNER_IMAGE,
     }),
-    certificate: { label: 'ISO Certificate', description: 'Certificate image, details and download.', content: qualityCertificate },
+    certificate: { label: 'ISO Certificate', description: 'Certificate image and details.', content: qualityCertificate },
+    faq: { label: 'Quality FAQ', description: 'Questions & answers shown below the certificate. Add, edit, remove or reorder questions.', content: qualityFaq },
   },
 };

@@ -1,5 +1,5 @@
 /* Footer delivery line art (FooterDeliveryArt). Transforms are in SVG viewBox units. */
-.fda{height:110px;max-width:1400px;margin:0 auto;color:#b99750}
+.fda{position:absolute;left:0;right:0;bottom:0;z-index:0;height:110px;max-width:1400px;margin:0 auto;color:#b99750;opacity:.4;pointer-events:none}
 .fda-svg{display:block;width:100%;height:100%;overflow:visible}
 .fda-stroke{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fda-muted{opacity:.55}

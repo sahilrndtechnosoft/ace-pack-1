@@ -1,6 +1,6 @@
 import { draftMode } from 'next/headers';
 import { encodeAssetPath } from '@/lib/asset-url';
-import { blogAuthorAvatar, blogAuthorName, blogCategory } from '@/lib/data/blog-display';
+import { blogAuthorAvatar, blogAuthorName, blogCategory, blogReadTime } from '@/lib/data/blog-display';
 import { getDbPool, initDb } from './index';
 import type { BlogPost } from '../data/blogs';
 import type { ExhibitionEvent } from '../data/events';
@@ -244,7 +244,7 @@ function mapRowToBlogPost(r: any): BlogPost {
       role: r.author_role || 'Packaging Technology Specialist',
       avatar: blogAuthorAvatar(r.author_avatar),
     },
-    readTime: r.read_time || '5 min read',
+    readTime: blogReadTime(r.content_html || content.join(' ')),
     date: r.date || 'October 2026',
     content_html: r.content_html || undefined,
     meta_title: r.meta_title || undefined,

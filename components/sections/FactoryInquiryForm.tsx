@@ -7,7 +7,7 @@ import { ArrowRight, Lock, CheckCircle2, Loader2, AlertCircle } from 'lucide-rea
 import { productCategories } from '@/lib/data/products';
 
 // The home page form leaves out Company / Brand; the Contact page keeps it.
-export const FactoryInquiryForm: React.FC<{ showCompany?: boolean }> = ({ showCompany = true }) => {
+export const FactoryInquiryForm: React.FC<{ showCompany?: boolean; sourcePage?: string }> = ({ showCompany = true, sourcePage = '/contact' }) => {
   const t = useSiteText().inquiryForm;
   const [formData, setFormData] = useState({
     name: '',
@@ -80,7 +80,7 @@ export const FactoryInquiryForm: React.FC<{ showCompany?: boolean }> = ({ showCo
           phone: formData.phone.trim(),
           category: formData.category,
           message: formData.message.trim(),
-          source_page: '/contact',
+          source_page: sourcePage,
         }),
       });
 

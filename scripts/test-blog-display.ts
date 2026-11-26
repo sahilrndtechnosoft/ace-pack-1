@@ -1,6 +1,6 @@
 // Run: npx tsx scripts/test-blog-display.ts
 import assert from 'node:assert/strict';
-import { blogAuthorAvatar, blogAuthorName, blogCategory, blogViewCount, formatBlogViews, IMPORTED_BLOG_CATEGORY } from '../lib/data/blog-display';
+import { blogAuthorAvatar, blogAuthorName, blogReadTime, blogCategory, blogViewCount, formatBlogViews, IMPORTED_BLOG_CATEGORY } from '../lib/data/blog-display';
 
 assert.equal(blogCategory('Case Studies', 'How to Recycle Containers'), 'Case Studies'); // CMS choice wins
 assert.equal(blogCategory(IMPORTED_BLOG_CATEGORY, 'How to Recycle and Reuse Plastic Food Containers'), 'Sustainability');
@@ -11,6 +11,9 @@ assert.equal(blogAuthorName('Acepack'), 'Food Packaging Industries');
 assert.equal(blogAuthorName('ACE PACKAGING'), 'Food Packaging Industries');
 assert.equal(blogAuthorName(''), 'Food Packaging Industries');
 assert.equal(blogAuthorName('Priya Shah'), 'Priya Shah');
+assert.equal(blogReadTime('<p>' + 'word '.repeat(400) + '</p>'), '2 min read');
+assert.equal(blogReadTime('<p>Short &amp; sweet</p>'), '1 min read');
+assert.equal(blogReadTime(undefined), '1 min read');
 assert.equal(blogAuthorAvatar(null), '/images/ace-mark.png');
 assert.equal(blogAuthorAvatar('/uploads/team/priya.jpg'), '/uploads/team/priya.jpg');
 console.log('blog-display: ok');

@@ -45,9 +45,10 @@ export const Footer: React.FC<FooterProps> = ({ initialSettings, initialCategori
   }
 
   return (
-    <footer className="relative z-30 isolate bg-[#FAF8F4] text-[var(--ace-ink)] pb-10 border-t border-[#E6DBC6] overflow-hidden">
+    <footer className="relative z-30 isolate bg-[#F3EEE3] text-[var(--ace-ink)] border-t border-[#E6DBC6] overflow-hidden">
+      {/* Delivery line art sits behind the footer content as a faint backdrop along the bottom. */}
       <FooterDeliveryArt />
-      <div className="container-custom max-w-[1600px] pt-10 sm:pt-12">
+      <div className="relative z-10 container-custom max-w-[1600px] pt-14 sm:pt-16 pb-8">
 
         {/* Brand + two link columns of equal weight (each list splits into two columns) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-10 gap-y-12 pb-10">

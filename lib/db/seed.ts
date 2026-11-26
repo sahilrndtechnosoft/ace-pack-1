@@ -216,11 +216,11 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
     {
       key: 'pre_footer_cta',
       title: 'Ready to elevate your packaging programme?',
-      subtitle: 'Request physical sample kits or speak directly with our factory tooling specialists.',
+      subtitle: 'Speak directly with our tooling specialists.',
       sort_order: 6,
       content: {
         heading: 'Ready to elevate your packaging programme?',
-        lead: 'Request physical sample kits, discuss bespoke mould tooling, or get competitive volume pricing for wholesale container supply.',
+        lead: 'Discuss bespoke mould tooling, or get competitive volume pricing for wholesale container supply.',
         primaryButton: { text: 'Contact Our Team', link: '/contact' },
         secondaryButton: { text: 'Download Full Catalog', link: '/downloads' },
         phone: '+91 99250 15906',
@@ -407,7 +407,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
     {
       key: 'hero',
       title: 'Get in Touch with Ace Packaging',
-      subtitle: 'Connect directly with our factory sales and technical tooling specialists for wholesale quotes, physical sample kits, and custom tooling projects.',
+      subtitle: 'Connect directly with our factory sales and technical tooling specialists for wholesale quotes and custom tooling projects.',
       sort_order: 1,
       content: {
         phoneDomestic: '(+91) 99250 15906',

@@ -1,8 +1,7 @@
 'use client';
 import '@/components/sections/resource-pages.css';
 
-import { useEffect, useRef } from 'react';
-import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -14,6 +13,7 @@ const ABOUT_DEFAULTS = Object.fromEntries(
 ) as CmsPageContent<'about'>;
 import { buildTextReveals, refreshOnSettle } from './experience-motion';
 import { buildAboutMotion } from './about-motion';
+import { InquiryModal } from '@/components/ui/InquiryModal';
 import './about.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,6 +42,8 @@ function Count({ value, suffix = '' }: { value: number; suffix?: string }) {
 export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] }: { content?: CmsPageContent<'about'>; hidden?: string[] } = {}) {
   const show = (key: keyof CmsPageContent<'about'>) => !hidden.includes(key);
   const root = useRef<HTMLDivElement>(null);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
+  const closeInquiry = useCallback(() => setInquiryOpen(false), []);
 
   const { hero, values, team, closing } = content;
   const stats = content.stats.stats;
@@ -98,6 +100,25 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
               <div className="xa-stat" key={stat.label}>
                 <Count value={Number(stat.value) || 0} suffix={stat.suffix || ''} />
                 <p>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* Values */}
+      {show('values') && (
+      <section className="xa-values" id="values">
+        <div className="xa-wrap">
+          <span className="xp-eyebrow">{values.eyebrow}</span>
+          <h2 data-split>{values.heading} <em>{values.headingHighlight}</em> {values.headingEnd}</h2>
+          <div className="xa-values-grid">
+            {values.items.map(v => (
+              <div className="xa-value" key={v.num}>
+                <span className="xp-eyebrow">{v.num}</span>
+                <h3>{v.title}</h3>
+                <p>{v.body}</p>
               </div>
             ))}
           </div>
@@ -167,25 +188,6 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
       </section>
       )}
 
-      {/* Values */}
-      {show('values') && (
-      <section className="xa-values" id="values">
-        <div className="xa-wrap">
-          <span className="xp-eyebrow">{values.eyebrow}</span>
-          <h2 data-split>{values.heading} <em>{values.headingHighlight}</em> {values.headingEnd}</h2>
-          <div className="xa-values-grid">
-            {values.items.map(v => (
-              <div className="xa-value" key={v.num}>
-                <span className="xp-eyebrow">{v.num}</span>
-                <h3>{v.title}</h3>
-                <p>{v.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
       {/* Leadership */}
       {show('team') && (
       <section className="xa-leadership" id="leadership">
@@ -215,11 +217,12 @@ export default function AboutExperience({ content = ABOUT_DEFAULTS, hidden = [] 
         <div className="xa-wrap">
           <span className="xp-eyebrow">{closing.eyebrow}</span>
           <h2 data-split>{closing.heading} <em>{closing.headingHighlight}</em></h2>
-          <Link href={closing.button.link} className="xp-button">{closing.button.text} <ArrowRight size={18} /></Link>
+          <button type="button" onClick={() => setInquiryOpen(true)} className="xp-button cursor-pointer">{closing.button.text} <ArrowRight size={18} /></button>
           <span className="xa-closing-note">{closing.note}</span>
         </div>
       </section>
       )}
+      <InquiryModal isOpen={inquiryOpen} onClose={closeInquiry} title={closing.button.text} sourcePage="/about" />
     </div>
   );
 }
