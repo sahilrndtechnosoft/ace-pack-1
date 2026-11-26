@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sec_home_faq",
+    "page_slug": "home",
+    "section_key": "faq",
+    "title": "FAQ & Inquiry Form",
+    "subtitle": "",
+    "draft_content": "{\"eyebrow\":\"HELP & FAQ\",\"heading\":\"Everything You Need to Know About Food Packaging\",\"faqs\":[{\"question\":\"What material resins are used in Ace Packaging containers?\",\"answer\":\"All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) in our ISO 9001:2015 certified facilities. They are 100% BPA-free, heavy metal free, and food-contact safe.\"},{\"question\":\"Are your plastic containers microwave and freezer safe?\",\"answer\":\"Yes, our PP 05 material has a operating thermal range spanning -20°C (deep freeze) up to +120°C (hot gravy filling and microwave reheating).\"},{\"question\":\"How do Hinge Cups prevent sauce leakage during delivery?\",\"answer\":\"Our Hinge Cups feature a built-in snap-tight lid rim geometry that creates an airtight hermetic seal, preventing liquid spillage even during rough motorcycle transit.\"}],\"phoneLine\":\"+91 99250 15906 / +91 99251 55799\",\"salesEmail\":\"sales@acepack.co.in\",\"formEyebrow\":\"Get in touch with Ace Packaging\",\"formHeading\":\"Send Factory Inquiry\",\"formDescription\":\"Tell us about your application and request product specifications.\"}",
+    "published_content": "{\"eyebrow\":\"HELP & FAQ\",\"heading\":\"Everything You Need to Know About Food Packaging\",\"faqs\":[{\"question\":\"What material resins are used in Ace Packaging containers?\",\"answer\":\"All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) in our ISO 9001:2015 certified facilities. They are 100% BPA-free, heavy metal free, and food-contact safe.\"},{\"question\":\"Are your plastic containers microwave and freezer safe?\",\"answer\":\"Yes, our PP 05 material has a operating thermal range spanning -20°C (deep freeze) up to +120°C (hot gravy filling and microwave reheating).\"},{\"question\":\"How do Hinge Cups prevent sauce leakage during delivery?\",\"answer\":\"Our Hinge Cups feature a built-in snap-tight lid rim geometry that creates an airtight hermetic seal, preventing liquid spillage even during rough motorcycle transit.\"}],\"phoneLine\":\"+91 99250 15906 / +91 99251 55799\",\"salesEmail\":\"sales@acepack.co.in\",\"formEyebrow\":\"Get in touch with Ace Packaging\",\"formHeading\":\"Send Factory Inquiry\",\"formDescription\":\"Tell us about your application and request product specifications.\"}",
+    "is_enabled": 1,
+    "is_published": 1,
+    "sort_order": 7,
+    "created_at": "2026-11-11T12:22:30.000Z",
+    "updated_at": "2026-11-26T04:22:26.000Z"
+  }
+]
