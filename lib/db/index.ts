@@ -361,6 +361,8 @@ export async function initDb(): Promise<void> {
   await addColumnIfMissing(db, 'downloads', 'description', 'TEXT NULL');
   // Blog read counter ("1101 Views"); added by the blog import script, but older databases may lack it.
   await addColumnIfMissing(db, 'blogs', 'views', 'VARCHAR(50) NULL');
+  // Minimum order quantity shown on product cards and the product page (e.g. "10,000 pcs").
+  await addColumnIfMissing(db, 'products', 'moq', 'VARCHAR(100) NULL');
   await syncCmsRegistry(db);
 
   initialized = true;

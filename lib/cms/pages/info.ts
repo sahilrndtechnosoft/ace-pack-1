@@ -49,7 +49,7 @@ export const galleryPage = {
       content: {
         kicker: 'The Range, Up Close',
         title: 'Seven frames from the studio and the line',
-        intro: 'Product photography of the containers we mould every day — hinge cups, bento boxes, gravy tubs and sweet boxes. Keep scrolling to move through the strip.',
+        intro: 'Product photography of the containers we mould every day — hinge cups, meal containers, gravy tubs and sweet boxes. Keep scrolling to move through the strip.',
         items: [
           { title: 'RE Bento Meal Delivery Boxes', category: 'Cloud Kitchen Combos', image: '/images/gallery/bento-meal.webp' },
           { title: 'Leak-Proof Containers In Service', category: 'Everyday Use', image: '/images/gallery/kitchen-set.webp' },

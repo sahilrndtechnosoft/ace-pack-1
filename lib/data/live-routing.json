@@ -31,7 +31,7 @@
     {
       "slug": "re-series-containers",
       "name": "RE-Series Containers",
-      "subtitle": "Multi-Compartment Bento Architecture",
+      "subtitle": "Multi-Compartment Container Design",
       "description": "Pioneering rectangular multi-compartment food containers engineered with isolated chambers to prevent curry cross-mixing.",
       "local_category": "re-series"
     },
@@ -46,7 +46,7 @@
       "slug": "ro-series-container",
       "name": "RO-Series Container",
       "subtitle": "Round Soup, Biryani & Gravy Bowls",
-      "description": "Cylindrical round containers engineered to withstand boiling soup filling up to 120°C and deep freeze down to -20°C.",
+      "description": "Cylindrical round containers engineered for hot soup filling and cold storage.",
       "local_category": "ro-series"
     },
     {
@@ -67,7 +67,7 @@
       "slug": "deli-container",
       "name": "Deli Containers",
       "subtitle": "Heavy-Duty Airtight Storage",
-      "description": "High-impact thick wall containers providing superior thermal insulation and leak-proof transit security.",
+      "description": "High-impact thick wall containers providing superior insulation and leak-proof transit security.",
       "local_category": "deli-series"
     },
     {

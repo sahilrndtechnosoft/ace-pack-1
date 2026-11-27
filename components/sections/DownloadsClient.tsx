@@ -39,17 +39,20 @@ export function DownloadsClient({ groups }: DownloadsClientProps) {
 
   return (
     <div>
-      <nav aria-label="Download sections" className="flex flex-wrap gap-2 mb-10">
-        {groups.map((group) => (
-          <a
-            key={group.id}
-            href={`#${group.id}`}
-            className="text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-full px-4 py-2 transition-colors shadow-2xs"
-          >
-            {group.title}
-          </a>
-        ))}
-      </nav>
+      {/* Jump links only help with several sections; with one they just repeat its heading. */}
+      {groups.length > 1 && (
+        <nav aria-label="Download sections" className="flex flex-wrap gap-2 mb-10">
+          {groups.map((group) => (
+            <a
+              key={group.id}
+              href={`#${group.id}`}
+              className="text-xs font-bold text-[#1A1D20] bg-white border border-[#E6DBC6] hover:border-[#b99750] rounded-full px-4 py-2 transition-colors shadow-2xs"
+            >
+              {group.title}
+            </a>
+          ))}
+        </nav>
+      )}
 
       <div className="space-y-14">
         {groups.map((group) => (

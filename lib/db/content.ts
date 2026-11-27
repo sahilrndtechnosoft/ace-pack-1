@@ -294,7 +294,7 @@ export const DEFAULT_EVENT_HIGHLIGHTS = [
 ];
 export const DEFAULT_EVENT_FOCUS_PRODUCTS = [
   { name: 'IML Custom Branded Containers', slug: 'custom-iml', desc: 'Photorealistic in-mould labelling fused directly into polymer.' },
-  { name: 'RE Series Bento Compartments', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
+  { name: 'RE Series Compartment Containers', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
 ];
 
 function eventHighlights(r: any): string[] {
@@ -426,6 +426,7 @@ function mapRowToProduct(r: any): ProductItem {
     material: r.material || 'Virgin PP 05 Food Grade',
     quality: r.quality || 'Export Grade Food Safe',
     packaging: r.packaging || '',
+    moq: r.moq || undefined,
     image: r.image || '',
     blankImage: r.blank_image || undefined,
     lockingFoodImage: r.locking_food_image || undefined,

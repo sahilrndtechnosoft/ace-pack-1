@@ -54,7 +54,7 @@ export const exhibitionEvents: ExhibitionEvent[] = [
     ],
     focusProducts: [
       { name: 'IML Custom Branded Containers', slug: 'custom-iml', desc: 'Photorealistic in-mould labelling fused directly into virgin PP 05 polymer.' },
-      { name: 'RE Series Bento Compartments', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
+      { name: 'RE Series Compartment Containers', slug: 're-series', desc: 'Perimeter snap seal preventing curry migration between sections.' },
       { name: 'Tamper-Evident Deli Tubs', slug: 'deli-series', desc: 'Ultra-clear tear-strip containers for dips, gravies, and desserts.' },
     ],
   },
@@ -115,17 +115,16 @@ export const exhibitionEvents: ExhibitionEvent[] = [
       'The definitive food service manufacturing expo for the Middle East, Africa, and South Asia. Meet our international export desk to negotiate palletized containerload logistics and custom Arabic/English IML artwork.',
     fullStory: [
       'Gulfood Manufacturing represents the industrial heart of the Middle East food and beverage trade. As Ace Packaging expands its footprint across the GCC—including regular commercial shipments to the UAE, Saudi Arabia, Oman, and Qatar—our Dubai presence is central to our export operations.',
-      'Our stand will feature specialized temperature-resilient containers formulated to withstand desert logistics conditions, from −20°C deep freezing to microwave reheating up to +120°C without warping or chemical leaching.',
+      'Our stand will feature specialized temperature-resilient containers formulated to withstand desert logistics conditions, without warping or chemical leaching.',
       'Direct freight schedules, containerload (FCL) pallet arrangements, and multi-currency billing terms will be finalized directly with regional distributors and cloud kitchen aggregators during the summit.',
     ],
     highlights: [
-      'Deep freeze (−20°C) to microwave (+120°C) endurance verified containers',
       'High-volume container contracts for GCC restaurant and cloud kitchen chains',
       'Direct factory dispatch from Daman Port to Jebel Ali and regional hubs',
       'Dual-language Arabic & English IML photorealistic packaging branding',
     ],
     focusProducts: [
-      { name: 'Bento Meal Trays', slug: 're-series', desc: 'Heavy-duty multi-compartment containers with hermetic snap-tight lids.' },
+      { name: 'Meal Trays', slug: 're-series', desc: 'Heavy-duty multi-compartment containers with hermetic snap-tight lids.' },
       { name: 'Clear Deli Tubs', slug: 'deli-series', desc: 'Crystal-clear polypropylene tubs for cold dips, olives, and mezze.' },
       { name: 'Sweet Box Containers', slug: 'sweet-box-containers', desc: 'Royal luxury packaging for baklava, dates, and traditional confectionery.' },
     ],
@@ -148,7 +147,7 @@ export const exhibitionEvents: ExhibitionEvent[] = [
     image: '/images/gallery/kitchen-set.webp',
     badge: 'Culinary Hospitality',
     description:
-      'India’s flagship food and hospitality convention. Over 1,800 hospitality procurement directors and cloud kitchen operators visited the Ace Packaging pavilion to experience our airtight gravy tubs and multi-cavity bento trays.',
+      'India’s flagship food and hospitality convention. Over 1,800 hospitality procurement directors and cloud kitchen operators visited the Ace Packaging pavilion to experience our airtight gravy tubs and multi-cavity meal trays.',
     fullStory: [
       'Organized by the India Trade Promotion Organisation (ITPO), AAHAR is the epicenter of India’s culinary, catering, and institutional hospitality sector.',
       'Ace Packaging showcased the complete 100+ model product line, with live food service simulations demonstrating how our containers maintain food presentation during heavy-duty bike courier transit.',
@@ -233,7 +232,7 @@ export const exhibitionEvents: ExhibitionEvent[] = [
       'Custom colour branding in corporate brand pantones (e.g., deep black and yellow)',
     ],
     focusProducts: [
-      { name: 'RE Bento Compartments', slug: 're-series', desc: 'Proven partition walls preventing curry and rice mixing during transit.' },
+      { name: 'RE Compartment Containers', slug: 're-series', desc: 'Proven partition walls preventing curry and rice mixing during transit.' },
       { name: 'Round Biryani Bowls', slug: 'ro-series', desc: 'Deep round containers preserving steam, aroma, and presentation.' },
       { name: 'Portion Cups', slug: 'portion-cups', desc: 'Airtight packaging for raitas, chutneys, and sauces.' },
     ],
@@ -292,15 +291,15 @@ export const exhibitionEvents: ExhibitionEvent[] = [
     image: '/images/gallery/ro-series.webp',
     badge: 'Asia-Pacific Summit',
     description:
-      'Southeast Asia’s largest international food and hospitality gathering. Ace Packaging introduces our Asian export portfolio, specifically tailored for takeaway ramen bowls, gourmet bento, and traditional confectionery packaging.',
+      'Southeast Asia’s largest international food and hospitality gathering. Ace Packaging introduces our Asian export portfolio, specifically tailored for takeaway ramen bowls, gourmet meal boxes, and traditional confectionery packaging.',
     fullStory: [
       'Food & Hotel Asia (FHA) in Singapore is the premier gateway to the rapidly expanding food service markets of Southeast Asia, East Asia, and Australasia.',
-      'Ace Packaging will exhibit container designs engineered specifically for Asian culinary formats: deep bowls with steam-venting options for hot noodle broths, multi-compartment bento boxes, and luxury sweet containers for festive gift packing.',
+      'Ace Packaging will exhibit container designs engineered specifically for Asian culinary formats: deep bowls with steam-venting options for hot noodle broths, multi-compartment meal boxes, and luxury sweet containers for festive gift packing.',
       'Our export logistics team will offer turnkey CIF shipping rates to Singapore, Port Klang, Jakarta, Sydney, Melbourne, and Auckland.',
     ],
     highlights: [
       'Expanding supply chain network across Singapore, Malaysia, Australia, and New Zealand',
-      'Hot broth spill-proof performance demonstrated up to 100°C soup transport',
+      'Hot broth spill-proof performance demonstrated for soup transport',
       'Custom IML artwork printing in multi-language Asian and Western typography',
       'Containerload consolidation with mixed pallet product assortments',
     ],

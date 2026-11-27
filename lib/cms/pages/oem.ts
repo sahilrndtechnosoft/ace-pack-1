@@ -25,7 +25,7 @@ export const OEM_GALLERY_ITEMS = [
     title: 'Full-Coverage In-Mould Labelling (IML)',
     category: 'IML Branding',
     description:
-      'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — scratch-resistant, water-proof, microwave reheating and -20°C deep-freeze durable.',
+      'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — scratch-resistant, water-proof and microwave-safe.',
     image: '/images/oem/DSC04473.webp',
     specs: ['5-Sided Photorealistic Wrap', 'Zero Peel & Scratch-Proof', 'Microwave & Freezer Safe', 'Tamper-Evident Rim'],
   },

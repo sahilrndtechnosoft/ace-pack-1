@@ -37,6 +37,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 }) => {
   const t = useSiteText().productPage;
   const [activeView, setActiveView] = useState<'blank' | 'specs' | 'locking' | 'video'>('blank');
+  const isPhotoView = activeView === 'blank' || activeView === 'locking';
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [selectedVarietySlug, setSelectedVarietySlug] = useState<string>(() => {
@@ -166,12 +167,15 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
           </div>
 
           {/* Main Stage Display Area */}
-          <div className="relative rounded-3xl border-2 border-[#E6DBC6] bg-white p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[340px] sm:min-h-[420px] lg:min-h-[460px] shadow-lg overflow-hidden group">
+          {/* Photo views fill a 4:3 frame edge to edge (the shape their framing is measured for); the others keep padding. */}
+          <div className={`relative rounded-3xl border-2 border-[#E6DBC6] bg-white flex items-center justify-center shadow-lg overflow-hidden group ${
+            isPhotoView ? 'aspect-[4/3]' : 'p-4 sm:p-6 lg:p-8 min-h-[340px] sm:min-h-[420px] lg:min-h-[460px]'
+          }`}>
 
             {/* View 1: Blank / Empty Container (Clear view of shape and structure) */}
             {activeView === 'blank' && (
-              <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in">
-                <div className="relative w-full max-w-[320px] sm:max-w-[380px] aspect-4/3 rounded-2xl overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 animate-fade-in">
+                <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
                   <img
                     src={blankImage}
                     alt={`${product.name} Blank Empty Container Structure`}
@@ -227,8 +231,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
             {/* View 3: Locking System & Food Application Visual */}
             {activeView === 'locking' && (
-              <div className="w-full h-full flex flex-col items-center justify-center animate-fade-in">
-                <div className="relative w-full max-w-[420px] aspect-4/3 rounded-2xl overflow-hidden shadow-sm border border-[#E6DBC6] bg-[#FAF8F4] flex items-center justify-center">
+              <div className="absolute inset-0 animate-fade-in">
+                <div className="relative w-full h-full overflow-hidden bg-[#FAF8F4] flex items-center justify-center">
                   <img
                     src={lockingFoodImage}
                     alt={`${product.name} Locking System with Food Application`}
@@ -420,7 +424,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
               {heading || product.name}
             </h1>
             <p className="text-sm text-gray-600 leading-relaxed mb-6">
-              Precision injection-moulded packaging engineered from 100% prime virgin PP 05. Features zero-leak rim closure, high stacking rigidity, and microwave &amp; deep-freeze thermal tolerance.
+              Precision injection-moulded packaging engineered from 100% prime virgin PP 05. Features zero-leak rim closure, high stacking rigidity and microwave-safe reheating.
             </p>
 
             {/* Core Trust Badges */}
@@ -458,6 +462,12 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                       <td className="p-3 font-bold text-gray-600">{t.specResin}</td>
                       <td className="p-3 font-bold text-[var(--ace-ink)]">{t.specResinValue}</td>
                     </tr>
+                    {product.moq && (
+                      <tr className="border-b border-[#E6DBC6]">
+                        <td className="p-3 font-bold text-gray-600">{t.specMoq}</td>
+                        <td className="p-3 font-bold text-[var(--ace-ink)]">{product.moq}</td>
+                      </tr>
+                    )}
                     {product.dimensions && (
                       <tr className="border-b border-[#E6DBC6] bg-[#FAF8F4]">
                         <td className="p-3 font-bold text-gray-600">{t.specDimensions}</td>
@@ -479,10 +489,6 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
                     {/* <tr className="border-b border-[#E6DBC6]">
                       <td className="p-3 font-bold text-gray-600">{t.specLid}</td>
                       <td className="p-3 font-bold text-[var(--ace-ink)]">{t.specLidValue}</td>
-                    </tr>
-                    <tr className="border-b border-[#E6DBC6] bg-[#FAF8F4]">
-                      <td className="p-3 font-bold text-gray-600">{t.specThermal}</td>
-                      <td className="p-3 text-gray-700">{t.specThermalValue}</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-bold text-gray-600">{t.specMasterBox}</td>

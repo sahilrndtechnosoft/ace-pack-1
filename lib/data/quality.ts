@@ -57,20 +57,13 @@ export const qualityChecks: QualityCheck[] = [
   },
   {
     step: '04',
-    title: 'Thermal Endurance Rating',
-    what: 'Certified thermal resilience across the full food service spectrum: deep-freeze storage down to −20°C and piping-hot microwave reheating up to +120°C without warping or leaching.',
-    standard: '−20°C to +120°C safe',
-    badge: 'Thermal Resilience',
-  },
-  {
-    step: '05',
     title: 'Automated Optical Vision Defect Inspection',
     what: 'High-speed inline camera systems inspect containers on the fly, instantly ejecting items with micro-pinholes, flash, short shots, or surface imperfections.',
     standard: '100% optical audit',
     badge: 'Automated QC',
   },
   {
-    step: '06',
+    step: '05',
     title: 'Hygienic Cleanroom Handling & Batch Traceability',
     what: 'Dust-free robotic pick-and-place lines eliminate manual contact. Finished packs receive serialized batch barcodes logging resin lot, machine press, and timestamp.',
     standard: 'Full batch serialization',
@@ -82,7 +75,6 @@ export const complianceStatements = [
   'Manufactured in an ISO 9001:2015 certified facility in Daman, India (SGS Certificate IN25/00000652)',
   'Cleanroom hygiene protocols and automated optical defect inspection implemented across all production floors',
   '100% prime virgin polypropylene (PP 05) and virgin PET — zero regrind, zero filler, 100% BPA-free',
-  'Microwave-safe and freezer-safe across the comprehensive −20°C to +120°C operating temperature range',
   'Continuous laser gauge monitoring and ±0.02 mm precision rim snap tolerance for zero transit leakage',
   'Automated robotic cleanroom handling eliminating human contact prior to protective polybag sealing',
 ];

@@ -22,6 +22,8 @@ export interface ProductItem {
     bottom?: string;
   };
   packaging?: string;
+  /** Minimum order quantity, e.g. "10,000 pcs"; set per product in the admin. */
+  moq?: string;
   image: string;
   blankImage?: string;
   lockingFoodImage?: string;
@@ -311,7 +313,7 @@ export const productCategories: ProductCategory[] = [
     slug: 'ro-series',
     subtitleName: 'Round Food Bowls & Containers',
     shortDescription: 'Heavy-duty injection-moulded round food containers engineered for hot soups, biryani, curries, and QSR takeaway delivery.',
-    description: 'Ace Packaging RO-Series Containers feature heavy-duty round geometry with airtight rim locking that withstands hot oil and boiling soup filling up to 120°C. Engineered from 100% virgin food-grade polypropylene (PP 05), completely microwave and deep-freeze safe.',
+    description: 'Ace Packaging RO-Series Containers feature heavy-duty round geometry with airtight rim locking that withstands hot oil and boiling soup filling. Engineered from 100% virgin food-grade polypropylene (PP 05), completely microwave safe.',
     heroImage: '/images/products/ro-series/ro-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Microwave & Freezer Safe', 'Leak-Proof Snap Lid'],
     gallery: [
@@ -328,7 +330,7 @@ export const productCategories: ProductCategory[] = [
       '/images/products/ro-series/ap-ro-24.webp'
     ],
     faqs: [
-      { question: 'Can RO-Series containers withstand boiling curries and microwave reheating?', answer: 'Yes, made of high heat-resistant virgin PP 05 withstanding temperatures up to 120°C without warping or softening.' },
+      { question: 'Can RO-Series containers withstand boiling curries and microwave reheating?', answer: 'Yes, made of high heat-resistant virgin PP 05 that resists warping or softening.' },
       { question: 'What sizes are available in RO-Series?', answer: 'Available in 7 catalogue models: AP-RO-10 through AP-RO-48, plus classic black and white delivery bowls.' }
     ],
     products: [
@@ -472,8 +474,8 @@ export const productCategories: ProductCategory[] = [
     id: 're-series',
     name: 'RE-Series Containers',
     slug: 're-series',
-    subtitleName: 'Rectangular Food & Bento Meal Boxes',
-    shortDescription: 'Rectangular takeaway and bento multi-compartment containers designed for cloud kitchens, meal deliveries, and restaurant takeaway.',
+    subtitleName: 'Rectangular Food & Meal Boxes',
+    shortDescription: 'Rectangular takeaway and multi-compartment containers designed for cloud kitchens, meal deliveries, and restaurant takeaway.',
     description: 'Ace Packaging RE-Series Containers feature reinforced rectangular geometry, stackable locking lids, and optional compartment partitions preventing cross-contamination during transit. Built for QSR delivery, thali packaging, and executive lunch combos.',
     heroImage: '/images/products/re-series/re-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', 'Stackable Rigid Flange', '100% Virgin PP 05'],
@@ -661,7 +663,7 @@ export const productCategories: ProductCategory[] = [
       {
         id: 'ap-re-232',
         name: 'AP-RE-232 2-Compartment Meal Box',
-        capacity: 'AP-RE-232 (2-Compartment Bento)',
+        capacity: 'AP-RE-232 (2-Compartment Container)',
         product_slug: 'ap-re-232',
         material: 'Virgin PP 05 Food Grade',
         quality: 'Export Grade Food Safe',
@@ -669,7 +671,7 @@ export const productCategories: ProductCategory[] = [
         dimensions: { top: '220 × 150 mm', height: '41 mm' },
         packaging: '150 Pcs/set',
         image: '/images/products/re-series/ap-re-232.webp',
-        applications: ['2-Compartment Bento', 'Curry & Rice Combos', 'Noodles & Gravy', 'Executive Thali'],
+        applications: ['2-Compartment Meals', 'Curry & Rice Combos', 'Noodles & Gravy', 'Executive Thali'],
         specs: [
           { label: 'Top Dimensions', value: '220 × 150 mm' },
           { label: 'Height', value: '41 mm' },
@@ -702,7 +704,7 @@ export const productCategories: ProductCategory[] = [
     faqs: [
       { question: 'What color varieties are available for Round Containers?', answer: 'All Round Container models are manufactured in three standard varieties: Clear Transparent (for maximum food visibility), Deep Black (for upscale restaurant and cloud kitchen delivery), and Crisp White (for dairy, sweets, and bakery packaging).' },
       { question: 'What is the pack size for Round Containers?', answer: 'All Round Container models (250ml to 1000ml) are packed in standard 500 Pcs/set cartons with matching snap-seal lids.' },
-      { question: 'Are all 3 varieties food-grade and microwave-safe?', answer: 'Yes, all three varieties (Transparent, Black, White) are moulded from 100% prime virgin PP 05 polymer, certified food-safe with a thermal resistance rating of -20°C to +120°C.' }
+      { question: 'Are all 3 varieties food-grade and microwave-safe?', answer: 'Yes, all three varieties (Transparent, Black, White) are moulded from 100% prime virgin PP 05 polymer, certified food-safe.' }
     ],
     products: [
       {
@@ -1662,7 +1664,7 @@ export const productCategories: ProductCategory[] = [
       '/images/products/flat/flat-600ml-black.webp'
     ],
     faqs: [
-      { question: 'What finish varieties are available in Flat Containers?', answer: 'Flat Containers from 600ml to 1500ml are manufactured in two standard varieties: Clear Transparent (for maximum salad and sushi display) and Deep Black (for executive bento and gourmet platters).' },
+      { question: 'What finish varieties are available in Flat Containers?', answer: 'Flat Containers from 600ml to 1500ml are manufactured in two standard varieties: Clear Transparent (for maximum salad and sushi display) and Deep Black (for executive meal boxes and gourmet platters).' },
       { question: 'What rim diameters are available in Flat Containers?', answer: '600ml to 1500ml models feature a 148mm top diameter. 2000ml and 2500ml models feature a 169mm diameter.' },
       { question: 'What is the carton pack size?', answer: '300 Pcs/set for sizes up to 1500ml; 100 Pcs/set for 2000ml and 2500ml.' }
     ],
@@ -1957,7 +1959,7 @@ export const productCategories: ProductCategory[] = [
     slug: 'deli-series',
     subtitleName: 'Heavy-Duty Round Deli Tubs',
     shortDescription: 'Heavy-duty thick-wall containers with universal 120mm rim diameter for soups, gravies, dairy, and cold salads.',
-    description: 'Ace Packaging Deli Series Containers feature uniform 120mm rim diameter across all volumes (8oz to 32oz), allowing high efficiency in kitchen lid inventory. Thick impact-resistant walls provide superior thermal insulation for boiling hot curries or deep freeze storage.',
+    description: 'Ace Packaging Deli Series Containers feature uniform 120mm rim diameter across all volumes (8oz to 32oz), allowing high efficiency in kitchen lid inventory. Thick impact-resistant walls hold boiling hot curries securely.',
     heroImage: '/images/products/deli/deli-series-hero.webp',
     features: ['01. Premium Quality', '02. Secure Seal', '03. Sturdy bottom', '04. Versatile Use', '120mm Universal Rim', 'Microwave & Freezer Safe'],
     gallery: [

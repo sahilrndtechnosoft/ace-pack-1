@@ -53,7 +53,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       slug: 'categories',
       title: 'Product Categories',
       seo_title: 'Packaging Collections & Series | Ace Packaging',
-      seo_description: 'Explore 17 commercial container collections: RE bento, RO round bowls, Zen boxes, hinge cups, deli tubs, and portion pots.',
+      seo_description: 'Explore 17 commercial container collections: RE meal containers, RO round bowls, Zen boxes, hinge cups, deli tubs, and portion pots.',
       og_image: '/images/gallery/studio-range.webp',
     },
     {
@@ -67,7 +67,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       slug: 'quality',
       title: 'Quality & Certifications',
       seo_title: 'Quality Standards & ISO 9001:2015 | Ace Packaging',
-      seo_description: 'ISO 9001:2015 certified quality management, 100% prime virgin PP 05, vacuum seal leak testing, and thermal resilience from -20°C to +120°C.',
+      seo_description: 'ISO 9001:2015 certified quality management, 100% prime virgin PP 05, and vacuum seal leak testing.',
       og_image: '/images/gallery/kitchen-set.webp',
     },
     {
@@ -151,7 +151,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
     {
       key: 'craft_facts',
       title: 'Engineering & Material Craftsmanship',
-      subtitle: 'Built for demanding hot curry delivery, deep freezer storage, and automated packing lines.',
+      subtitle: 'Built for demanding hot curry delivery, cold storage, and automated packing lines.',
       sort_order: 2,
       content: {
         facts: [
@@ -164,11 +164,6 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
             tag: '02 / Sealed for the ride',
             title: 'Zero-leak\nsnap rim.',
             body: 'A hermetically tight perimeter rim seal that stops hot sauce, oily gravies, and liquid soup escaping during motorcycle delivery.',
-          },
-          {
-            tag: '03 / Extreme thermal range',
-            title: '−20°C to\n+120°C.',
-            body: 'From deep-freeze storage down to −20°C straight into microwave reheating up to +120°C, with zero cracking, warping, or odor transfer.',
           },
         ],
       },
@@ -379,7 +374,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
           {
             number: '04',
             title: 'Quality Checks',
-            description: 'Every batch undergoes rigorous vacuum leak testing, thermal shock verification (-20°C freezer to +120°C microwave), drop impact audits, and rim latch tension verification.',
+            description: 'Every batch undergoes rigorous vacuum leak testing, drop impact audits, and rim latch tension verification.',
           },
           {
             number: '05',
@@ -443,11 +438,11 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
         eyebrow: 'The catalog · commercial packaging lines',
         title_line_1: 'Every format',
         title_line_2: 'food service needs.',
-        lead: 'Commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.',
+        lead: 'Commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing.',
         stat_resin: 'PP 05',
         stat_resin_label: 'Virgin Resin',
-        stat_range: '−20 · +120°C',
-        stat_range_label: 'Rated Range',
+        stat_range: 'ISO 9001',
+        stat_range_label: 'Certified Plant',
       },
     },
     {
@@ -469,11 +464,10 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
       content: {
         eyebrow: '02 / Material & Engineering Standard',
         title: 'One standard across every format.',
-        lead: 'Whether you order 5,000 hinge cups or 500,000 bento boxes, every container is produced to the same rigorous technical specification.',
+        lead: 'Whether you order 5,000 hinge cups or 500,000 meal containers, every container is produced to the same rigorous technical specification.',
         bullets: [
           '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
           'Manufactured in an ISO 9001:2015 certified facility in Daman',
-          'Rated −20°C deep freeze to +120°C microwave reheating',
           'Zero-leak snap-rim geometry across every lidded format',
           'BPA-free and heavy-metal free',
           'Custom in-mould labelling available on every line',
@@ -504,7 +498,7 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
         eyebrow: 'The catalog · models · lines',
         title_line_1: 'Models.',
         title_line_2: 'Specified in hand.',
-        lead: 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.',
+        lead: 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility. Filter by line, sort by capacity, open any model for its full specification.',
         stat_resin: 'PP 05',
         stat_resin_label: 'Virgin resin',
         stat_facility: 'ISO 9001:2015',
@@ -632,9 +626,9 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
             id: 'iml-branding-suite',
             title: 'Full-Coverage In-Mould Labelling (IML)',
             category: 'IML Branding',
-            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe, scratch-proof, deep-freeze durable.',
+            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe and scratch-proof.',
             image: '/images/oem/DSC04473.webp',
-            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating', 'Deep Freeze -20°C'],
+            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating'],
           },
         ],
       },
@@ -684,9 +678,9 @@ export async function seedDatabase(db: mysql.Pool): Promise<void> {
             id: 'iml-branding-suite',
             title: 'Full-Coverage In-Mould Labelling (IML)',
             category: 'IML Branding',
-            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe, scratch-proof, deep-freeze durable.',
+            description: 'Photorealistic 5-sided IML fused permanently into the polymer walls during moulding — microwave safe and scratch-proof.',
             image: '/images/oem/DSC04473.webp',
-            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating', 'Deep Freeze -20°C'],
+            specs: ['5-Sided Wrap', 'Photorealistic Print', 'Microwave Reheating'],
           },
         ],
       },

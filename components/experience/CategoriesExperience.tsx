@@ -264,14 +264,14 @@ export default function CategoriesExperience({
               <span className="xc-title-mask"><span><em>{heroSec.title_line_2 || 'food service needs.'}</em></span></span>
             </h1>
             <p className="xc-hero-lead">
-              {heroSec.lead || `${categories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing, rated from deep freeze to microwave reheating.`}
+              {heroSec.lead || `${categories.length} commercial container lines, one material standard: 100% prime virgin PP 05, ISO 9001:2015 certified manufacturing.`}
             </p>
           </div>
           <div className="xc-glance">
             <div><b>{categories.length}</b><span>Categories</span></div>
             <div><b>{modelCount}</b><span>Models</span></div>
             <div><b>{heroSec.stat_resin || 'PP 05'}</b><span>{heroSec.stat_resin_label || 'Virgin Resin'}</span></div>
-            <div><b>{heroSec.stat_range || '−20 · +120°C'}</b><span>{heroSec.stat_range_label || 'Rated Range'}</span></div>
+            <div><b>{heroSec.stat_range || 'ISO 9001'}</b><span>{heroSec.stat_range_label || 'Certified Plant'}</span></div>
           </div>
         </div>
       </section>

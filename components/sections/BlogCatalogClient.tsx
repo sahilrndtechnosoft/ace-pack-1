@@ -2,10 +2,9 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, Eye, Tag, Search, ArrowRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
+import { Search, ArrowRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
 import { Reveal } from '@/components/ui/Reveal';
 import type { BlogPost } from '@/lib/data/blogs';
-import { formatBlogViews } from '@/lib/data/blog-display';
 
 interface BlogCatalogClientProps {
   initialPosts: BlogPost[];
@@ -203,23 +202,9 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
 
                   <div className="xl:col-span-5 p-5 sm:p-8 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
-                        <span className="inline-flex items-center gap-1 font-bold text-[#a8812f] uppercase tracking-wider">
-                          <Tag className="w-3.5 h-3.5" /> {featuredPost.category}
-                        </span>
-                        <span>•</span>
-                        <span className="inline-flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-[#a8812f]" /> {featuredPost.date}
-                        </span>
-                        {formatBlogViews(featuredPost.views) && (
-                          <>
-                            <span>•</span>
-                            <span className="inline-flex items-center gap-1">
-                              <Eye className="w-3.5 h-3.5 text-[#a8812f]" aria-hidden="true" /> {formatBlogViews(featuredPost.views)}
-                            </span>
-                          </>
-                        )}
-                      </div>
+                      <span className="block text-[11px] font-bold text-[#a8812f] uppercase tracking-[0.14em] mb-3">
+                        {featuredPost.category}
+                      </span>
 
                       <Link href={`/blog/${featuredPost.slug}`}>
                         <h2 className="text-2xl font-extrabold text-[#1A1D20] group-hover:text-[#a8812f] transition-colors leading-tight mb-3 line-clamp-3">
@@ -232,10 +217,9 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-[#E6DBC6] flex items-center gap-2 text-xs font-semibold text-gray-600">
-                      <Clock className="w-4 h-4 text-[#a8812f]" aria-hidden="true" />
-                      <span>{featuredPost.readTime}</span>
-                    </div>
+                    <p className="text-xs text-gray-500">
+                      {featuredPost.date} <span aria-hidden="true">·</span> {featuredPost.readTime}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -247,7 +231,7 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedGridPosts.map((post, idx) => (
                 <Reveal key={post.id} type="fade-up" delay={Math.min(idx % 3, 2) * 0.08}>
-                  <article className="bg-white rounded-3xl overflow-hidden border border-[#E6DBC6] hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
+                  <article className="relative bg-white rounded-3xl overflow-hidden border border-[#E6DBC6] hover:border-[#cfa144] shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
                     <div>
                       <div className="relative aspect-[2/1] overflow-hidden bg-slate-900">
                         <img
@@ -263,44 +247,22 @@ export const BlogCatalogClient: React.FC<BlogCatalogClientProps> = ({ initialPos
                       </div>
 
                       <div className="p-6">
-                        <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-[#a8812f]" /> {post.date}
-                          </span>
-                          {formatBlogViews(post.views) && (
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3.5 h-3.5 text-[#a8812f]" aria-hidden="true" /> {formatBlogViews(post.views)}
-                            </span>
-                          )}
-                        </div>
-
-                        <Link href={`/blog/${post.slug}`}>
+                        {/* The title link stretches over the whole card, so the card itself is clickable. */}
+                        <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">
                           <h3 className="text-lg font-bold text-[#1A1D20] group-hover:text-[#a8812f] transition-colors leading-snug mb-3">
                             {post.title}
                           </h3>
                         </Link>
 
-                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
                           {post.summary}
                         </p>
                       </div>
                     </div>
 
-                    <div className="p-6 pt-0 border-t border-transparent mt-4">
-                      <div className="flex items-center justify-between pt-4 border-t border-[#E6DBC6]/60">
-                        <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-600">
-                          <Clock className="w-3.5 h-3.5 text-[#a8812f]" aria-hidden="true" />
-                          {post.readTime}
-                        </span>
-
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-xs font-bold text-[#a8812f] group-hover:text-[#1A1D20] transition-colors flex items-center gap-1"
-                        >
-                          Read <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-                    </div>
+                    <p className="px-6 pb-6 text-xs text-gray-500">
+                      {post.date} <span aria-hidden="true">·</span> {post.readTime}
+                    </p>
                   </article>
                 </Reveal>
               ))}

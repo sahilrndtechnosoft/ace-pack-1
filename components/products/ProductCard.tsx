@@ -128,6 +128,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
               )}
 
+              {product.moq && (
+                <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2 gap-2">
+                  <span className="text-gray-500 font-medium shrink-0">MOQ:</span>
+                  <span className="font-semibold text-[var(--ace-ink)] text-right">{product.moq}</span>
+                </div>
+              )}
+
               {product.varieties && product.varieties.length > 0 && (
                 <div className="flex items-center justify-between border-t border-[#E6DBC6]/60 pt-2">
                   <span className="text-gray-500 font-medium">Varieties:</span>

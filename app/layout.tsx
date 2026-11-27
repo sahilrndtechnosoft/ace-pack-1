@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acepack.co.in'),
     title: "Ace Packaging | Premium Plastic Food Containers",
-    description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, bento boxes, and sweet containers.",
+    description: "Manufacturer and global exporter of high-quality plastic food containers, hinge cups, portion cups, RO series, meal containers, and sweet containers.",
     icons: { icon: hasCustomFavicon ? favicon : DEFAULT_ICONS, apple: '/apple-icon.png' },
   };
 }

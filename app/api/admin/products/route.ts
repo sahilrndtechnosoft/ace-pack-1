@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
       material,
       quality,
       packaging,
+      moq,
       image,
       blank_image,
       locking_food_image,
@@ -147,11 +148,11 @@ export async function POST(request: NextRequest) {
 
     await db.query(
       `INSERT INTO products (
-        id, category_slug, product_slug, name, capacity, material, quality, packaging,
+        id, category_slug, product_slug, name, capacity, material, quality, packaging, moq,
         image, blank_image, locking_food_image, description, features, dimensions,
         applications, specs, varieties, default_variety, sort_order, is_active,
         created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         id,
         category_slug,
@@ -161,6 +162,7 @@ export async function POST(request: NextRequest) {
         material || 'Virgin PP 05 Food Grade',
         quality || 'Export Grade Food Safe',
         packaging || '',
+        typeof moq === 'string' && moq.trim() ? moq.trim().slice(0, 100) : null,
         image || '/images/hero-bg-image.jpg',
         blank_image || null,
         locking_food_image || null,
@@ -220,6 +222,7 @@ export async function PUT(request: NextRequest) {
       material,
       quality,
       packaging,
+      moq,
       image,
       blank_image,
       locking_food_image,
@@ -261,6 +264,7 @@ export async function PUT(request: NextRequest) {
         material = COALESCE(?, material),
         quality = COALESCE(?, quality),
         packaging = COALESCE(?, packaging),
+        moq = ?,
         image = COALESCE(?, image),
         blank_image = COALESCE(?, blank_image),
         locking_food_image = COALESCE(?, locking_food_image),
@@ -283,6 +287,8 @@ export async function PUT(request: NextRequest) {
         material !== undefined ? material : null,
         quality !== undefined ? quality : null,
         packaging !== undefined ? packaging : null,
+        // Cleared field → NULL (hidden on the site); untouched when the form didn't send it.
+        moq === undefined ? currentProd.moq ?? null : typeof moq === 'string' && moq.trim() ? moq.trim().slice(0, 100) : null,
         image || null,
         blank_image !== undefined ? blank_image : null,
         locking_food_image !== undefined ? locking_food_image : null,

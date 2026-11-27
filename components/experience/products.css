@@ -56,7 +56,7 @@
 .xpr-catalog-head h2{font-size:clamp(30px,3.4vw,52px);letter-spacing:var(--heading-tracking);line-height:var(--heading-leading);margin:12px 0 0}
 .xpr-catalog-head h2 em{color:var(--ace-orange)}
 .xpr-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:40px 28px}
-.xpr-card{content-visibility:auto;contain-intrinsic-width:0;contain-intrinsic-height:auto 480px;min-width:0;border-top:1px solid var(--xp-ink);padding-top:18px;display:flex;flex-direction:column}
+.xpr-card{content-visibility:auto;contain-intrinsic-width:0;contain-intrinsic-height:auto 480px;min-width:0;display:flex;flex-direction:column}
 .xpr-card.is-hidden{display:none}
 .xpr-card-media{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:#efeae0;border:1px solid var(--xp-line);box-shadow:0 4px 20px -2px rgba(20,23,26,0.04);isolation:isolate;transition:border-color .3s,box-shadow .3s}
 .xpr-card:hover .xpr-card-media{border-color:#d6bc83;box-shadow:0 12px 30px -4px rgba(185,151,80,0.12)}
@@ -64,9 +64,8 @@
 .xpr-card:hover .xpr-card-media img{transform:scale(1.05)}
 .xpr-card-media:after{display:none}
 .xpr-card-cap{position:absolute;left:14px;bottom:14px;z-index:1;color:var(--xp-ink);font-size:clamp(18px,1.5vw,24px);font-weight:700;line-height:1;letter-spacing:var(--heading-tracking);white-space:nowrap;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);padding:6px 12px;border-radius:10px;border:1px solid rgba(230,219,198,0.7);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
-.xpr-card-cap small{display:none}
+
 .xpr-card-line{position:absolute;top:14px;left:14px;z-index:1;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9e7f3b;background:rgba(255,255,255,0.92);border:1px solid var(--xp-line);box-shadow:0 2px 6px rgba(0,0,0,0.04);backdrop-filter:blur(8px);padding:6px 12px;border-radius:999px}
-.xpr-card-num{position:absolute;top:10px;right:16px;z-index:1;font-size:38px;font-weight:800;line-height:1;letter-spacing:var(--heading-tracking);color:rgba(20,23,26,0.06);pointer-events:none}
 .xpr-card-body{padding:18px 2px 0;display:flex;flex-direction:column;flex:1}
 .xpr-card h3{font-size:clamp(20px,1.55vw,24px);letter-spacing:var(--heading-tracking);line-height:var(--heading-leading);margin:0 0 12px}
 .xpr-card h3 a{transition:color .3s}
@@ -75,11 +74,6 @@
 .xpr-specs div{min-width:0}
 .xpr-specs dt{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#968152;margin-bottom:4px}
 .xpr-specs dd{margin:0;font-size:12.5px;color:#434b3e;line-height:1.5}
-.xpr-card-actions{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.xpr-card-actions a{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:500}
-.xpr-card-actions .xpr-details{border-bottom:1px solid var(--xp-ink);padding-bottom:5px}
-.xpr-card-actions .xpr-inquire{width:40px;height:40px;border-radius:50%;border:1px solid var(--xp-line);display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s,transform .3s}
-.xpr-card-actions .xpr-inquire:hover{background:var(--xp-ink);color:var(--xp-ivory);border-color:var(--xp-ink);transform:rotate(45deg)}
 .xpr-empty{display:none;padding:64px 0;text-align:center;color:#5b6058;font-size:15px}
 .xpr-empty.is-on{display:block}
 
@@ -124,16 +118,13 @@
  .xpr-grid{grid-template-columns:repeat(2,1fr);gap:26px 14px}
  .xpr-card{padding-top:12px;contain-intrinsic-height:auto 380px}
  .xpr-card-cap{left:10px;bottom:10px;font-size:clamp(13px,4vw,18px);padding:5px 9px;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
- .xpr-card-cap small{font-size:9px;margin-bottom:4px}
+
  .xpr-card-line{top:8px;left:8px;font-size:9px;padding:6px 8px;max-width:calc(100% - 64px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
- .xpr-card-num{font-size:30px;top:6px;right:10px}
  .xpr-card-body{padding-top:12px}
  .xpr-card h3{font-size:16px;margin-bottom:8px}
  .xpr-specs{grid-template-columns:1fr;gap:6px;margin-bottom:12px;padding-top:10px}
  .xpr-specs div:nth-child(n+3){display:none}
  .xpr-specs dd{font-size:11.5px}
- .xpr-card-actions a{font-size:11px}
- .xpr-card-actions .xpr-inquire{width:34px;height:34px}
  .xpr-closing{padding:80px 0 90px}
  .xpr-closing-actions{flex-direction:column;align-items:stretch}
  .xpr-closing-actions>*{justify-content:center}

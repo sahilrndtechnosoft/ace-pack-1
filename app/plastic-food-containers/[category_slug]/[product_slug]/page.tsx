@@ -88,7 +88,7 @@ export default async function LiveProductPage({ params }: LiveProductPageProps) 
     '@type': 'Product',
     name: product.name,
     image: product.image.startsWith('http') ? product.image : `https://www.acepack.co.in${product.image}`,
-    description: `${product.name} (${product.capacity}) moulded from 100% virgin food-grade PP 05 polymer. Leak-proof seal, microwave safe, deep-freeze ready.`,
+    description: `${product.name} (${product.capacity}) moulded from 100% virgin food-grade PP 05 polymer. Leak-proof seal, microwave safe.`,
     brand: {
       '@type': 'Brand',
       name: 'Ace Packaging',

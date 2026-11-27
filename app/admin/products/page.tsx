@@ -40,6 +40,7 @@ interface ProductItemAdmin {
   material?: string;
   quality?: string;
   packaging?: string;
+  moq?: string | null;
   image?: string;
   blank_image?: string;
   locking_food_image?: string;
@@ -1049,6 +1050,21 @@ export default function AdminProductsPage() {
                         value={activeProduct.packaging || ''}
                         onChange={(e) => setActiveProduct({ ...activeProduct, packaging: e.target.value })}
                         placeholder="2,000 PCS per Master Pack"
+                        className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="product-moq" className="block text-[10px] font-bold text-[#b99750] uppercase tracking-wider mb-1">
+                        MOQ (Minimum Order Quantity)
+                      </label>
+                      <input
+                        id="product-moq"
+                        type="text"
+                        maxLength={100}
+                        value={activeProduct.moq || ''}
+                        onChange={(e) => setActiveProduct({ ...activeProduct, moq: e.target.value })}
+                        placeholder="e.g. 10,000 pcs (leave empty to hide)"
                         className="w-full bg-[#161B22] border border-[#1E2633] rounded-xl px-3 py-2 text-xs text-white"
                       />
                     </div>

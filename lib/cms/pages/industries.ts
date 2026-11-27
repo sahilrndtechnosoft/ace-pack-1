@@ -46,7 +46,6 @@ export const industriesPage = {
         bullets: [
           '100% prime virgin polypropylene (PP 05) — no regrind, no recycled content',
           '100% food-grade material with ISO 9001:2015 plant certification',
-          'Rated −20°C deep freeze to +120°C microwave reheating',
           'Zero-leak snap-rim geometry across every lidded format',
           'Custom in-mould labelling on any line',
           'ISO 9001:2015 facility, two Daman units, 12+ export markets',

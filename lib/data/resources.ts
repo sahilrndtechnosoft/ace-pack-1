@@ -22,7 +22,7 @@ export const resourcePages = {
             ],
             [
                 'In-Mould Labelling (IML) Branding',
-                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave-safe brand presentation.'
             ],
             [
                 'Sample Prototyping to Volume Dispatch',
@@ -46,7 +46,7 @@ export const resourcePages = {
             ],
             [
                 'In-Mould Labelling (IML) Branding',
-                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave-safe brand presentation.'
             ],
             [
                 'Sample Prototyping to Volume Dispatch',
@@ -70,7 +70,7 @@ export const resourcePages = {
             ],
             [
                 'In-Mould Labelling (IML) Branding',
-                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave and deep-freeze durable brand presentation.'
+                'Seamless 5-sided photorealistic IML artwork fused directly into the polymer walls during moulding — delivering scratch-resistant, moisture-proof, microwave-safe brand presentation.'
             ],
             [
                 'Sample Prototyping to Volume Dispatch',

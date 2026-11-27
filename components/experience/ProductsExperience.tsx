@@ -11,8 +11,8 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/Flip';
-import { ArrowUpRight, ArrowRight, ArrowDownUp, FileDown } from 'lucide-react';
-import { productCategories, type ProductCategory } from '@/lib/data/products';
+import { ArrowRight, ArrowDownUp, FileDown } from 'lucide-react';
+import { capacityLabel, productCategories, type ProductCategory } from '@/lib/data/products';
 import { buildTextReveals, refreshOnSettle } from './experience-motion';
 import LinesCarousel from './LinesCarousel';
 import './products.css';
@@ -204,7 +204,7 @@ export default function ProductsExperience({
               <span className="xpr-title-mask"><span><em>{heroSec.title_line_2 || 'Specified in hand.'}</em></span></span>
             </h1>
             <p className="xpr-hero-lead">
-              {heroSec.lead || 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility and rated from deep freeze to microwave. Filter by line, sort by capacity, open any model for its full specification.'}
+              {heroSec.lead || 'Every model below is moulded from 100% prime virgin PP 05 in an ISO 9001:2015 certified facility. Filter by line, sort by capacity, open any model for its full specification.'}
             </p>
           </div>
           <div className="xpr-glance">
@@ -250,26 +250,19 @@ export default function ProductsExperience({
           </div>
 
           <ul ref={grid} className="xpr-grid">
-            {models.map((m, i) => (
+            {models.map((m) => (
               <li className="xpr-card" key={m.id} data-line={m.lineSlug} data-index={m.index} data-cap={capacityValue(m.capacity)}>
                 <Link href={m.href} className="xpr-card-media" aria-label={`${m.name}, ${m.capacity}`}>
                   <img src={m.image} alt="" loading="lazy" width="800" height="600" />
                   <span className="xpr-card-line">{m.line}</span>
-                  <span className="xpr-card-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="xpr-card-cap"><small>Capacity</small>{m.capacity}</span>
+                  <span className="xpr-card-cap">{capacityLabel(m.capacity)}</span>
                 </Link>
                 <div className="xpr-card-body">
                   <h3><Link href={m.href}>{m.name}</Link></h3>
                   <dl className="xpr-specs">
-                    <div><dt>Material</dt><dd>{m.material}</dd></div>
-                    <div><dt>Grade</dt><dd>{m.quality}</dd></div>
-                    {m.dimensions && <div><dt>{m.dimensions.bottom ? 'Dimensions' : 'Top × height'}</dt><dd>{m.dimensions.top}{m.dimensions.bottom ? ` × ${m.dimensions.bottom}` : ''} × {m.dimensions.height}</dd></div>}
-                    {m.packaging && <div><dt>Packing</dt><dd>{m.packaging}</dd></div>}
+                    {m.dimensions && <div><dt>Dimensions</dt><dd>{m.dimensions.top}{m.dimensions.bottom ? ` × ${m.dimensions.bottom}` : ''} × {m.dimensions.height}</dd></div>}
+                    {m.moq && <div><dt>MOQ</dt><dd>{m.moq}</dd></div>}
                   </dl>
-                  <div className="xpr-card-actions">
-                    <Link href={m.href} className="xpr-details">Specifications <ArrowRight size={13} /></Link>
-                    <Link href="/contact" className="xpr-inquire" aria-label={`Inquire about ${m.name}`}><ArrowUpRight size={16} /></Link>
-                  </div>
                 </div>
               </li>
             ))}

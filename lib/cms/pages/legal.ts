@@ -81,7 +81,7 @@ export const termsPage = {
   "clauses": [
     {
       "title": "1. Material Authenticity & Prime Virgin PP 05",
-      "text": "All Ace Packaging plastic food storage containers (including Hinge Cups, Portion Cups, RO-Series, RE-Series Bento Boxes, ZEN Series, Natraj Containers, and Deli Tubs) are manufactured exclusively from 100% prime virgin Polypropylene (PP 05). We do not blend regrind or post-consumer plastic into direct food-contact surfaces. All manufacturing and resins comply with certified ISO 9001:2015 standards.",
+      "text": "All Ace Packaging plastic food storage containers (including Hinge Cups, Portion Cups, RO-Series, RE-Series Containers, ZEN Series, Natraj Containers, and Deli Tubs) are manufactured exclusively from 100% prime virgin Polypropylene (PP 05). We do not blend regrind or post-consumer plastic into direct food-contact surfaces. All manufacturing and resins comply with certified ISO 9001:2015 standards.",
       "bullets": [],
       "closing": ""
     },

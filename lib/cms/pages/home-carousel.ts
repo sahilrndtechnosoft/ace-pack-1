@@ -2,7 +2,7 @@
 const CAROUSEL_ITEMS = [
   {
     name: 'RE Series Rectangular Meal Containers',
-    series: 'Bento & Meal Delivery',
+    series: 'Meal Delivery Containers',
     categorySlug: 're-series',
     image: '/images/products/re-series/re-series-hero.webp',
     gallery: [
@@ -12,9 +12,9 @@ const CAROUSEL_ITEMS = [
       '/images/products/re-series/ap-re-24.webp',
     ],
     capacities: '250ml to 1800ml (10 Models)',
-    bestFor: 'Cloud Kitchens, Biryanis, Rice Combos & Bento Meals',
+    bestFor: 'Cloud Kitchens, Biryanis, Rice Combos & Meal Combos',
     tag: 'Best Seller',
-    highlights: ['Zero-leak snap fit', 'Microwave safe up to 120°C', 'Interlocking stacking base'],
+    highlights: ['Zero-leak snap fit', 'Microwave safe', 'Interlocking stacking base'],
   },
   {
     name: 'Round Food Containers (3 Color Varieties)',
@@ -46,7 +46,7 @@ const CAROUSEL_ITEMS = [
     capacities: 'AP-RO-10 to AP-RO-48 (250ml - 1500ml)',
     bestFor: 'Hot Soups, Biryanis, Dal Makhani & Noodle Bowls',
     tag: 'Heavy Duty',
-    highlights: ['Reinforced sealing rim', 'Boiling hot soup safe', 'Freezer resistant to -20°C'],
+    highlights: ['Reinforced sealing rim', 'Boiling hot soup safe', 'Freezer safe'],
   },
   {
     name: 'ZEN Series Deep Rectangular Containers',
@@ -191,7 +191,7 @@ const CAROUSEL_ITEMS = [
     capacities: '500ml · 650ml · 750ml · 1000ml',
     bestFor: 'Hot Curries, Rice Bowls, Takeout Meals & Freezer Prep',
     tag: 'Heavy Duty',
-    highlights: ['Reinforced base and rim', 'Microwave & freezer resistant (-20°C to +120°C)', 'Airtight snap lid'],
+    highlights: ['Reinforced base and rim', 'Microwave & freezer safe', 'Airtight snap lid'],
   },
   {
     name: 'Sweet Box Confectionery Containers',
@@ -220,8 +220,6 @@ export const homeProductCarousel = {
   capacitiesLabel: 'Available Capacities:',
   polymerLabel: 'Polymer Grade:',
   polymerValue: '100% Prime Virgin PP 05 (ISO 9001:2015 Certified)',
-  thermalLabel: 'Thermal Resistance:',
-  thermalValue: '-20°C (Deep Freeze) to +120°C (Microwave)',
   catalogueButtonText: 'Explore catalogue',
   sampleButton: { text: 'Request Sample', link: '/contact' },
   products: CAROUSEL_ITEMS.map((item) => ({ ...item, gallery: item.gallery ?? [] })),

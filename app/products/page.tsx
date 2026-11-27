@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 const staticMetadata: Metadata = {
   title: 'All Products Catalog | Ace Packaging Plastic Food Packaging',
-  description: 'Explore Ace Packaging\'s complete catalog of plastic food containers, portion cups, hinged cups, round tubs, bento boxes, and confectionery packaging.',
+  description: 'Explore Ace Packaging\'s complete catalog of plastic food containers, portion cups, hinged cups, round tubs, meal containers, and confectionery packaging.',
 };
 
 export function generateMetadata(): Promise<Metadata> {

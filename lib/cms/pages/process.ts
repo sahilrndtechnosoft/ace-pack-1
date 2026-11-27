@@ -77,7 +77,6 @@ export const processPage = {
     keySpecs: [
       'High-speed optical vision camera inspection',
       '100% zero-leak rim snap pressure verification',
-      'Thermal cycling tested from −20°C to +120°C',
       'Drop impact resistance with piping-hot gravies',
     ],
     highlight: '100% rim leak tested before packing approval',

@@ -33,7 +33,6 @@ export const homeCraft = {
   facts: [
     { tag: '01 / Material integrity', title: '100% virgin\nPP 05.', body: '100% prime virgin food-grade polymer. Completely BPA-free, heavy-metal free and non-toxic.' },
     { tag: '02 / Sealed for the ride', title: 'Zero-leak\nsnap rim.', body: 'A hermetically tight rim seal that stops sauce and liquid escaping on a motorcycle delivery run.' },
-    { tag: '03 / Extreme thermal range', title: '−20°C to\n+120°C.', body: 'From deep-freeze storage through to hot curry and microwave reheating, with no warping or crazing.' },
   ],
   image: '/models/acepack/clamshell.webp',
   imageAlt: 'Hinged clamshell with its lid slightly open',
@@ -124,7 +123,7 @@ export const homeFaq = {
   heading: 'Everything You Need to Know About Food Packaging',
   faqs: [
     { question: 'What material resins are used in Ace Packaging containers?', answer: 'All Ace Packaging containers are manufactured using 100% prime virgin Polypropylene (PP 05) in our ISO 9001:2015 certified facilities. They are 100% BPA-free, heavy metal free, and food-contact safe.' },
-    { question: 'Are your plastic containers microwave and freezer safe?', answer: 'Yes, our PP 05 material has a operating thermal range spanning -20°C (deep freeze) up to +120°C (hot gravy filling and microwave reheating).' },
+    { question: 'Are your plastic containers microwave and freezer safe?', answer: 'Yes. Our PP 05 containers are microwave safe for reheating and suitable for freezer storage.' },
     { question: 'How do Hinge Cups prevent sauce leakage during delivery?', answer: 'Our Hinge Cups feature a built-in snap-tight lid rim geometry that creates an airtight hermetic seal, preventing liquid spillage even during rough motorcycle transit.' },
   ],
   phoneLine: '+91 99250 15906 / +91 99251 55799',

@@ -31,7 +31,7 @@ import { LanguageSelector } from '@/components/ui/LanguageSelector';
 const FEATURED_MOBILE_CATEGORIES = [
   {
     slug: 're-series',
-    shortTitle: 'Bento & Compartment',
+    shortTitle: 'Meal & Compartment',
     sub: 'RE Series',
     image: '/images/products/re-series/re-series-hero.webp',
     modelCount: 13,
@@ -758,7 +758,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                             type="text"
                             value={mobileSearch}
                             onChange={(e) => setMobileSearch(e.target.value)}
-                            placeholder="Search models or sizes (e.g. 500ml, bento)..."
+                            placeholder="Search models or sizes (e.g. 500ml, round)..."
                             className="w-full pl-8 pr-7 py-2 text-xs bg-[#FAF8F4] border border-[var(--ace-line)] rounded-xl text-[var(--ace-ink)] placeholder-gray-400 focus:outline-none focus:border-[var(--ace-orange)] focus:bg-white transition-all"
                           />
                           {mobileSearch && (
@@ -790,7 +790,7 @@ export const Header: React.FC<HeaderProps> = ({ initialSettings, initialCategori
                             {mobileSearchResults.length === 0 ? (
                               <div className="text-center py-6 px-4 bg-[#FAF8F4] rounded-xl border border-[var(--ace-line)]">
                                 <p className="text-xs font-bold text-[var(--ace-ink)]">No packaging matches found</p>
-                                <p className="text-[11px] text-gray-500 mt-1">Try searching for &quot;bento&quot;, &quot;500ml&quot;, or &quot;round&quot;.</p>
+                                <p className="text-[11px] text-gray-500 mt-1">Try searching for &quot;meal&quot;, &quot;500ml&quot;, or &quot;round&quot;.</p>
                               </div>
                             ) : (
                               <div className="space-y-1.5 max-h-[48vh] overflow-y-auto pr-0.5" data-lenis-prevent>
