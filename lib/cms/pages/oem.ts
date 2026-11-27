@@ -85,4 +85,5 @@ const withBranding = (page: ReturnType<typeof resourcePage>) => ({
 });
 
 export const oemPage = withBranding(oemBase);
-export const customizationPage = withBranding(resourcePage('Customization', '/customization', 'CUSTOMIZATION & PRIVATE LABEL'));
+// /customization shows the OEM page's content (edited under OEM); this entry keeps only its own SEO settings.
+export const customizationPage = { title: 'Customization', path: '/customization', sections: {} };

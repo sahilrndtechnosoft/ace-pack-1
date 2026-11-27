@@ -9,7 +9,8 @@ interface ResourcePageProps {
 }
 
 export async function ResourcePage({ kind }: ResourcePageProps) {
-  const { content, hidden } = await getPageContent(kind);
+  // Both URLs show the OEM page's content, so it is edited in one place (Admin → Pages → OEM).
+  const { content, hidden } = await getPageContent('oem');
   const { hero, gallery_heading: intro, gallery } = content;
   const { branding } = content;
 
