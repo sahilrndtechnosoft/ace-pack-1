@@ -86,7 +86,8 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
         .from('.xin-hero-lead', { opacity: 0, y: 18, duration: 0.8 }, 0.55)
         .from('.xin-glance div', { opacity: 0, y: 22, duration: 0.7, stagger: 0.08 }, 0.5);
       gsap.from('.xin-panel', { opacity: 0, y: 40, duration: 0.9, ease: 'power2.out', scrollTrigger: { trigger: '.xin-index-grid', start: 'top 80%', once: true } });
-      gsap.from('.xin-standard-list li', { opacity: 0, x: -14, duration: 0.55, ease: 'power2.out', stagger: 0.06, scrollTrigger: { trigger: '.xin-standard', start: 'top 80%', once: true } });
+      // Standard section is hidden for now; restore with it.
+      // gsap.from('.xin-standard-list li', { opacity: 0, x: -14, duration: 0.55, ease: 'power2.out', stagger: 0.06, scrollTrigger: { trigger: '.xin-standard', start: 'top 80%', once: true } });
       // Touch layouts: each row's cover drifts inside its frame as it passes.
       gsap.matchMedia().add('(max-width: 900px)', () => {
         gsap.utils.toArray<HTMLElement>('.xin-row-cover img').forEach(img => {
@@ -206,6 +207,7 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
       </section>
       )}
 
+      {/* "Every segment, one standard" section hidden on request.
       {show('standard') && (
       <section className="xin-standard" id="standard">
         <div className="xin-wrap xin-standard-grid">
@@ -219,6 +221,7 @@ export default function IndustriesExperience({ content = INDUSTRIES_DEFAULTS, hi
         </div>
       </section>
       )}
+      */}
 
       {show('closing') && (
       <section className="xin-closing" id="closing">
