@@ -297,115 +297,74 @@ export function OemProductGallery({
           aria-modal="true"
           aria-label={activeItem.title}
           data-lenis-prevent
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm"
           onClick={() => setActiveModalIdx(null)}
         >
           <div
             ref={modalContentRef}
-            className="relative w-full max-w-5xl rounded-3xl bg-[#1A1D20] text-white overflow-hidden shadow-2xl border border-white/10 flex flex-col md:flex-row max-h-[90vh]"
+            className="relative w-full max-w-5xl max-h-[92vh] overflow-hidden rounded-3xl bg-white text-[#1A1D20] shadow-2xl flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setActiveModalIdx(null)}
-              aria-label="Close dialog"
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
-            >
-              <X size={20} />
-            </button>
-
-            {/* Previous Image Navigation */}
-            {galleryItems.length > 1 && (
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveModalIdx((prev) =>
-                    prev !== null ? (prev - 1 + galleryItems.length) % galleryItems.length : 0
-                  )
-                }
-                aria-label="Previous image"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
-              >
-                <ChevronLeft size={22} />
-              </button>
-            )}
-
-            {/* Next Image Navigation */}
-            {galleryItems.length > 1 && (
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveModalIdx((prev) =>
-                    prev !== null ? (prev + 1) % galleryItems.length : 0
-                  )
-                }
-                aria-label="Next image"
-                className="absolute right-4 md:right-[380px] top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
-              >
-                <ChevronRight size={22} />
-              </button>
-            )}
-
-            {/* Image Preview Area */}
-            <div className="relative flex-1 bg-black/50 min-h-[320px] md:min-h-[560px] flex items-center justify-center p-6">
-              <div className="relative w-full h-full min-h-[300px]">
-                <Image
-                  src={activeItem.image}
-                  alt={activeItem.title}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+            {/* Photo fills its panel; arrows sit on the photo so they never cover the text */}
+            <div className="relative w-full md:w-[58%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-[#EFE7D8]">
+              <Image src={activeItem.image} alt={activeItem.title} fill sizes="(max-width: 767px) 100vw, 600px" className="object-cover" priority />
+              {galleryItems.length > 1 && (
+                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-3 sm:p-4">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalIdx((prev) => (prev !== null ? (prev - 1 + galleryItems.length) % galleryItems.length : 0))}
+                    aria-label="Previous product"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#1A1D20] shadow-md hover:bg-[#cfa144] transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold tabular-nums shadow-md">
+                    {pad((activeModalIdx ?? 0) + 1)} / {pad(galleryItems.length)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalIdx((prev) => (prev !== null ? (prev + 1) % galleryItems.length : 0))}
+                    aria-label="Next product"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#1A1D20] shadow-md hover:bg-[#cfa144] transition-colors cursor-pointer"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Sidebar Details Area */}
-            <div className="w-full md:w-[360px] p-6 sm:p-8 flex flex-col justify-between bg-[#14171A] border-t md:border-t-0 md:border-l border-white/10 overflow-y-auto">
-              <div>
-                <span className="inline-block px-2.5 py-1 rounded-full bg-[#cfa144]/20 text-[#cfa144] border border-[#cfa144]/30 text-xs font-bold uppercase tracking-wider mb-3">
-                  {activeItem.category}
-                </span>
+            <div className="relative flex-1 min-h-0 overflow-y-auto p-6 sm:p-8 flex flex-col">
+              <button
+                type="button"
+                onClick={() => setActiveModalIdx(null)}
+                aria-label="Close"
+                className="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full text-gray-500 hover:bg-[#FAF8F4] hover:text-[#1A1D20] transition-colors cursor-pointer"
+              >
+                <X size={20} />
+              </button>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug mb-3">
-                  {activeItem.title}
-                </h3>
+              <span className="self-start pr-12 text-[11px] font-bold uppercase tracking-[0.14em] text-[#a8812f]">{activeItem.category}</span>
+              <h3 className="mt-2 pr-8 text-xl sm:text-2xl font-extrabold leading-snug">{activeItem.title}</h3>
+              <p className="mt-3 text-sm text-gray-600 leading-relaxed">{activeItem.description}</p>
 
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-6">
-                  {activeItem.description}
-                </p>
+              {activeItem.specs && activeItem.specs.length > 0 && (
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {activeItem.specs.map((spec, i) => (
+                    <li key={i} className="inline-flex items-center gap-1.5 rounded-full border border-[#E6DBC6] bg-[#FAF8F4] px-3 py-1.5 text-xs font-medium">
+                      <ShieldCheck size={13} className="text-[#a8812f] shrink-0" aria-hidden="true" />
+                      {spec}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-                {activeItem.specs && activeItem.specs.length > 0 && (
-                  <div className="mb-6">
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-                      Technical Specifications
-                    </p>
-                    <ul className="space-y-2">
-                      {activeItem.specs.map((s, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-gray-200">
-                          <ShieldCheck size={14} className="text-[#cfa144] shrink-0" />
-                          <span>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div className="pt-6 border-t border-white/10 flex flex-col gap-2.5">
+              <div className="mt-8 md:mt-auto md:pt-8">
                 <Link
                   href="/contact"
-                  className="w-full text-center py-3 rounded-full bg-[#cfa144] hover:bg-[#b88c32] text-[#14171A] font-bold text-xs uppercase tracking-wider transition-colors shadow-md"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-[#cfa144] hover:bg-[#b88c32] py-3.5 text-xs font-bold uppercase tracking-wider text-[#14171A] transition-colors"
                 >
-                  Request Mould Tooling Quote
+                  Request a Quote
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => setActiveModalIdx(null)}
-                  className="w-full text-center py-2.5 rounded-full border border-white/20 hover:border-white text-gray-300 hover:text-white text-xs font-medium transition-colors cursor-pointer"
-                >
-                  Close Preview
-                </button>
               </div>
             </div>
           </div>
