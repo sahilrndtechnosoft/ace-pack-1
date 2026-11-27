@@ -60,5 +60,29 @@ function resourcePage(title: string, path: string, bannerBadge: string) {
   };
 }
 
-export const oemPage = resourcePage('OEM Tooling', '/oem', 'OEM & CUSTOM TOOLING');
-export const customizationPage = resourcePage('Customization', '/customization', 'CUSTOMIZATION & PRIVATE LABEL');
+const oemBase = resourcePage('OEM Tooling', '/oem', 'OEM & CUSTOM TOOLING');
+
+// Branding / printing options shown under the banner (OEM and Customization).
+export const oemBranding = {
+  badge: 'BRANDING & PRINTING',
+  heading: 'Print your brand on every container',
+  items: [
+    { title: 'Screen Printing', description: 'Crisp, durable prints directly on the container surface.' },
+    { title: 'Dry Offset Printing', description: 'High-speed printing for large production runs with consistent results.' },
+    { title: 'Single to 6-Colour Options', description: 'Anything from a single-colour logo to full 6-colour artwork.' },
+    { title: 'White Labelling', description: 'Our containers, supplied under your brand name.' },
+  ],
+};
+
+const withBranding = (page: ReturnType<typeof resourcePage>) => ({
+  ...page,
+  sections: {
+    hero: page.sections.hero,
+    branding: { label: 'Branding & Printing Options', description: 'Printing options shown under the banner.', content: oemBranding },
+    gallery_heading: page.sections.gallery_heading,
+    gallery: page.sections.gallery,
+  },
+});
+
+export const oemPage = withBranding(oemBase);
+export const customizationPage = withBranding(resourcePage('Customization', '/customization', 'CUSTOMIZATION & PRIVATE LABEL'));
