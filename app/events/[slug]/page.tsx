@@ -151,12 +151,12 @@ export default async function EventDetailPage({ params }: Props) {
                 Showcase Context &amp; Industry Scope
               </h2>
 
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-medium">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-medium text-justify hyphens-auto">
                 {event.description}
               </p>
 
               {event.fullStory?.map((para, pIdx) => (
-                <p key={pIdx} className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <p key={pIdx} className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify hyphens-auto">
                   {para}
                 </p>
               ))}

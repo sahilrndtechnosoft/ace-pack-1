@@ -206,14 +206,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               {/* Summary Lead */}
               {post.summary && (
                 <div className="bg-[#FAF8F4] p-6 rounded-2xl border-l-4 border-[#cfa144] border-y border-r border-[#E6DBC6]">
-                  <p className="text-xs sm:text-sm text-[#1A1D20] font-semibold leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#1A1D20] font-semibold leading-relaxed text-justify hyphens-auto">
                     {post.summary}
                   </p>
                 </div>
               )}
 
               {/* Post Body (Raw HTML from Acepack preserving original formatting) */}
-              <div className="bg-white p-6 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm text-sm sm:text-base text-gray-700 leading-relaxed">
+              <div className="bg-white p-6 sm:p-10 rounded-3xl border border-[#E6DBC6] shadow-sm text-sm sm:text-base text-gray-700 leading-relaxed text-justify hyphens-auto">
                 {post.content_html ? (
                   <div
                     className="space-y-4 [&>h2]:text-xl sm:[&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-[#1A1D20] [&>h2]:mt-8 [&>h2]:mb-3 [&>h3]:text-lg sm:[&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-[#1A1D20] [&>h3]:mt-6 [&>h3]:mb-2 [&>p]:leading-relaxed [&>p]:mb-4 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-1.5 [&>ul]:my-4 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:space-y-1.5 [&>ol]:my-4 [&>a]:text-[#a8812f] [&>a]:font-semibold hover:[&>a]:underline [&>strong]:font-bold [&>strong]:text-[#1A1D20] [&>table]:w-full [&>table]:border [&>table]:border-[#E6DBC6] [&>table_th]:bg-[#FAF8F4] [&>table_th]:p-2.5 [&>table_td]:p-2.5 [&>table_td]:border-t [&>table_td]:border-[#E6DBC6]"

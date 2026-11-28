@@ -38,7 +38,7 @@ export async function ResourcePage({ kind }: ResourcePageProps) {
                 <li key={item.title} className="rounded-2xl border border-[#E6DBC6] bg-white p-6">
                   <span className="text-2xl font-extrabold text-[#cfa144] font-serif">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-3 text-base font-bold">{item.title}</h3>
-                  {item.description && <p className="mt-2 text-sm text-gray-600 leading-relaxed">{item.description}</p>}
+                  {item.description && <p className="mt-2 text-sm text-gray-600 leading-relaxed text-justify hyphens-auto">{item.description}</p>}
                 </li>
               ))}
             </ul>

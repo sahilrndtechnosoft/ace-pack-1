@@ -143,6 +143,8 @@ export const siteTextDefaults = {
     specLidValue: 'Airtight Snap-Fit / Hermetic Rim Seal',
     specMasterBox: 'Master Box Packaging',
     applicationsHeading: 'Recommended Food & Culinary Applications',
+    descriptionHeading: 'Product Description',
+    featuresHeading: 'Key Features',
     datasheetButtonText: 'Download Technical Datasheet',
     datasheetNote: 'Official specifications and food contact certification documentation.',
   },

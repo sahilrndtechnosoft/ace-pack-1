@@ -20,6 +20,7 @@ import {
 import { capacityLabel, type ProductCategory, type ProductItem } from '@/lib/data/products';
 import { CatalogueDownloadModal } from '../ui/CatalogueDownloadModal';
 import { PRODUCT_IMAGE_ZOOM_CLASS, productImageFit } from '@/lib/data/product-image-fit';
+import { productDescription } from '@/lib/data/product-description';
 
 interface ProductDetailInteractiveProps {
   category: ProductCategory;
@@ -72,6 +73,8 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
   const foodApplications = product.applications && product.applications.length > 0
     ? product.applications
     : ['Cloud Kitchen Combos', 'Hot Gravy & Curry Delivery', 'Salads & Cold Meals', 'Microwave Reheating'];
+
+  const description = productDescription(product, category);
 
   return (
     <>
@@ -423,7 +426,7 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--ace-ink)] mb-3">
               {heading || product.name}
             </h1>
-            <p className="text-sm text-gray-600 leading-relaxed mb-6">
+            <p className="text-sm text-gray-600 leading-relaxed mb-6 text-justify hyphens-auto">
               Precision injection-moulded packaging engineered from 100% prime virgin PP 05. Features zero-leak rim closure, high stacking rigidity and microwave-safe reheating.
             </p>
 
@@ -535,6 +538,34 @@ export const ProductDetailInteractive: React.FC<ProductDetailInteractiveProps> =
 
         </div>
       </div>
+
+      <section aria-labelledby="product-description-heading" className="mt-10 sm:mt-14 bg-white rounded-3xl border border-[#E6DBC6] shadow-sm p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 text-left">
+        <div className="lg:col-span-8">
+          <h2 id="product-description-heading" className="text-xl sm:text-2xl font-extrabold text-[var(--ace-ink)] mb-4">
+            {t.descriptionHeading}
+          </h2>
+          <div className="space-y-4 text-sm sm:text-base text-gray-600 leading-relaxed text-justify hyphens-auto">
+            {description.paragraphs.map((para, idx) => (
+              <p key={idx} className="whitespace-pre-line">{para}</p>
+            ))}
+          </div>
+        </div>
+        {description.features.length > 0 && (
+          <div className="lg:col-span-4 bg-[#FAF8F4] rounded-2xl border border-[#E6DBC6] p-5 sm:p-6 self-start">
+            <h3 className="text-xs font-extrabold uppercase tracking-wider text-[var(--ace-ink)] mb-4">
+              {t.featuresHeading}
+            </h3>
+            <ul className="space-y-3">
+              {description.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-2.5 text-sm font-semibold text-gray-800">
+                  <CheckCircle2 className="w-4 h-4 text-[#b99750] shrink-0 mt-0.5" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
       <CatalogueDownloadModal
         isOpen={catalogueOpen}

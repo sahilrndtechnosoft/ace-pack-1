@@ -202,7 +202,7 @@ export function OemProductGallery({
           <h3 className="mt-3 text-xl font-extrabold leading-tight text-[#1A1D20] lg:text-white sm:text-2xl">{item.title}</h3>
           <div className="oem-card-more">
             <div className="min-h-0">
-              <p className="pt-3 text-sm leading-relaxed text-gray-600 lg:text-white/75 line-clamp-3">{item.description}</p>
+              <p className="pt-3 text-sm leading-relaxed text-gray-600 lg:text-white/75 line-clamp-3 text-justify hyphens-auto">{item.description}</p>
               {item.specs && item.specs.length > 0 && (
                 <ul className="mt-4 flex flex-wrap gap-1.5">
                   {item.specs.map((spec, sIdx) => (
@@ -242,7 +242,7 @@ export function OemProductGallery({
                   </span>
                 ))}
               </h2>
-              <p data-fade className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
+              <p data-fade className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base text-justify hyphens-auto">
                 {lead}
               </p>
             </div>
@@ -345,7 +345,7 @@ export function OemProductGallery({
 
               <span className="self-start pr-12 text-[11px] font-bold uppercase tracking-[0.14em] text-[#a8812f]">{activeItem.category}</span>
               <h3 className="mt-2 pr-8 text-xl sm:text-2xl font-extrabold leading-snug">{activeItem.title}</h3>
-              <p className="mt-3 text-sm text-gray-600 leading-relaxed">{activeItem.description}</p>
+              <p className="mt-3 text-sm text-gray-600 leading-relaxed text-justify hyphens-auto">{activeItem.description}</p>
 
               {activeItem.specs && activeItem.specs.length > 0 && (
                 <ul className="mt-6 flex flex-wrap gap-2">

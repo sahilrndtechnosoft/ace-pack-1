@@ -272,3 +272,11 @@ button:not(:disabled), summary { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }
+
+/* Home and About body copy reads justified. :where() keeps specificity at zero so any
+   paragraph with its own alignment class (e.g. text-center) keeps it. */
+:where(.svh-intro, .xp-manufacturing-copy, #collection, .xp-trust, #export-shipping, .xa-hero-copy, .xa-value, .xa-node-card, .xa-leadership) p,
+:where(.xp-recycling-note) {
+  text-align: justify;
+  hyphens: auto;
+}

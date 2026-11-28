@@ -46,7 +46,7 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1A1D20] tracking-tight">
               {c.heading}
             </h2>
-            <p className="text-xs sm:text-sm text-gray-600 mt-2.5 leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-600 mt-2.5 leading-relaxed text-justify hyphens-auto">
               {c.description}
             </p>
           </div>
@@ -91,7 +91,7 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
                       {c.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6 text-justify hyphens-auto">
                       {c.body}
                     </p>
 
@@ -141,7 +141,7 @@ export const QualityClient: React.FC<{ content?: CmsPageContent<'quality'>; hidd
                     </span>
                     <ChevronDown className="w-4 h-4 shrink-0 text-gray-400 transition-transform group-open:rotate-180" aria-hidden="true" />
                   </summary>
-                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 pl-[3.25rem] sm:pl-14 text-xs sm:text-sm text-gray-600 leading-relaxed">{item.answer}</p>
+                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 pl-[3.25rem] sm:pl-14 text-xs sm:text-sm text-gray-600 leading-relaxed text-justify hyphens-auto">{item.answer}</p>
                 </details>
               ))}
             </div>
